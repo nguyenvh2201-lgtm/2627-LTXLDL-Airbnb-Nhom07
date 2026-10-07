@@ -12,7 +12,7 @@ raw/dir : data/raww
 processed_dir : data/processed
 qa:
   price_max : ...
-  min_nights_cap: ...
+  min_nights_cap: 365
   dedupe_keys = [id,last_scraped]
 kpi : 
   area_col = neighbourhood_cleansed
