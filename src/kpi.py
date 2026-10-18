@@ -1,107 +1,107 @@
 import pandas as pd
 import numpy as np
-import os
-
-def run(config):
-    """
-    Hàm chạy tính toán KPI cho 1 snapshot.
-    Yêu cầu đầu vào: Đường dẫn tới thư mục chứa dữ liệu sạch của 1 mốc.
-    """
-    snapshot_date = config['snapshot_date']
-    input_dir = config['input_dir']
-    output_dir = config['output_dir']
-    
-    # 1. ĐỌC DỮ LIỆU SẠCH (Từ thư mục processed)
-    # Lưu ý: Code này giả định TV1/TV2 đã lưu ra định dạng .csv
-    listings_path = os.path.join(input_dir, 'listings.csv')
-    calendar_path = os.path.join(input_dir, 'calendar.csv')
-    
-    if not os.path.exists(listings_path) or not os.path.exists(calendar_path):
-        print(f"Lỗi: Không tìm thấy dữ liệu sạch tại {input_dir}")
+import os 
+import argparse
+def run(cfg):
+    date=cfg["snapshot_date"]
+    in_dir=cfg["input_dir"]
+    out_dir=cfg["ouput_dir"]
+    #Tao duong dan tro toi file listing.csv,calendar.csv
+    lst_path = os.path.join(in_dir, 'listings.csv')
+    cal_path = os.path.join(in_dir, 'calendar.csv')
+    #Neu file listing.csv k ton tai thi bao loi
+    if not os.path.exists(lst_path):
+        print(f"Lỗi: Không tìm thấy {lst_path}")
         return
-
-    df_listings = pd.read_csv(listings_path, low_memory=False)
-    df_calendar = pd.read_csv(calendar_path, low_memory=False)
-
-    # 2. XỬ LÝ LỊCH (CALENDAR) 
-    # Tính tỷ lệ trống (availability_share_mean) cho từng listing_id
-    # Giả sử cột 'available' chứa 't' (true) hoặc 'f' (false)
-    df_calendar['is_available'] = df_calendar['available'] == 't'
-    cal_summary = df_calendar.groupby('listing_id').agg(
-        availability_share_mean=('is_available', 'mean'),
-        calendar_coverage_mean=('date', 'count') # Số ngày có dữ liệu
-    ).reset_index()
-
-    # Ghép bảng lịch vào listings (Quan hệ 1-1 theo yêu cầu)
-    df = df_listings.merge(cal_summary, left_on='id', right_on='listing_id', how='left')
-
-    # 3. CHUẨN BỊ CÁC CỘT TÍNH TOÁN
-    # Chuyển đổi giá (price) sang dạng số (loại bỏ $ và dấu phẩy nếu TV2 chưa làm)
-    if df['price'].dtype == object:
-        df['price'] = df['price'].replace(r'[\$,]', '', regex=True).astype(float)
-    
-    # Xử lý nhãn Unknown cho khu vực và loại phòng theo yêu cầu
-    df['neighbourhood_cleansed'] = df['neighbourhood_cleansed'].fillna('Unknown')
-    df['room_type'] = df['room_type'].fillna('Unknown')
-
-    # 4. HÀM TÍNH KPI CHUNG CHO BẤT KỲ NHÓM NÀO
-    def calculate_metrics(group_df):
-        # Lọc các dòng hợp lệ
-        valid_price = group_df.dropna(subset=['price'])
-        valid_rating = group_df.dropna(subset=['review_scores_rating'])
-        valid_room = group_df[group_df['room_type'] != 'Unknown']
-        
-        # Tính toán
+    #low_memory=false de pandas co the doc nhieu kieu du lieu
+    # drop_duplicates(subset=['id']): xoa cac dong trung id ( 1 dong = 1 can nha)
+    df_lst = pd.read_csv(lst_path,low_memory = False).drop_duplicates(subset=['id'])
+    if os.path.exists(cal_path):
+        df_cal = pd.read_csv(cal_path, low_memory=False)
+        df_cal['is_avail'] = df_cal['available'] == 't'
+        #tinh cung luc gia tri trung binh cua is_avail(ra ti le trong) va dem so dong(ra do phu ngay quan sat duoc)
+        cal_sum = df_cal.groupby('listing_id').agg(
+            availability_share_mean=('is_avail', 'mean'),
+            calendar_coverage_mean=('date', 'count')
+        ).reset_index()
+        df = df_lst.merge(cal_sum, left_on='id', right_on='listing_id', how='left')
+    else:
+        #ko có file thi tao cot rong
+        df = df_lst.copy()
+        df['availability_share_mean'] = np.nan
+        df['calendar_coverage_mean'] = np.nan
+    if "price" in df.columns and df["price"].dtype == object:
+        #xoa $ va dau phay neu co de cho no tro thanh chuoi
+        df["price"]=df["price"].replace(r'[\$,]', '', regex=True).astype(float)
+    elif "price" not in df.columns: #chong loi 
+        df["price"] = np.nan
+    #neu gia tri la Nan thi bien thanh Unknown
+    df['room_type'] = df.get('room_type', pd.Series([np.nan]*len(df))).fillna('Unknown')
+    df['neighbourhood_cleansed'] = df.get('neighbourhood_cleansed', pd.Series([np.nan]*len(df))).fillna('Unknown')
+    def calc_kpi(grp):
+        # loc ra cac gia tri khong hop le cho tung kpi
+        v_price = grp.dropna(subset=['price'])
+        v_room = grp[grp['room_type'] != 'Unknown']
+        v_rate = grp.dropna(subset=['review_scores_rating'])
+        v_cal = grp.dropna(subset=['availability_share_mean'])
         res = {
-            'snapshot_date': snapshot_date,
-            'n_listings': len(group_df['id'].unique()),
+            'snapshot_date': date,
+            'n_listings': len(grp), # Đếm tổng số căn
             
-            'n_price_valid': len(valid_price),
-            'median_price_cad': valid_price['price'].median() if not valid_price.empty else np.nan,
-            'price_q1_cad': valid_price['price'].quantile(0.25) if not valid_price.empty else np.nan,
-            'price_q3_cad': valid_price['price'].quantile(0.75) if not valid_price.empty else np.nan,
+            'n_price_valid': len(v_price),
+            # Tính trung vị (median). Điều kiện 'if not v_price.empty' là để chống lỗi hệ thống sập khi vùng đó không có căn nào có giá.
+            'median_price_cad': v_price['price'].median() if not v_price.empty else np.nan,
+            'price_q1_cad': v_price['price'].quantile(0.25) if not v_price.empty else np.nan,
+            'price_q3_cad': v_price['price'].quantile(0.75) if not v_price.empty else np.nan,
             
-            'n_room_type_valid': len(valid_room),
-            'entire_home_share': (len(valid_room[valid_room['room_type'] == 'Entire home/apt']) / len(valid_room)) if len(valid_room) > 0 else np.nan,
+            'n_room_type_valid': len(v_room),
+            # Đếm số căn Entire home chia cho tổng căn có loại phòng hợp lệ.
+            'entire_home_share': (len(v_room[v_room['room_type'] == 'Entire home/apt']) / len(v_room)) if len(v_room) > 0 else np.nan,
             
-            'n_calendar_listings': group_df['availability_share_mean'].notna().sum(),
-            'availability_share_mean': group_df['availability_share_mean'].mean(),
-            'calendar_coverage_mean': group_df['calendar_coverage_mean'].mean(),
+            'n_calendar_listings': len(v_cal),
+            'availability_share_mean': v_cal['availability_share_mean'].mean() if not v_cal.empty else np.nan,
+            'calendar_coverage_mean': v_cal['calendar_coverage_mean'].mean() if not v_cal.empty else np.nan,
             
-            'n_rating_valid': len(valid_rating),
-            'median_rating': valid_rating['review_scores_rating'].median() if not valid_rating.empty else np.nan
+            'n_rating_valid': len(v_rate),
+            'median_rating': v_rate['review_scores_rating'].median() if not v_rate.empty else np.nan
         }
         return pd.Series(res)
-
-    # 5. TẠO 3 BẢNG THEO YÊU CẦU
+    #Bảng Tổng (snapshot): Gọi hàm trên toàn bộ data gốc
+    kpi_snap = calc_kpi(df).to_frame().T
     
-    # Bảng 1: kpi_snapshot.csv (Tổng toàn thành phố)
-    kpi_snapshot = calculate_metrics(df).to_frame().T
+    #Bảng Area: Cắt data gốc ra theo từng khu vực, rồi cho từng mảnh chạy qua hàm calc_kpi
+    kpi_area = df.groupby('neighbourhood_cleansed').apply(calc_kpi).reset_index()
     
-    # Bảng 2: kpi_area.csv (Nhóm theo khu vực)
-    kpi_area = df.groupby('neighbourhood_cleansed').apply(calculate_metrics).reset_index()
+    #Bảng Room: Cắt theo từng loại phòng.
+    kpi_room = df.groupby('room_type').apply(calc_kpi).reset_index()
     
-    # Bảng 3: kpi_room_type.csv (Nhóm theo loại phòng)
-    kpi_room_type = df.groupby('room_type').apply(calculate_metrics).reset_index()
-    # Chỉnh sửa cột cho bảng room_type (Thêm room_type_share, bỏ entire_home_share)
-    total_valid_rooms = kpi_snapshot['n_room_type_valid'].iloc[0]
-    kpi_room_type['room_type_share'] = kpi_room_type['n_listings'] / total_valid_rooms
-    kpi_room_type.loc[kpi_room_type['room_type'] == 'Unknown', 'room_type_share'] = np.nan
-    kpi_room_type = kpi_room_type.drop(columns=['entire_home_share'])
-
-    # 6. LƯU KẾT QUẢ
-    os.makedirs(output_dir, exist_ok=True)
-    kpi_snapshot.to_csv(os.path.join(output_dir, 'kpi_snapshot.csv'), index=False)
-    kpi_area.to_csv(os.path.join(output_dir, 'kpi_area.csv'), index=False)
-    kpi_room_type.to_csv(os.path.join(output_dir, 'kpi_room_type.csv'), index=False)
-    print(f"Đã tính toán xong KPI cho mốc {snapshot_date}")
-
-# Khối lệnh chạy thử
+    #Tính thị phần (share) của từng loại phòng
+    # Lấy tổng số phòng hợp lệ từ bảng Snapshot
+    tot_v_room = kpi_snap['n_room_type_valid'].iloc[0] 
+    kpi_room['room_type_share'] = kpi_room['n_listings'] / tot_v_room
+    
+    # Chỉnh đè nhóm Unknown thành NaN (rỗng) vì Unknown không được tính tỷ lệ share
+    kpi_room.loc[kpi_room['room_type'] == 'Unknown', 'room_type_share'] = np.nan
+    # Xóa cột entire_home_share trong bảng Room vì nó thừa thãi (nhóm Private Room làm gì có căn Entire home nào mà tính)
+    kpi_room = kpi_room.drop(columns=['entire_home_share'])
+    # Tạo thư mục nếu nó chưa tồn tại (exist_ok=True để nếu có rồi thì bỏ qua không báo lỗi)
+    os.makedirs(out_dir, exist_ok=True)
+    
+    # Xuất ra file Excel định dạng CSV, index=False để bỏ đi cột số thứ tự 0,1,2,3... không cần thiết
+    kpi_snap.to_csv(os.path.join(out_dir, f'kpi_snapshot_{date}.csv'), index=False)
+    kpi_area.to_csv(os.path.join(out_dir, f'kpi_area_{date}.csv'), index=False)
+    kpi_room.to_csv(os.path.join(out_dir, f'kpi_room_type_{date}.csv'), index=False)
+    
+    print(f"Đã xuất 3 file KPI cho mốc {date}")
 if __name__ == "__main__":
-    # Cấu hình đường dẫn chạy thử (Bạn cần thay đổi cho khớp với máy bạn)
-    test_config = {
-        'snapshot_date': '2025-09-11',
-        'input_dir': '../data/processed/2025-09-11', # Đường dẫn lấy dữ liệu SẠCH
-        'output_dir': '../reports/kpi_results/2025-09-11' # Đường dẫn lưu kết quả
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--date', type=str, default='all') 
+    args = parser.parse_args()
+    
+    # Đóng gói các biến thành 1 dictionary rồi truyền cho hàm run() ở tít trên đầu.
+    cfg = {
+        'snapshot_date': args.date,
+        'input_dir': f'../data/processed/{args.date}', 
+        'output_dir': f'../reports/kpi_results/'
     }
-    # run(test_config) # Bỏ comment dòng này khi đã có dữ liệu sạch để test
+    run(cfg)
