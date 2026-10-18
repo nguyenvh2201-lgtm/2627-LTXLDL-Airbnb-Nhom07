@@ -1,5 +1,5 @@
 """Module download.py: Tải dữ liệu Inside Airbnb và kiểm tra tính toàn vẹn."""
-"""python src/download """
+"""python src/download.py """
 import os
 import gzip
 import shutil
