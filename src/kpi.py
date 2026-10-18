@@ -5,7 +5,7 @@ import argparse
 def run(cfg):
     date=cfg["snapshot_date"]
     in_dir=cfg["input_dir"]
-    out_dir=cfg["ouput_dir"]
+    out_dir=cfg["output_dir"]
     #Tao duong dan tro toi file listing.csv,calendar.csv
     lst_path = os.path.join(in_dir, 'listings.csv')
     cal_path = os.path.join(in_dir, 'calendar.csv')
