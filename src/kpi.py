@@ -59,7 +59,7 @@ ROUND = {
 
 
 # ------------------------------------------------------------- đọc & kiểm tra
-# NOTE — Đọc giá: TV2 có thể xuất giá dạng số (342.0) hoặc chuỗi ("$1,234.00").
+
 # Hàm này chuẩn hoá cả hai về số thực CAD/đêm. Ô không đọc được -> NaN và được
 # đánh dấu price_unparseable để kiểm tra báo FAIL (xem run_checks).
 def parse_price(value) -> float:
@@ -88,7 +88,7 @@ def _require(df: pd.DataFrame, cols: list[str], name: str) -> None:
 SNAPSHOT_DIR_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
-# NOTE — Đọc dữ liệu: tất cả cột đọc dạng chuỗi (dtype=str) để không bị pandas
+# Đọc dữ liệu: tất cả cột đọc dạng chuỗi (dtype=str) để không bị pandas
 # tự đổi kiểu (ví dụ listing_id dài bị làm tròn thành số thực, mất chữ số cuối).
 # Kiểu số được chuyển ở bước load_listings / load_calendar.
 def read_inputs(input_dir: str, snapshots):
@@ -134,7 +134,7 @@ def read_inputs(input_dir: str, snapshots):
     return pd.concat(ls, ignore_index=True), pd.concat(cs, ignore_index=True)
 
 
-# NOTE — Chuẩn hoá listing. Mọi cờ hợp lệ đều lấy từ TV2 (price_valid,
+# Chuẩn hoá listing. Mọi cờ hợp lệ (price_valid,
 # room_type_valid, rating_valid) để KPI khớp với QA đã chốt; code chỉ tính thêm
 # các điều kiện cần cho KPI. Không tự suy hợp lệ từ việc có/không có giá trị.
 def load_listings(raw: pd.DataFrame, snapshots, exclude_outliers: bool) -> pd.DataFrame:
@@ -147,11 +147,9 @@ def load_listings(raw: pd.DataFrame, snapshots, exclude_outliers: bool) -> pd.Da
     if df.duplicated(["snapshot_date", "listing_id"]).any():
         raise ValueError("listings_clean: trùng (snapshot_date, listing_id) — sửa ở QA của TV2")
 
-    # NOTE — Giá hợp lệ cho KPI giá (n_price_valid, median, Q1, Q3):
-    #   price_ok = price_valid (TV2) AND price_cad > 0
+    # Giá hợp lệ cho KPI giá (n_price_valid, median, Q1, Q3):
+    #   price_ok = price_valid AND price_cad > 0
     #   nếu --exclude-price-outliers: bỏ thêm listing có price_outlier_flag.
-    # Lưu ý: TV2 để 42 outlier có price_valid = True, nên mặc định chúng VẪN được
-    # tính. Cờ này chỉ là lựa chọn của nhóm, phải ghi rõ trong báo cáo.
     raw_price = df["price_cad"]
     df["price_cad"] = raw_price.map(parse_price)
     has_text = raw_price.notna() & raw_price.astype(str).str.strip().ne("")
@@ -161,7 +159,7 @@ def load_listings(raw: pd.DataFrame, snapshots, exclude_outliers: bool) -> pd.Da
         price_ok &= ~_to_bool(df["price_outlier_flag"])
     df["price_ok"] = price_ok
 
-# NOTE — Nhãn Unknown: room_type / neighbourhood_cleansed trống được gán
+# Nhãn Unknown: room_type / neighbourhood_cleansed trống được gán
 # "Unknown" và giữ thành nhóm riêng. Nhóm này KHÔNG có trong mẫu số room_type
 # (room_ok = False), nhưng vẫn được đếm trong n_listings của khu vực để tổng khớp.
     df["room_type"] = df["room_type"].fillna(UNKNOWN).astype(str).str.strip()
@@ -171,7 +169,7 @@ def load_listings(raw: pd.DataFrame, snapshots, exclude_outliers: bool) -> pd.Da
                                     .mask(lambda s: s.eq(""), UNKNOWN))
     df["room_ok"] = _to_bool(df["room_type_valid"]) & df["room_type"].ne(UNKNOWN)
 
-# NOTE — Điểm đánh giá (n_rating_valid, median_rating): chỉ listing có điểm
+#Điểm đánh giá (n_rating_valid, median_rating): chỉ listing có điểm
 # không trống. Listing mới chưa có review bị loại khỏi mẫu, không điền 0.
     df["rating"] = pd.to_numeric(df["review_scores_rating"], errors="coerce")
     df["rating_ok"] = df["rating"].notna()
@@ -180,8 +178,7 @@ def load_listings(raw: pd.DataFrame, snapshots, exclude_outliers: bool) -> pd.Da
     return df
 
 
-# NOTE — Lịch: TV2 đã gộp sẵn mỗi listing thành một dòng mỗi mốc, nên ở đây
-# chỉ cần kiểm tra trùng khoá (snapshot_date, listing_id) và chuyển số.
+# kiểm tra trùng khoá (snapshot_date, listing_id) và chuyển số.
 def load_calendar(raw: pd.DataFrame, snapshots) -> pd.DataFrame:
     cal = raw.copy()
     _require(cal, REQ_CALENDAR_COLS, CALENDAR_FILE)
@@ -197,7 +194,7 @@ def load_calendar(raw: pd.DataFrame, snapshots) -> pd.DataFrame:
     return cal
 
 
-# NOTE — Tính tỷ lệ lịch từ số đếm (không tin cột có sẵn một cách mù quáng):
+# Tính tỷ lệ lịch từ số đếm (không tin cột có sẵn một cách mù quáng):
 #   availability_share_calc = n_available / n_available_valid
 #       tỷ lệ ngày "khả dụng" trên các ngày quan sát được. Chỉ tính khi có
 #       ngày quan sát (obs > 0), còn lại để trống, KHÔNG thành 0.
@@ -220,7 +217,7 @@ def add_calendar_kpis(cal: pd.DataFrame) -> pd.DataFrame:
 
 
 # ------------------------------------------------------------------ KPI
-# NOTE — Hàm này tính TẤT CẢ KPI cho một nhóm (cả mốc, hoặc mốc × khu vực,
+#Hàm này tính TẤT CẢ KPI cho một nhóm (cả mốc, hoặc mốc × khu vực,
 # hoặc mốc × loại phòng). Mỗi dòng trong g là một listing đã gộp lịch.
 # Quy tắc chung: median và quantile tính TRỰC TIẾP từ listing hợp lệ của nhóm,
 # không lấy trung bình của các median; tỷ lệ là (số hợp lệ đạt điều kiện) /
@@ -261,10 +258,6 @@ def _metrics(g: pd.DataFrame) -> dict:
     }
 
 
-# NOTE — Gộp nhóm: groupby + _metrics cho từng nhóm. keys quyết định bảng:
-#   [snapshot_date]                          -> kpi_snapshot.csv
-#   [snapshot_date, neighbourhood_cleansed]  -> kpi_area.csv
-#   [snapshot_date, room_type]               -> kpi_room_type.csv (bỏ entire_home_share)
 def _table(df: pd.DataFrame, keys: list[str]) -> pd.DataFrame:
     rows = []
     for key, g in df.groupby(keys, sort=True):
@@ -280,7 +273,7 @@ def build_tables(df: pd.DataFrame):
     area = area[["snapshot_date", "neighbourhood_cleansed"] + SNAPSHOT_COLS[1:]]
 
     rt = _table(df, ["snapshot_date", "room_type"]).drop(columns="entire_home_share")
-# NOTE — room_type_share = n_listings(loại) / n_room_type_valid(CẢ mốc).
+# room_type_share = n_listings(loại) / n_room_type_valid(cả mốc).
 # Mẫu số lấy từ bảng snapshot, không phải tổng của riêng nhóm loại phòng, nên
 # tổng share các loại hợp lệ bằng 1 (được kiểm tra trong run_checks).
 # Nhóm Unknown không có share (để trống) nhưng vẫn có dòng để hiển thị.
@@ -295,7 +288,7 @@ def build_tables(df: pd.DataFrame):
              "availability_share_mean", "calendar_coverage_mean",
              "n_rating_valid", "median_rating"]]
 
-# NOTE — Bảng thiếu dữ liệu: đếm số listing Unknown room_type theo mốc, để
+# Bảng thiếu dữ liệu: đếm số listing Unknown room_type theo mốc, để
 # thấy mức thiếu mà không đưa nhóm này vào mẫu số của room_type.
     missing = (df.assign(is_unknown=df["room_type"].eq(UNKNOWN))
                .groupby("snapshot_date", as_index=False)
@@ -307,7 +300,7 @@ def build_tables(df: pd.DataFrame):
 
 
 # ----------------------------------------------------------- kiểm tra
-# NOTE — Kiểm tra tự động. FAIL => dừng, không ghi KPI. WARN => ghi và cảnh báo.
+#  Kiểm tra tự động. fail => dừng, không ghi KPI. WARN => ghi và cảnh báo.
 #   sum_area_* / sum_room_type_*  : tổng theo khu vực / loại phòng phải bằng tổng mốc
 #   sum_room_type_share_valid     : share các loại hợp lệ phải bằng 1
 #   missing_table_total           : bảng thiếu phải có đủ số listing
@@ -383,7 +376,7 @@ def run(cfg: dict) -> dict:
         cal[["snapshot_date", "listing_id", "n_available_valid",
              "availability_share_calc", "coverage_calc"]],
         on=["snapshot_date", "listing_id"], how="left", validate="one_to_one")
-# NOTE — Ghép lịch vào listing theo (snapshot_date, listing_id), validate
+#Ghép lịch vào listing theo (snapshot_date, listing_id), validate
 # "one_to_one" để báo lỗi ngay nếu một listing có nhiều dòng lịch trong cùng
 # mốc. Listing không có lịch: has_cal = False và coverage = 0.
     df["has_cal"] = df["n_available_valid"].fillna(0).gt(0)
