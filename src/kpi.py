@@ -7,8 +7,8 @@ def run(cfg):
     in_dir=cfg["input_dir"]
     out_dir=cfg["output_dir"]
     #Tao duong dan tro toi file listing.csv,calendar.csv
-    lst_path = os.path.join(in_dir, 'listings.csv')
-    cal_path = os.path.join(in_dir, 'calendar.csv')
+    lst_path = os.path.join(in_dir, 'listings_clean.csv')
+    cal_path = os.path.join(in_dir, 'calendar_listing_summary.csv')
     #Neu file listing.csv k ton tai thi bao loi
     if not os.path.exists(lst_path):
         print(f"Lỗi: Không tìm thấy {lst_path}")
