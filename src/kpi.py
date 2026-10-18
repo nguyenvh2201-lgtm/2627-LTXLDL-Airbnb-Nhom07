@@ -97,11 +97,31 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--date', type=str, default='all') 
     args = parser.parse_args()
+    base_in_dir = 'data/processed' 
+    base_out_dir = 'reports/kpi_results'
+    if args.date == 'all':
+        if os.path.exists(base_in_dir):
+            dates = [d for d in os.listdir(base_in_dir) if os.path.isdir(os.path.join(base_in_dir, d))]
+            
+            if not dates:
+                print("Lỗi: Không tìm thấy thư mục mốc thời gian nào!")
+                
+            for d in dates:
+                print(f"\n--- Đang chạy KPI cho mốc: {d} ---")
+                cfg = {
+                    'snapshot_date': d,
+                    'input_dir': os.path.join(base_in_dir, d),
+                    'output_dir': base_out_dir
+                }
+                run(cfg)
+        else:
+            print(f"Lỗi: Không tìm thấy thư mục {base_in_dir}")
     
-    # Đóng gói các biến thành 1 dictionary rồi truyền cho hàm run() ở tít trên đầu.
-    cfg = {
-        'snapshot_date': args.date,
-        'input_dir': f'../data/processed/{args.date}', 
-        'output_dir': f'../reports/kpi_results/'
-    }
-    run(cfg)
+    else:
+        print(f"\n--- Đang chạy KPI cho mốc: {args.date} ---")
+        cfg = {
+            'snapshot_date': args.date,
+            'input_dir': os.path.join(base_in_dir, args.date),
+            'output_dir': base_out_dir
+        }
+        run(cfg)
