@@ -47,3 +47,27 @@ Tài liệu này định nghĩa 5 KPI cốt lõi trả lời 3 câu hỏi kinh d
 - **Dữ liệu đầu vào:** Cột `review_scores_rating` (listings.csv).
 - **Điều kiện hợp lệ / Mẫu số:** Xuất kèm `n_rating_valid` (số lượng listing thực sự có điểm). Bỏ qua các listing chưa từng có review (Null).
 - **Hạn chế:** Điểm đánh giá của Airbnb thường rất cao (lệch phải - skewed), median thường rơi vào khoảng 4.8 - 5.0, ít phản ánh được các khác biệt nhỏ.
+# ---- KPI 6. area_price_premium — Chênh lệch giá khu vực so với thành phố (theo khu vực)
+    #   Mục tiêu : khu vực nào đắt hơn hoặc rẻ hơn mặt bằng chung của Toronto trong cùng mốc.
+    #   Công thức: median_price_cad(khu vực) / median_price_cad(thành phố, cùng mốc) − 1.
+    #              Ví dụ 0,20 nghĩa là khu vực đắt hơn trung vị thành phố 20%.
+    #   Đơn vị   : tỷ lệ. Tiền gốc là CAD/đêm.
+    #   Mẫu số   : n_price_valid của khu vực. Điều kiện để tính:
+    #              khu vực không phải Unknown; n_price_valid >= MIN_N_SHARE (30);
+    #              cả hai median đều có giá trị. Không đạt thì để NaN.
+    #   Đối chiếu: cột city_median_price_cad được ghi kèm trong kpi_area.csv.
+    #   Hạn chế  : so sánh thành phần listing, không phải giá của cùng một căn.
+# ---------------------------------------------------------- KPI 7 (theo thời gian)
+# ---- KPI 7. delta_median_price_cad — Thay đổi giá trung vị so với mốc trước
+    #   Mục tiêu : hướng và độ lớn thay đổi giá niêm yết giữa hai mốc liền kề.
+    #   Công thức: median_price_cad(t) − median_price_cad(t−1), đơn vị CAD/đêm.
+    #     Mẫu số   : không có. Điều kiện: cả hai mốc phải có median; nếu thiếu thì để trống.
+    #   Mốc đầu tiên không có mốc trước nên để trống.
+    #   Không bắc cầu qua mốc thiếu giá (2025-12-12 thiếu giá thì không so 2026-03-19 với 2025-09-11).
+    #   Hạn chế  : thành phần listing có thể khác giữa hai mốc; đây không phải giá của cùng một căn.
+    # ------------------------------------------------------------- KPI dùng LLM
+# Đầu vào: JSONL do llm.py ghi, mỗi dòng là một review với các khoá:
+    #   snapshot_date, review_id, listing_id, status (ok | needs_review | error),
+    #   sentiment (positive | neutral | negative | null), aspects ([{aspect, polarity}]),
+    #      language, error, split (tuỳ chọn).
+    # Một review chỉ được tính là "dùng được" khi status = "ok" VÀ sentiment thuộc LLM_LABELS.
