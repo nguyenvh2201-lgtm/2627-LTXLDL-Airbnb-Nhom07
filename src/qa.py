@@ -404,7 +404,7 @@ def check_categories(df):
     analysis_area_valid = df["analysis_area"].isin(valid_area)
     return pd.DataFrame({
         "room_type_valid": room_type_valid,
-        "Khu phan tich hop le" : analysis_area_valid,
+        "analysis_area_valid" : analysis_area_valid,
         "category_mismatch": ~(room_type_valid & analysis_area_valid),
     })
 #REVIEWS
