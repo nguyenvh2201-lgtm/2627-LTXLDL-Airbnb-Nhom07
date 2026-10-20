@@ -138,7 +138,7 @@ def check_categories(df):
     })
 #REVIEWS
 def prepare_reviews(raw_reviews, phan_cong, snapshot_date):
-    mask = raw_reviews["listing_id"].isin(phan_cong["listing_id"])
+    mask = raw_reviews["id"].isin(phan_cong["review_id"].dropna())
     bang_moi = raw_reviews[mask].copy()
     bang_moi = bang_moi.rename(
         columns={"id": "review_id"}
@@ -305,7 +305,7 @@ if __name__ == "__main__":
     phan_cong = pd.read_csv(
         DATA_DIR / "data-new.csv",
         encoding="utf-8",
-        dtype={"listing_id": "string"},
+        dtype={"listing_id": "string", "review_id": "string"},
     )
     snapshots = ["2025-09-11",
                 "2025-12-12",
@@ -313,7 +313,7 @@ if __name__ == "__main__":
                 "2026-06-15"]          
     for date in snapshots:
         df = pd.read_csv(
-            DATA_DIR/ "raw" / date / "listings.csv.gz",
+            DATA_DIR / "raw" / date / "listings.csv.gz",
             dtype={"id": "string"},
         )
         prepare = prepare_listings(df,phan_cong,date)
@@ -364,7 +364,7 @@ if __name__ == "__main__":
 
         # 1. Đọc reviews raw
         raw_reviews = pd.read_csv(
-            DATA_DIR / "raw"  / date / "reviews.csv.gz",
+            DATA_DIR / "raw" / date / "reviews.csv.gz",
             dtype={"id": "string", "listing_id": "string"},
         )
 
@@ -449,7 +449,7 @@ if __name__ == "__main__":
 
         # 1. Đọc calendar raw
         raw_calendar = pd.read_csv(
-            DATA_DIR / "raw"  / date / "calendar.csv.gz",
+            DATA_DIR / "raw" / date / "calendar.csv.gz",
             dtype={"listing_id": "string"},
         )
 
