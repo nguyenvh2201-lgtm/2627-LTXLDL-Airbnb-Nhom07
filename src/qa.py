@@ -5,6 +5,7 @@ from pathlib import Path
 # Tính từ vị trí qa.py, không phụ thuộc thư mục đang mở terminal.
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
+RAW_DIR = DATA_DIR / "raw"
 
 def prepare_listings(raw_listings, phan_cong,snapshot_date):
     mask = raw_listings['id'].isin(phan_cong["listing_id"])
@@ -313,7 +314,7 @@ if __name__ == "__main__":
                 "2026-06-15"]          
     for date in snapshots:
         df = pd.read_csv(
-            DATA_DIR / date / "listings.csv.gz",
+            RAW_DIR / date / "listings.csv.gz",
             dtype={"id": "string"},
         )
         prepare = prepare_listings(df,phan_cong,date)
@@ -356,15 +357,15 @@ if __name__ == "__main__":
         listings_clean.to_csv(
                     output_dir / "listings_clean.csv",
                     index = False)
-    print(date)
-    print("Shape:", listings_clean.shape)
-    print("Unique listing:", listings_clean["listing_id"].nunique())
-    print()
+        print(date)
+        print("Shape:", listings_clean.shape)
+        print("Unique listing:", listings_clean["listing_id"].nunique())
+        print()
     for date in snapshots:
 
         # 1. Đọc reviews raw
         raw_reviews = pd.read_csv(
-            DATA_DIR / date / "reviews.csv.gz",
+            RAW_DIR / date / "reviews.csv.gz",
             dtype={"id": "string", "listing_id": "string"},
         )
 
@@ -386,7 +387,6 @@ if __name__ == "__main__":
             prepared_reviews,
             listings_df
         )
-
         review_flags = review_report["row_flags"]
 
         # 5. Ghép reviews + QA flags
@@ -449,7 +449,7 @@ if __name__ == "__main__":
 
         # 1. Đọc calendar raw
         raw_calendar = pd.read_csv(
-            DATA_DIR / date / "calendar.csv.gz",
+            RAW_DIR / date / "calendar.csv.gz",
             dtype={"listing_id": "string"},
         )
 
