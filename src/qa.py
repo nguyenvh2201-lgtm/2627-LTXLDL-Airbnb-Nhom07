@@ -315,7 +315,6 @@ if __name__ == "__main__":
     for date in snapshots:
         df = pd.read_csv(
             RAW_DIR / date / "listings.csv.gz",
-            DATA_DIR/ "raw" / date / "listings.csv.gz",
             dtype={"id": "string"},
         )
         prepare = prepare_listings(df,phan_cong,date)
@@ -367,7 +366,6 @@ if __name__ == "__main__":
         # 1. Đọc reviews raw
         raw_reviews = pd.read_csv(
             RAW_DIR / date / "reviews.csv.gz",
-            DATA_DIR / "raw"  / date / "reviews.csv.gz",
             dtype={"id": "string", "listing_id": "string"},
         )
 
@@ -452,7 +450,6 @@ if __name__ == "__main__":
         # 1. Đọc calendar raw
         raw_calendar = pd.read_csv(
             RAW_DIR / date / "calendar.csv.gz",
-            DATA_DIR / "raw"  / date / "calendar.csv.gz",
             dtype={"listing_id": "string"},
         )
 
