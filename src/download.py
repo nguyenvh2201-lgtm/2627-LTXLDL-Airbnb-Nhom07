@@ -1,5 +1,5 @@
 """Module download.py: Tải dữ liệu Inside Airbnb và kiểm tra tính toàn vẹn."""
-"""python src/download """
+"""python src/download.py """
 import os
 import gzip
 import shutil
@@ -23,14 +23,28 @@ def get_base_url(data_root: str, snapshot: str) -> str:
     data_root = data_root.strip("/")
     return f"https://data.insideairbnb.com/{data_root}/{snapshot}"
 
-def download_file(url: str, dest_path: str, timeout: int = 60) -> bool:
-    """Tải 1 tệp có hiển thị trạng thái và xử lý lỗi."""
-    if os.path.exists(dest_path) and os.path.getsize(dest_path) > 0:
-        logger.info(f"File đã tồn tại: {dest_path}")
-        return True
+def download_file(url: str, dest_path: str, timeout: int = 60, overwrite: bool = True) -> bool:
+    """Tải 1 tệp, xóa dữ liệu cũ khi overwrite=True để luôn tải về bản mới nhất."""
+    # Nếu overwrite=True và file đã tồn tại, xóa file cũ trước khi tải
+    if os.path.exists(dest_path):
+        if overwrite:
+            try:
+                os.remove(dest_path)
+                logger.info(f"Đã xoá file cũ để tải dữ liệu mới: {dest_path}")
+            except Exception as e:
+                logger.warning(f"Không thể xoá file cũ {dest_path}: {e}")
+        elif os.path.getsize(dest_path) > 0:
+            logger.info(f"File đã tồn tại (bỏ qua): {dest_path}")
+            return True
 
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
     temp_path = dest_path + ".tmp"
+    if os.path.exists(temp_path):
+        try:
+            os.remove(temp_path)
+        except OSError:
+            pass
+
     logger.info(f"Đang tải từ {url} -> {dest_path}")
     try:
         headers = {
@@ -42,6 +56,9 @@ def download_file(url: str, dest_path: str, timeout: int = 60) -> bool:
                     for chunk in response.iter_content(chunk_size=1024 * 1024):
                         if chunk:
                             f.write(chunk)
+                # Đảm bảo file đích không bị khóa trước khi di chuyển
+                if os.path.exists(dest_path):
+                    os.remove(dest_path)
                 shutil.move(temp_path, dest_path)
                 logger.info(f"Tải thành công: {dest_path}")
                 return True
@@ -75,7 +92,7 @@ def verify_file(file_path: str, required_cols: List[str] = None) -> bool:
             return False
     return True
 
-def run_download(config: Dict[str, Any]) -> Dict[str, Any]:
+def run_download(config: Dict[str, Any], overwrite: bool = True) -> Dict[str, Any]:
     """Tải toàn bộ 4 mốc snapshot của thành phố được chỉ định trong config."""
     data_root = config.get("data_root")
     snapshots = config.get("snapshots", [])
@@ -93,7 +110,7 @@ def run_download(config: Dict[str, Any]) -> Dict[str, Any]:
         for remote_rel, local_name in FILES_TO_DOWNLOAD:
             url = f"{base_url}/{remote_rel}"
             dest = os.path.join(snapshot_dir, local_name)
-            success = download_file(url, dest)
+            success = download_file(url, dest, overwrite=overwrite)
 
             # Kiểm tra tính toàn vẹn
             req_cols = None
@@ -116,5 +133,4 @@ if __name__ == "__main__":
     import yaml
     with open("configs/city.yaml", "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
-    run_download(cfg)
-
+    run_download(cfg, overwrite=True)
