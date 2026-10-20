@@ -1,22 +1,35 @@
 """TV3 — Tính KPI theo mốc chụp từ bảng sạch của TV2 (nhóm 7, Toronto).
 
-Đầu vào (trong input_dir):
-  listings_clean.csv
-      snapshot_date, listing_id, neighbourhood_cleansed, room_type, price_cad,
-      price_valid, price_outlier_flag, room_type_valid, review_scores_rating,
-      rating_valid, ...
-  calendar_listing_summary.csv
-      snapshot_date, listing_id, n_calendar_days, n_available_valid,
-      n_available, availability_share, coverage_share
+8 KPI (tiền tệ CAD cho mọi KPI giá):
+  Nền (5)
+    n_listings                  số listing                          kpi_snapshot.csv
+    median_price_cad            giá niêm yết trung vị, CAD/đêm      kpi_snapshot.csv
+    entire_home_share           tỷ lệ Entire home/apt               kpi_snapshot.csv
+    availability_share_mean     tỷ lệ mở lịch quan sát được         kpi_snapshot.csv
+    median_rating               điểm đánh giá trung vị              kpi_snapshot.csv
+  Theo khu vực (1)
+    area_price_premium          median khu vực / median TP − 1      kpi_area.csv
+  Theo thời gian (1)
+    delta_median_price_cad      median(t) − median(t−1), CAD/đêm    kpi_time.csv
+  Dùng LLM (1)
+    llm_negative_share          tỷ lệ đánh giá tiêu cực theo LLM    kpi_llm_snapshot.csv,
+                                                                    kpi_llm_area.csv
 
-Đầu ra (trong output_dir), một file cho tất cả mốc:
-  kpi_snapshot.csv, kpi_area.csv, kpi_room_type.csv, kpi_room_type_missing.csv
-Kiểm tra: checks_path (mặc định reports/kpi_checks.csv). Có FAIL thì không ghi KPI.
+Đầu vào (trong input_dir):
+  listings_clean.csv, calendar_listing_summary.csv   (TV2)
+  llm_pilot.jsonl                                    (TV4, tuỳ chọn — thiếu thì bỏ qua KPI LLM)
+
+Đầu ra (mặc định data/processed/kpi_*.csv):
+  kpi_snapshot.csv, kpi_area.csv, kpi_room_type.csv, kpi_room_type_missing.csv,
+  kpi_time.csv, và (nếu có file LLM) kpi_llm_snapshot.csv, kpi_llm_area.csv,
+  kpi_llm_aspect.csv
+Kiểm tra: reports/kpi_checks.csv. Có FAIL thì không ghi KPI.
 
 Chạy:
-  python kpi.py                                    # mặc định data/processed -> reports/kpi_results
-  python kpi.py --snapshots 2025-09-11             # chỉ một mốc
-  python kpi.py --exclude-price-outliers           # bỏ listing có price_outlier_flag khỏi KPI giá
+  python src/kpi.py                                # mặc định data/processed -> data/processed/kpi_*.csv
+  python src/kpi.py --snapshots 2025-09-11         # chỉ một mốc
+  python src/kpi.py --exclude-price-outliers       # bỏ listing có price_outlier_flag khỏi KPI giá
+  python src/kpi.py --llm-file data/processed/llm_pilot.jsonl
 """
 from __future__ import annotations
 
@@ -33,6 +46,13 @@ LISTINGS_FILE = "listings_clean.csv"
 CALENDAR_FILE = "calendar_listing_summary.csv"
 UNKNOWN = "Unknown"
 ENTIRE = "Entire home/apt"
+# Ngưỡng mẫu tối thiểu cho mọi tỷ lệ theo khu vực / khía cạnh LLM. Dưới ngưỡng thì để trống.
+MIN_N_SHARE = 30
+LLM_LABELS = ("positive", "neutral", "negative")
+LLM_FILE_DEFAULT = os.path.join("data", "processed", "llm_pilot.jsonl")
+OUT_DIR_DEFAULT = os.path.join("data", "processed")
+ASPECT_COLS = ["snapshot_date", "aspect", "n_aspect_mentions", "n_llm_usable",
+               "aspect_mention_share", "aspect_negative_share"]
 
 REQ_LISTING_COLS = [
     "snapshot_date", "listing_id", "neighbourhood_cleansed", "room_type",
@@ -55,6 +75,10 @@ ROUND = {
     "entire_home_share": 4, "availability_share_mean": 4,
     "calendar_coverage_mean": 4, "median_rating": 2,
     "room_type_share": 4, "unknown_room_type_share": 4,
+    "area_price_premium": 4, "city_median_price_cad": 2,
+    "delta_median_price_cad": 2, "prev_median_price_cad": 2,
+    "llm_parse_coverage": 4, "llm_positive_share": 4, "llm_negative_share": 4,
+    "aspect_mention_share": 4, "aspect_negative_share": 4,
 }
 
 
@@ -217,11 +241,16 @@ def add_calendar_kpis(cal: pd.DataFrame) -> pd.DataFrame:
 
 
 # ------------------------------------------------------------------ KPI
-#Hàm này tính TẤT CẢ KPI cho một nhóm (cả mốc, hoặc mốc × khu vực,
-# hoặc mốc × loại phòng). Mỗi dòng trong g là một listing đã gộp lịch.
-# Quy tắc chung: median và quantile tính TRỰC TIẾP từ listing hợp lệ của nhóm,
-# không lấy trung bình của các median; tỷ lệ là (số hợp lệ đạt điều kiện) /
-# (số hợp lệ làm mẫu số), không phải trên toàn bộ listing.
+# ------------------------------------------------------------------ KPI
+# Quy tắc chung cho mọi KPI:
+#   - Tính trên bảng sau QA của TV2; cờ hợp lệ (price_valid, room_type_valid, rating_valid)
+#     lấy từ TV2, không tự suy lại.
+#   - Median và quantile tính TRỰC TIẾP từ listing hợp lệ của nhóm, không lấy trung bình các median.
+#   - Tỷ lệ = số đạt điều kiện / số hợp lệ làm mẫu số, không phải trên toàn bộ listing.
+#   - Nhóm thiếu dữ liệu: để NaN và ghi số mẫu = 0, không điền 0.
+#   - Tiền tệ: CAD/đêm. Tỷ lệ lưu dạng 0–1.
+# Hàm này tính KPI cho một nhóm: cả mốc, hoặc mốc × khu vực, hoặc mốc × loại phòng.
+# Mỗi dòng trong g là một listing đã ghép lịch.
 def _metrics(g: pd.DataFrame) -> dict:
     n = len(g)
     pv = g.loc[g["price_ok"], "price_cad"]
@@ -230,29 +259,57 @@ def _metrics(g: pd.DataFrame) -> dict:
     cal = g.loc[g["has_cal"], "availability_share_calc"]
     rt = g.loc[g["rating_ok"], "rating"]
     return {
+        # ---- KPI 1. n_listings — Số listing
+        #   Mục tiêu : quy mô nguồn cung tại mốc.
+        #   Công thức: số listing_id duy nhất trong nhóm.
+        #   Đơn vị   : listing.
+        #   Hạn chế  : là số listing hiển thị khi thu thập, không phải số chủ nhà đang hoạt động.
         "n_listings": n,
-        # KPI 1–2 — n_listings = số listing; n_price_valid = mẫu số của giá.
-        # Median/Q1/Q3 tính trên pv (listing có giá hợp lệ). Nhóm không có giá
-        # thì để NaN và n_price_valid = 0, không điền 0 làm giá.
+
+        # ---- KPI 2. median_price_cad (kèm price_q1_cad, price_q3_cad) — Giá niêm yết trung vị
+        #   Mục tiêu : mức giá điển hình một đêm và độ phân tán.
+        #   Công thức: median(price_cad) trên listing price_ok; price_ok = price_valid và price_cad > 0,
+        #              và loại thêm price_outlier_flag nếu chạy với --exclude-price-outliers.
+        #              Q1, Q3 là phân vị 25% và 75% trên cùng tập.
+        #   Đơn vị   : CAD/đêm.
+        #   Mẫu số   : n_price_valid. Nhóm không có giá hợp lệ thì để NaN.
+        #   Hạn chế  : giá niêm yết, không phải giá đã đặt; chưa hiệu chỉnh theo số khách.
+        #              Các listing có price_outlier_flag vẫn được tính mặc định.
         "n_price_valid": int(len(pv)),
         "median_price_cad": pv.median() if len(pv) else np.nan,
         "price_q1_cad": pv.quantile(0.25) if len(pv) else np.nan,
         "price_q3_cad": pv.quantile(0.75) if len(pv) else np.nan,
-        # KPI 3 — entire_home_share = (số "Entire home/apt") / (số room_type hợp lệ).
-        # Mẫu số loại trừ Unknown. Nếu mẫu số = 0 thì để NaN.
+
+        # ---- KPI 3. entire_home_share — Tỷ lệ Entire home/apt
+        #   Mục tiêu : thị trường thiên về nguyên căn hay phòng chia sẻ.
+        #   Công thức: n(room_type = "Entire home/apt") / n(room_type hợp lệ).
+        #   Đơn vị   : tỷ lệ 0–1.
+        #   Mẫu số   : n_room_type_valid, loại trừ Unknown. Mẫu số = 0 thì NaN.
+        #   Hạn chế  : mô tả thành phần cung, không cho biết nhu cầu.
         "n_room_type_valid": n_rtv,
         "entire_home_share": n_ent / n_rtv if n_rtv else np.nan,
-        # KPI 4 — availability_share_mean: trung bình availability_share_calc
-        # CHỈ trên listing có lịch (has_cal). n_calendar_listings là mẫu số đó.
-        # Đây là trung bình của các tỷ lệ theo listing, không phải tỷ lệ gộp.
+
+        # ---- KPI 4. availability_share_mean — Tỷ lệ mở lịch quan sát được
+        #   Mục tiêu : trong các ngày quan sát được, listing mở bao nhiêu phần lịch.
+        #   Công thức: với mỗi listing, availability_share_calc = n_available / n_available_valid;
+        #              lấy trung bình trên listing có lịch (has_cal). Đây là trung bình của các
+        #              tỷ lệ theo listing, không phải tỷ lệ gộp.
+        #   Đơn vị   : tỷ lệ 0–1.
+        #   Mẫu số   : n_calendar_listings (số listing có ít nhất một ngày quan sát được).
+        #   Hạn chế  : "available = f" gồm cả ngày đã đặt lẫn ngày bị chặn, KHÔNG phải occupancy,
+        #              không dùng để ước doanh thu.
         "n_calendar_listings": int(g["has_cal"].sum()),
         "availability_share_mean": cal.mean() if len(cal) else np.nan,
-        # calendar_coverage_mean: trung bình coverage trên TẤT CẢ listing của nhóm;
-        # listing không có lịch được tính 0 (đúng định nghĩa đã nộp). Vì vậy
-        # KPI này phản ánh cả việc thiếu lịch, khác với availability_share_mean.
-        # listing không có lịch tính coverage = 0, đúng định nghĩa đã nộp
+        # Cột phụ (không phải KPI riêng): calendar_coverage_mean = trung bình coverage_calc trên
+        # TẤT CẢ listing của nhóm; listing không có lịch được tính 0 (đúng định nghĩa đã nộp).
+        # Phản ánh cả việc thiếu lịch, khác với availability_share_mean.
         "calendar_coverage_mean": g["coverage_calc"].mean() if n else np.nan,
-        # KPI 5 — median_rating: median review_scores_rating trên listing có điểm.
+
+        # ---- KPI 5. median_rating — Điểm đánh giá trung vị
+        #   Mục tiêu : chất lượng cảm nhận điển hình của listing đã có đánh giá.
+        #   Công thức: median(review_scores_rating) trên listing có điểm (rating_ok).
+        #   Đơn vị   : điểm theo thang của nguồn (Inside Airbnb dùng thang 0–5).
+        #   Mẫu số   : n_rating_valid. Listing mới chưa có điểm bị loại khỏi mẫu, không điền 0.
         "n_rating_valid": int(len(rt)),
         "median_rating": rt.median() if len(rt) else np.nan,
     }
@@ -271,6 +328,23 @@ def build_tables(df: pd.DataFrame):
 
     area = _table(df, ["snapshot_date", "neighbourhood_cleansed"])
     area = area[["snapshot_date", "neighbourhood_cleansed"] + SNAPSHOT_COLS[1:]]
+
+    # ---- KPI 6. area_price_premium — Chênh lệch giá khu vực so với thành phố (theo khu vực)
+    #   Mục tiêu : khu vực nào đắt hơn hoặc rẻ hơn mặt bằng chung của Toronto trong cùng mốc.
+    #   Công thức: median_price_cad(khu vực) / median_price_cad(thành phố, cùng mốc) − 1.
+    #              Ví dụ 0,20 nghĩa là khu vực đắt hơn trung vị thành phố 20%.
+    #   Đơn vị   : tỷ lệ. Tiền gốc là CAD/đêm.
+    #   Mẫu số   : n_price_valid của khu vực. Điều kiện để tính:
+    #              khu vực không phải Unknown; n_price_valid >= MIN_N_SHARE (30);
+    #              cả hai median đều có giá trị. Không đạt thì để NaN.
+    #   Đối chiếu: cột city_median_price_cad được ghi kèm trong kpi_area.csv.
+    #   Hạn chế  : so sánh thành phần listing, không phải giá của cùng một căn.
+    city_med = snap.set_index("snapshot_date")["median_price_cad"]
+    area["city_median_price_cad"] = area["snapshot_date"].map(city_med)
+    ok = (area["neighbourhood_cleansed"].ne(UNKNOWN)
+          & (area["n_price_valid"] >= MIN_N_SHARE)
+          & area["median_price_cad"].notna() & area["city_median_price_cad"].notna())
+    area["area_price_premium"] = (area["median_price_cad"] / area["city_median_price_cad"] - 1).where(ok)
 
     rt = _table(df, ["snapshot_date", "room_type"]).drop(columns="entire_home_share")
 # room_type_share = n_listings(loại) / n_room_type_valid(cả mốc).
@@ -345,6 +419,177 @@ def run_checks(df, snap, area, rt, missing, cal_orphans, cal_mismatch) -> pd.Dat
     return pd.DataFrame(rows)
 
 
+# ---------------------------------------------------------- KPI 7 (theo thời gian)
+# ---- KPI 7. delta_median_price_cad — Thay đổi giá trung vị so với mốc trước
+#   Mục tiêu : hướng và độ lớn thay đổi giá niêm yết giữa hai mốc liền kề.
+#   Công thức: median_price_cad(t) − median_price_cad(t−1), đơn vị CAD/đêm.
+#   Mẫu số   : không có. Điều kiện: cả hai mốc phải có median; nếu thiếu thì để trống.
+#   Mốc đầu tiên không có mốc trước nên để trống.
+#   Không bắc cầu qua mốc thiếu giá (ví dụ 2025-12-12 thiếu giá thì không so 2026-03-19 với 2025-09-11).
+#   Hạn chế  : thành phần listing có thể khác giữa hai mốc; đây không phải giá của cùng một căn.
+def build_time(snap: pd.DataFrame) -> pd.DataFrame:
+    s = snap.sort_values("snapshot_date").reset_index(drop=True)
+    prev = s.shift(1)
+    out = pd.DataFrame({
+        "snapshot_date": s["snapshot_date"],
+        "prev_snapshot_date": prev["snapshot_date"],
+        "median_price_cad": s["median_price_cad"],
+        "prev_median_price_cad": prev["median_price_cad"],
+    })
+    out["delta_median_price_cad"] = out["median_price_cad"] - out["prev_median_price_cad"]
+    return out
+
+
+# ------------------------------------------------------------- KPI dùng LLM
+# Đầu vào: JSONL do llm.py (TV4) ghi, mỗi dòng là một review với các khoá:
+#   snapshot_date, review_id, listing_id, status (ok | needs_review | error),
+#   sentiment (positive | neutral | negative | null), aspects ([{aspect, polarity}]),
+#   language, error, split (tuỳ chọn).
+# Một review chỉ được tính là "dùng được" khi status = "ok" VÀ sentiment thuộc LLM_LABELS.
+
+def read_llm(path: str, snapshots) -> pd.DataFrame:
+    # Đọc JSONL từng dòng. Dòng lỗi JSON báo rõ số dòng để TV4 sửa.
+    records = []
+    with open(path, encoding="utf-8") as f:
+        for n, line in enumerate(f, start=1):
+            if not line.strip():
+                continue
+            try:
+                records.append(json.loads(line))
+            except json.JSONDecodeError as e:
+                raise ValueError(f"{path} dòng {n}: không phải JSON hợp lệ") from e
+    df = pd.DataFrame(records)
+    if df.empty:
+        raise ValueError(f"{path} không có dòng nào")
+    _require(df, ["snapshot_date", "review_id", "listing_id", "status", "sentiment", "aspects"],
+             os.path.basename(path))
+    for c in ["snapshot_date", "review_id", "listing_id"]:
+        df[c] = df[c].astype(str).str.strip()
+    if snapshots is not None:
+        df = df[df["snapshot_date"].isin(snapshots)].copy()
+    if df.duplicated(["snapshot_date", "review_id"]).any():
+        raise ValueError("llm: trùng (snapshot_date, review_id) — TV4 cần sửa")
+    # valid: LLM trả đúng định dạng (status ok). usable: valid và nhãn thuộc LLM_LABELS.
+    # usable là mẫu số của mọi tỷ lệ cảm xúc.
+    df["valid"] = df["status"].eq("ok")
+    df["label"] = df["sentiment"].where(df["valid"])
+    df["usable"] = df["valid"] & df["label"].isin(LLM_LABELS)
+    df["aspects"] = df["aspects"].apply(lambda v: v if isinstance(v, list) else [])
+    return df
+
+
+def attach_area(llm: pd.DataFrame, listings: pd.DataFrame) -> pd.DataFrame:
+    # Gắn neighbourhood_cleansed của listing vào từng review (cùng mốc).
+    # Review không khớp listing nào được gán Unknown, không bỏ đi.
+    area = listings[["snapshot_date", "listing_id", "neighbourhood_cleansed"]]
+    out = llm.merge(area, on=["snapshot_date", "listing_id"], how="left",
+                    validate="many_to_one")
+    out["neighbourhood_cleansed"] = out["neighbourhood_cleansed"].fillna(UNKNOWN)
+    return out
+
+
+def llm_metrics(g: pd.DataFrame, min_n: int) -> dict:
+    # ---- KPI 8. llm_negative_share — Tỷ lệ đánh giá tiêu cực theo LLM (theo mốc và khu vực)
+    #   Mục tiêu : phản ánh mức độ không hài lòng của khách, theo mốc và theo khu vực.
+    #   Công thức: n(sentiment = negative, dùng được) / n(dùng được).
+    #              "Dùng được" = status = "ok" VÀ sentiment thuộc LLM_LABELS (positive, neutral, negative).
+    #   Đơn vị   : tỷ lệ 0–1.
+    #   Mẫu số   : n_llm_usable. Nếu nhỏ hơn MIN_N_SHARE (30) thì để NaN (mẫu quá nhỏ).
+    #   Hạn chế  : chỉ trên mẫu review do TV4 chạy LLM, không phải toàn bộ review;
+    #              độ chính xác phụ thuộc LLM, cần đối chiếu với nhãn tay.
+    #   Cột phụ  : llm_positive_share (tương tự, chiều tích cực) và llm_parse_coverage
+    #              (= n(status ok) / n(mẫu), đo chất lượng đầu ra LLM, không phải KPI thị trường).
+    n = len(g)
+    n_use = int(g["usable"].sum())
+    enough = n_use >= min_n and n_use > 0
+    pos = int((g["usable"] & g["label"].eq("positive")).sum())
+    neg = int((g["usable"] & g["label"].eq("negative")).sum())
+    return {
+        "n_llm_sample": n,
+        "n_llm_usable": n_use,
+        "llm_parse_coverage": g["valid"].sum() / n if n else np.nan,
+        "llm_positive_share": pos / n_use if enough else np.nan,
+        "llm_negative_share": neg / n_use if enough else np.nan,
+    }
+
+
+def llm_tables(llm_area: pd.DataFrame, min_n: int):
+    snap_rows, area_rows = [], []
+    for s, g in llm_area.groupby("snapshot_date", sort=True):
+        snap_rows.append({"snapshot_date": s, **llm_metrics(g, min_n)})
+        for a, ga in g.groupby("neighbourhood_cleansed", sort=True):
+            area_rows.append({"snapshot_date": s, "neighbourhood_cleansed": a,
+                              **llm_metrics(ga, min_n)})
+    return pd.DataFrame(snap_rows), pd.DataFrame(area_rows)
+
+
+def aspect_table(llm_area: pd.DataFrame, min_n: int) -> pd.DataFrame:
+    # KPI theo khía cạnh do LLM trích xuất, chỉ trên review dùng được.
+    #   aspect_mention_share  = n(review nhắc khía cạnh) / n(dùng được)
+    #   aspect_negative_share = n(nhắc với polarity negative) / n(nhắc), cần n(nhắc) >= min_n
+    # Một review nhắc cùng khía cạnh nhiều lần chỉ được đếm một lần.
+    rows = []
+    for s, g in llm_area.groupby("snapshot_date", sort=True):
+        usable = g[g["usable"]]
+        n_use = len(usable)
+        mentions = []
+        for aspects in usable["aspects"]:
+            seen = set()
+            for a in aspects:
+                name = a.get("aspect") if isinstance(a, dict) else None
+                if name and name not in seen:
+                    seen.add(name)
+                    mentions.append((name, a.get("polarity")))
+        if not mentions:
+            continue
+        m = pd.DataFrame(mentions, columns=["aspect", "polarity"])
+        for asp, ga in m.groupby("aspect", sort=True):
+            n_m = len(ga)
+            n_neg = int(ga["polarity"].eq("negative").sum())
+            rows.append({"snapshot_date": s, "aspect": asp, "n_aspect_mentions": n_m,
+                         "n_llm_usable": n_use,
+                         "aspect_mention_share": n_m / n_use if n_use else np.nan,
+                         "aspect_negative_share": n_neg / n_m if n_m >= min_n else np.nan})
+    return pd.DataFrame(rows, columns=ASPECT_COLS)
+
+
+def llm_checks(llm: pd.DataFrame, listings: pd.DataFrame) -> pd.DataFrame:
+    # Kiểm tra đầu vào LLM. Đây là WARN (không dừng): dòng lỗi đã loại khỏi mẫu số
+    # và được đếm ở đây để nhóm biết.
+    rows = []
+
+    def add(name, value, expected, ok):
+        rows.append({"check": name, "snapshot_date": "ALL", "value": value,
+                     "expected": expected, "status": "PASS" if ok else "WARN"})
+
+    keys_l = set(zip(listings["snapshot_date"], listings["listing_id"]))
+    orphan = sum(1 for k in zip(llm["snapshot_date"], llm["listing_id"]) if k not in keys_l)
+    add("llm_listing_in_listings", orphan, 0, orphan == 0)
+    bad_label = int((llm["valid"] & ~llm["usable"]).sum())
+    add("llm_ok_sentiment_in_labels", bad_label, 0, bad_label == 0)
+    bad_status = int((~llm["status"].isin({"ok", "needs_review", "error"})).sum())
+    add("llm_status_known", bad_status, 0, bad_status == 0)
+    bad_pol = 0
+    for aspects in llm.loc[llm["usable"], "aspects"]:
+        for a in aspects:
+            if isinstance(a, dict) and a.get("polarity") not in LLM_LABELS:
+                bad_pol += 1
+    add("llm_aspect_polarity_in_labels", bad_pol, 0, bad_pol == 0)
+    return pd.DataFrame(rows)
+
+
+def build_llm_outputs(path, snapshots, listings, min_n):
+    llm = read_llm(path, snapshots)
+    checks = llm_checks(llm, listings)
+    llm_area = attach_area(llm, listings)
+    snap_t, area_t = llm_tables(llm_area, min_n)
+    asp_t = aspect_table(llm_area, min_n)
+    tables = {"kpi_llm_snapshot.csv": snap_t,
+              "kpi_llm_area.csv": area_t,
+              "kpi_llm_aspect.csv": asp_t}
+    return checks, tables
+
+
 # ----------------------------------------------------------------- chạy
 def run(cfg: dict) -> dict:
     in_dir = cfg["input_dir"]
@@ -397,6 +642,20 @@ def run(cfg: dict) -> dict:
 
     snap, area, rt, missing = build_tables(df)
     checks = run_checks(df, snap, area, rt, missing, cal_orphans, cal_mismatch)
+    # KPI 7 (theo thời gian) tính từ bảng snapshot đã có median giá; xem build_time.
+    time_tbl = build_time(snap)
+
+    # KPI 8 (dùng LLM) là tuỳ chọn: chỉ tính khi có file JSONL của TV4 (llm_file).
+    # Thiếu file thì KPI 1–7 vẫn chạy và có cảnh báo llm_file_present.
+    llm_path = cfg.get("llm_file")
+    llm_out = {}
+    if llm_path and os.path.exists(llm_path):
+        llm_checks_df, llm_out = build_llm_outputs(llm_path, snapshots, listings, MIN_N_SHARE)
+        checks = pd.concat([checks, llm_checks_df], ignore_index=True)
+    elif llm_path:
+        checks = pd.concat([checks, pd.DataFrame([{
+            "check": "llm_file_present", "snapshot_date": "ALL", "value": 0,
+            "expected": 1, "status": "WARN"}])], ignore_index=True)
 
     os.makedirs(os.path.dirname(checks_path) or ".", exist_ok=True)
     checks.to_csv(checks_path, index=False)
@@ -410,7 +669,9 @@ def run(cfg: dict) -> dict:
         "kpi_area.csv": area,
         "kpi_room_type.csv": rt,
         "kpi_room_type_missing.csv": missing,
+        "kpi_time.csv": time_tbl,
     }
+    outputs.update(llm_out)
     for name, table in outputs.items():
         t = table.copy()
         for col, nd in ROUND.items():
@@ -430,11 +691,13 @@ def run(cfg: dict) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser(description="TV3: tính KPI theo mốc")
     ap.add_argument("--input-dir", default="data/processed")
-    ap.add_argument("--output-dir", default="reports/kpi_results")
+    ap.add_argument("--output-dir", default=OUT_DIR_DEFAULT)
     ap.add_argument("--checks-path", default="reports/kpi_checks.csv")
     ap.add_argument("--snapshots", default="all",
                     help="'all' hoặc danh sách cách nhau bởi dấu phẩy, ví dụ 2025-09-11,2025-11-11")
     ap.add_argument("--exclude-price-outliers", action="store_true")
+    ap.add_argument("--llm-file", default=LLM_FILE_DEFAULT,
+                    help="JSONL kết quả LLM của TV4; thiếu file thì bỏ qua KPI LLM")
     args = ap.parse_args()
 
     snapshots = None if args.snapshots == "all" else [s.strip() for s in args.snapshots.split(",")]
@@ -444,6 +707,7 @@ def main() -> None:
         "checks_path": args.checks_path,
         "snapshots": snapshots,
         "exclude_price_outliers": args.exclude_price_outliers,
+        "llm_file": args.llm_file,
     }
     try:
         result = run(cfg)
