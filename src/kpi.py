@@ -11,6 +11,7 @@
     area_price_premium          median khu vực / median TP − 1      kpi_area.csv
   Theo thời gian (1)
     delta_median_price_cad      median(t) − median(t−1), CAD/đêm    kpi_time.csv
+
   Dùng LLM (1)
     llm_negative_share          tỷ lệ đánh giá tiêu cực theo LLM    kpi_llm_snapshot.csv,
                                                                     kpi_llm_area.csv
@@ -86,6 +87,74 @@ ROUND = {
 
 # Hàm này chuẩn hoá cả hai về số thực CAD/đêm. Ô không đọc được -> NaN và được
 # đánh dấu price_unparseable để kiểm tra báo FAIL (xem run_checks).
+# =============================================================================
+# BẢNG ĐỊNH NGHĨA KPI — đọc phần này trước, rồi mới đến các hàm bên dưới.
+# Mỗi KPI ghi: nhóm, file đầu ra, cột, công thức, đơn vị, mẫu số, điều kiện,
+# hạn chế, và hàm tính trong code. Bảng này chỉ để tra cứu; code tính toán
+# không đọc từ bảng này, nên sửa mô tả ở đây không làm thay đổi kết quả.
+# =============================================================================
+KPIS = {
+    "n_listings": dict(
+        nhom="quy mô nguồn cung", file="kpi_snapshot.csv", cot=["n_listings"],
+        cong_thuc="Số listing_id duy nhất trong mốc",
+        don_vi="listing", mau_so="—",
+        dieu_kien="listing_id không trùng trong mốc (đã kiểm tra khi đọc)",
+        han_che="Số listing hiển thị lúc thu thập, không phải số chủ nhà đang hoạt động",
+        ham="_metrics"),
+    "median_price_cad": dict(
+        nhom="giá niêm yết", file="kpi_snapshot.csv", cot=["median_price_cad", "price_q1_cad", "price_q3_cad"],
+        cong_thuc="Median (Q1, Q3 là phân vị 25%, 75%) của price_cad trên listing price_ok",
+        don_vi="CAD/đêm", mau_so="n_price_valid",
+        dieu_kien="price_valid = True và price_cad > 0; loại thêm price_outlier_flag nếu bật --exclude-price-outliers",
+        han_che="Giá niêm yết, không phải giá đã đặt; chưa hiệu chỉnh theo số khách hay số đêm tối thiểu",
+        ham="_metrics"),
+    "entire_home_share": dict(
+        nhom="cơ cấu loại phòng", file="kpi_snapshot.csv", cot=["entire_home_share"],
+        cong_thuc="n(room_type = Entire home/apt) / n(room_type hợp lệ)",
+        don_vi="tỷ lệ 0–1", mau_so="n_room_type_valid",
+        dieu_kien="room_type khác Unknown; mẫu số = 0 thì để trống",
+        han_che="Mô tả thành phần cung, không cho biết nhu cầu",
+        ham="_metrics"),
+    "availability_share_mean": dict(
+        nhom="mở lịch", file="kpi_snapshot.csv", cot=["availability_share_mean", "n_calendar_listings", "calendar_coverage_mean"],
+        cong_thuc="Trung bình availability_share_calc = n_available / n_available_valid trên listing có lịch",
+        don_vi="tỷ lệ 0–1", mau_so="n_calendar_listings",
+        dieu_kien="listing có n_available_valid > 0. Cột phụ calendar_coverage_mean tính trên tất cả listing, listing không có lịch được tính 0",
+        han_che="available = f gồm cả ngày đã đặt và ngày bị chặn, KHÔNG phải occupancy, không dùng để ước doanh thu",
+        ham="_metrics"),
+    "median_rating": dict(
+        nhom="chất lượng đánh giá", file="kpi_snapshot.csv", cot=["median_rating", "n_rating_valid"],
+        cong_thuc="Median của review_scores_rating trên listing có điểm",
+        don_vi="điểm (thang nguồn, Inside Airbnb 0–5)", mau_so="n_rating_valid",
+        dieu_kien="listing có review_scores_rating không trống",
+        han_che="Listing mới chưa có điểm bị loại khỏi mẫu",
+        ham="_metrics"),
+    "area_price_premium": dict(
+        nhom="theo khu vực", file="kpi_area.csv", cot=["area_price_premium", "city_median_price_cad"],
+        cong_thuc="median_price_cad(khu vực) / median_price_cad(thành phố, cùng mốc) − 1",
+        don_vi="tỷ lệ (0,20 = đắt hơn trung vị thành phố 20%); tiền gốc CAD/đêm",
+        mau_so="n_price_valid của khu vực",
+        dieu_kien="khu vực không phải Unknown; n_price_valid >= MIN_N_SHARE (30); cả hai median có giá trị",
+        han_che="So sánh thành phần listing, không phải giá của cùng một căn",
+        ham="build_tables"),
+    "delta_median_price_cad": dict(
+        nhom="theo thời gian", file="kpi_time.csv", cot=["delta_median_price_cad", "median_price_cad", "prev_median_price_cad"],
+        cong_thuc="median_price_cad(mốc t) − median_price_cad(mốc liền kề trước)",
+        don_vi="CAD/đêm", mau_so="không có",
+        dieu_kien="cả hai mốc có median; mốc đầu tiên để trống; không bắc cầu qua mốc thiếu giá",
+        han_che="Thành phần listing có thể khác giữa hai mốc; không phải giá của cùng một căn",
+        ham="build_time"),
+    "llm_negative_share": dict(
+        nhom="dùng LLM", file="kpi_llm_snapshot.csv, kpi_llm_area.csv",
+        cot=["llm_negative_share", "n_llm_usable", "llm_positive_share", "llm_parse_coverage"],
+        cong_thuc="n(sentiment = negative, dùng được) / n(dùng được)",
+        don_vi="tỷ lệ 0–1", mau_so="n_llm_usable",
+        dieu_kien="status = ok và sentiment thuộc positive/neutral/negative; n_llm_usable >= MIN_N_SHARE (30). llm_parse_coverage = n(status ok) / n(mẫu) là cột kiểm tra chất lượng",
+        han_che="Chỉ trên mẫu review do LLM chạy (pilot), không phải toàn bộ review; phụ thuộc độ chính xác của LLM",
+        ham="llm_metrics"),
+}
+
+
 def parse_price(value) -> float:
     """'$1,234.00' -> 1234.0 ; số -> số ; trống hoặc không đọc được -> NaN."""
     if value is None or (isinstance(value, float) and np.isnan(value)):
@@ -425,7 +494,7 @@ def run_checks(df, snap, area, rt, missing, cal_orphans, cal_mismatch) -> pd.Dat
 #   Công thức: median_price_cad(t) − median_price_cad(t−1), đơn vị CAD/đêm.
 #   Mẫu số   : không có. Điều kiện: cả hai mốc phải có median; nếu thiếu thì để trống.
 #   Mốc đầu tiên không có mốc trước nên để trống.
-#   Không bắc cầu qua mốc thiếu giá (2025-12-12 thiếu giá thì không so 2026-03-19 với 2025-09-11).
+#   Không bắc cầu qua mốc thiếu giá (ví dụ 2025-12-12 thiếu giá thì không so 2026-03-19 với 2025-09-11).
 #   Hạn chế  : thành phần listing có thể khác giữa hai mốc; đây không phải giá của cùng một căn.
 def build_time(snap: pd.DataFrame) -> pd.DataFrame:
     s = snap.sort_values("snapshot_date").reset_index(drop=True)
@@ -441,7 +510,7 @@ def build_time(snap: pd.DataFrame) -> pd.DataFrame:
 
 
 # ------------------------------------------------------------- KPI dùng LLM
-# Đầu vào: JSONL do llm.py ghi, mỗi dòng là một review với các khoá:
+# Đầu vào: JSONL do llm.py (TV4) ghi, mỗi dòng là một review với các khoá:
 #   snapshot_date, review_id, listing_id, status (ok | needs_review | error),
 #   sentiment (positive | neutral | negative | null), aspects ([{aspect, polarity}]),
 #   language, error, split (tuỳ chọn).
