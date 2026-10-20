@@ -425,7 +425,7 @@ def run_checks(df, snap, area, rt, missing, cal_orphans, cal_mismatch) -> pd.Dat
 #   Công thức: median_price_cad(t) − median_price_cad(t−1), đơn vị CAD/đêm.
 #   Mẫu số   : không có. Điều kiện: cả hai mốc phải có median; nếu thiếu thì để trống.
 #   Mốc đầu tiên không có mốc trước nên để trống.
-#   Không bắc cầu qua mốc thiếu giá (ví dụ 2025-12-12 thiếu giá thì không so 2026-03-19 với 2025-09-11).
+#   Không bắc cầu qua mốc thiếu giá (2025-12-12 thiếu giá thì không so 2026-03-19 với 2025-09-11).
 #   Hạn chế  : thành phần listing có thể khác giữa hai mốc; đây không phải giá của cùng một căn.
 def build_time(snap: pd.DataFrame) -> pd.DataFrame:
     s = snap.sort_values("snapshot_date").reset_index(drop=True)
@@ -441,7 +441,7 @@ def build_time(snap: pd.DataFrame) -> pd.DataFrame:
 
 
 # ------------------------------------------------------------- KPI dùng LLM
-# Đầu vào: JSONL do llm.py (TV4) ghi, mỗi dòng là một review với các khoá:
+# Đầu vào: JSONL do llm.py ghi, mỗi dòng là một review với các khoá:
 #   snapshot_date, review_id, listing_id, status (ok | needs_review | error),
 #   sentiment (positive | neutral | negative | null), aspects ([{aspect, polarity}]),
 #   language, error, split (tuỳ chọn).
