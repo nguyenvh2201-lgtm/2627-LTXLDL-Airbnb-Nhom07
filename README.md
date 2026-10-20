@@ -38,3 +38,4 @@ truyền đường dẫn đầy đủ đến `qa.py` (đặt trong dấu nháy n
 Kết quả được ghi vào `data/processed/<snapshot>/`. Mã hiện tại ghi đè các file
 đầu ra cùng tên khi chạy lại. Việc dùng đường dẫn linh hoạt không thay thế
 bước kiểm chứng chất lượng dữ liệu và đầu ra QA.
+
