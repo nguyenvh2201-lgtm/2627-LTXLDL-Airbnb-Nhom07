@@ -1,0 +1,5 @@
+snapshot_date,n_listings,n_price_valid,median_price_cad,price_q1_cad,price_q3_cad,n_room_type_valid,entire_home_share,n_calendar_listings,availability_share_mean,calendar_coverage_mean,n_rating_valid,median_rating
+2025-09-11,1000,947,175.0,107.0,260.0,1000,0.875,1000,0.5672,1.0,950,4.91
+2025-12-12,1000,0,,,,1000,0.875,1000,0.5921,1.0,970,4.9
+2026-03-19,1000,974,198.12,112.75,327.38,1000,0.875,1000,0.5732,1.0,975,4.9
+2026-06-15,1000,980,223.2,120.0,396.0,1000,0.875,1000,0.5638,1.0,975,4.9
