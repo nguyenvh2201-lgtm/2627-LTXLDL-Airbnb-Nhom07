@@ -1,11 +1,11 @@
 snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,price_outlier_flag,room_type_valid,review_scores_rating,rating_valid,latitude,longitude,last_scraped,availability_365,number_of_reviews
-2026-06-15,959676,Church-Yonge Corridor,Entire home/apt,136.71,True,False,True,4.83,True,43.664981641228515,-79.37962975844592,2026-06-16,350,42
+2026-06-15,959676,Church-Yonge Corridor,Entire home/apt,136.71,True,False,True,4.83,True,43.66498164122852,-79.37962975844592,2026-06-16,350,42
 2026-06-15,1057144,Dufferin Grove,Entire home/apt,140.2,True,False,True,4.83,True,43.65883,-79.43081,2026-06-17,328,6
 2026-06-15,1194984,Roncesvalles,Private room,65.9,True,False,True,4.27,True,43.644,-79.4427,2026-06-17,88,22
 2026-06-15,1370412,Dufferin Grove,Entire home/apt,72.3,True,False,True,4.69,True,43.65499797475493,-79.44582592051381,2026-06-17,257,13
 2026-06-15,1477940,Dovercourt-Wallace Emerson-Junction,Entire home/apt,91.02,True,False,True,4.7,True,43.66712,-79.45213,2026-06-17,332,53
 2026-06-15,1486931,South Parkdale,Entire home/apt,392.0,True,False,True,4.9,True,43.63894,-79.42223,2026-06-16,132,266
-2026-06-15,2140635,North St.James Town,Entire home/apt,,False,False,True,5.0,True,43.67097,-79.3792,2026-06-16,15,3
+2026-06-15,2140635,North St.James Town,Entire home/apt,,False,True,True,5.0,True,43.67097,-79.3792,2026-06-16,15,3
 2026-06-15,2483875,Kensington-Chinatown,Entire home/apt,82.96,True,False,True,4.93,True,43.65411,-79.39338,2026-06-16,119,15
 2026-06-15,2746751,Bay Street Corridor,Entire home/apt,265.13,True,False,True,4.92,True,43.66611,-79.38539,2026-06-17,104,261
 2026-06-15,2918244,Corso Italia-Davenport,Entire home/apt,152.93,True,False,True,4.75,True,43.6786,-79.44612,2026-06-17,303,89
@@ -42,12 +42,12 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,8473294,Niagara,Entire home/apt,912.0,True,True,True,4.98,True,43.6454,-79.40833,2026-06-17,239,59
 2026-06-15,8967912,Waterfront Communities-The Island,Entire home/apt,181.5,True,False,True,4.64,True,43.64145,-79.39852,2026-06-16,365,42
 2026-06-15,9108601,Waterfront Communities-The Island,Entire home/apt,477.01,True,False,True,5.0,True,43.64185,-79.38099,2026-06-16,221,73
-2026-06-15,9522855,High Park-Swansea,Entire home/apt,,False,False,True,5.0,True,43.6472,-79.45136,2026-06-16,0,80
+2026-06-15,9522855,High Park-Swansea,Entire home/apt,,False,True,True,5.0,True,43.6472,-79.45136,2026-06-16,0,80
 2026-06-15,9576150,Danforth,Private room,84.0,True,False,True,4.96,True,43.68121,-79.3402,2026-06-16,36,110
 2026-06-15,9747934,Church-Yonge Corridor,Entire home/apt,342.35,True,False,True,4.93,True,43.66725,-79.38339,2026-06-17,250,148
 2026-06-15,9867972,Stonegate-Queensway,Entire home/apt,91.45,True,False,True,4.7,True,43.6255,-79.5012,2026-06-16,351,125
 2026-06-15,11221319,Waterfront Communities-The Island,Entire home/apt,213.83,True,False,True,4.82,True,43.64182,-79.39889,2026-06-17,356,359
-2026-06-15,12154745,Kensington-Chinatown,Entire home/apt,,False,False,True,4.87,True,43.65087,-79.39471,2026-06-16,11,46
+2026-06-15,12154745,Kensington-Chinatown,Entire home/apt,,False,True,True,4.87,True,43.65087,-79.39471,2026-06-16,11,46
 2026-06-15,12207102,Clanton Park,Entire home/apt,242.5,True,False,True,4.89,True,43.74494,-79.4475,2026-06-17,322,248
 2026-06-15,12541588,Dovercourt-Wallace Emerson-Junction,Entire home/apt,79.61,True,False,True,4.78,True,43.6714,-79.43783,2026-06-17,197,130
 2026-06-15,13139555,The Beaches,Entire home/apt,81.39,True,False,True,4.66,True,43.67159,-79.28934,2026-06-17,228,299
@@ -86,12 +86,12 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,16448099,Kensington-Chinatown,Entire home/apt,333.0,True,False,True,4.83,True,43.64831,-79.4032,2026-06-17,281,84
 2026-06-15,16897015,Danforth East York,Entire home/apt,114.33,True,False,True,4.83,True,43.68703,-79.34688,2026-06-17,178,6
 2026-06-15,16947853,Waterfront Communities-The Island,Entire home/apt,223.21,True,False,True,4.8,True,43.64592,-79.40263,2026-06-16,87,15
-2026-06-15,17093701,Annex,Entire home/apt,,False,False,True,5.0,True,43.6726,-79.41002,2026-06-16,3,226
+2026-06-15,17093701,Annex,Entire home/apt,,False,True,True,5.0,True,43.6726,-79.41002,2026-06-16,3,226
 2026-06-15,17174826,Waterfront Communities-The Island,Entire home/apt,159.64,True,False,True,4.89,True,43.6460181,-79.3938391,2026-06-16,72,113
 2026-06-15,17271344,Church-Yonge Corridor,Entire home/apt,506.37,True,False,True,5.0,True,43.67055,-79.38443,2026-06-16,153,7
 2026-06-15,17668748,York University Heights,Entire home/apt,79.61,True,False,True,4.66,True,43.75045,-79.49044,2026-06-16,179,108
 2026-06-15,17959396,Danforth,Private room,98.2,True,False,True,4.53,True,43.6842729,-79.32256060000002,2026-06-16,75,98
-2026-06-15,17971401,Waterfront Communities-The Island,Entire home/apt,,False,False,True,4.95,True,43.64768,-79.39463,2026-06-16,0,283
+2026-06-15,17971401,Waterfront Communities-The Island,Entire home/apt,,False,True,True,4.95,True,43.64768,-79.39463,2026-06-16,0,283
 2026-06-15,18024165,The Beaches,Entire home/apt,309.75,True,False,True,4.9,True,43.67238,-79.30336,2026-06-17,322,41
 2026-06-15,18194505,Rockcliffe-Smythe,Entire home/apt,172.0,True,False,True,4.95,True,43.67882,-79.49957,2026-06-17,48,65
 2026-06-15,18293577,Waterfront Communities-The Island,Entire home/apt,149.15,True,False,True,4.89,True,43.64721,-79.39853,2026-06-16,243,44
@@ -154,7 +154,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,27658681,The Beaches,Entire home/apt,229.5,True,False,True,4.97,True,43.67634,-79.29922,2026-06-16,295,137
 2026-06-15,27776131,Waterfront Communities-The Island,Entire home/apt,341.57,True,False,True,4.75,True,43.64274,-79.38179,2026-06-16,365,96
 2026-06-15,27903533,Kensington-Chinatown,Entire home/apt,117.93,True,False,True,4.97,True,43.64862,-79.3993,2026-06-17,109,31
-2026-06-15,28194512,West Humber-Clairville,Entire home/apt,,False,False,True,5.0,True,43.72346,-79.58467,2026-06-16,0,27
+2026-06-15,28194512,West Humber-Clairville,Entire home/apt,,False,True,True,5.0,True,43.72346,-79.58467,2026-06-16,0,27
 2026-06-15,28336416,Agincourt South-Malvern West,Entire home/apt,93.03,True,False,True,4.69,True,43.7904,-79.25105,2026-06-16,208,84
 2026-06-15,28340219,Church-Yonge Corridor,Entire home/apt,60.28,True,False,True,,False,43.66986,-79.38526,2026-06-16,358,0
 2026-06-15,28409061,Leaside-Bennington,Entire home/apt,759.0,True,False,True,4.97,True,43.707462,-79.368759,2026-06-17,250,76
@@ -173,7 +173,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,31485290,Mount Pleasant West,Entire home/apt,33.23,True,False,True,4.87,True,43.707271,-79.397796,2026-06-16,364,30
 2026-06-15,31490902,Stonegate-Queensway,Entire home/apt,183.31,True,False,True,4.93,True,43.63275,-79.51698,2026-06-17,359,142
 2026-06-15,31571700,Oakwood Village,Entire home/apt,352.42,True,False,True,4.15,True,43.69044,-79.43514,2026-06-17,269,13
-2026-06-15,31874635,Leaside-Bennington,Entire home/apt,,False,False,True,5.0,True,43.69842,-79.36293,2026-06-16,0,2
+2026-06-15,31874635,Leaside-Bennington,Entire home/apt,,False,True,True,5.0,True,43.69842,-79.36293,2026-06-16,0,2
 2026-06-15,32288674,Birchcliffe-Cliffside,Entire home/apt,212.0,True,False,True,4.85,True,43.68367,-79.2773,2026-06-16,197,158
 2026-06-15,32748326,Waterfront Communities-The Island,Entire home/apt,177.08,True,False,True,4.85,True,43.64327,-79.38159,2026-06-16,173,136
 2026-06-15,32749751,Victoria Village,Entire home/apt,526.0,True,False,True,4.81,True,43.72609,-79.31116,2026-06-17,109,106
@@ -181,7 +181,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,34083239,Waterfront Communities-The Island,Entire home/apt,167.03,True,False,True,4.75,True,43.64804,-79.3872,2026-06-16,193,8
 2026-06-15,34150573,Dovercourt-Wallace Emerson-Junction,Entire home/apt,507.0,True,False,True,4.83,True,43.66370081837574,-79.4484682583907,2026-06-17,27,75
 2026-06-15,34419781,Blake-Jones,Entire home/apt,103.21,True,False,True,4.94,True,43.6712,-79.33951,2026-06-17,320,17
-2026-06-15,34510339,Dovercourt-Wallace Emerson-Junction,Entire home/apt,,False,False,True,4.67,True,43.67151,-79.43758,2026-06-16,16,24
+2026-06-15,34510339,Dovercourt-Wallace Emerson-Junction,Entire home/apt,,False,True,True,4.67,True,43.67151,-79.43758,2026-06-16,16,24
 2026-06-15,34966076,Moss Park,Entire home/apt,204.05,True,False,True,5.0,True,43.65525,-79.35699,2026-06-16,141,7
 2026-06-15,35060837,Waterfront Communities-The Island,Entire home/apt,544.0,True,False,True,4.82,True,43.6419,-79.38167,2026-06-16,319,235
 2026-06-15,35116624,Waterfront Communities-The Island,Entire home/apt,400.88,True,False,True,5.0,True,43.64453,-79.39068,2026-06-16,364,1
@@ -198,7 +198,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,37858974,Islington-City Centre West,Private room,88.89,True,False,True,5.0,True,43.64672,-79.53434,2026-06-16,179,4
 2026-06-15,38038996,Dovercourt-Wallace Emerson-Junction,Entire home/apt,95.36,True,False,True,4.75,True,43.66720375673246,-79.43115718425774,2026-06-17,166,110
 2026-06-15,38313773,Church-Yonge Corridor,Entire home/apt,192.69,True,False,True,4.81,True,43.66095,-79.37824,2026-06-17,304,21
-2026-06-15,38326576,Mount Dennis,Entire home/apt,,False,False,True,4.95,True,43.68817,-79.4939,2026-06-16,58,19
+2026-06-15,38326576,Mount Dennis,Entire home/apt,,False,True,True,4.95,True,43.68817,-79.4939,2026-06-16,58,19
 2026-06-15,38486202,Waterfront Communities-The Island,Entire home/apt,285.93,True,False,True,4.52,True,43.64289,-79.38196,2026-06-16,178,29
 2026-06-15,38851322,Woodbine Corridor,Private room,81.61,True,False,True,5.0,True,43.67586,-79.31252,2026-06-16,90,1
 2026-06-15,39280763,Wexford/Maryvale,Entire home/apt,71.36,True,False,True,5.0,True,43.73561,-79.29231,2026-06-17,285,17
@@ -209,7 +209,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,39921957,Cabbagetown-South St.James Town,Entire home/apt,2267.66,True,True,True,5.0,True,43.66441425720308,-79.36460076297233,2026-06-16,363,1
 2026-06-15,39966701,South Riverdale,Entire home/apt,384.33,True,False,True,4.89,True,43.66455,-79.34193,2026-06-16,5,9
 2026-06-15,40202963,Church-Yonge Corridor,Entire home/apt,63.0,True,False,True,4.67,True,43.66779,-79.37933,2026-06-17,48,3
-2026-06-15,40237829,Waterfront Communities-The Island,Entire home/apt,439.35,True,False,True,4.92,True,43.644065856933594,-79.38899230957031,2026-06-16,100,257
+2026-06-15,40237829,Waterfront Communities-The Island,Entire home/apt,439.35,True,False,True,4.92,True,43.6440658569336,-79.38899230957031,2026-06-16,100,257
 2026-06-15,40395497,Rockcliffe-Smythe,Private room,61.13,True,False,True,4.86,True,43.66851,-79.49334,2026-06-16,203,72
 2026-06-15,40509407,Church-Yonge Corridor,Entire home/apt,340.05,True,False,True,4.9,True,43.66168,-79.38115,2026-06-16,146,29
 2026-06-15,40592388,Church-Yonge Corridor,Entire home/apt,102.43,True,False,True,5.0,True,43.65494,-79.37804,2026-06-16,259,11
@@ -251,19 +251,19 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,47296993,Waterfront Communities-The Island,Entire home/apt,238.75,True,False,True,4.88,True,43.64307,-79.38193,2026-06-16,166,129
 2026-06-15,47487414,Trinity-Bellwoods,Entire home/apt,70.85,True,False,True,4.79,True,43.65445,-79.40885,2026-06-16,76,24
 2026-06-15,47581347,Trinity-Bellwoods,Entire home/apt,548.0,True,False,True,4.96,True,43.65509595253461,-79.40894276927048,2026-06-17,14,47
-2026-06-15,47815077,Lawrence Park North,Entire home/apt,,False,False,True,5.0,True,43.72718,-79.39751,2026-06-16,0,9
+2026-06-15,47815077,Lawrence Park North,Entire home/apt,,False,True,True,5.0,True,43.72718,-79.39751,2026-06-16,0,9
 2026-06-15,47950878,Junction Area,Private room,48.42,True,False,True,4.71,True,43.66845,-79.48077,2026-06-16,179,17
 2026-06-15,48561895,Waterfront Communities-The Island,Entire home/apt,273.08,True,False,True,4.78,True,43.64981,-79.38886,2026-06-17,347,23
 2026-06-15,48740027,Mount Pleasant West,Entire home/apt,439.5,True,False,True,4.92,True,43.70715,-79.39715,2026-06-16,233,76
 2026-06-15,48830756,Waterfront Communities-The Island,Entire home/apt,114.36,True,False,True,4.88,True,43.63986,-79.39816,2026-06-16,101,16
 2026-06-15,49273942,L'Amoreaux,Entire home/apt,131.76,True,False,True,4.96,True,43.7918,-79.30641,2026-06-16,104,97
 2026-06-15,49548924,The Beaches,Entire home/apt,217.43,True,False,True,4.81,True,43.674122,-79.30024,2026-06-17,106,54
-2026-06-15,49626342,Henry Farm,Entire home/apt,287.58,True,False,True,4.75,True,43.77469187868507,-79.32983108815733,2026-06-17,339,8
+2026-06-15,49626342,Henry Farm,Entire home/apt,287.58,True,False,True,4.75,True,43.77469187868508,-79.32983108815733,2026-06-17,339,8
 2026-06-15,50312869,Waterfront Communities-The Island,Entire home/apt,349.0,True,False,True,4.68,True,43.64332,-79.38874,2026-06-16,283,93
 2026-06-15,50361621,Church-Yonge Corridor,Entire home/apt,158.35,True,False,True,4.89,True,43.66969,-79.38532,2026-06-16,334,9
 2026-06-15,50551680,Rouge,Entire home/apt,102.54,True,False,True,5.0,True,43.79983,-79.13668,2026-06-17,224,5
 2026-06-15,50656073,Annex,Entire home/apt,504.97,True,False,True,4.85,True,43.66855145807982,-79.40881048641045,2026-06-17,76,97
-2026-06-15,50661619,Niagara,Entire home/apt,,False,False,True,5.0,True,43.63513946533203,-79.40194702148438,2026-06-16,18,4
+2026-06-15,50661619,Niagara,Entire home/apt,,False,True,True,5.0,True,43.63513946533203,-79.40194702148438,2026-06-16,18,4
 2026-06-15,50698274,Old East York,Entire home/apt,670.5,True,False,True,4.95,True,43.69047189768944,-79.34352321565078,2026-06-17,106,22
 2026-06-15,50969743,Waterfront Communities-The Island,Entire home/apt,13.54,True,False,True,5.0,True,43.641143798828125,-79.38130950927734,2026-06-16,364,15
 2026-06-15,50994837,Annex,Entire home/apt,469.1,True,False,True,5.0,True,43.6739,-79.39277,2026-06-16,310,7
@@ -273,7 +273,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,51072817,Long Branch,Entire home/apt,191.39,True,False,True,4.77,True,43.59868,-79.52465,2026-06-16,82,13
 2026-06-15,51102562,Waterfront Communities-The Island,Entire home/apt,32.16,True,False,True,4.9,True,43.6394,-79.39928,2026-06-16,98,10
 2026-06-15,51165853,Bay Street Corridor,Entire home/apt,103.24,True,False,True,4.84,True,43.65005,-79.38329,2026-06-17,227,19
-2026-06-15,51169271,New Toronto,Entire home/apt,,False,False,True,4.94,True,43.60141,-79.5025,2026-06-16,30,18
+2026-06-15,51169271,New Toronto,Entire home/apt,,False,True,True,4.94,True,43.60141,-79.5025,2026-06-16,30,18
 2026-06-15,51245277,Dovercourt-Wallace Emerson-Junction,Entire home/apt,76.96,True,False,True,4.79,True,43.66516,-79.4381,2026-06-17,320,61
 2026-06-15,51432817,Niagara,Entire home/apt,61.35,True,False,True,5.0,True,43.63698,-79.40314,2026-06-16,210,12
 2026-06-15,51614678,Victoria Village,Private room,42.32,True,False,True,5.0,True,43.72185,-79.31126,2026-06-16,227,13
@@ -321,15 +321,15 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,553717575426408482,Waterfront Communities-The Island,Entire home/apt,22.76,True,False,True,5.0,True,43.64771,-79.38944,2026-06-16,288,2
 2026-06-15,565374467669042981,Moss Park,Entire home/apt,350.91,True,False,True,4.98,True,43.65105,-79.3706,2026-06-17,120,51
 2026-06-15,567252260119550856,Trinity-Bellwoods,Entire home/apt,629.5,True,False,True,4.9,True,43.65078,-79.42427,2026-06-16,280,70
-2026-06-15,567329697105253985,Trinity-Bellwoods,Entire home/apt,565.0,True,False,True,4.86,True,43.655419420586774,-79.41176517907294,2026-06-17,32,14
+2026-06-15,567329697105253985,Trinity-Bellwoods,Entire home/apt,565.0,True,False,True,4.86,True,43.65541942058677,-79.41176517907294,2026-06-17,32,14
 2026-06-15,569501001670420718,Mount Pleasant West,Entire home/apt,259.24,True,False,True,4.96,True,43.70651,-79.39606,2026-06-16,147,72
 2026-06-15,570539294581105370,Beechborough-Greenbrook,Entire home/apt,490.0,True,False,True,4.99,True,43.69502013163149,-79.47886572259274,2026-06-17,327,210
 2026-06-15,574512741419247439,Annex,Entire home/apt,107.86,True,False,True,4.85,True,43.67591,-79.3991,2026-06-17,241,13
 2026-06-15,578925296331810448,Danforth East York,Entire home/apt,253.72,True,False,True,4.95,True,43.69242,-79.31826,2026-06-16,303,77
 2026-06-15,579203376936587888,Bedford Park-Nortown,Entire home/apt,685.0,True,False,True,4.92,True,43.7239,-79.42833,2026-06-17,161,93
-2026-06-15,579729267266174637,Annex,Entire home/apt,,False,False,True,4.89,True,43.66864,-79.41459,2026-06-16,0,64
+2026-06-15,579729267266174637,Annex,Entire home/apt,,False,True,True,4.89,True,43.66864,-79.41459,2026-06-16,0,64
 2026-06-15,582362891855304989,Waterfront Communities-The Island,Entire home/apt,153.28,True,False,True,5.0,True,43.64752578735352,-79.3897705078125,2026-06-16,43,15
-2026-06-15,582807904612373158,South Parkdale,Entire home/apt,45.22,True,False,True,5.0,True,43.63959512606843,-79.42548792433978,2026-06-16,224,5
+2026-06-15,582807904612373158,South Parkdale,Entire home/apt,45.22,True,False,True,5.0,True,43.63959512606844,-79.42548792433978,2026-06-16,224,5
 2026-06-15,584199285580858654,Waterfront Communities-The Island,Entire home/apt,438.67,True,False,True,4.94,True,43.64052,-79.39694,2026-06-17,99,83
 2026-06-15,592878954718233948,Waterfront Communities-The Island,Entire home/apt,238.57,True,False,True,,False,43.64911,-79.38823,2026-06-17,89,0
 2026-06-15,594930951285523245,South Parkdale,Entire home/apt,85.81,True,False,True,4.89,True,43.6375,-79.43342,2026-06-16,289,9
@@ -341,7 +341,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,606663291194767533,Malvern,Private room,40.64,True,False,True,5.0,True,43.8126,-79.22589,2026-06-16,89,5
 2026-06-15,609100052766569337,Junction Area,Private room,43.62,True,False,True,4.87,True,43.66841,-79.48119,2026-06-16,89,15
 2026-06-15,609223086196174935,Little Portugal,Entire home/apt,243.45,True,False,True,4.78,True,43.6463131,-79.42580629999999,2026-06-16,121,116
-2026-06-15,610574702322109143,Rockcliffe-Smythe,Entire home/apt,,False,False,True,5.0,True,43.67948230565544,-79.48954264721915,2026-06-16,1,11
+2026-06-15,610574702322109143,Rockcliffe-Smythe,Entire home/apt,,False,True,True,5.0,True,43.67948230565544,-79.48954264721915,2026-06-16,1,11
 2026-06-15,610923303689824715,Danforth East York,Entire home/apt,189.22,True,False,True,4.93,True,43.68709,-79.33587,2026-06-16,103,43
 2026-06-15,617569692006967800,Runnymede-Bloor West Village,Entire home/apt,73.77,True,False,True,5.0,True,43.6607,-79.48705,2026-06-16,217,5
 2026-06-15,621761291835039690,Waterfront Communities-The Island,Entire home/apt,337.79,True,False,True,4.92,True,43.6441277,-79.38940579999999,2026-06-16,169,149
@@ -351,7 +351,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,628326230876506216,Waterfront Communities-The Island,Entire home/apt,113.2,True,False,True,4.77,True,43.64858,-79.39318,2026-06-16,122,47
 2026-06-15,638612126900166438,Thistletown-Beaumond Heights,Private room,39.14,True,False,True,4.59,True,43.73829,-79.56613,2026-06-16,88,27
 2026-06-15,642785562857761956,Birchcliffe-Cliffside,Entire home/apt,76.97,True,False,True,5.0,True,43.6891319,-79.266544,2026-06-17,260,8
-2026-06-15,642936415502639952,Long Branch,Private room,245.82,True,False,True,4.41,True,43.586470107623505,-79.54032875026245,2026-06-17,365,41
+2026-06-15,642936415502639952,Long Branch,Private room,245.82,True,False,True,4.41,True,43.58647010762351,-79.54032875026245,2026-06-17,365,41
 2026-06-15,643905309967841822,Trinity-Bellwoods,Entire home/apt,1350.67,True,True,True,5.0,True,43.65345,-79.41463,2026-06-17,195,4
 2026-06-15,646271604370766688,Moss Park,Entire home/apt,217.48,True,False,True,5.0,True,43.65114398386597,-79.37040843138865,2026-06-17,169,10
 2026-06-15,648686219134163115,Niagara,Entire home/apt,319.53,True,False,True,4.91,True,43.6409,-79.41517,2026-06-16,342,57
@@ -465,7 +465,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,827573894899670827,Weston-Pellam Park,Entire home/apt,476.0,True,False,True,4.82,True,43.66736657988984,-79.45300781418402,2026-06-16,162,85
 2026-06-15,828509186879901260,Pelmo Park-Humberlea,Private room,171.5,True,False,True,4.8,True,43.710156957365605,-79.51958605176364,2026-06-16,86,5
 2026-06-15,831256476423465156,Waterfront Communities-The Island,Entire home/apt,234.15,True,False,True,5.0,True,43.64384572306175,-79.4017543767212,2026-06-16,288,16
-2026-06-15,831341744914004465,Dovercourt-Wallace Emerson-Junction,Entire home/apt,109.56,True,False,True,4.94,True,43.660683891605395,-79.4481474689237,2026-06-17,302,106
+2026-06-15,831341744914004465,Dovercourt-Wallace Emerson-Junction,Entire home/apt,109.56,True,False,True,4.94,True,43.6606838916054,-79.4481474689237,2026-06-17,302,106
 2026-06-15,831818560050836737,Englemount-Lawrence,Entire home/apt,312.49,True,False,True,4.94,True,43.72612844209108,-79.4372179898867,2026-06-17,50,170
 2026-06-15,833362663082859203,Wychwood,Entire home/apt,455.5,True,False,True,4.97,True,43.67658,-79.42408,2026-06-17,331,106
 2026-06-15,834123327864479446,Old East York,Entire home/apt,382.0,True,False,True,5.0,True,43.69269,-79.34174,2026-06-16,268,1
@@ -475,13 +475,13 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,839348501950285562,Waterfront Communities-The Island,Entire home/apt,479.0,True,False,True,4.75,True,43.6495729,-79.3880901,2026-06-17,64,97
 2026-06-15,839982416710900221,Waterfront Communities-The Island,Entire home/apt,253.0,True,False,True,4.9,True,43.6441277,-79.38940579999999,2026-06-16,117,96
 2026-06-15,840695716180039969,Regent Park,Entire home/apt,1585.5,True,True,True,4.86,True,43.657169925173136,-79.36238049743302,2026-06-16,327,21
-2026-06-15,841336941533231275,Junction Area,Entire home/apt,174.5,True,False,True,5.0,True,43.666453060396854,-79.47362986575827,2026-06-16,162,4
-2026-06-15,845828885294698327,Casa Loma,Entire home/apt,252.2,True,False,True,4.74,True,43.676562365237544,-79.41346560181796,2026-06-16,249,121
+2026-06-15,841336941533231275,Junction Area,Entire home/apt,174.5,True,False,True,5.0,True,43.66645306039685,-79.47362986575827,2026-06-16,162,4
+2026-06-15,845828885294698327,Casa Loma,Entire home/apt,252.2,True,False,True,4.74,True,43.67656236523754,-79.41346560181796,2026-06-16,249,121
 2026-06-15,847711091763249865,Mount Pleasant East,Private room,64.47,True,False,True,4.94,True,43.70701,-79.3873,2026-06-17,160,36
 2026-06-15,850606475043834758,Roncesvalles,Entire home/apt,9329.5,True,True,True,,False,43.6428,-79.43324,2026-06-17,45,0
 2026-06-15,851453481116182275,South Parkdale,Entire home/apt,116.67,True,False,True,5.0,True,43.64164858698374,-79.42697394062048,2026-06-16,163,3
 2026-06-15,852129933918439895,Waterfront Communities-The Island,Entire home/apt,159.99,True,False,True,4.49,True,43.64119094771388,-79.38245496920706,2026-06-16,285,49
-2026-06-15,856789664952863655,Newtonbrook West,Private room,72.86,True,False,True,5.0,True,43.789865651190475,-79.42909819049089,2026-06-16,364,1
+2026-06-15,856789664952863655,Newtonbrook West,Private room,72.86,True,False,True,5.0,True,43.78986565119048,-79.42909819049089,2026-06-16,364,1
 2026-06-15,858916647170329134,Islington-City Centre West,Entire home/apt,316.29,True,False,True,4.67,True,43.64753,-79.52459,2026-06-17,340,12
 2026-06-15,860184140267569430,Trinity-Bellwoods,Private room,51.47,True,False,True,5.0,True,43.65274210236312,-79.42464874385985,2026-06-16,195,8
 2026-06-15,860289222130107114,Waterfront Communities-The Island,Entire home/apt,547.33,True,False,True,4.44,True,43.64261695908993,-79.38278346740378,2026-06-16,288,52
@@ -491,7 +491,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,863058031075473371,Stonegate-Queensway,Entire home/apt,478.0,True,False,True,4.99,True,43.6411214,-79.5214663,2026-06-17,77,113
 2026-06-15,864555852549439753,Waterfront Communities-The Island,Entire home/apt,148.72,True,False,True,5.0,True,43.64693339407756,-79.39002554842776,2026-06-16,290,1
 2026-06-15,865315606399581885,High Park-Swansea,Entire home/apt,111.5,True,False,True,5.0,True,43.64810233565028,-79.48896650985454,2026-06-16,79,12
-2026-06-15,867425997020683515,Wychwood,Entire home/apt,169.44,True,False,True,5.0,True,43.679899368676395,-79.43407198332875,2026-06-16,338,9
+2026-06-15,867425997020683515,Wychwood,Entire home/apt,169.44,True,False,True,5.0,True,43.6798993686764,-79.43407198332875,2026-06-16,338,9
 2026-06-15,867582246941155558,Waterfront Communities-The Island,Entire home/apt,278.0,True,False,True,4.85,True,43.64287071393175,-79.38174765153593,2026-06-16,155,65
 2026-06-15,869565829941260718,Regent Park,Entire home/apt,1870.0,True,True,True,4.9,True,43.65578,-79.36452,2026-06-16,327,41
 2026-06-15,871301391367022171,Waterfront Communities-The Island,Entire home/apt,548.0,True,False,True,4.97,True,43.6431933,-79.38063249999999,2026-06-16,74,39
@@ -531,11 +531,11 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,916180855673752506,Guildwood,Entire home/apt,111.71,True,False,True,5.0,True,43.7433114,-79.2024563,2026-06-17,321,1
 2026-06-15,917558492415040391,Bay Street Corridor,Entire home/apt,655.25,True,False,True,4.79,True,43.6504,-79.38708,2026-06-16,285,38
 2026-06-15,918875121735433513,Waterfront Communities-The Island,Entire home/apt,132.2,True,False,True,4.78,True,43.6423,-79.39928,2026-06-16,168,86
-2026-06-15,918883556910630903,Little Portugal,Entire home/apt,335.61,True,False,True,5.0,True,43.64328890745307,-79.42648362645691,2026-06-17,166,29
+2026-06-15,918883556910630903,Little Portugal,Entire home/apt,335.61,True,False,True,5.0,True,43.64328890745308,-79.42648362645691,2026-06-17,166,29
 2026-06-15,920264556501241915,Taylor-Massey,Entire home/apt,284.86,True,False,True,5.0,True,43.69297,-79.30297,2026-06-16,178,2
 2026-06-15,922609828352154284,Waterfront Communities-The Island,Entire home/apt,344.64,True,False,True,4.95,True,43.64125,-79.39997,2026-06-16,317,141
 2026-06-15,923182518251404594,L'Amoreaux,Private room,46.09,True,False,True,4.8,True,43.80004150341427,-79.29442859801527,2026-06-16,196,148
-2026-06-15,923334631510875803,Waterfront Communities-The Island,Entire home/apt,20.4,True,False,True,5.0,True,43.644909601421034,-79.39598122372927,2026-06-16,337,6
+2026-06-15,923334631510875803,Waterfront Communities-The Island,Entire home/apt,20.4,True,False,True,5.0,True,43.64490960142104,-79.39598122372927,2026-06-16,337,6
 2026-06-15,923486310078532272,Annex,Entire home/apt,343.49,True,False,True,4.88,True,43.67038,-79.39442,2026-06-16,145,85
 2026-06-15,923935427065155916,Parkwoods-Donalda,Entire home/apt,183.0,True,False,True,4.66,True,43.759092312571646,-79.34010323243558,2026-06-16,356,29
 2026-06-15,923969535897216018,Annex,Entire home/apt,598.0,True,False,True,4.82,True,43.6703836,-79.3944212,2026-06-17,317,67
@@ -572,14 +572,14 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,962187673912595348,Waterfront Communities-The Island,Entire home/apt,390.0,True,False,True,4.96,True,43.6413955,-79.4001105,2026-06-16,157,48
 2026-06-15,962884105867046356,Mount Pleasant West,Entire home/apt,80.98,True,False,True,4.83,True,43.709159966785855,-79.3917578997906,2026-06-17,298,12
 2026-06-15,964665430339763448,Cabbagetown-South St.James Town,Entire home/apt,216.82,True,False,True,5.0,True,43.6637715,-79.36058090000002,2026-06-16,19,4
-2026-06-15,966615819834894499,Waterfront Communities-The Island,Entire home/apt,421.09,True,False,True,4.81,True,43.64377998521323,-79.38820721083913,2026-06-16,30,86
+2026-06-15,966615819834894499,Waterfront Communities-The Island,Entire home/apt,421.09,True,False,True,4.81,True,43.64377998521324,-79.38820721083913,2026-06-16,30,86
 2026-06-15,966876270901863224,Palmerston-Little Italy,Entire home/apt,137.93,True,False,True,4.9,True,43.65994,-79.42879,2026-06-16,146,42
 2026-06-15,967652372327818052,Centennial Scarborough,Entire home/apt,205.6,True,False,True,5.0,True,43.79422381011137,-79.14549771378576,2026-06-16,60,16
 2026-06-15,970650775078202294,Pleasant View,Entire home/apt,204.56,True,False,True,5.0,True,43.78,-79.32843,2026-06-17,180,1
 2026-06-15,973279569523990709,Annex,Entire home/apt,127.23,True,False,True,5.0,True,43.66807,-79.40704,2026-06-16,119,3
 2026-06-15,979067597811445456,South Parkdale,Entire home/apt,255.62,True,False,True,4.56,True,43.63585,-79.43738,2026-06-17,291,75
 2026-06-15,980567396753443802,Englemount-Lawrence,Entire home/apt,126.88,True,False,True,5.0,True,43.72460364603803,-79.44709548027684,2026-06-16,204,1
-2026-06-15,983982190874580850,Thorncliffe Park,Entire home/apt,173.19,True,False,True,5.0,True,43.714197772203825,-79.36140719801188,2026-06-17,305,3
+2026-06-15,983982190874580850,Thorncliffe Park,Entire home/apt,173.19,True,False,True,5.0,True,43.71419777220383,-79.36140719801188,2026-06-17,305,3
 2026-06-15,984212932978782911,Parkwoods-Donalda,Entire home/apt,987.35,True,True,True,4.85,True,43.75170861517026,-79.32087662620016,2026-06-17,286,103
 2026-06-15,984658525159465577,Little Portugal,Entire home/apt,93.87,True,False,True,5.0,True,43.641793926972255,-79.42321927293708,2026-06-16,81,10
 2026-06-15,986101033161971992,Centennial Scarborough,Entire home/apt,207.98,True,False,True,4.69,True,43.78289185873681,-79.15082438260315,2026-06-16,251,16
@@ -597,13 +597,13 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1010986479029659399,Mount Pleasant West,Private room,168.8,True,False,True,5.0,True,43.70773782960467,-79.39852178576746,2026-06-17,269,1
 2026-06-15,1012610054569667011,Moss Park,Entire home/apt,263.0,True,False,True,4.97,True,43.6520584,-79.37145749999999,2026-06-17,72,105
 2026-06-15,1016596729450240662,Waterfront Communities-The Island,Entire home/apt,430.0,True,False,True,4.98,True,43.64632,-79.39902,2026-06-17,33,63
-2026-06-15,1018327697309542732,Waterfront Communities-The Island,Private room,212.26,True,False,True,4.87,True,43.640078112375825,-79.39300806088478,2026-06-17,154,30
+2026-06-15,1018327697309542732,Waterfront Communities-The Island,Private room,212.26,True,False,True,4.87,True,43.64007811237583,-79.39300806088478,2026-06-17,154,30
 2026-06-15,1018334602466771842,Waterfront Communities-The Island,Entire home/apt,144.64,True,False,True,5.0,True,43.64215,-79.38162,2026-06-17,220,6
 2026-06-15,1019590787198108055,Etobicoke West Mall,Private room,132.0,True,False,True,4.95,True,43.64018432328392,-79.57029730081558,2026-06-17,198,252
 2026-06-15,1019880605965650149,Weston-Pellam Park,Entire home/apt,77.23,True,False,True,4.8,True,43.67162,-79.45355,2026-06-16,192,5
 2026-06-15,1020906817510990522,Trinity-Bellwoods,Entire home/apt,405.12,True,False,True,4.62,True,43.65317,-79.42373,2026-06-17,137,87
 2026-06-15,1022026814197718501,High Park North,Private room,225.73,True,False,True,5.0,True,43.654440403424864,-79.47166006682785,2026-06-17,312,65
-2026-06-15,1023865384358724942,Waterfront Communities-The Island,Entire home/apt,,False,False,True,5.0,True,43.63901673203818,-79.39308589415276,2026-06-16,8,2
+2026-06-15,1023865384358724942,Waterfront Communities-The Island,Entire home/apt,,False,True,True,5.0,True,43.63901673203818,-79.39308589415276,2026-06-16,8,2
 2026-06-15,1032748864702677726,Waterfront Communities-The Island,Entire home/apt,198.96,True,False,True,5.0,True,43.65478430569992,-79.35402725875493,2026-06-16,197,11
 2026-06-15,1034358331344419276,Waterfront Communities-The Island,Entire home/apt,624.0,True,False,True,4.96,True,43.64364176527824,-79.37756567980959,2026-06-17,306,111
 2026-06-15,1034592663902530236,Don Valley Village,Entire home/apt,473.67,True,False,True,5.0,True,43.78681203950354,-79.35729356814679,2026-06-16,200,9
@@ -619,7 +619,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1049885936776168351,University,Entire home/apt,203.83,True,False,True,5.0,True,43.6636867,-79.40688779999999,2026-06-16,190,6
 2026-06-15,1051651384188058189,Annex,Entire home/apt,107.31,True,False,True,4.47,True,43.67274,-79.41283,2026-06-17,347,43
 2026-06-15,1055358251292885297,Islington-City Centre West,Entire home/apt,312.85,True,False,True,4.76,True,43.61982144597129,-79.52257125020786,2026-06-16,324,42
-2026-06-15,1055727687575474458,Lambton Baby Point,Entire home/apt,229.14,True,False,True,5.0,True,43.663343536129304,-79.49956222094289,2026-06-16,93,1
+2026-06-15,1055727687575474458,Lambton Baby Point,Entire home/apt,229.14,True,False,True,5.0,True,43.6633435361293,-79.49956222094289,2026-06-16,93,1
 2026-06-15,1055832743097240005,High Park-Swansea,Entire home/apt,55.32,True,False,True,4.9,True,43.64884084417182,-79.47556205805415,2026-06-16,102,10
 2026-06-15,1055838791579770921,Palmerston-Little Italy,Entire home/apt,98.07,True,False,True,4.92,True,43.65886253400375,-79.41632982109506,2026-06-16,103,12
 2026-06-15,1055887374427700506,Woodbine-Lumsden,Entire home/apt,77.22,True,False,True,5.0,True,43.69217196036288,-79.30921426127911,2026-06-16,222,8
@@ -646,7 +646,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1092013463141333635,Tam O'Shanter-Sullivan,Entire home/apt,9756.5,True,True,True,5.0,True,43.795022893863504,-79.290836021657,2026-06-16,90,1
 2026-06-15,1092017975499548699,Waterfront Communities-The Island,Entire home/apt,198.65,True,False,True,5.0,True,43.64298,-79.38131,2026-06-17,213,3
 2026-06-15,1092222378886123893,Bay Street Corridor,Entire home/apt,465.0,True,False,True,4.84,True,43.661953,-79.386541,2026-06-16,157,31
-2026-06-15,1092949258294225624,Banbury-Don Mills,Entire home/apt,,False,False,True,4.39,True,43.7307385,-79.3534342,2026-06-16,0,23
+2026-06-15,1092949258294225624,Banbury-Don Mills,Entire home/apt,,False,True,True,4.39,True,43.7307385,-79.3534342,2026-06-16,0,23
 2026-06-15,1093785964469537682,Weston-Pellam Park,Private room,35.29,True,False,True,5.0,True,43.6771543,-79.46043759999999,2026-06-16,218,8
 2026-06-15,1094392925789991155,Rouge,Entire home/apt,161.07,True,False,True,5.0,True,43.78375,-79.13484,2026-06-16,275,4
 2026-06-15,1094507179493132182,Moss Park,Entire home/apt,1439.5,True,True,True,5.0,True,43.65566,-79.35928,2026-06-16,340,4
@@ -657,7 +657,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1100845474735046379,Rockcliffe-Smythe,Entire home/apt,154.07,True,False,True,,False,43.67972039864034,-79.47709317681291,2026-06-17,314,0
 2026-06-15,1103072491025546452,Rouge,Entire home/apt,164.07,True,False,True,4.75,True,43.808675328677886,-79.17192427030153,2026-06-16,192,16
 2026-06-15,1105273065157668733,Dovercourt-Wallace Emerson-Junction,Entire home/apt,310.5,True,False,True,4.95,True,43.6677,-79.42365,2026-06-17,285,84
-2026-06-15,1105951270359678706,Waterfront Communities-The Island,Entire home/apt,102.07,True,False,True,4.86,True,43.650379713823746,-79.36675887554884,2026-06-16,117,7
+2026-06-15,1105951270359678706,Waterfront Communities-The Island,Entire home/apt,102.07,True,False,True,4.86,True,43.65037971382375,-79.36675887554884,2026-06-16,117,7
 2026-06-15,1106072973131548180,Niagara,Entire home/apt,471.0,True,False,True,4.95,True,43.6410711,-79.4159299,2026-06-16,10,43
 2026-06-15,1106090346883274413,East End-Danforth,Entire home/apt,185.84,True,False,True,,False,43.68018,-79.30978,2026-06-16,365,0
 2026-06-15,1107522771969798398,Westminster-Branson,Private room,50.96,True,False,True,4.91,True,43.78693,-79.4602,2026-06-17,88,53
@@ -667,7 +667,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1116235122558590039,Downsview-Roding-CFB,Private room,226.0,True,False,True,4.61,True,43.73523,-79.47532,2026-06-16,44,23
 2026-06-15,1123089310828073890,Rouge,Entire home/apt,770.5,True,False,True,5.0,True,43.79702721177822,-79.15402365026252,2026-06-16,251,12
 2026-06-15,1123248836945433803,Waterfront Communities-The Island,Entire home/apt,548.0,True,False,True,4.97,True,43.6441277,-79.38940579999999,2026-06-16,104,64
-2026-06-15,1124629673906649471,Waterfront Communities-The Island,Entire home/apt,142.46,True,False,True,4.75,True,43.650286317794794,-79.36770368367434,2026-06-16,225,4
+2026-06-15,1124629673906649471,Waterfront Communities-The Island,Entire home/apt,142.46,True,False,True,4.75,True,43.6502863177948,-79.36770368367434,2026-06-16,225,4
 2026-06-15,1124961986796338131,Newtonbrook West,Entire home/apt,172.34,True,False,True,4.83,True,43.78277,-79.43129,2026-06-16,192,29
 2026-06-15,1125387690927579698,Palmerston-Little Italy,Entire home/apt,495.0,True,False,True,5.0,True,43.65656412103056,-79.4179903371161,2026-06-17,307,41
 2026-06-15,1126088238213278121,Church-Yonge Corridor,Entire home/apt,437.45,True,False,True,4.29,True,43.65789100961533,-79.37553785554621,2026-06-16,208,14
@@ -675,7 +675,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1127071712473277089,Bathurst Manor,Entire home/apt,324.38,True,False,True,4.71,True,43.75934,-79.45772,2026-06-16,199,41
 2026-06-15,1128355751506771400,West Humber-Clairville,Private room,69.47,True,False,True,5.0,True,43.72328,-79.61361,2026-06-16,335,1
 2026-06-15,1129257744857883629,Alderwood,Private room,96.0,True,False,True,4.8,True,43.6029653,-79.5328759,2026-06-17,260,60
-2026-06-15,1129796339292551445,Waterfront Communities-The Island,Entire home/apt,1688.33,True,True,True,4.85,True,43.642408607298954,-79.38127345764181,2026-06-17,343,75
+2026-06-15,1129796339292551445,Waterfront Communities-The Island,Entire home/apt,1688.33,True,True,True,4.85,True,43.64240860729896,-79.38127345764181,2026-06-17,343,75
 2026-06-15,1130439041512787690,Wychwood,Entire home/apt,364.0,True,False,True,4.85,True,43.6716,-79.43332,2026-06-16,265,33
 2026-06-15,1130605128366986441,Waterfront Communities-The Island,Entire home/apt,553.33,True,False,True,4.86,True,43.642,-79.40116,2026-06-16,186,43
 2026-06-15,1130668127081280662,Waterfront Communities-The Island,Entire home/apt,431.0,True,False,True,4.79,True,43.64211,-79.38087,2026-06-17,336,63
@@ -696,10 +696,10 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1147099323250125028,Dovercourt-Wallace Emerson-Junction,Entire home/apt,98.5,True,False,True,4.33,True,43.66693,-79.43091,2026-06-17,166,3
 2026-06-15,1147322692605192011,Roncesvalles,Entire home/apt,166.52,True,False,True,5.0,True,43.6428905,-79.4305289,2026-06-17,279,5
 2026-06-15,1149196771337496482,Waterfront Communities-The Island,Entire home/apt,421.09,True,False,True,4.83,True,43.64854,-79.38946,2026-06-17,93,96
-2026-06-15,1151782230675955916,Newtonbrook East,Entire home/apt,,False,False,True,4.5,True,43.79704599999999,-79.4004671,2026-06-16,0,2
+2026-06-15,1151782230675955916,Newtonbrook East,Entire home/apt,,False,True,True,4.5,True,43.79704599999999,-79.4004671,2026-06-16,0,2
 2026-06-15,1153074062064504206,Forest Hill South,Entire home/apt,403.47,True,False,True,2.0,True,43.70266985916047,-79.41683208983761,2026-06-17,270,1
 2026-06-15,1153193012269321068,The Beaches,Entire home/apt,923.33,True,True,True,5.0,True,43.6753545,-79.2822214,2026-06-16,54,4
-2026-06-15,1154978818990047149,High Park North,Entire home/apt,502.2,True,False,True,5.0,True,43.655316706030874,-79.47226082175871,2026-06-17,15,22
+2026-06-15,1154978818990047149,High Park North,Entire home/apt,502.2,True,False,True,5.0,True,43.65531670603088,-79.47226082175871,2026-06-17,15,22
 2026-06-15,1155393382136270411,Annex,Entire home/apt,456.47,True,False,True,5.0,True,43.66992817268735,-79.39447446137694,2026-06-16,318,83
 2026-06-15,1157198726315786084,Annex,Entire home/apt,347.0,True,False,True,4.74,True,43.6706887346295,-79.4141953167478,2026-06-16,259,62
 2026-06-15,1157296389937476182,Niagara,Entire home/apt,439.0,True,False,True,4.78,True,43.641591895281934,-79.4151239279709,2026-06-16,246,50
@@ -718,7 +718,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1164574910482192202,Annex,Entire home/apt,376.0,True,False,True,4.38,True,43.6703938,-79.39430279999999,2026-06-17,191,13
 2026-06-15,1165227966744059880,Corso Italia-Davenport,Entire home/apt,68.56,True,False,True,3.67,True,43.67595,-79.44218,2026-06-16,310,3
 2026-06-15,1168230649575620374,Briar Hill-Belgravia,Entire home/apt,182.6,True,False,True,5.0,True,43.69890390542218,-79.44704750282062,2026-06-16,206,6
-2026-06-15,1169578722277112959,Waterfront Communities-The Island,Entire home/apt,316.68,True,False,True,4.98,True,43.650110132540824,-79.38948294088678,2026-06-17,186,52
+2026-06-15,1169578722277112959,Waterfront Communities-The Island,Entire home/apt,316.68,True,False,True,4.98,True,43.65011013254082,-79.38948294088678,2026-06-17,186,52
 2026-06-15,1170351269647346909,Newtonbrook East,Entire home/apt,119.19,True,False,True,5.0,True,43.79321,-79.41412,2026-06-16,107,2
 2026-06-15,1170358625424154446,Niagara,Entire home/apt,342.0,True,False,True,4.79,True,43.64435,-79.40912,2026-06-17,257,67
 2026-06-15,1173803080745104555,Waterfront Communities-The Island,Entire home/apt,543.2,True,False,True,4.53,True,43.64413,-79.38941,2026-06-16,78,47
@@ -731,7 +731,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1178907164787072148,Dufferin Grove,Entire home/apt,76.46,True,False,True,5.0,True,43.65984530000001,-79.4323364,2026-06-17,138,10
 2026-06-15,1179081658762809831,Waterfront Communities-The Island,Entire home/apt,300.0,True,False,True,4.94,True,43.6421544,-79.381624,2026-06-17,71,82
 2026-06-15,1179729681116386673,Annex,Entire home/apt,374.31,True,False,True,4.89,True,43.6689761518375,-79.39374225858158,2026-06-17,358,27
-2026-06-15,1180703295864768109,Waterfront Communities-The Island,Entire home/apt,543.61,True,False,True,5.0,True,43.647885416882104,-79.38723228207044,2026-06-17,360,3
+2026-06-15,1180703295864768109,Waterfront Communities-The Island,Entire home/apt,543.61,True,False,True,5.0,True,43.6478854168821,-79.38723228207044,2026-06-17,360,3
 2026-06-15,1181742343534061322,Little Portugal,Entire home/apt,112.8,True,False,True,5.0,True,43.64509,-79.42487,2026-06-16,319,1
 2026-06-15,1183410592050513840,Trinity-Bellwoods,Entire home/apt,605.0,True,False,True,4.73,True,43.6545718,-79.41377399999999,2026-06-17,102,41
 2026-06-15,1184926395345987992,L'Amoreaux,Entire home/apt,186.47,True,False,True,4.65,True,43.7968635,-79.3292175,2026-06-16,155,20
@@ -748,14 +748,14 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1191385903866124368,Dorset Park,Private room,38.75,True,False,True,5.0,True,43.75560274584799,-79.26671721723689,2026-06-17,45,1
 2026-06-15,1191582036261106967,Waterfront Communities-The Island,Entire home/apt,116.57,True,False,True,4.9,True,43.6429418,-79.38055709999999,2026-06-17,150,21
 2026-06-15,1192209356097420873,Bedford Park-Nortown,Private room,70.93,True,False,True,4.79,True,43.71977369012029,-79.42210046132514,2026-06-17,308,24
-2026-06-15,1193646562349514877,Annex,Entire home/apt,156.73,True,False,True,5.0,True,43.672241225926584,-79.38879444856687,2026-06-17,303,2
+2026-06-15,1193646562349514877,Annex,Entire home/apt,156.73,True,False,True,5.0,True,43.67224122592658,-79.38879444856687,2026-06-17,303,2
 2026-06-15,1194337345252052601,Waterfront Communities-The Island,Entire home/apt,724.19,True,False,True,4.96,True,43.64364,-79.38988,2026-06-16,235,71
 2026-06-15,1196396112719620497,South Riverdale,Entire home/apt,333.0,True,False,True,4.85,True,43.65926289999999,-79.3489264,2026-06-17,356,34
 2026-06-15,1196441405446113963,The Beaches,Entire home/apt,459.5,True,False,True,4.73,True,43.66914989534633,-79.2993809043481,2026-06-17,310,33
 2026-06-15,1196625105358143967,Waterfront Communities-The Island,Entire home/apt,148.27,True,False,True,4.98,True,43.642884,-79.3804767,2026-06-16,320,126
 2026-06-15,1197684608859983100,Cabbagetown-South St.James Town,Entire home/apt,329.12,True,False,True,4.93,True,43.6659,-79.37562,2026-06-16,286,129
 2026-06-15,1197824300333528786,Niagara,Entire home/apt,332.0,True,False,True,4.93,True,43.63733705836585,-79.40491291240654,2026-06-17,331,44
-2026-06-15,1197864858961545001,Long Branch,Entire home/apt,,False,False,True,4.94,True,43.60031578883989,-79.52651195890654,2026-06-16,1,17
+2026-06-15,1197864858961545001,Long Branch,Entire home/apt,,False,True,True,4.94,True,43.60031578883989,-79.52651195890654,2026-06-16,1,17
 2026-06-15,1201514717257720154,Cabbagetown-South St.James Town,Entire home/apt,285.4,True,False,True,5.0,True,43.66616,-79.3754,2026-06-16,274,4
 2026-06-15,1205114153752875247,Yorkdale-Glen Park,Private room,53.29,True,False,True,4.67,True,43.70895,-79.44768,2026-06-17,263,3
 2026-06-15,1206100178813152494,Agincourt South-Malvern West,Entire home/apt,112.29,True,False,True,4.67,True,43.7854850511901,-79.26223090894753,2026-06-16,270,24
@@ -764,12 +764,12 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1210415905081620882,Niagara,Entire home/apt,376.0,True,False,True,4.68,True,43.63784,-79.40659,2026-06-17,360,47
 2026-06-15,1212289423676903097,Weston,Entire home/apt,300.7,True,False,True,4.9,True,43.704194019067344,-79.50600991078026,2026-06-16,322,39
 2026-06-15,1213004024254301790,Etobicoke West Mall,Entire home/apt,256.5,True,False,True,4.94,True,43.6404182,-79.56257389999999,2026-06-16,339,52
-2026-06-15,1214670433860814446,Waterfront Communities-The Island,Entire home/apt,310.0,True,False,True,4.8,True,43.642641207510664,-79.38297366271705,2026-06-16,179,25
+2026-06-15,1214670433860814446,Waterfront Communities-The Island,Entire home/apt,310.0,True,False,True,4.8,True,43.64264120751066,-79.38297366271705,2026-06-16,179,25
 2026-06-15,1218077143870658511,Annex,Entire home/apt,295.0,True,False,True,4.87,True,43.6750731,-79.3902305,2026-06-17,56,63
 2026-06-15,1219119733999933545,Waterfront Communities-The Island,Entire home/apt,152.32,True,False,True,4.86,True,43.64525,-79.40062,2026-06-16,65,7
 2026-06-15,1220941332729133524,South Riverdale,Entire home/apt,369.36,True,False,True,4.81,True,43.6578337,-79.3513945,2026-06-16,155,53
 2026-06-15,1220952217750169440,South Riverdale,Entire home/apt,890.2,True,True,True,5.0,True,43.6621424902391,-79.3530079030824,2026-06-16,358,3
-2026-06-15,1222420598882764625,Clanton Park,Entire home/apt,483.0,True,False,True,4.95,True,43.737334273520865,-79.44858797503478,2026-06-16,116,42
+2026-06-15,1222420598882764625,Clanton Park,Entire home/apt,483.0,True,False,True,4.95,True,43.73733427352087,-79.44858797503478,2026-06-16,116,42
 2026-06-15,1223346171763412964,Newtonbrook West,Private room,115.0,True,False,True,5.0,True,43.79214,-79.42267,2026-06-16,84,10
 2026-06-15,1223908428855973477,Trinity-Bellwoods,Entire home/apt,342.67,True,False,True,4.97,True,43.64873140647047,-79.40828026562434,2026-06-17,290,115
 2026-06-15,1224552578388925946,Waterfront Communities-The Island,Entire home/apt,212.57,True,False,True,5.0,True,43.641588343541216,-79.39327790583582,2026-06-17,365,1
@@ -811,7 +811,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1262429673080523677,Trinity-Bellwoods,Private room,108.41,True,False,True,4.48,True,43.65399,-79.40967,2026-06-17,142,29
 2026-06-15,1262618207511004023,Birchcliffe-Cliffside,Entire home/apt,245.36,True,False,True,5.0,True,43.707503318718686,-79.2536156974745,2026-06-16,351,8
 2026-06-15,1263734252127439838,Waterfront Communities-The Island,Entire home/apt,283.0,True,False,True,4.79,True,43.6419739,-79.3820313,2026-06-16,78,53
-2026-06-15,1263856507281924946,Waterfront Communities-The Island,Entire home/apt,403.0,True,False,True,4.95,True,43.64332791549547,-79.38867792056372,2026-06-16,340,38
+2026-06-15,1263856507281924946,Waterfront Communities-The Island,Entire home/apt,403.0,True,False,True,4.95,True,43.64332791549548,-79.38867792056372,2026-06-16,340,38
 2026-06-15,1264997160843725540,Waterfront Communities-The Island,Entire home/apt,418.0,True,False,True,4.83,True,43.63965,-79.39848,2026-06-16,308,6
 2026-06-15,1265427459926903587,Waterfront Communities-The Island,Entire home/apt,294.16,True,False,True,5.0,True,43.6409889536984,-79.38262657035715,2026-06-16,365,4
 2026-06-15,1267010853318739318,Islington-City Centre West,Private room,101.56,True,False,True,4.91,True,43.6250517,-79.518551,2026-06-17,349,122
@@ -820,14 +820,14 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1269888398165124734,Milliken,Private room,128.5,True,False,True,4.71,True,43.82199,-79.26581,2026-06-16,249,14
 2026-06-15,1275071000045483874,Flemingdon Park,Entire home/apt,558.0,True,False,True,4.4,True,43.72006075837243,-79.33694821719664,2026-06-17,336,5
 2026-06-15,1275282518241681459,Little Portugal,Entire home/apt,122.15,True,False,True,5.0,True,43.649817156211526,-79.43529808576946,2026-06-16,172,69
-2026-06-15,1275386455129564921,Waterfront Communities-The Island,Entire home/apt,,False,False,True,5.0,True,43.64199991576558,-79.38168411904907,2026-06-16,0,5
+2026-06-15,1275386455129564921,Waterfront Communities-The Island,Entire home/apt,,False,True,True,5.0,True,43.64199991576558,-79.38168411904907,2026-06-16,0,5
 2026-06-15,1277119649266159669,Weston-Pellam Park,Entire home/apt,96.76,True,False,True,4.5,True,43.67202,-79.46085,2026-06-17,135,4
 2026-06-15,1277508310478017165,Bayview Village,Entire home/apt,192.33,True,False,True,5.0,True,43.7763936,-79.3897277,2026-06-16,313,2
 2026-06-15,1279058571549089906,South Parkdale,Entire home/apt,109.14,True,False,True,4.88,True,43.63944,-79.43479,2026-06-16,335,8
 2026-06-15,1279059496526591772,Waterfront Communities-The Island,Entire home/apt,531.0,True,False,True,4.78,True,43.6415,-79.38236,2026-06-16,299,54
 2026-06-15,1280664481280277217,South Riverdale,Private room,228.5,True,False,True,5.0,True,43.6607744223833,-79.33610098435834,2026-06-17,87,35
 2026-06-15,1281208229092857704,Waterfront Communities-The Island,Entire home/apt,570.5,True,False,True,4.98,True,43.64960000000001,-79.38716769999999,2026-06-17,128,57
-2026-06-15,1281283236770157817,Waterfront Communities-The Island,Entire home/apt,,False,False,True,5.0,True,43.64379931757131,-79.38154209898211,2026-06-16,43,3
+2026-06-15,1281283236770157817,Waterfront Communities-The Island,Entire home/apt,,False,True,True,5.0,True,43.64379931757131,-79.38154209898211,2026-06-16,43,3
 2026-06-15,1284442609500877429,Kensington-Chinatown,Entire home/apt,493.0,True,False,True,4.92,True,43.6543,-79.39011,2026-06-16,284,25
 2026-06-15,1284823036466852990,Little Portugal,Entire home/apt,240.0,True,False,True,4.95,True,43.64797006307528,-79.42598529016372,2026-06-16,270,20
 2026-06-15,1287061875531358442,Oakwood Village,Entire home/apt,67.9,True,False,True,5.0,True,43.6812336,-79.4381155,2026-06-16,229,2
@@ -843,13 +843,13 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1300010211075862472,Danforth,Entire home/apt,510.0,True,False,True,4.98,True,43.6803623,-79.3389622,2026-06-17,108,53
 2026-06-15,1301490324417944561,Don Valley Village,Private room,86.0,True,False,True,4.86,True,43.78877599335861,-79.34382584664873,2026-06-17,311,42
 2026-06-15,1302338289600735720,Clairlea-Birchmount,Entire home/apt,79.5,True,False,True,4.0,True,43.71951,-79.29609,2026-06-17,226,2
-2026-06-15,1303082465651751223,East End-Danforth,Entire home/apt,213.69,True,False,True,5.0,True,43.68654336359947,-79.30530776992804,2026-06-16,320,3
+2026-06-15,1303082465651751223,East End-Danforth,Entire home/apt,213.69,True,False,True,5.0,True,43.68654336359948,-79.30530776992804,2026-06-16,320,3
 2026-06-15,1303867037300766604,Waterfront Communities-The Island,Entire home/apt,360.49,True,False,True,4.91,True,43.64195290000001,-79.38201629999999,2026-06-16,337,11
 2026-06-15,1304305893118203960,Mount Pleasant West,Entire home/apt,360.0,True,False,True,4.69,True,43.7069362,-79.3951421,2026-06-16,343,16
 2026-06-15,1306236433436649762,Trinity-Bellwoods,Entire home/apt,314.0,True,False,True,4.74,True,43.64776,-79.40737,2026-06-17,218,57
 2026-06-15,1306624731851450981,Parkwoods-Donalda,Entire home/apt,73.07,True,False,True,4.86,True,43.742033821592,-79.32972026670458,2026-06-16,52,7
 2026-06-15,1307277078612564850,Wexford/Maryvale,Entire home/apt,64.6,True,False,True,4.67,True,43.74042,-79.29508,2026-06-17,72,9
-2026-06-15,1308261515164099316,Moss Park,Entire home/apt,370.0,True,False,True,4.81,True,43.658519337742945,-79.3734575504314,2026-06-16,357,21
+2026-06-15,1308261515164099316,Moss Park,Entire home/apt,370.0,True,False,True,4.81,True,43.65851933774295,-79.3734575504314,2026-06-16,357,21
 2026-06-15,1310434942974300644,Kensington-Chinatown,Private room,49.3,True,False,True,5.0,True,43.65587,-79.39955,2026-06-16,79,13
 2026-06-15,1313902561866161502,Weston,Entire home/apt,162.0,True,False,True,5.0,True,43.7080962,-79.5347718,2026-06-16,55,23
 2026-06-15,1314625687824498271,Corso Italia-Davenport,Entire home/apt,149.0,True,False,True,5.0,True,43.6791865,-79.4476838,2026-06-16,7,99
@@ -867,7 +867,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1330692481592451918,Moss Park,Entire home/apt,253.68,True,False,True,4.38,True,43.6584,-79.37408,2026-06-16,332,8
 2026-06-15,1332075930162957859,University,Entire home/apt,577.44,True,False,True,4.89,True,43.6592568,-79.40505329999999,2026-06-17,180,28
 2026-06-15,1332397087985466937,Waterfront Communities-The Island,Entire home/apt,300.29,True,False,True,5.0,True,43.653,-79.35431,2026-06-16,41,11
-2026-06-15,1332896447593388758,Waterfront Communities-The Island,Entire home/apt,547.76,True,False,True,5.0,True,43.643633835440355,-79.38860984650809,2026-06-16,193,58
+2026-06-15,1332896447593388758,Waterfront Communities-The Island,Entire home/apt,547.76,True,False,True,5.0,True,43.64363383544036,-79.38860984650809,2026-06-16,193,58
 2026-06-15,1332954067632079691,High Park North,Entire home/apt,148.23,True,False,True,5.0,True,43.65799,-79.45874,2026-06-16,134,5
 2026-06-15,1334026769328583796,Waterfront Communities-The Island,Entire home/apt,435.0,True,False,True,4.58,True,43.64342295472672,-79.39011900032479,2026-06-16,171,38
 2026-06-15,1334362344580371632,East End-Danforth,Entire home/apt,120.97,True,False,True,5.0,True,43.6851263,-79.3008696,2026-06-16,165,3
@@ -879,7 +879,7 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1343244542117886842,Mount Pleasant West,Entire home/apt,427.3,True,False,True,4.71,True,43.707809333123386,-79.393500125959,2026-06-16,308,7
 2026-06-15,1346405698084187595,Annex,Entire home/apt,405.5,True,False,True,4.93,True,43.67283,-79.415,2026-06-17,182,41
 2026-06-15,1346673376292685905,Mount Dennis,Entire home/apt,159.0,True,False,True,4.75,True,43.68782,-79.49388,2026-06-16,121,16
-2026-06-15,1346715814611286896,Kingsview Village-The Westway,Private room,37.71,True,False,True,4.73,True,43.701873104318715,-79.5556163708861,2026-06-16,350,59
+2026-06-15,1346715814611286896,Kingsview Village-The Westway,Private room,37.71,True,False,True,4.73,True,43.70187310431872,-79.5556163708861,2026-06-16,350,59
 2026-06-15,1350093304930526881,Niagara,Entire home/apt,39.49,True,False,True,5.0,True,43.638771781888806,-79.41550776723801,2026-06-16,193,2
 2026-06-15,1350738283286353260,Waterfront Communities-The Island,Entire home/apt,1181.12,True,True,True,4.75,True,43.643630323822464,-79.3882569921862,2026-06-16,339,16
 2026-06-15,1350827718555531036,Waterfront Communities-The Island,Entire home/apt,699.0,True,False,True,4.97,True,43.64436,-79.38831,2026-06-16,289,66
@@ -888,14 +888,14 @@ snapshot_date,listing_id,neighbourhood_cleansed,room_type,price_cad,price_valid,
 2026-06-15,1352406029791480002,Taylor-Massey,Entire home/apt,110.57,True,False,True,5.0,True,43.69241239222071,-79.30343024432659,2026-06-16,230,2
 2026-06-15,1353250865883259453,North St.James Town,Entire home/apt,390.5,True,False,True,5.0,True,43.666739356250176,-79.37745401562209,2026-06-17,340,56
 2026-06-15,1358808488569178101,Wychwood,Entire home/apt,171.33,True,False,True,4.93,True,43.67515826041471,-79.42034644353771,2026-06-16,202,14
-2026-06-15,1358959412545220875,Church-Yonge Corridor,Entire home/apt,351.0,True,False,True,4.86,True,43.670237881541674,-79.3854823971606,2026-06-17,95,28
+2026-06-15,1358959412545220875,Church-Yonge Corridor,Entire home/apt,351.0,True,False,True,4.86,True,43.67023788154168,-79.3854823971606,2026-06-17,95,28
 2026-06-15,1360149854903952385,Dufferin Grove,Entire home/apt,291.0,True,False,True,4.92,True,43.6544535,-79.4375965,2026-06-16,79,13
 2026-06-15,1360443779684745114,East End-Danforth,Entire home/apt,71.93,True,False,True,5.0,True,43.6824508,-79.3061412,2026-06-16,258,3
 2026-06-15,1362009071210297254,Waterfront Communities-The Island,Entire home/apt,317.0,True,False,True,4.93,True,43.63946,-79.39648,2026-06-17,271,28
 2026-06-15,1364820990429421284,Waterfront Communities-The Island,Entire home/apt,251.67,True,False,True,4.96,True,43.64195290000001,-79.38201629999999,2026-06-16,94,55
 2026-06-15,1367022519392467945,High Park North,Entire home/apt,580.0,True,False,True,4.89,True,43.65875140561625,-79.45651715685746,2026-06-17,52,36
 2026-06-15,1367636019369387271,Wychwood,Entire home/apt,94.06,True,False,True,5.0,True,43.68003,-79.42602,2026-06-16,273,7
-2026-06-15,1373350961075532200,York University Heights,Private room,71.75,True,False,True,5.0,True,43.751060869147395,-79.46575171250805,2026-06-17,180,1
+2026-06-15,1373350961075532200,York University Heights,Private room,71.75,True,False,True,5.0,True,43.7510608691474,-79.46575171250805,2026-06-17,180,1
 2026-06-15,1374742677145418847,Church-Yonge Corridor,Entire home/apt,547.82,True,False,True,5.0,True,43.65448565090475,-79.37966731481933,2026-06-16,151,52
 2026-06-15,1374837748915328809,Moss Park,Private room,157.48,True,False,True,4.36,True,43.6559039,-79.3722313,2026-06-17,223,70
 2026-06-15,1375454935801259718,Mimico (includes Humber Bay Shores),Entire home/apt,422.0,True,False,True,4.96,True,43.62377619999999,-79.47963299999999,2026-06-17,59,47

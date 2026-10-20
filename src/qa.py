@@ -85,7 +85,7 @@ def check_price(raw_price):
     outlier = price_valid & (
         (price < q1 - 1.5 * iqr)
         | (price > q3 + 1.5 * iqr)
-    )
+    ) | price.isna()
 
     return pd.DataFrame({
         "price_cad": price,
@@ -117,7 +117,6 @@ def check_numeric_rules(df):
         "Dem toi thieu > dem toi da": rule_3,
         "Out of range": rule_4,
     })
-    pass
 def check_rating(df):
     rating_valid = df["review_scores_rating"].notna() & (df["review_scores_rating"] >= 1) & (df["review_scores_rating"] <= 5)
     return pd.DataFrame({
