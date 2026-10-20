@@ -24,7 +24,7 @@
   kpi_snapshot.csv, kpi_area.csv, kpi_room_type.csv, kpi_room_type_missing.csv,
   kpi_time.csv, và (nếu có file LLM) kpi_llm_snapshot.csv, kpi_llm_area.csv,
   kpi_llm_aspect.csv
-Kiểm tra: reports/kpi_checks.csv. Có FAIL thì không ghi KPI.
+Kiểm tra: data/processed/kpi_checks.csv. Có FAIL thì không ghi KPI.
 
 Chạy:
   python src/kpi.py                                # mặc định data/processed -> data/processed/kpi_*.csv
@@ -663,13 +663,13 @@ def build_llm_outputs(path, snapshots, listings, min_n):
 def run(cfg: dict) -> dict:
     in_dir = cfg["input_dir"]
     out_dir = cfg["output_dir"]
-    checks_file = cfg.get("checks_path", "reports/kpi_checks.csv")
+    checks_file = cfg.get("checks_path", "data/processed/kpi_checks.csv")
     for folder in (out_dir, os.path.dirname(checks_file) or "."):
         if os.path.isfile(folder):
             raise ValueError(
                 f"'{folder}' đang là một FILE, không phải thư mục. "
                 "Xoá hoặc đổi tên file đó rồi chạy lại.")
-    checks_path = cfg.get("checks_path", "reports/kpi_checks.csv")
+    checks_path = cfg.get("checks_path", "data/processed/kpi_checks.csv")
     snapshots = cfg.get("snapshots")
     if snapshots is not None:
         snapshots = [str(s) for s in snapshots]
@@ -761,7 +761,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="TV3: tính KPI theo mốc")
     ap.add_argument("--input-dir", default="data/processed")
     ap.add_argument("--output-dir", default=OUT_DIR_DEFAULT)
-    ap.add_argument("--checks-path", default="reports/kpi_checks.csv")
+    ap.add_argument("--checks-path", default="data/processed/kpi_checks.csv")
     ap.add_argument("--snapshots", default="all",
                     help="'all' hoặc danh sách cách nhau bởi dấu phẩy, ví dụ 2025-09-11,2025-11-11")
     ap.add_argument("--exclude-price-outliers", action="store_true")
