@@ -37,4 +37,5 @@ Tài liệu mô tả 13 quy tắc kiểm tra chất lượng dữ liệu listing
 - Với `analysis_area`, code hiện tại chấp nhận `A01` đến `A08`.
 - `category_mismatch` có thể được triển khai thành hai cờ riêng: `room_type_mismatch` và `analysis_area_mismatch` để dễ xác định cột vi phạm.
 - Tài liệu này mô tả quy tắc; các điều kiện và hành động phải được triển khai trong code mới có hiệu lực.
-- Bộ quy tắc này chưa bao gồm kiểm tra giữa các mốc và báo cáo tác động đến số dòng, KPI trước/sau; cần bổ sung để đáp ứng đầy đủ yêu cầu bài.
+- `qa.py` tổng hợp các cờ thực tế theo từng mốc vào `qa_report.csv`, đồng thời ghi nhận review xuất hiện lại và kiểm tra thay đổi ngày, listing, comments giữa từng cặp mốc. So sánh thuộc tính chỉ dùng ID không thiếu, xuất hiện đúng một lần ở mỗi mốc; bỏ cặp thiếu giá trị cần so sánh, chuẩn hóa ngày hợp lệ trước khi đối chiếu.
+- Báo cáo tính số dòng trước/sau trên cùng phạm vi phân công, trung vị giá numeric và độ dài bình luận trung bình trước/sau làm sạch. Công thức và cách xử lý giá trị thiếu được ghi trong cột `note`; các chỉ số này không thay thế toàn bộ KPI phân tích của nhóm.
