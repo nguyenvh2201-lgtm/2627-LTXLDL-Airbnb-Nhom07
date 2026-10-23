@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Sơ đồ trực quan luồng dữ liệu TV4 Toronto Gemini LLM: input, QA, fingerprint, cache, API, JSONL, đánh giá.">
+<title>TV4 Toronto — Luồng xử lý LLM</title>
+<style>
+:root{--bg:#0b1220;--surface:#111c2b;--panel:#162437;--line:#34475f;--text:#eaf2fa;--muted:#b3c4d7;--mint:#58e0c0;--blue:#89b8ff;--amber:#f4c76f;--red:#ff958e;--radius:16px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 80% 3%,#182c43 0,transparent 29%),var(--bg);color:var(--text);font:15px/1.62 system-ui,-apple-system,"Segoe UI",sans-serif}a{color:var(--mint)}.wrap{max-width:1180px;margin:auto;padding:0 23px 60px}header{padding:55px 0 30px}.eyebrow{font-size:12px;font-weight:750;letter-spacing:.15em;text-transform:uppercase;color:var(--mint)}h1{font-size:clamp(30px,4.5vw,53px);line-height:1.16;letter-spacing:-.04em;margin:12px 0 17px;max-width:860px}h2{font-size:24px;line-height:1.3;letter-spacing:-.015em;margin:38px 0 12px}h3{font-size:17px;margin:10px 0}p{margin:10px 0;color:var(--muted)}strong{color:var(--text)}.lead{max-width:780px;font-size:17px}.topnav{display:flex;gap:9px;flex-wrap:wrap;margin-top:23px}.chip{border:1px solid #486177;border-radius:100px;padding:6px 12px;text-decoration:none;color:var(--text);background:#172638;font-size:13px}.note{border-left:3px solid var(--amber);padding:12px 15px;background:#20293a;color:#f0d7a6;border-radius:0 12px 12px 0;margin:20px 0}.instructions{margin:9px 0 20px}.scenario{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 16px}.scenario button{cursor:pointer;color:var(--text);background:#162438;border:1px solid #40536c;border-radius:10px;padding:11px 16px;font-size:14px;font-weight:650}.scenario button:hover,.scenario button:focus-visible{border-color:var(--mint);outline:none}.scenario button[aria-pressed="true"]{background:#174a47;border-color:var(--mint);color:#f4fffc}.board{display:grid;grid-template-columns:minmax(0,1.43fr) minmax(280px,.82fr);gap:18px}.sheet,.detail,.code-panel{background:rgba(19,33,51,.94);border:1px solid #354b65;border-radius:var(--radius);padding:22px}.flowline{position:relative;display:flex;align-items:stretch;flex-direction:column;gap:0;max-width:620px;margin:auto}.step{border:1px solid #4b617a;border-radius:13px;padding:13px 15px;background:#18283c;transition:.2s}.step[data-lit="true"]{border-color:var(--mint);box-shadow:0 0 0 2px rgba(88,224,192,.14);background:#153936}.step[data-lit="false"]{opacity:.48}.step-head{display:flex;gap:11px;align-items:center}.index{display:inline-grid;place-items:center;background:#2a4059;color:#d4ebff;width:29px;height:29px;border-radius:9px;font-weight:800;font-size:13px;flex-shrink:0}.step-title{font-weight:750;color:#fff}.codepath{font:12px/1.35 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--blue);padding-left:40px;overflow-wrap:anywhere}.arrow{height:30px;position:relative;margin:auto}.arrow:before{content:"";width:2px;height:21px;display:block;background:#65849c}.arrow:after{content:"";width:8px;height:8px;border-right:2px solid #65849c;border-bottom:2px solid #65849c;transform:rotate(45deg);position:absolute;bottom:5px;left:-3px}.split{text-align:center;padding:10px;background:#132e39;border:1px dashed #568f9d;color:#bcebe3;border-radius:12px;margin:5px 0;font-size:13px}.branch-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0}.mini{padding:13px;border-radius:12px;background:#1a2940;border:1px solid #3a506b;color:#d5e2f0}.mini[data-lit="true"]{border-color:var(--mint);background:#143834}.mini[data-lit="false"]{opacity:.43}.mini h4{font-size:14px;margin:0 0 4px}.mini p{font-size:12px;line-height:1.4;margin:0}.result{background:#152c37;border:1px solid #477a75;border-radius:12px;padding:15px;color:#d9faf4;margin-top:12px}.detail h3{color:var(--mint);margin-top:0}.detail p{color:#d5e1ef}ul{margin:8px 0 0 16px;padding:0;color:var(--muted)}li{margin:5px 0}.small{font-size:12px}.mono,code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}code{background:#233349;color:#a9edff;padding:2px 5px;border-radius:4px;font-size:12px;overflow-wrap:anywhere}pre{background:#080e1a;color:#dcebf7;border:1px solid #304057;border-radius:11px;margin:12px 0 0;padding:15px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55;font-size:12px}table{border-collapse:collapse;width:100%;font-size:13px}td,th{text-align:left;border-bottom:1px solid #31465e;padding:10px 9px;vertical-align:top}th{color:var(--mint)}.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.panel{background:#142237;border:1px solid #314b62;border-radius:13px;padding:17px}.panel p{font-size:14px}.timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.timeline .panel{min-height:120px}.num{font-size:25px;font-weight:800;color:var(--mint)}.footer{border-top:1px solid #2e4155;margin-top:40px;padding-top:24px;font-size:13px;color:var(--muted)}.label{font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:750;color:var(--blue)}.safe{color:var(--mint)}.warn{color:var(--amber)}.danger{color:var(--red)}.btn-copy{float:right;cursor:pointer;border:1px solid #567085;background:#1b334a;color:#e9f7ff;padding:5px 9px;border-radius:7px;font-size:12px}
+@media(max-width:880px){.board{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr}}@media(max-width:580px){.wrap{padding:0 14px 50px}.cols,.timeline{grid-template-columns:1fr}.sheet,.detail,.code-panel{padding:15px}.branch-cards{grid-template-columns:1fr}.step-title{font-size:13px}.codepath{font-size:11px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.step{transition:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header>
+<div class="eyebrow">UET DSE2049 · TV4 Toronto · Tài liệu nhóm</div>
+<h1>Một review đi qua hệ thống LLM như thế nào?</h1>
+<p class="lead">Sơ đồ <strong>input → fingerprint → QA → cache/Gemini → kiểm tra schema → output</strong>. Chọn tình huống để xem đường đi và kết quả tương ứng. Trang này là <strong>mô phỏng tài liệu</strong>, không gọi API và không đọc file máy của bạn.</p>
+<nav class="topnav" aria-label="Chuyển tới mục"><a class="chip" href="#pipeline">Luồng chính</a><a class="chip" href="#files">Vai trò các module</a><a class="chip" href="#team">Kết nối công việc nhóm</a><a class="chip" href="#contracts">Input / output</a><a class="chip" href="#run">Chạy thử</a><a class="chip" href="#cautions">Lưu ý</a></nav>
+</header>
+<section id="pipeline" aria-labelledby="flowtitle">
+<h2 id="flowtitle">01. Chọn kịch bản để hiểu đường chạy</h2>
+<p class="instructions">Năm tình huống này đều dùng cùng một hệ thống. Sự khác nhau nằm ở <strong>QA, fingerprint cache, cờ <code>--skip-llm</code> và lỗi provider</strong>.</p>
+<div class="scenario" role="group" aria-label="Kịch bản mô phỏng">
+<button type="button" data-mode="hit" aria-pressed="true">✓ Cache hit</button>
+<button type="button" data-mode="miss" aria-pressed="false">○ Cache miss + skip</button>
+<button type="button" data-mode="api" aria-pressed="false">↗ Gọi Gemini thành công</button>
+<button type="button" data-mode="429" aria-pressed="false">! HTTP 429</button>
+<button type="button" data-mode="qa" aria-pressed="false">× QA không hợp lệ</button>
+</div>
+<div class="board">
+<div class="sheet">
+<div class="flowline">
+<div class="step" id="stage-input"><div class="step-head"><span class="index">1</span><span class="step-title">Đọc review CSV đầu vào</span></div><div class="codepath">src/llm.py → common.read_csv(); runner kiểm tra ID duy nhất</div></div>
+<div class="arrow" aria-hidden="true"></div>
+<div class="step" id="stage-setup"><div class="step-head"><span class="index">•</span><span class="step-title">Chuẩn bị model, prompt/schema và cache</span></div><div class="codepath">Trước vòng lặp: model bắt buộc; key bắt buộc khi không skip</div></div>
+<div class="arrow" aria-hidden="true"></div>
+<div class="step" id="stage-key"><div class="step-head"><span class="index">2</span><span class="step-title">Tạo fingerprint SHA-256</span></div><div class="codepath">src/llm_contract.py → cache_key()</div></div>
+<div class="arrow" aria-hidden="true"></div>
+<div class="step" id="stage-qa"><div class="step-head"><span class="index">3</span><span class="step-title">Kiểm tra text / listing / cờ QA</span></div><div class="codepath">src/llm_runner.py</div></div>
+<div class="arrow" aria-hidden="true"></div>
+<div class="split">Khớp dữ liệu + prompt + schema + model + tham số với cache?</div>
+<div class="branch-cards">
+<div class="mini" id="stage-hit"><h4>Nhánh A · Cache hit</h4><p>Validate bản ghi đã lưu rồi tái sử dụng. Không gọi Gemini.</p></div>
+<div class="mini" id="stage-miss"><h4>Nhánh B · Cache miss</h4><p>Nếu skip: ghi lỗi. Nếu không skip: xét giới hạn request.</p></div>
+</div>
+<div class="arrow" aria-hidden="true"></div>
+<div class="step" id="stage-api"><div class="step-head"><span class="index">4</span><span class="step-title">Gọi Gemini nếu cần và được phép</span></div><div class="codepath">src/gemini_client.py → gemini_request()</div></div>
+<div class="arrow" aria-hidden="true"></div>
+<div class="step" id="stage-schema"><div class="step-head"><span class="index">5</span><span class="step-title">Kiểm tra cấu trúc JSON của mô hình</span></div><div class="codepath">src/llm_contract.py → validate_response()</div></div>
+<div class="arrow" aria-hidden="true"></div>
+<div class="step" id="stage-cachewrite"><div class="step-head"><span class="index">6</span><span class="step-title">Ghi cache khi có kết quả hợp lệ</span></div><div class="codepath">src/llm_runner.py → _append_checkpoint()</div></div>
+<div class="arrow" aria-hidden="true"></div>
+<div class="step" id="stage-output"><div class="step-head"><span class="index">7</span><span class="step-title">Ghi JSONL output; cuối batch ghi run.json</span></div><div class="codepath">src/llm_runner.py → write_jsonl() / _append_checkpoint()</div></div>
+<div class="result" id="diagram-result" aria-live="polite">Kết quả: <strong>ok</strong>, lấy nhãn từ cache; <strong>api_requests=0</strong>.</div>
+</div></div>
+<aside class="detail" aria-live="polite" aria-atomic="true">
+<div class="label">Giải thích kịch bản</div><h3 id="case-title">Cache hit</h3>
+<p id="case-desc">Fingerprint khớp bản ghi đã lưu, schema hợp lệ. Không cần gửi yêu cầu tới Gemini.</p>
+<div class="label">Review nhận được gì?</div><pre id="case-json"></pre>
+<div class="label" style="margin-top:18px">Điều cần nhớ</div><p id="case-note">Dùng lại cache không phải gắn nhãn mới; kiểm tra model, prompt và ID.</p>
+</aside>
+</div>
+<div class="note"><strong>Quan trọng:</strong> Đây là luồng sau khi bước chuẩn bị đã đạt. Thiếu model/key, input rỗng/trùng ID hoặc cache JSONL hỏng có thể dừng trước vòng review; không bảo đảm luôn có output/report. Sơ đồ phản ánh các nhánh chính. Thực tế còn có retry, dừng quota, thiếu key, JSON sai schema và lỗi ghi đĩa. Cache thành công lưu riêng; output cuối có cả review lỗi. <strong>Không chuyển <code>status=error</code> thành nhãn sentiment.</strong></div>
+</section>
+<section id="files">
+<h2>02. File nào chịu trách nhiệm bước nào?</h2>
+<div class="cols">
+<div class="panel"><h3>🎛️ <code>src/llm.py</code></h3><p><strong>CLI và API tương thích để chạy LLM:</strong> đọc tham số <code>--input</code>, <code>--output</code>, <code>--skip-llm</code>, gọi runner. Lệnh: <code>python run_tv4.py llm --help</code>.</p></div>
+<div class="panel"><h3>📐 <code>src/llm_contract.py</code></h3><p><strong>Quy tắc:</strong> nhãn nào hợp lệ, trạng thái nào hợp lệ, tạo khóa cache dựa trên dữ liệu + cấu hình. Không gửi API.</p></div>
+<div class="panel"><h3>🌐 <code>src/gemini_client.py</code></h3><p><strong>Giao tiếp mạng:</strong> tạo payload, gửi Gemini, timeout/retry, chuẩn hóa lỗi HTTP. Không đọc nhãn người.</p></div>
+<div class="panel"><h3>⚙️ <code>src/llm_runner.py</code></h3><p><strong>Điều phối:</strong> lọc QA, tìm cache, gọi client nếu cần, kiểm tra JSON, ghi kết quả từng review và báo cáo cuối.</p></div>
+<div class="panel"><h3>🔍 <code>src/cache_audit.py</code></h3><p><strong>Luồng phụ offline:</strong> chạy <code>python -m src.cache_audit --help</code>; kiểm tra cache với QA/marking và tạo template nhãn tay. Số dòng theo marking, không tự bảo đảm 100.</p></div>
+<div class="panel"><h3>📁 Phụ thuộc trong cùng repository</h3><p><code>src/common.py</code> cung cấp I/O; audit import parser marking của <code>src/prepare.py</code>; <code>configs/toronto.json</code> lưu config LLM. Lấy đủ các file từ nhánh <strong>gmnh</strong>.</p></div><div class="panel"><h3>📊 <code>src/tv4_evaluation.py</code></h3><p>So sánh sentiment với nhãn người: <code>python -m src.tv4_evaluation --help</code>. Router đã hỗ trợ <code>python run_tv4.py evaluate</code> và <code>python run_tv4.py cache_audit</code>; lệnh module vẫn dùng được.</p></div>
+</div>
+</section>
+<section id="team"><h2>Kết nối với công việc của cả nhóm</h2><table><thead><tr><th>Bên cung cấp</th><th>Giao cho ai / dữ liệu gì?</th><th>Điều cần kiểm tra</th></tr></thead><tbody><tr><td>QA và marking</td><td>LLM nhận CSV review + ID + cờ chất lượng; marking xác định mẫu LLM/test</td><td>File QA thật không có trong ZIP review; LLM đọc cờ, không tự làm lại QA</td></tr><tr><td>LLM</td><td>JSONL dự đoán + run.json cho evaluator và KPI/viz</td><td>status=ok mới có sentiment dùng phân tích; needs_review/error được báo riêng</td></tr><tr><td>Người gán độc lập</td><td>Gold label cho evaluator, không đưa nhãn vào request LLM</td><td>Kiểm tra đúng ID và đủ nhãn; không tune prompt trên test</td></tr><tr><td>Evaluator TV4</td><td>Checks, accuracy/F1 và coverage cho báo cáo</td><td>Hiện chỉ chấm sentiment, thiếu dự đoán vẫn nằm trong mẫu số metric chính</td></tr><tr><td>KPI/viz</td><td>Join prediction với nguồn listing/khu vực/thời gian của nhóm</td><td>Join theo snapshot_date + review_id; kiểm tra listing_id. Chưa kiểm chứng tích hợp thật</td></tr></tbody></table><div class="note">Audit giữ dev từ CSV QA và dừng nếu marking đồng thời chọn review dev làm test. Với nguồn không ghi split, vẫn cần đối chiếu ID pilot/dev riêng. Cache và nhãn tay cũng không tự có sau checkout.</div></section>
+<section id="contracts"><h2>03. Đầu vào, dữ liệu trung gian và đầu ra</h2>
+<div class="cols">
+<div class="code-panel"><span class="label">INPUT · reviews_after_qa.csv</span><pre>snapshot_date,review_id,listing_id,comments,split,text_valid,listing_match
+2026-06-15,DEMO-001,LIST-001,"Clean apartment",analysis,true,true</pre><p>Giữ review ID dưới dạng chuỗi, không ép sang float. Có thể có thêm cờ QA.</p></div>
+<div class="code-panel"><span class="label">MODEL RESPONSE · JSON schema v1</span><pre>{
+  "sentiment": "positive",
+  "aspects": [{"aspect":"cleanliness","polarity":"positive"}],
+  "language": "en",
+  "status": "ok",
+  "error": null
+}</pre><p>Chỉ năm khóa này được chấp nhận từ mô hình. Sau validate, runner bổ sung ID, fingerprint, provenance.</p></div>
+<div class="code-panel"><span class="label">OUTPUT · *.jsonl</span><pre>{
+  "review_id": "DEMO-001",
+  "sentiment": "positive",
+  "status": "ok",
+  "from_cache": true,
+  "api_requests": 0,
+  "cache_key": "..."
+}</pre><p>Ví dụ rút gọn. API mới có ID/model/hash/thời gian và metadata. Cache hit giữ metadata bản cache, nên cache cũ/demo có thể thiếu trường tùy chọn.</p></div>
+<div class="code-panel"><span class="label">REPORT · *.jsonl.run.json</span><pre>{
+  "rows": 3,
+  "cache_hits": 1,
+  "api_requests": 0,
+  "status_counts": {"ok": 1, "error": 2},
+  "skip_llm": true
+}</pre><p>Ví dụ rút gọn của offline demo; chỉ ghi sau khi batch hoàn thành. Khi preflight đạt, report cũ được xóa trước batch mới; nếu bị ngắt thì chưa có report hoàn tất. Preflight thất bại giữ nguyên kết quả cũ.</p></div>
+</div>
+<h3 style="margin-top:22px">Ý nghĩa các trạng thái</h3>
+<table><thead><tr><th>Trạng thái</th><th>Ý nghĩa</th><th>Tiếp theo</th></tr></thead><tbody>
+<tr><td><strong class="safe">ok</strong></td><td>Mô hình trả JSON hợp lệ và có sentiment thuộc taxonomy</td><td>Dùng làm dự đoán LLM; chỉ đánh giá accuracy khi có nhãn tay độc lập</td></tr>
+<tr><td><strong class="warn">needs_review</strong></td><td>Mô hình không chắc và yêu cầu xem lại, không phải lỗi HTTP</td><td>Người kiểm tra, không ép nhãn</td></tr>
+<tr><td><strong class="danger">error</strong></td><td>QA không hợp lệ, miss cache offline, HTTP/JSON không hợp lệ…</td><td>Đọc trường <code>error</code>, không dùng như sentiment</td></tr>
+</tbody></table>
+</section>
+<section id="run"><h2>04. Lấy nhánh và kiểm tra trong 4 bước (không tốn API)</h2>
+<div class="timeline">
+<div class="panel"><div class="num">01</div><strong>Lấy nhánh gmnh</strong><p>Clone/checkout hoặc chọn đúng nhánh rồi Download ZIP. Mở tại gốc có <code>run_tv4.py</code>; xem lệnh cụ thể trong <a href="llm_readme.md">README LLM</a>.</p></div>
+<div class="panel"><div class="num">02</div><strong>Chạy demo offline</strong><p><code>python examples/offline_demo.py</code><br>Mong đợi: <strong>DEMO PASS</strong> và API=0.</p></div>
+<div class="panel"><div class="num">03</div><strong>Xem CLI</strong><p><code>python run_tv4.py llm --help</code><br>Kiểm tra input, output, các flag.</p></div>
+<div class="panel"><div class="num">04</div><strong>Chạy regression</strong><p><code>python -m unittest discover -s tests -p "test_llm_*.py" -v</code></p></div>
+</div>
+<div class="code-panel" style="margin-top:15px"><button type="button" class="btn-copy" id="copy-command" aria-label="Sao chép lệnh demo">Sao chép</button><span class="label">Copy vào PowerShell tại thư mục repo</span><pre id="cmd-demo">python examples/offline_demo.py
+python run_tv4.py llm --help
+python -m unittest discover -s tests -p "test_llm_*.py" -v</pre></div>
+</section>
+<section id="cautions"><h2>05. Trước khi chạy API thật</h2><ul>
+<li><strong>Đừng gửi API key lên GitHub/chat.</strong> Chỉ đặt <code>$env:GEMINI_API_KEY</code> trong PowerShell ở máy cá nhân.</li>
+<li><strong>Không gọi thử bằng <code>--refresh</code></strong> khi chưa rõ cache: nó bỏ qua kết quả cũ và có thể tiêu quota.</li>
+<li><strong>Kiểm tra <code>GEMINI_MODEL</code></strong> khớp mô hình mong muốn; đổi model/prompt/schema/text sẽ tạo fingerprint khác.</li>
+<li><strong>Đặt output riêng</strong>, không ghi đè cache, input CSV hoặc file kết quả đang dùng.</li>
+<li><strong>Không chạy hai writer đồng thời</strong> cùng cache/output. Mất điện đột ngột vẫn có thể để dòng JSONL cuối dang dở.</li>
+<li><strong>Smoke dùng cache riêng trước khi gọi</strong>; tránh để review giả lập vào cache nhóm. Batch thật truyền <code>--input</code>, <code>--output</code> và hạn mức rõ ràng theo README.</li>
+<li><strong>Cache nhận từ nguồn khác:</strong> writer bổ sung newline khi cần append; cache-only giữ nguyên byte. JSONL đã hỏng vẫn bị từ chối, không tự phục hồi nội dung.</li>
+<li><strong>CLI trả 0 không có nghĩa mọi review đều ok.</strong> Đọc status_counts, error_counts, timestamp và số dòng. Report/token metadata không phải xác nhận tính phí từ server.</li>
+<li><strong>QA và nhãn người là hai việc khác nhau:</strong> QA xác định review đủ điều kiện; manual test mới là gold label để tính accuracy/F1.</li>
+</ul><div class="note">Trang HTML này chỉ để giải thích, không phải dashboard kết nối dữ liệu thật hay giao diện điều khiển Gemini. Để chạy thật, xem <strong>llm_readme.md</strong> và <code>run_tv4.py llm --help</code>.</div></section>
+<footer class="footer">TV4 Toronto / UET · Tài liệu bàn giao nhánh gmnh · cập nhật bản sửa lỗi 23/10/2026 · Cách đọc: bắt đầu với kịch bản cache hit → cache miss → API thành công → lỗi 429/QA.</footer>
+</main>
+<script>
+(function(){
+'use strict';
+const scenarios={
+  hit:{title:'Cache hit — tái sử dụng kết quả cũ',desc:'Dữ liệu QA hợp lệ, fingerprint trùng với một dòng cache có schema hợp lệ. Runner dùng lại kết quả, không gọi mạng.',note:'Cache hit nghĩa là tiết kiệm request mới, không phải bằng chứng nhãn đúng. Luôn đối chiếu đúng model và prompt.',active:['input','setup','key','qa','hit','output'],result:'<strong>ok</strong>, từ cache; <strong>api_requests=0</strong>.',data:{status:'ok',sentiment:'positive',from_cache:true,api_requests:0,error:null}},
+  miss:{title:'Cache miss + --skip-llm',desc:'Review đủ điều kiện nhưng fingerprint không tồn tại trong cache; chế độ offline cấm gọi API.',note:'Đầu ra được giữ để đối chiếu đầy đủ ID. Không suy diễn dự đoán cho review thiếu cache.',active:['input','setup','key','qa','miss','output'],result:'<strong>error</strong>: cache_miss_skip_llm; <strong>api_requests=0</strong>.',data:{status:'error',sentiment:null,from_cache:false,api_requests:0,error:'cache_miss_skip_llm'}},
+  api:{title:'Cache miss → Gemini thành công',desc:'Review đủ điều kiện và không có fingerprint khớp; chương trình được cấp key, chưa vượt max-new-requests nên gọi Gemini, validate 5 khóa rồi lưu cache.',note:'Chỉ kết quả có schema hợp lệ mới được lưu cache. Khi có retry, api_requests có thể lớn hơn một.',active:['input','setup','key','qa','miss','api','schema','cachewrite','output'],result:'<strong>ok</strong> hoặc <strong>needs_review</strong> nếu provider trả JSON hợp lệ; lưu cache.',data:{status:'ok',sentiment:'mixed',from_cache:false,api_requests:1,error:null}},
+  '429':{title:'HTTP 429 — hạn mức/quota',desc:'Gemini báo rate limit. Có thể retry theo cấu hình; nếu hết lượt hoặc không thể đợi đúng Retry-After, runner ghi lỗi và ngừng thử request mới tiếp theo.',note:'Không xóa cache để sửa 429. Cần xem quota, model, thời gian chờ. Các cache hit vẫn có thể dùng lại.',active:['input','setup','key','qa','miss','api','output'],result:'<strong>error</strong>: http_429; các review chưa gọi có thể mang lỗi not_attempted_after_http_429.',data:{status:'error',sentiment:null,from_cache:false,api_requests:1,error:'http_429'}},
+  qa:{title:'QA không hợp lệ — không gọi Gemini',desc:'Ví dụ listing_match=false hoặc text_valid=false. Runner đánh dấu lỗi trực tiếp, trước khi xét cache hit/API.',note:'QA fail không có nghĩa nội dung review tiêu cực. Sửa nguồn QA nếu phát hiện dữ liệu đánh dấu sai; không ép LLM xử lý.',active:['input','setup','key','qa','output'],result:'<strong>error</strong>: input_listing_mismatch; <strong>api_requests=0</strong>.',data:{status:'error',sentiment:null,from_cache:false,api_requests:0,error:'input_listing_mismatch'}}
+};
+const stages=['input','setup','key','qa','hit','miss','api','schema','cachewrite','output'];
+function show(mode){const x=scenarios[mode];if(!x)return;document.querySelectorAll('.scenario button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===mode?'true':'false'));stages.forEach(k=>{const el=document.getElementById('stage-'+k);if(el)el.setAttribute('data-lit',x.active.includes(k)?'true':'false')});document.getElementById('case-title').textContent=x.title;document.getElementById('case-desc').textContent=x.desc;document.getElementById('case-note').textContent=x.note;document.getElementById('case-json').textContent=JSON.stringify(x.data,null,2);document.getElementById('diagram-result').innerHTML='Kết quả: '+x.result;}
+document.querySelectorAll('.scenario button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.mode)));
+document.getElementById('copy-command').addEventListener('click',async()=>{const text=document.getElementById('cmd-demo').innerText;const btn=document.getElementById('copy-command');try{await navigator.clipboard.writeText(text);btn.textContent='Đã sao chép';setTimeout(()=>btn.textContent='Sao chép',1800)}catch(_){btn.textContent='Bôi đen lệnh để copy';setTimeout(()=>btn.textContent='Sao chép',2500)}});
+show('hit');
+})();
+</script>
+</body></html>
