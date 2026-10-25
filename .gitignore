@@ -219,3 +219,9 @@ __marimo__/
 # Airbnb Raw Data
 data/raw/
 *.csv.gz
+
+# TV4 LLM: local generated outputs and installation backups
+data/processed/llm/
+reports/llm/
+.llm_install_backups/
+data/processed/llm_cache.jsonl
