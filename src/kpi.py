@@ -49,7 +49,7 @@ UNKNOWN = "Unknown"
 ENTIRE = "Entire home/apt"
 # Ngưỡng mẫu tối thiểu cho mọi tỷ lệ theo khu vực / khía cạnh LLM. Dưới ngưỡng thì để trống.
 MIN_N_SHARE = 30
-LLM_LABELS = ("positive", "neutral", "negative")
+LLM_LABELS = ("positive", "mixed", "negative")
 LLM_FILE_DEFAULT = os.path.join("data", "processed", "llm_pilot.jsonl")
 OUT_DIR_DEFAULT = os.path.join("data", "processed")
 ASPECT_COLS = ["snapshot_date", "aspect", "n_aspect_mentions", "n_llm_usable",
@@ -149,7 +149,7 @@ KPIS = {
         cot=["llm_negative_share", "n_llm_usable", "llm_positive_share", "llm_parse_coverage"],
         cong_thuc="n(sentiment = negative, dùng được) / n(dùng được)",
         don_vi="tỷ lệ 0–1", mau_so="n_llm_usable",
-        dieu_kien="status = ok và sentiment thuộc positive/neutral/negative; n_llm_usable >= MIN_N_SHARE (30). llm_parse_coverage = n(status ok) / n(mẫu) là cột kiểm tra chất lượng",
+        dieu_kien="status = ok và sentiment thuộc positive/mixed/negative; n_llm_usable >= MIN_N_SHARE (30). llm_parse_coverage = n(status ok) / n(mẫu) là cột kiểm tra chất lượng",
         han_che="Chỉ trên mẫu review do LLM chạy (pilot), không phải toàn bộ review; phụ thuộc độ chính xác của LLM",
         ham="llm_metrics"),
 }
@@ -512,7 +512,7 @@ def build_time(snap: pd.DataFrame) -> pd.DataFrame:
 # ------------------------------------------------------------- KPI dùng LLM
 # Đầu vào: JSONL do llm.py (TV4) ghi, mỗi dòng là một review với các khoá:
 #   snapshot_date, review_id, listing_id, status (ok | needs_review | error),
-#   sentiment (positive | neutral | negative | null), aspects ([{aspect, polarity}]),
+#   sentiment (positive | mixed | negative | null), aspects ([{aspect, polarity}]),
 #   language, error, split (tuỳ chọn).
 # Một review chỉ được tính là "dùng được" khi status = "ok" VÀ sentiment thuộc LLM_LABELS.
 
@@ -561,7 +561,7 @@ def llm_metrics(g: pd.DataFrame, min_n: int) -> dict:
     # ---- KPI 8. llm_negative_share — Tỷ lệ đánh giá tiêu cực theo LLM (theo mốc và khu vực)
     #   Mục tiêu : phản ánh mức độ không hài lòng của khách, theo mốc và theo khu vực.
     #   Công thức: n(sentiment = negative, dùng được) / n(dùng được).
-    #              "Dùng được" = status = "ok" VÀ sentiment thuộc LLM_LABELS (positive, neutral, negative).
+    #              "Dùng được" = status = "ok" VÀ sentiment thuộc LLM_LABELS (positive, mixed, negative).
     #   Đơn vị   : tỷ lệ 0–1.
     #   Mẫu số   : n_llm_usable. Nếu nhỏ hơn MIN_N_SHARE (30) thì để NaN (mẫu quá nhỏ).
     #   Hạn chế  : chỉ trên mẫu review do TV4 chạy LLM, không phải toàn bộ review;
