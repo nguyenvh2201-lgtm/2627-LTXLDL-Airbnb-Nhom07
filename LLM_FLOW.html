@@ -1,273 +1,107 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="dark">
-  <meta name="description" content="Luồng xử lý TV4 Toronto: một file llm.py, checkpoint JSONL, baseline, evaluate, cost và hợp đồng KPI TV3.">
-  <title>TV4 Toronto | LLM Flow — Single-file v2</title>
-  <style>
-
-    :root {
-      color-scheme: dark;
-      --paper: #090f1b;
-      --surface: #111c2d;
-      --surface-raised: #16243a;
-      --surface-soft: #0e1727;
-      --ink: #eef4ff;
-      --muted: #b8c8dc;
-      --line: #34445d;
-      --blue: #93b9ff;
-      --aqua: #75e5d8;
-      --violet: #d0b9ff;
-      --amber: #ffd08a;
-      --rose: #ffa7b3;
-      --radius: 16px;
-      --shadow: 0 13px 32px rgba(0,0,0,.19);
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; background: radial-gradient(ellipse 95% 560px at 12% 4%,#112441 0%,transparent 75%),var(--paper); color:var(--ink); font:15px/1.68 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
-    a { color:var(--aqua); text-underline-offset:3px; }
-    a:hover { color:#b1fff2; }
-    a:focus-visible,summary:focus-visible { outline:2px solid var(--aqua); outline-offset:3px; border-radius:4px; }
-    .wrap { max-width:1160px; margin:0 auto; padding:0 28px; }
-    .hero { background:linear-gradient(116deg,#091528 0%,#132f52 59%,#0d514f 100%); color:var(--ink); position:relative; overflow:hidden; border-bottom:1px solid #35506a; }
-    .hero:before { content:""; position:absolute; right:-130px;top:-220px;width:520px;height:520px;border:1px solid #ffffff18;border-radius:50%;box-shadow:0 0 0 75px #ffffff06,0 0 0 154px #ffffff04; }
-    .hero .wrap { padding-top:48px; padding-bottom:49px; position:relative; }
-    .eyebrow { text-transform:uppercase; letter-spacing:.14em; font-size:12px; font-weight:800; color:#8af1e5; }
-    h1 { font-size:clamp(32px,4.5vw,52px);line-height:1.13;margin:12px 0 16px;letter-spacing:-.035em;font-weight:800; }
-    .hero p { max-width:800px; color:#dbe8fa;font-size:17px;margin:0 0 24px; }
-    .hero .actions { display:flex;flex-wrap:wrap;align-items:center;gap:12px; }
-    .pill { display:inline-flex;align-items:center;border:1px solid #a7deed66;border-radius:999px;padding:6px 12px;color:#d9f3fa;font-size:12px;font-weight:650;background:#122e4559; }
-    .hero a.cta { background:#9beadd;color:#082d35;text-decoration:none;font-weight:800;border-radius:10px;padding:9px 15px;box-shadow:0 3px 12px #00000036; }
-    .hero a.cta:hover { background:#c4fff6;color:#05232a; }
-    .topnav { background:#0d1727f5;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;backdrop-filter:blur(12px); }
-    .topnav .wrap { display:flex;align-items:center;gap:23px;overflow-x:auto;white-space:nowrap;padding-top:11px;padding-bottom:11px; }
-    .topnav a { text-decoration:none;color:#c7d8ed;font-size:13px;font-weight:720; }
-    .topnav a:hover { color:var(--aqua); }
-    main.wrap { padding-top:28px;padding-bottom:64px; }
-    section { scroll-margin-top:82px; margin-bottom:40px; }
-    .section-top { display:flex;gap:14px;align-items:flex-start;margin-bottom:20px; }
-    .section-no { width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:#203758;color:#aaccff;font-weight:800;flex-shrink:0; }
-    h2 { font-size:24px;line-height:1.25;letter-spacing:-.02em;margin:2px 0 4px; }
-    h3 { font-size:17px;line-height:1.35;margin:0 0 9px; }
-    .sub { margin:0;color:var(--muted);font-size:14px;max-width:900px; }
-    .row { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px; }
-    .panel,.node,.metric { background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow); }
-    .panel { padding:20px; }
-    .panel p,.node p { margin:7px 0 0;color:var(--muted);font-size:14px; }
-    .muted { color:var(--muted); }
-    .mono,code,pre { font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace; }
-    code { font-size:.92em;background:#233751;border:1px solid #38516f;color:#dcecff;border-radius:5px;padding:1px 5px;overflow-wrap:anywhere; }
-    pre { background:#070e1b;color:#e4edff;overflow:auto;padding:16px 18px;border-radius:12px;border:1px solid #405171;font-size:12px;line-height:1.75;margin:11px 0 0; }
-    pre code { background:none;border:0;color:inherit;padding:0;white-space:pre;font-size:inherit;overflow-wrap:normal; }
-    .kicker { font-size:10px;letter-spacing:.12em;font-weight:800;text-transform:uppercase;color:var(--blue);margin-bottom:7px; }
-    .small-tag { font-size:11px;font-weight:750;display:inline-block;padding:3px 8px;border-radius:99px;background:#203c62;color:#b6d0ff;margin-right:5px; }
-    .small-tag.teal { color:#9afbea;background:#123e3b; }
-    .small-tag.orange { color:#ffdc9e;background:#4c341b; }
-    .small-tag.purple { color:#e2d0ff;background:#3b2b60; }
-    .source { border-top:4px solid var(--blue); }
-    .sample { border-top:4px solid var(--violet); }
-    .conf { border-top:4px solid var(--aqua); }
-    .flow { background:var(--surface-soft);border:1px solid var(--line);border-radius:20px;padding:24px 20px 30px;box-shadow:var(--shadow); }
-    .flow-stack { display:flex;flex-direction:column;align-items:center; }
-    .flow-node { width:min(100%,750px);padding:15px 20px;text-align:center;border:1px solid var(--line);border-radius:12px;background:var(--surface-raised);box-shadow:0 4px 12px #00000019; }
-    .flow-node strong { font-size:15px; }
-    .flow-node .detail { font-size:12px;color:var(--muted);margin-top:2px; }
-    .flow-node.blue { border-color:#365c94;background:#182a47; }
-    .flow-node.teal { border-color:#26736c;background:#123b39; }
-    .flow-node.violet { border-color:#68548f;background:#302747; }
-    .flow-node.rose { border-color:#8d4b5b;background:#412532; }
-    .flow-arrow { height:33px;width:2px;background:#7997b7;position:relative; }
-    .flow-arrow:after { content:"";position:absolute;bottom:0;left:-4px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #7997b7; }
-    .branchline { font-size:12px;font-weight:800;color:#d2deed;text-align:center;padding:7px 12px;margin:7px auto 10px;background:#20324d;border-radius:99px; }
-    .branchline.only { border:1px solid #3c7783;background:#15363e;color:#a2fae7; }
-    .branch-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%;align-items:stretch; }
-    .branch { border:1px solid var(--line);border-radius:12px;padding:14px 15px;background:var(--surface-raised);min-width:0; }
-    .branch:nth-child(1) { border-top:4px solid var(--aqua); }
-    .branch:nth-child(2) { border-top:4px solid var(--amber); }
-    .branch:nth-child(3) { border-top:4px solid var(--blue); }
-    .branch h3 { font-size:14px;margin:2px 0 6px; }
-    .branch p { font-size:12.5px;color:var(--muted);margin:5px 0 0; }
-    .branch .micro { font-size:11px;letter-spacing:.02em;font-weight:800;text-transform:uppercase; }
-    .branch .micro.ok { color:var(--aqua); }
-    .branch .micro.wait { color:var(--amber); }
-    .branch .micro.call { color:var(--blue); }
-    .branch .micro.bad { color:var(--rose); }
-    .substeps { border-left:2px solid #496b8d;margin:12px 0 0 8px;padding-left:12px; }
-    .substeps li { font-size:12.5px;margin-bottom:6px;color:var(--muted); }
-    .outcome-grid { display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px; }
-    .outcome-grid .panel { padding:18px; }
-    .bar-title { font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#bad5ee;margin-bottom:10px; }
-    .action-grid { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px; }
-    .action-grid .panel { border-top:4px solid #456284;min-width:0; }
-    .action-grid .panel:nth-child(1) { border-top-color:var(--blue); }
-    .action-grid .panel:nth-child(2) { border-top-color:var(--aqua); }
-    .action-grid .panel:nth-child(3) { border-top-color:var(--violet); }
-    .action-grid .panel:nth-child(4) { border-top-color:var(--amber); }
-    .action-grid h3 { margin-bottom:5px; }
-    .action-grid p { font-size:13px;margin:0 0 12px;color:var(--muted); }
-    .mono-line { font-family:Consolas,monospace;font-size:12px;color:#cee0f7;background:#1d314d;padding:8px;border:1px solid #385171;border-radius:8px;overflow-wrap:anywhere; }
-    .contract-grid { display:grid;grid-template-columns:1.2fr .8fr;gap:16px; }
-    .tablewrap { overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px; }
-    table { width:100%;border-collapse:collapse;font-size:13px; }
-    th,td { padding:12px 14px;text-align:left;border-bottom:1px solid #324157;vertical-align:top; }
-    th { background:#20344f;color:#ebf3ff;font-weight:800;font-size:12px; }
-    tr:last-child td { border-bottom:0; }
-    .note { border-left:4px solid #d7a052;background:#352b1e;border-radius:0 11px 11px 0;padding:14px 16px;color:#ffdfb2;font-size:13px;margin-top:16px; }
-    .success-note { border-left-color:#55cebf;background:#163b38;color:#ccfdf5; }
-    .status-row { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px; }
-    .metric { padding:20px;border-top:4px solid #456a96; }
-    .metric strong { font-size:23px;line-height:1.15;display:block;margin-bottom:7px; }
-    .metric p { font-size:12px;color:var(--muted);margin:0; }
-    details { background:var(--surface);border:1px solid var(--line);border-radius:11px;margin-bottom:9px;padding:0 14px; }
-    summary { font-weight:760;cursor:pointer;padding:13px 4px;color:var(--ink); }
-    details[open] { border-color:#597b9c;background:#18263a; }
-    details p { font-size:13px;color:var(--muted);margin:0 4px 14px; }
-    .foot { background:#070c16;color:#cbd9eb;padding:24px 0;font-size:12px;border-top:1px solid var(--line); }
-    .foot .wrap { display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap; }
-    .foot a { color:var(--aqua); }
-    .start-guide { border:1px solid #3d657c;background:linear-gradient(115deg,#142640,#113432);border-radius:16px;padding:18px 22px;margin-bottom:32px; }
-    .start-guide h2 { margin:0 0 6px;font-size:19px; }
-    .start-guide p { margin:4px 0;color:#d4e6f3;font-size:13px; }
-    .start-guide .mini-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px; }
-    .start-guide .mini-grid div { padding:10px 13px;border:1px solid #3b5e73;background:#0b1c2d7c;border-radius:10px;font-size:12px;color:#e0f0ff; }
-    @media(max-width:920px) { .action-grid { grid-template-columns:repeat(2,1fr); } .contract-grid { grid-template-columns:1fr; } }
-    @media(max-width:700px) { .wrap { padding-left:16px;padding-right:16px; } .hero .wrap { padding-top:36px;padding-bottom:37px; } .row,.status-row,.branch-grid,.outcome-grid,.start-guide .mini-grid { grid-template-columns:1fr; } .flow { padding:16px 12px 20px; } .branch-grid { gap:8px; } .flow-node { padding:14px; } .section-top { gap:10px; } }
-    @media(max-width:470px) { .action-grid { grid-template-columns:1fr; } pre { font-size:11px; } .hero p { font-size:14px; } }
-    @media print { .topnav { display:none; } .hero,.panel,.flow,.flow-node,.metric,details { break-inside:avoid; } .hero { -webkit-print-color-adjust:exact;print-color-adjust:exact; } a { text-decoration:none; } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luồng xử lý LLM · Inside Airbnb Toronto</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #10171c;
+    --panel: #18252b;
+    --line: #35454c;
+    --text: #f0f5f4;
+    --muted: #b8c9ca;
+    --accent: #83e6c9;
+    --accent-dark: #20473e;
+    --warm: #ffcb92;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 1rem/1.6 system-ui, sans-serif; }
+  .wrap { width: min(100% - 2rem, 66rem); margin-inline: auto; }
+  header { padding: clamp(2.5rem, 8vw, 5.25rem) 0 2.5rem; border-bottom: 1px solid var(--line); }
+  .eyebrow { color: var(--accent); font-weight: 700; font-size: .82rem; letter-spacing: .09em; }
+  h1, h2, h3, p { margin-block-start: 0; }
+  h1 { margin-block-end: .75rem; font-size: clamp(2.2rem, 7vw, 4.3rem); line-height: 1.08; }
+  h2 { margin-block-end: .85rem; font-size: clamp(1.35rem, 4vw, 1.9rem); }
+  h3 { margin-block-end: .3rem; font-size: 1.08rem; }
+  p { margin-block-end: .85rem; }
+  .lead { max-width: 48rem; color: var(--muted); font-size: 1.08rem; }
+  a { color: var(--accent); text-underline-offset: .18em; }
+  :focus-visible { outline: 2px solid var(--warm); outline-offset: 3px; }
+  nav { display: flex; flex-wrap: wrap; gap: .6rem 1.25rem; }
+  main { padding-block: 2.2rem; }
+  section { margin-block-end: 2.8rem; }
+  code { font-family: ui-monospace, Consolas, monospace; overflow-wrap: anywhere; color: var(--accent); }
+  pre { margin: .4rem 0 1rem; padding: .85rem 1rem; background: #0d1317; border: 1px solid var(--line); border-radius: .6rem; white-space: pre-wrap; }
+  .flow { list-style: none; counter-reset: step; padding: 0; margin: 0; }
+  .flow li { counter-increment: step; display: grid; grid-template-columns: 2.35rem minmax(0, 1fr); gap: .8rem; align-items: start; }
+  .flow li::before { content: counter(step, decimal-leading-zero); margin-top: .85rem; border-radius: .55rem; background: var(--accent-dark); color: var(--accent); text-align: center; font-weight: 700; line-height: 2.1rem; }
+  .flow article, .card, details { background: var(--panel); border: 1px solid var(--line); border-radius: .75rem; padding: .9rem 1rem; min-width: 0; }
+  .flow article { margin-bottom: .65rem; }
+  .flow p, .card p, details p:last-child { margin-bottom: 0; color: var(--muted); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: .7rem; }
+  .status { display: inline-block; color: var(--warm); font-weight: 700; margin-bottom: .25rem; }
+  details { margin-top: .7rem; }
+  summary { cursor: pointer; font-weight: 700; }
+  details p { margin-top: .55rem; }
+  footer { border-top: 1px solid var(--line); padding: 1.25rem 0 2rem; color: var(--muted); }
+</style>
 </head>
 <body>
-<header class="hero" id="top"><div class="wrap">
-  <div class="eyebrow">DSE2049 · TV4 Toronto · Bản single-file v2</div>
-  <h1>Luồng xử lý LLM<br>từ review đến KPI</h1>
-  <p>Một file <strong>src/llm.py</strong> thực hiện gắn nhãn, baseline, đánh giá và ước tính chi phí. Sơ đồ này dựa trên logic code thực tế sau migration, không phải pipeline Gemini cũ.</p>
-  <div class="actions"><a class="cta" href="llm_readme.md">Mở hướng dẫn chạy đầy đủ</a><span class="pill">4 lệnh CLI</span><span class="pill">Nhãn neutral v2</span><span class="pill">Checkpoint JSONL</span><span class="pill">Không dùng module Gemini cũ</span></div>
-</div></header>
-<nav class="topnav" aria-label="Mục lục"><div class="wrap">
-  <a href="#input">01 · Đầu vào</a><a href="#run">02 · Luồng run</a><a href="#actions">03 · Bốn lệnh</a><a href="#contract">04 · JSONL/KPI</a><a href="#tests">05 · Kiểm thử</a><a href="#faq">06 · Lỗi thường gặp</a>
-</div></nav>
+<header>
+  <div class="wrap">
+    <p class="eyebrow">INSIDE AIRBNB · TORONTO · NHÓM 07</p>
+    <h1>Luồng xử lý LLM</h1>
+    <p class="lead">Từ review đã làm sạch đến dự đoán, kiểm tra chất lượng và biểu đồ. Sơ đồ theo pipeline Toronto và quy ước nhãn <code>tv4-simple-v3-mixed</code>.</p>
+    <nav aria-label="Các mục trong tài liệu">
+      <a href="#luong">Luồng chính</a>
+      <a href="#checkpoint">Checkpoint</a>
+      <a href="#lenh">Lệnh chạy</a>
+      <a href="llm_readme.md">Hướng dẫn LLM</a>
+    </nav>
+  </div>
+</header>
 <main class="wrap">
-<aside class="start-guide" aria-label="Bắt đầu trong 2 phút">
-  <h2>Đọc sơ đồ theo 3 câu hỏi</h2>
-  <p>Đây là trang giải thích <strong>luồng xử lý</strong>. Muốn copy lệnh cài/chạy đầy đủ, xem <a href="llm_readme.md">README</a> cùng thư mục.</p>
-  <div class="mini-grid">
-    <div><strong>Chỉ muốn xem code?</strong><br>Clone → cài <code>requirements-llm.txt</code> → chạy <code>--help</code> và unit tests. <strong>Không cần QA hay API key.</strong></div>
-    <div><strong>Muốn chạy baseline?</strong><br>Cần review CSV sau QA và file 1.000 ID; không cần API key hoặc checkpoint.</div>
-    <div><strong>Muốn gắn nhãn LLM?</strong><br>Cần CSV QA, sample IDs và API key. Dùng <code>--max-new-requests</code> để giới hạn lần gọi.</div>
-  </div>
-</aside>
-<section id="input">
-  <div class="section-top"><div class="section-no">01</div><div><h2>Ba nguồn đầu vào</h2><p class="sub">Cả ba phải tương ứng cùng snapshot và danh sách review. `llm.py` không có chức năng tải hoặc làm sạch dữ liệu TV2 thay nhóm.</p></div></div>
-  <div class="row">
-    <article class="panel source"><div class="kicker">Dữ liệu sau QA · TV2</div><h3>reviews_clean.csv</h3><p><code>data/processed/2026-06-15/reviews_clean.csv</code></p><p>Bắt buộc có <code>snapshot_date</code>, <code>review_id</code>, <code>listing_id</code> và <code>comment_clean</code> hoặc <code>comments</code>. Các cờ <code>text_valid</code>, <code>listing_match</code> kiểm soát gọi API khi có.</p></article>
-    <article class="panel sample"><div class="kicker">Danh sách mẫu · Đã commit</div><h3>llm_review_ids.csv</h3><p><code>data/samples/llm_review_ids.csv</code></p><p>Chốt <strong>1.000 ID</strong> và <code>split</code> (dev/test/analysis). Không tự lấy mẫu lại khi nhóm đã chọn ID cố định.</p></article>
-    <article class="panel conf"><div class="kicker">Cấu hình v2 · Không có API key</div><h3>llm_luna.json / llm_argon.json</h3><p><code>configs/llm_*.json</code></p><p>Chứa model, URL, prompt_version, timeout, đường dẫn, giá tham khảo. API key nằm trong biến môi trường <code>SHOPAIKEY_API_KEY</code>.</p></article>
-  </div>
-  <div class="note">Lưu ý: thiếu CSV QA trên máy mới thì không thể chạy <code>run</code>, <code>baseline</code>, <code>evaluate</code> hay <code>cost</code>, dù đã clone đủ source Git.</div>
-</section>
+  <section id="luong">
+    <h2>Từ dữ liệu nguồn đến biểu đồ</h2>
+    <ol class="flow">
+      <li><article><h3>Tải và làm sạch dữ liệu</h3><p><code>run_pipeline.py</code> đọc <code>configs/city.yaml</code>, rồi chạy tải dữ liệu và QA cho bốn snapshot Toronto. QA tạo <code>reviews_clean.csv</code> cho từng mốc.</p></article></li>
+      <li><article><h3>Chọn review cho LLM</h3><p><code>snapshot_date</code> chọn một mốc. Mốc mặc định <code>2026-06-15</code> lấy 1.000 ID cố định từ <code>llm_review_ids.csv</code>. Các mốc khác dùng mẫu theo seed khi chạy pipeline.</p></article></li>
+      <li><article><h3>Đọc checkpoint hoặc gọi API</h3><p><code>src/llm.py</code> dùng signature để nhận diện lần chạy. Review cần xử lý được gửi bằng profile Luna hoặc Argon. Bộ đọc kiểm tra JSON, nhãn và khía cạnh trước khi lưu.</p></article></li>
+      <li><article><h3>Đánh giá và ước tính chi phí</h3><p>Nếu mẫu có tập test, so sánh sentiment của LLM và baseline từ khóa với nhãn tay. Chi phí được ước tính từ usage lưu trong JSONL.</p></article></li>
+      <li><article><h3>Tính KPI và sinh biểu đồ</h3><p><code>src/kpi.py</code> dùng dự đoán theo review để tổng hợp sentiment và khía cạnh. Pipeline ghi <code>reports/kpi_checks.csv</code> và sinh biểu đồ trong <code>figures/</code>.</p></article></li>
+    </ol>
+  </section>
 
-<section id="run">
-  <div class="section-top"><div class="section-no">02</div><div><h2>Chi tiết lệnh <code>run</code></h2><p class="sub">Các nhánh dưới đây phản ánh hàm <code>reviews()</code>, <code>read_results()</code>, <code>run()</code> và <code>validate()</code> trong <code>src/llm.py</code>.</p></div></div>
-  <div class="flow" role="group" aria-label="Sơ đồ xử lý LLM run">
-    <div class="flow-stack">
-      <div class="flow-node blue"><strong>1. Đọc dữ liệu và chọn mẫu — <code>reviews(cfg)</code></strong><div class="detail">Đọc CSV → lọc snapshot → kiểm tra trùng ID/listing → dùng đúng sample_ids → lấy văn bản + split</div></div>
-      <div class="flow-arrow"></div>
-      <div class="flow-node violet"><strong>2. Tạo <code>run_signature</code> SHA-256</strong><div class="detail">Hash <code>base_url</code>, <code>model</code>, <code>prompt_version</code>, <code>request_options</code>, PROMPT và ID/text/QA/split. API key và tên provider không nằm trong signature.</div></div>
-      <div class="flow-arrow"></div>
-      <div class="flow-node blue"><strong>3. Kiểm tra <code>--output</code></strong><div class="detail">Có file: so signature, số dòng, bộ khóa review; không khớp → báo lỗi, không ép đọc. Chưa có file: tạo bản ghi mặc định <code>error/not_attempted</code>.</div></div>
-      <div class="flow-arrow"></div>
-      <div class="flow-node teal"><strong>4. Duyệt lần lượt từng review</strong><div class="detail">Quyết định theo trạng thái checkpoint, chế độ skip, giới hạn request và cờ QA.</div></div>
+  <section id="checkpoint">
+    <h2>Ba trạng thái của một review</h2>
+    <div class="grid">
+      <article class="card"><span class="status">Hoàn tất</span><h3><code>ok</code></h3><p>Dự đoán hợp lệ. Sentiment là <code>positive</code>, <code>mixed</code> hoặc <code>negative</code>. <code>mixed</code> nghĩa là có cả khen và chê đáng kể.</p></article>
+      <article class="card"><span class="status">Thiếu căn cứ</span><h3><code>needs_review</code></h3><p>Ví dụ review chỉ kể đã ở hai đêm. Bản ghi có lý do, sentiment rỗng và vẫn được dùng lại khi chạy tiếp.</p></article>
+      <article class="card"><span class="status">Cần xử lý tiếp</span><h3><code>error</code></h3><p>Xem trường <code>error</code> để phân biệt review chưa thử (<code>not_attempted</code>) và lỗi như <code>http_429</code>.</p></article>
     </div>
-    <div class="branchline">TỪNG REVIEW → MỘT TRONG CÁC NHÁNH</div>
-    <div class="branch-grid">
-      <div class="branch"><div class="micro ok">A · Dùng lại checkpoint</div><h3>Đã có <code>ok</code> / <code>needs_review</code></h3><p>Giữ nguyên bản ghi, tăng <code>cache_hits</code>. Không gọi HTTP; bản ghi hoàn tất không bị ghi đè bởi lần chạy sau.</p></div>
-      <div class="branch"><div class="micro wait">B · Chưa gọi API</div><h3><code>--skip-llm</code> hoặc hết lượt gọi</h3><p>Bản ghi còn <code>error/not_attempted</code> (hoặc trạng thái error cũ). Không gọi API. Nếu file chưa tồn tại mà dùng <code>--skip-llm</code>, chương trình báo lỗi.</p></div>
-      <div class="branch"><div class="micro call">C · Xét điều kiện gọi API</div><h3>Review chưa hoàn tất</h3><p>Nếu rỗng hoặc QA không đạt → <code>error=input_failed_qa</code>; nếu hợp lệ nhưng thiếu key → báo lỗi; nếu đủ điều kiện → gọi HTTP.</p></div>
-    </div>
-    <div class="branchline only">CHỈ NHÁNH C CÓ TEXT / QA HỢP LỆ + API KEY MỚI ĐI TIẾP ĐẾN HTTP. NHÁNH A/B BỎ QUA, ĐẾN BƯỚC 7.</div>
-    <div class="flow-stack"><div class="flow-arrow"></div><div class="flow-node blue"><strong>5. Khi có HTTP request: POST <code>/chat/completions</code></strong><div class="detail">System PROMPT + user review · yêu cầu JSON · timeout từ config · không có vòng retry HTTP tự động.</div></div><div class="flow-arrow"></div></div>
-    <div class="outcome-grid">
-      <div class="panel"><div class="small-tag teal">THÀNH CÔNG</div><h3>6a. Parse + validate</h3><p><code>finish_reason = stop</code>; JSON có đúng 5 trường; sentiment/aspects/language/status/error hợp lệ. Cập nhật bản ghi <code>ok</code> hoặc <code>needs_review</code>, lưu <code>usage</code> nếu API trả về.</p><p><strong>Ghi toàn bộ JSONL checkpoint</strong> → in trạng thái → sleep theo cấu hình → review tiếp theo.</p></div>
-      <div class="panel"><div class="small-tag orange">LỖI REQUEST / VALIDATION</div><h3>6b. Dừng có checkpoint</h3><p>HTTP 429/timeout/network, JSON lỗi, thiếu trường, <code>finish_reason</code> không đạt... → gán <code>status=error</code>, ghi file JSONL đầy đủ, in review lỗi và <strong>dừng batch</strong>.</p><p>Muốn thử lại phải <strong>chạy lại lệnh</strong> với cùng output/signature; chương trình không retry tự động ngay trong request đó.</p></div>
-    </div>
-    <div class="flow-stack"><div class="flow-arrow"></div><div class="flow-node teal"><strong>7. JSONL kết quả + summary</strong><div class="detail"><code>rows</code> · <code>status_counts</code> · <code>cache_hits</code> · <code>api_requests_this_run</code> — có bất kỳ <code>error</code> còn lại, <code>run</code> trả exit code 1.</div></div></div>
-    <div class="note success-note">File checkpoint là <strong>một snapshot đầy đủ của toàn bộ mẫu</strong>, không append từng review vào cuối file. Khi ghi, code dùng file <code>.tmp</code> rồi thay thế đích. Điều này giúp chạy tiếp, nhưng vẫn cần sao lưu dữ liệu cục bộ khi chuyển máy.</div>
-  </div>
-</section>
+    <details>
+      <summary>Runner thử lại thế nào?</summary>
+      <p>HTTP 502, 503 và 504 có thể được thử lại tối đa hai lần, chờ lần lượt 5 và 10 giây. Các lần thử tính vào giới hạn request. Khi request vẫn lỗi hoặc gặp 429, runner lưu checkpoint và dừng batch.</p>
+    </details>
+    <details>
+      <summary>Checkpoint nào có thể dùng lại?</summary>
+      <p>Giữ cùng model, prompt, tham số request và mẫu review. Khi dùng <code>--skip-llm</code>, bước LLM chỉ đọc checkpoint. Pipeline cần checkpoint hoàn chỉnh trước khi sang đánh giá và KPI.</p>
+    </details>
+  </section>
 
-<section id="actions">
-  <div class="section-top"><div class="section-no">03</div><div><h2>Bốn lệnh từ một file</h2><p class="sub">Chạy tại thư mục gốc, bằng <code>.venv\Scripts\python.exe .\src\llm.py &lt;action&gt;</code>. Không còn <code>run_tv4.py llm ...</code>.</p></div></div>
-  <div class="action-grid">
-    <article class="panel"><div class="kicker">01 · Có thể gọi API</div><h3><code>run</code></h3><p>Gắn nhãn review bằng ShopAIKey, resume/checkpoint JSONL và thống kê trạng thái.</p><div class="mono-line">--max-new-requests N<br>--skip-llm<br>--output file.jsonl</div></article>
-    <article class="panel"><div class="kicker">02 · Offline</div><h3><code>baseline</code></h3><p>Quy tắc từ khóa tiếng Anh, đảo chiều một số phủ định. Có thể trả <code>unclassified</code>.</p><div class="mono-line">reports/llm/.../<br>baseline.jsonl</div></article>
-    <article class="panel"><div class="kicker">03 · Offline, cần JSONL + nhãn người</div><h3><code>evaluate</code></h3><p>So sánh LLM và baseline trên cùng tối thiểu 100 nhãn test, không bỏ dự đoán sai/thiếu.</p><div class="mono-line">metrics.json<br>error_analysis.csv</div></article>
-    <article class="panel"><div class="kicker">04 · Offline, cần JSONL + usage</div><h3><code>cost</code></h3><p>Tính phí ước lượng theo usage được ghi nhận và đơn giá tham khảo trong config.</p><div class="mono-line">cost.json<br>--city-reviews N</div></article>
-  </div>
-  <div class="panel" style="margin-top:16px"><div class="bar-title">Lệnh mẫu để chạy / chạy lại trên Windows</div><pre><code># Test offline: không gọi API
-&amp; .\.venv\Scripts\python.exe -m unittest discover -s tests -p 'test_llm_*.py' -v
-
-# Khi đã có CSV QA và key trong biến môi trường:
-$llmOut = '.\data\processed\llm\luna_tv4_simple_v2_20260615.jsonl'
-&amp; .\.venv\Scripts\python.exe .\src\llm.py run `
-  --config .\configs\llm_luna.json `
-  --output $llmOut `
-  --max-new-requests 5
-
-# Chỉ đọc lại file v2 đã có — 0 HTTP request
-&amp; .\.venv\Scripts\python.exe .\src\llm.py run `
-  --config .\configs\llm_luna.json `
-  --output $llmOut `
-  --skip-llm</code></pre></div>
-</section>
-
-<section id="contract">
-  <div class="section-top"><div class="section-no">04</div><div><h2>Hợp đồng dữ liệu LLM → KPI TV3</h2><p class="sub">KPI của TV3 dùng JSONL TV4 theo các khóa và nhãn bên dưới. TV4 không tự tính lại KPI của TV3.</p></div></div>
-  <div class="contract-grid">
-    <div class="tablewrap"><table><thead><tr><th>Trường</th><th>Giá trị / vai trò</th></tr></thead><tbody>
-      <tr><td><code>snapshot_date</code><br><code>review_id</code></td><td>Khóa xác định review theo snapshot; không để trùng trong cùng một kết quả.</td></tr>
-      <tr><td><code>listing_id</code></td><td>Ghép với listings theo <code>(snapshot_date, listing_id)</code> để lấy <code>neighbourhood_cleansed</code>.</td></tr>
-      <tr><td><code>sentiment</code></td><td><strong>positive / neutral / negative</strong>. V2: <code>neutral</code> dùng khi có cả khen và chê đáng kể; không ép review thuần thông tin.</td></tr>
-      <tr><td><code>aspects</code></td><td>Mảng <code>{"aspect": "location", "polarity": "positive"}</code> và các aspect được phép.</td></tr>
-      <tr><td><code>language</code></td><td>Mã ngôn ngữ như <code>en</code>, hoặc <code>unknown</code>.</td></tr>
-      <tr><td><code>status</code></td><td><code>ok</code>, <code>needs_review</code>, <code>error</code>. KPI chỉ xem <code>ok</code> có nhãn hợp lệ là dùng được.</td></tr>
-      <tr><td><code>error</code> / <code>split</code></td><td>Truy vết lỗi / dev-test-analysis. KPI TV3 hiện không tự tách KPI theo split hoặc provider.</td></tr>
-    </tbody></table></div>
-    <div class="panel"><div class="bar-title">Điểm bàn giao</div>
-      <div class="flow-node teal" style="width:100%"><strong>TV4: JSONL v2</strong><div class="detail">Toàn bộ mẫu + status, không loại dòng lỗi</div></div>
-      <div class="flow-stack"><div class="flow-arrow"></div></div>
-      <div class="flow-node blue" style="width:100%"><strong>TV3: <code>read_llm()</code></strong><div class="detail">Đọc JSONL, tính <code>valid</code> và <code>usable</code>, ghép khu vực</div></div>
-      <div class="flow-stack"><div class="flow-arrow"></div></div>
-      <div class="flow-node violet" style="width:100%"><strong>KPI LLM</strong><div class="detail"><code>kpi_llm_snapshot.csv</code><br><code>kpi_llm_area.csv</code><br><code>kpi_llm_aspect.csv</code></div></div>
-      <p>TV3 mặc định tìm <code>data/processed/llm_pilot.jsonl</code>. Khi tích hợp phải truyền <code>--llm-file</code> đến đúng file TV4 đã chạy, <strong>không sửa code KPI của TV3 để chạy tài liệu này</strong>.</p>
-      <div class="note">KPI có ngưỡng <code>MIN_N_SHARE = 30</code>; dưới ngưỡng, tỷ lệ tương ứng để trống. 5 nhãn Luna v1 không chứng minh KPI v2 đã có đủ dữ liệu.</div>
-    </div>
-  </div>
-</section>
-
-<section id="tests">
-  <div class="section-top"><div class="section-no">05</div><div><h2>Những gì đã kiểm chứng — và chưa</h2><p class="sub">Phân biệt bằng chứng kiểm thử code với kết quả thực nghiệm đánh giá chất lượng LLM.</p></div></div>
-  <div class="status-row">
-    <div class="metric" style="border-top-color:#43a393"><strong>19/19 PASS</strong><p>Unit tests bản LLM v2 trên Windows theo log ngày 25/10/2026; bao gồm kiểm tra hợp đồng nhãn neutral và checkpoint.</p></div>
-    <div class="metric" style="border-top-color:#43a393"><strong>Contract PASS</strong><p>Bản KPI TV3 chính thức nhận một dòng JSONL <code>neutral</code> làm <code>usable</code> trong test offline giả lập.</p></div>
-    <div class="metric" style="border-top-color:#dfa756"><strong>Chưa có kết luận E2E</strong><p>Chưa có bằng chứng chạy LLM v2 đủ 1.000 review, accuracy/macro-F1 với 100 nhãn tay, hay pipeline KPI Toronto thực tế.</p></div>
-  </div>
-  <div class="note">Cache Luna v1 có 5 bản ghi thành công nhưng dùng prompt nhãn <code>mixed</code>. V2 có prompt/version và signature mới; <strong>không chép cache v1 vào output v2, không sửa signature, không đổi nhãn cũ bằng thao tác tìm-thay hàng loạt</strong>.</div>
-</section>
-
-<section id="faq">
-  <div class="section-top"><div class="section-no">06</div><div><h2>Xử lý lỗi thường gặp</h2><p class="sub">Các trường hợp quan trọng cần hiểu trước khi chạy trên máy mới.</p></div></div>
-  <details><summary>Máy mới clone xong mà báo không có <code>reviews_clean.csv</code>?</summary><p>Git nhánh TV4 lưu code/config/danh sách ID, không tự tạo bảng QA. Nhận <code>reviews_clean.csv</code> từ TV2 và đặt đúng đường dẫn trong config, hoặc sửa đường dẫn config tới file có thật.</p></details>
-  <details><summary>Tại sao <code>--skip-llm</code> báo lỗi dù không gọi API?</summary><p>Vì nó chỉ đọc file JSONL đã có. Nếu chưa tạo checkpoint v2, không có gì để đọc. Nó không tự tạo kết quả trong chế độ skip.</p></details>
-  <details><summary>Tại sao <code>run</code> trả exit code 1 khi vài review đã thành công?</summary><p>Output bao gồm đủ mẫu, kể cả review chưa gọi API với <code>error=not_attempted</code>. Chỉ cần còn dòng <code>status=error</code> thì CLI trả 1; xem <code>status_counts</code> để phân biệt batch chưa hoàn tất với lỗi HTTP.</p></details>
-  <details><summary>Gặp HTTP 429 hoặc timeout có tự retry không?</summary><p>Không. Code hiện tại ghi checkpoint và dừng ở request lỗi. Kiểm tra quota/key/kết nối rồi chạy lại cùng output để thử tiếp các dòng <code>error</code>; bản ghi hoàn tất được giữ lại.</p></details>
-  <details><summary>Vì sao cache khác model, prompt hoặc dữ liệu lại bị từ chối?</summary><p>Signature hash các cấu hình request, PROMPT và dữ liệu mẫu; API key và tên <code>provider</code> không nằm trong hash. Đổi endpoint/model/prompt/input phải dùng output mới. Không tự sửa signature, không tái dùng kết quả giữa provider khác nhau.</p></details>
-  <details><summary>Chạy <code>baseline</code> có dùng API không? Có cần file <code>baseline.py</code> riêng không?</summary><p>Không. Baseline nằm trong <code>src/llm.py</code>, dựa trên từ khóa và phủ định đơn giản; không gọi API, không cần checkpoint LLM. <code>legacy/src/baseline.py</code> chỉ là lưu trữ code cũ.</p></details>
-  <details><summary>Vì sao báo cáo KPI chưa có tỷ lệ dù JSONL có nhãn hợp lệ?</summary><p>KPI TV3 có ngưỡng mẫu tối thiểu 30 cho một số tỷ lệ. Nếu dưới ngưỡng thì để trống theo thiết kế; cũng cần kiểm tra liệu các dòng <code>status=ok</code> có nhãn hợp lệ và ghép đúng listing hay không.</p></details>
-</section>
+  <section id="lenh">
+    <h2>Hai lệnh chạy toàn pipeline</h2>
+    <h3>Chạy với khóa ShopAIKey đã đặt</h3>
+    <pre><code>python run_pipeline.py --config configs/city.yaml --profile luna</code></pre>
+    <h3>Chạy lại khi đã có dữ liệu thô và checkpoint hoàn chỉnh</h3>
+    <pre><code>python run_pipeline.py --config configs/city.yaml --profile luna --skip-download --skip-llm</code></pre>
+    <p>Xem hướng dẫn cài đặt và chạy riêng từng lệnh trong <a href="llm_readme.md"><code>llm_readme.md</code></a>.</p>
+  </section>
 </main>
-<footer class="foot"><div class="wrap"><span>TV4 Toronto · Single-file LLM v2 · Tài liệu tạo ngày 26/10/2026 · Không sử dụng API khi mở trang</span><a href="llm_readme.md">Xem hướng dẫn triển khai chi tiết</a></div></footer>
+<footer>
+  <div class="wrap"><a href="README.md">README toàn dự án</a> · <a href="docs/LLM_ANNOTATION_CONTRACT.md">Quy tắc gán nhãn review</a></div>
+</footer>
 </body>
 </html>
