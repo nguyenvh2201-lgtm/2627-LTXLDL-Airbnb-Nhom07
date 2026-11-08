@@ -46,6 +46,21 @@
   summary { cursor: pointer; font-weight: 700; }
   details p { margin-top: .55rem; }
   footer { border-top: 1px solid var(--line); padding: 1.25rem 0 2rem; color: var(--muted); }
+  .hint { color: var(--muted); }
+  .track { color: var(--accent); font-size: .85rem; margin-top: .35rem; display: block; }
+  .branches { padding-inline-start: 1.15rem; margin-block: .5rem 0; }
+  .branches li { margin-block: .25rem; }
+  .function-list, .variable-list { margin: .55rem 0 0; }
+  .function-list dt, .variable-list dt { font-weight: 650; margin-top: .55rem; }
+  .function-list dd, .variable-list dd { margin: .1rem 0 .45rem; color: var(--muted); }
+  .variable-list dt { color: var(--text); }
+  .example { border-inline-start: 3px solid var(--accent); padding-inline-start: 1rem; }
+  details[open] > summary { color: var(--accent); }
+  .flow > li { position: relative; }
+  .flow > li:not(:last-child)::after {
+    content: ""; position: absolute; left: 1.15rem; top: 3rem;
+    bottom: .2rem; width: 1px; background: var(--line);
+  }
 </style>
 </head>
 <body>
@@ -53,55 +68,136 @@
   <div class="wrap">
     <p class="eyebrow">INSIDE AIRBNB · TORONTO · NHÓM 07</p>
     <h1>Luồng xử lý LLM</h1>
-    <p class="lead">Từ review đã làm sạch đến dự đoán, kiểm tra chất lượng và biểu đồ. Sơ đồ theo pipeline Toronto và quy ước nhãn <code>tv4-simple-v3-mixed</code>.</p>
+    <p class="lead">Đọc từ trên xuống để thấy một review đi từ CSV đến KPI. Mở phần tra cứu khi cần biết một hàm nhận gì, trả gì hoặc một biến đang giữ dữ liệu ở bước nào. Quy ước nhãn <code>tv4-simple-v3-mixed</code>.</p>
     <nav aria-label="Các mục trong tài liệu">
       <a href="#luong">Luồng chính</a>
-      <a href="#checkpoint">Checkpoint</a>
-      <a href="#lenh">Lệnh chạy</a>
-      <a href="llm_readme.md">Hướng dẫn LLM</a>
+      <a href="#vidu">Ví dụ một review</a>
+      <a href="#ham">18 hàm</a>
+      <a href="#bien">Biến chính</a>
+      <a href="llm_readme.md">Lệnh chạy</a>
     </nav>
   </div>
 </header>
 <main class="wrap">
   <section id="luong">
-    <h2>Từ dữ liệu nguồn đến biểu đồ</h2>
+    <h2>Một lượt chạy qua 5 chặng</h2>
+    <p class="hint"><code>run_pipeline.py</code> điều phối cả dự án và gọi thẳng các hàm LLM. Khi chạy riêng bằng <code>python -m src.llm</code>, chương trình vào <code>main()</code> để chọn lệnh <code>run</code>, <code>baseline</code>, <code>evaluate</code> hoặc <code>cost</code>.</p>
     <ol class="flow">
-      <li><article><h3>Tải và làm sạch dữ liệu</h3><p><code>run_pipeline.py</code> đọc <code>configs/city.yaml</code>, rồi chạy tải dữ liệu và QA cho bốn snapshot Toronto. QA tạo <code>reviews_clean.csv</code> cho từng mốc.</p></article></li>
-      <li><article><h3>Chọn review cho LLM</h3><p><code>snapshot_date</code> chọn một mốc. Mốc mặc định <code>2026-06-15</code> lấy 1.000 ID cố định từ <code>llm_review_ids.csv</code>. Các mốc khác dùng mẫu theo seed khi chạy pipeline.</p></article></li>
-      <li><article><h3>Đọc checkpoint hoặc gọi API</h3><p><code>src/llm.py</code> dùng signature để nhận diện lần chạy. Review cần xử lý được gửi bằng profile Luna hoặc Argon. Bộ đọc kiểm tra JSON, nhãn và khía cạnh trước khi lưu.</p></article></li>
-      <li><article><h3>Đánh giá và ước tính chi phí</h3><p>Nếu mẫu có tập test, so sánh sentiment của LLM và baseline từ khóa với nhãn tay. Chi phí được ước tính từ usage lưu trong JSONL.</p></article></li>
-      <li><article><h3>Tính KPI và sinh biểu đồ</h3><p><code>src/kpi.py</code> dùng dự đoán theo review để tổng hợp sentiment và khía cạnh. Pipeline ghi <code>reports/kpi_checks.csv</code> và sinh biểu đồ trong <code>figures/</code>.</p></article></li>
+      <li><article><h3>Chọn mốc và model</h3><p>Ghép cấu hình chung, profile Luna hoặc Argon và tùy chọn trong <code>configs/city.yaml</code>. Pipeline tải và làm QA cho bốn mốc, sau đó chọn một mốc cho LLM.</p><span class="track"><code>load_config()</code> → <code>cfg</code></span></article></li>
+      <li><article><h3>Chuẩn bị review và nhận diện lần chạy</h3><p><code>reviews()</code> đọc <code>reviews_clean.csv</code>, lọc đúng mốc và chuẩn bị <code>text</code>. Mốc <code>2026-06-15</code> dùng danh sách 1.000 ID cố định. Khi pipeline chuyển sang mốc khác, mẫu được chọn theo seed.</p><span class="track"><code>reviews(cfg)</code> → <code>rows</code> → <code>build_run_signature(cfg, rows)</code> → <code>signature</code></span></article></li>
+      <li><article><h3>Quyết định có gọi API cho từng review</h3><p><code>run()</code> nạp checkpoint khớp chữ ký nếu có. Mỗi review bắt đầu với một bản ghi kết quả tương ứng. Runner dùng lại <code>ok</code> và <code>needs_review</code>. Review chưa hoàn tất chỉ được gửi khi qua QA, còn lượt gọi và không bật <code>--skip-llm</code>.</p><span class="track"><code>rows</code> + checkpoint cũ → <code>review</code> và <code>result</code> tương ứng</span></article></li>
+      <li><article><h3>Đọc phản hồi rồi lưu kết quả</h3><p><code>request_review()</code> gửi prompt và text. <code>parse_response()</code> lấy JSON, gộp khía cạnh trùng và kiểm tra schema. Dự đoán hợp lệ được ghép vào <code>result</code> cùng ID và usage. <code>write_jsonl()</code> lưu tiến độ qua file tạm.</p><span class="track"><code>text</code> → <code>response_body</code> → <code>prediction</code> → <code>result</code> → JSONL</span></article></li>
+      <li><article><h3>Dùng kết quả cho báo cáo và KPI</h3><p>Khi batch hoàn tất, pipeline đọc JSONL. Nếu mẫu có tập test, <code>evaluate()</code> ghép nhãn tay theo ID và chấm sentiment của LLM lẫn baseline. <code>cost()</code> ước tính chi phí từ usage. KPI nhận JSONL để tổng hợp sentiment và khía cạnh, rồi pipeline sinh biểu đồ.</p><span class="track">JSONL → đánh giá, chi phí, KPI và biểu đồ</span></article></li>
     </ol>
+    <details>
+      <summary>Đọc log khi một lượt chạy bị ngắt</summary>
+      <ul class="branches">
+        <li><code>ok</code> là dự đoán hợp lệ. <code>needs_review</code> là phản hồi hợp lệ nhưng thiếu căn cứ để gán sentiment. Cả hai đều tính là cache hit khi chạy lại.</li>
+        <li><code>status: error</code> gồm cả bản ghi chưa thử. Xem trường <code>error</code> để phân biệt <code>not_attempted</code>, lỗi QA và lỗi API.</li>
+        <li>HTTP 502, 503 và 504 được thử lại tối đa hai lần, chờ 5 rồi 10 giây nếu còn lượt gọi. HTTP 429 hoặc lỗi request hết retry khiến runner lưu rồi dừng batch. Lượt tiếp theo dùng lại các bản ghi đã hoàn tất.</li>
+      </ul>
+    </details>
   </section>
 
-  <section id="checkpoint">
-    <h2>Ba trạng thái của một review</h2>
+  <section id="vidu">
+    <h2>Theo dấu một review</h2>
+    <div class="example">
+      <p><strong>Ví dụ minh họa.</strong> <code>review["text"]</code> là “Great location but filthy room.”</p>
+      <p><code>request_review()</code> gửi câu này. Sau khi parse, <code>prediction</code> có <code>sentiment: mixed</code> và hai khía cạnh, <code>location: positive</code> và <code>cleanliness: negative</code>.</p>
+      <p><code>run()</code> ghép dự đoán với <code>review_id</code> và <code>listing_id</code> thành <code>result</code> rồi lưu. Nếu ID thuộc tập test, <code>evaluate()</code> so sentiment với nhãn tay. KPI dùng các khía cạnh để tổng hợp theo nhóm.</p>
+    </div>
+  </section>
+
+  <section id="ham">
+    <h2>Tra nhanh 18 hàm trong <code>src/llm.py</code></h2>
+    <p class="hint">Mỗi dòng ghi đầu vào và thứ hàm chuyển cho bước sau.</p>
+
+    <details>
+      <summary>1. Điểm vào và cấu hình · 3 hàm</summary>
+      <dl class="function-list">
+        <dt><code>main(argv)</code></dt><dd>Đọc đối số CLI, chuẩn bị dữ liệu và đường dẫn, chọn thao tác rồi trả mã thoát.</dd>
+        <dt><code>load_config(profile, config_path)</code></dt><dd>Ghép mặc định, profile và YAML hoặc JSON ghi đè → cấu hình <code>cfg</code>.</dd>
+        <dt><code>read_city_llm_config(config_path)</code></dt><dd>Đọc YAML, kiểm tra mốc và suy ra đường dẫn CSV sạch, thư mục JSONL, tùy chọn mẫu → <code>settings</code>.</dd>
+      </dl>
+    </details>
+
+    <details>
+      <summary>2. Dữ liệu, chữ ký và checkpoint · 6 hàm</summary>
+      <dl class="function-list">
+        <dt><code>read_csv(path)</code></dt><dd>Đọc CSV, kiểm tra tiêu đề và số ô → danh sách dòng dạng dictionary.</dd>
+        <dt><code>reviews(cfg)</code></dt><dd>Đọc review sạch, lọc mốc, kiểm tra ID, chọn mẫu và chuẩn bị <code>text</code> → <code>rows</code>.</dd>
+        <dt><code>digest(value)</code></dt><dd>Chuẩn hóa dữ liệu thành JSON rồi băm SHA-256 → chuỗi hash. Dùng cho chữ ký và đối chiếu báo cáo.</dd>
+        <dt><code>build_run_signature(cfg, rows)</code></dt><dd>Băm model, prompt, tùy chọn request và dữ liệu mẫu → <code>signature</code> của lần chạy.</dd>
+        <dt><code>read_results(path, rows, signature)</code></dt><dd>Kiểm tra chữ ký, bộ ID và schema đã lưu → danh sách <code>saved_results</code>.</dd>
+        <dt><code>write_jsonl(path, rows)</code></dt><dd>Ghi mỗi bản ghi thành một dòng JSON. Ghi file tạm rồi thay file đích.</dd>
+      </dl>
+    </details>
+
+    <details>
+      <summary>3. Batch và một lần gọi model · 5 hàm</summary>
+      <dl class="function-list">
+        <dt><code>run(rows, cfg, output, signature, args)</code></dt><dd>Điều phối cache, QA, giới hạn request, retry và lưu JSONL → mã <code>0</code> khi batch hết lỗi, <code>1</code> khi còn lỗi.</dd>
+        <dt><code>request_review(text, cfg, api_key)</code></dt><dd>Ghép model, prompt và review thành request → JSON đầy đủ từ API, gọi là <code>response_body</code> trong <code>run()</code>.</dd>
+        <dt><code>parse_response(body)</code></dt><dd>Kiểm tra <code>finish_reason</code>, lấy nội dung JSON, rồi chuyển qua chuẩn hóa → <code>prediction</code>.</dd>
+        <dt><code>normalize_aspects(prediction)</code></dt><dd>Gộp mục trùng cùng khía cạnh. Polarity khác nhau được gộp thành <code>mixed</code>. Sau đó kiểm tra lại dự đoán.</dd>
+        <dt><code>validate(result)</code></dt><dd>Kiểm tra đúng 5 trường <code>sentiment</code>, <code>aspects</code>, <code>language</code>, <code>status</code>, <code>error</code> → trả dự đoán hợp lệ hoặc báo <code>ValueError</code>. Đối số ở đây chỉ gồm phần dự đoán.</dd>
+      </dl>
+    </details>
+
+    <details>
+      <summary>4. Baseline, đánh giá và chi phí · 4 hàm</summary>
+      <dl class="function-list">
+        <dt><code>baseline(text)</code></dt><dd>Dựa vào từ khóa tiếng Anh và phủ định gần từ khóa → nhãn sentiment hoặc <code>unclassified</code>.</dd>
+        <dt><code>metrics(gold, predicted)</code></dt><dd>So hai danh sách nhãn cùng thứ tự → coverage, accuracy, Macro-F1 và F1 từng lớp.</dd>
+        <dt><code>evaluate(rows, predictions, labels_path, folder)</code></dt><dd>Kiểm tra nhãn test, ghép theo ID, chấm LLM và baseline → <code>metrics.json</code> và <code>error_analysis.csv</code>.</dd>
+        <dt><code>cost(records, cfg, city_reviews)</code></dt><dd>Cộng token có usage, áp đơn giá trong cấu hình và ngoại suy nếu có tổng review thành phố → dictionary chi phí ước lượng.</dd>
+      </dl>
+    </details>
+  </section>
+
+  <section id="bien">
+    <h2>Tra biến theo chặng</h2>
     <div class="grid">
-      <article class="card"><span class="status">Hoàn tất</span><h3><code>ok</code></h3><p>Dự đoán hợp lệ. Sentiment là <code>positive</code>, <code>mixed</code> hoặc <code>negative</code>. <code>mixed</code> nghĩa là có cả khen và chê đáng kể.</p></article>
-      <article class="card"><span class="status">Thiếu căn cứ</span><h3><code>needs_review</code></h3><p>Ví dụ review chỉ kể đã ở hai đêm. Bản ghi có lý do, sentiment rỗng và vẫn được dùng lại khi chạy tiếp.</p></article>
-      <article class="card"><span class="status">Cần xử lý tiếp</span><h3><code>error</code></h3><p>Xem trường <code>error</code> để phân biệt review chưa thử (<code>not_attempted</code>) và lỗi như <code>http_429</code>.</p></article>
+      <article class="card">
+        <h3>Cấu hình và đầu vào</h3>
+        <dl class="variable-list">
+          <dt><code>profile</code>, <code>cfg</code>, <code>args</code></dt><dd>Tên profile model, cấu hình đã ghép và cờ lệnh như <code>skip_llm</code>, <code>max_new_requests</code>.</dd>
+          <dt><code>PROMPT</code>, <code>LABELS</code>, <code>ASPECTS</code></dt><dd>Chỉ dẫn cho model, ba nhãn sentiment và danh sách bảy khía cạnh hợp lệ.</dd>
+          <dt><code>rows</code>, <code>review</code>, <code>text</code></dt><dd>Mẫu đã chọn, một dòng trong mẫu và nội dung sạch được gửi cho model. <code>reviews_by_id</code> dùng để tra review theo ID.</dd>
+        </dl>
+      </article>
+      <article class="card">
+        <h3>Phản hồi và checkpoint</h3>
+        <dl class="variable-list">
+          <dt><code>signature</code>, <code>output</code>, <code>saved_by_id</code></dt><dd>Chữ ký lần chạy, đường dẫn JSONL và bảng tra bản ghi cũ theo ID.</dd>
+          <dt><code>response_body</code>, <code>prediction</code>, <code>result</code></dt><dd>JSON đầy đủ từ API, phần nhãn đã tách ra, rồi bản ghi checkpoint có thêm ID, metadata và usage. <code>results</code> là cả batch.</dd>
+          <dt><code>api_calls</code>, <code>cache_hits</code>, <code>status_counts</code></dt><dd>Số lần gửi trong lượt chạy kể cả retry, số bản ghi dùng lại và số bản ghi theo trạng thái.</dd>
+          <dt><code>attempts_allowed</code>, <code>attempt</code>, <code>delay</code></dt><dd>Số lần thử còn được phép cho review, số thứ tự lần thử và thời gian chờ retry.</dd>
+        </dl>
+      </article>
+      <article class="card">
+        <h3>Đánh giá và chi phí</h3>
+        <dl class="variable-list">
+          <dt><code>manual_labels</code>, <code>predictions_by_id</code>, <code>comparisons</code></dt><dd>Nhãn tay, bảng tra dự đoán theo ID và các dòng đối chiếu để ghi báo cáo lỗi.</dd>
+          <dt><code>gold_labels</code>, <code>llm_labels</code>, <code>baseline_labels</code></dt><dd>Ba danh sách cùng thứ tự review dùng để chấm LLM và baseline.</dd>
+          <dt><code>usage</code>, <code>input_tokens</code>, <code>output_tokens</code>, <code>city_reviews</code></dt><dd>Số token ghi nhận cho từng review, hai tổng token và số review toàn thành phố dùng để ngoại suy chi phí.</dd>
+        </dl>
+      </article>
     </div>
     <details>
-      <summary>Runner thử lại thế nào?</summary>
-      <p>HTTP 502, 503 và 504 có thể được thử lại tối đa hai lần, chờ lần lượt 5 và 10 giây. Các lần thử tính vào giới hạn request. Khi request vẫn lỗi hoặc gặp 429, runner lưu checkpoint và dừng batch.</p>
+      <summary>Biến phụ khi đọc từng đoạn code</summary>
+      <dl class="variable-list">
+        <dt><code>COMMON_CONFIG</code>, <code>MODEL_PROFILES</code>, <code>settings</code>, <code>overrides</code></dt><dd>Mặc định chung, thiết lập từng model, thiết lập đọc từ YAML và các giá trị ghi đè từ JSON.</dd>
+        <dt><code>snapshot_reviews</code>, <code>sample_rows</code>, <code>selected_reviews</code></dt><dd>Review đúng mốc, các dòng trong danh sách ID, và tập review cuối cùng để chạy.</dd>
+        <dt><code>expected_keys</code>, <code>saved_keys</code>, <code>input_failed_qa</code></dt><dd>Bộ khóa của mẫu và của checkpoint để đối chiếu. Cờ QA báo text rỗng hoặc review có cờ kiểm tra không đạt.</dd>
+        <dt><code>payload</code>, <code>finish_reason</code>, <code>content</code>, <code>aspects_by_name</code></dt><dd>Nội dung gửi API, lý do model dừng, chuỗi JSON mà model trả và bảng gom khía cạnh theo tên.</dd>
+        <dt><code>gold</code>, <code>predicted</code>, <code>class_scores</code>, <code>evaluation_report</code></dt><dd>Nhãn tay và nhãn dự đoán cùng thứ tự, điểm theo từng lớp và báo cáo tổng hợp.</dd>
+      </dl>
     </details>
-    <details>
-      <summary>Checkpoint nào có thể dùng lại?</summary>
-      <p>Giữ cùng model, prompt, tham số request và mẫu review. Khi dùng <code>--skip-llm</code>, bước LLM chỉ đọc checkpoint. Pipeline cần checkpoint hoàn chỉnh trước khi sang đánh giá và KPI.</p>
-    </details>
-  </section>
-
-  <section id="lenh">
-    <h2>Hai lệnh chạy toàn pipeline</h2>
-    <h3>Chạy với khóa ShopAIKey đã đặt</h3>
-    <pre><code>python run_pipeline.py --config configs/city.yaml --profile luna</code></pre>
-    <h3>Chạy lại khi đã có dữ liệu thô và checkpoint hoàn chỉnh</h3>
-    <pre><code>python run_pipeline.py --config configs/city.yaml --profile luna --skip-download --skip-llm</code></pre>
-    <p>Xem hướng dẫn cài đặt và chạy riêng từng lệnh trong <a href="llm_readme.md"><code>llm_readme.md</code></a>.</p>
   </section>
 </main>
 <footer>
-  <div class="wrap"><a href="README.md">README toàn dự án</a> · <a href="docs/LLM_ANNOTATION_CONTRACT.md">Quy tắc gán nhãn review</a></div>
+  <div class="wrap"><a href="llm_readme.md">Hướng dẫn LLM</a> · <a href="README.md">README toàn dự án</a> · <a href="docs/LLM_ANNOTATION_CONTRACT.md">Quy tắc gán nhãn</a></div>
 </footer>
 </body>
 </html>
