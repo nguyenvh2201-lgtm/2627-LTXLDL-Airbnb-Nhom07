@@ -219,3 +219,10 @@ __marimo__/
 # Airbnb Raw Data
 data/raw/
 *.csv.gz
+# Kết quả sinh tự động và checkpoint API
+/data/processed/
+/reports/llm/
+/reports/llm_smoke/
+/reports/qa_report.csv
+/reports/kpi_checks.csv
+/figures/*.png

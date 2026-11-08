@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import yaml
 from pathlib import Path
 
 # Tính từ vị trí qa.py, không phụ thuộc thư mục đang mở terminal.
@@ -256,9 +257,8 @@ def calendar_listing_summary(calendar_qa_df):
     summary["availability_share"] = (
     summary["n_available"] / summary["n_available_valid"]
     ).where(summary["n_available_valid"] != 0)  
-    summary["coverage_share"] = (
-    summary["n_available_valid"] / 365
-    )
+    # KPI dùng số ngày có trong lịch của từng listing làm mẫu số.
+    summary["coverage_share"] = summary["n_available_valid"] / summary["n_calendar_days"]
     return summary
 def run_qa_reviews(reviews_df,raw_listings):
     missing_summary = check_missing(reviews_df)
@@ -301,25 +301,67 @@ def run_qa_listings(df):
     }
 
     return report
-if __name__ == "__main__":
+def run_qa(config):
+    """Chạy QA theo cấu hình và trả số review thô của từng mốc."""
+    raw_dir = PROJECT_ROOT / config.get("raw_dir", RAW_DIR)
+    processed_dir = PROJECT_ROOT / config.get("processed_dir", DATA_DIR / "processed")
+    reports_dir = PROJECT_ROOT / config.get("reports_dir", "reports")
+    report_rows = []
+    raw_review_counts = {}
+    seen_listing_scrapes = set()
+    seen_reviews = set()
+
+    def record(snapshot, table, check, affected, before, after, unit="rows"):
+        report_rows.append({
+            "snapshot_date": snapshot, "table": table, "check": check,
+            "affected_rows": int(affected), "before_qa": before,
+            "after_qa": after, "unit": unit,
+        })
+
+    def record_flags(snapshot, table, report, valid_flags):
+        flags = report["row_flags"]
+        for column, missing in report["missing_summary"]["missing_count"].items():
+            if missing:
+                record(snapshot, table, f"missing:{column}", missing, len(flags), len(flags))
+        for column in flags.select_dtypes(include="bool"):
+            mask = flags[column].fillna(False)
+            affected = (~mask).sum() if column in valid_flags else mask.sum()
+            record(snapshot, table, column, affected, len(flags), len(flags))
+
+    snapshots = []
+    for snapshot in config["snapshots"]:
+        snapshots.append(str(snapshot))
+    snapshots.sort()
+
     # Đặt đoạn đọc dữ liệu và chạy QA ở đây.
     phan_cong = pd.read_csv(
         DATA_DIR / "data-new.csv",
         encoding="utf-8",
         dtype={"listing_id": "string", "review_id": "string"},
     )
-    snapshots = ["2025-09-11",
-                "2025-12-12",
-                "2026-03-19",
-                "2026-06-15"]          
     for date in snapshots:
         df = pd.read_csv(
-            RAW_DIR / date / "listings.csv.gz",
+            raw_dir / date / "listings.csv.gz",
             dtype={"id": "string"},
         )
         prepare = prepare_listings(df,phan_cong,date)
         report = run_qa_listings(prepare)
         row_flags = report["row_flags"]
+        record(date, "listings", "assigned_scope", len(df) - len(prepare), len(df), len(prepare))
+        record_flags(date, "listings", report, {
+            "price_valid", "rating_valid", "room_type_valid", "Khu phan tich hop le",
+        })
+        scrape_keys = list(prepare[["listing_id", "last_scraped"]].dropna().itertuples(index=False, name=None))
+        repeated_scrapes = sum(key in seen_listing_scrapes for key in scrape_keys)
+        record(date, "listings", "listing_scrape_repeated_across_snapshots",
+               repeated_scrapes, len(prepare), len(prepare))
+        seen_listing_scrapes.update(scrape_keys)
+        price = row_flags["price_cad"]
+        record(date, "listings", "median_price", (~row_flags["price_valid"]).sum(),
+               price.median(), price[row_flags["price_valid"]].median(), config.get("currency", "CAD"))
+        rating = prepare["review_scores_rating"]
+        record(date, "listings", "median_rating", (~row_flags["rating_valid"]).sum(),
+               rating.median(), rating[row_flags["rating_valid"]].median(), "score")
         all_data = pd.concat(
         [
             prepare.reset_index(drop=True),
@@ -346,7 +388,7 @@ if __name__ == "__main__":
                 "number_of_reviews",
             ]
         ].copy()
-        output_dir = DATA_DIR / "processed" / date
+        output_dir = processed_dir / date
 
         output_dir.mkdir(
                     parents=True,
@@ -365,13 +407,14 @@ if __name__ == "__main__":
 
         # 1. Đọc reviews raw
         raw_reviews = pd.read_csv(
-            RAW_DIR / date / "reviews.csv.gz",
+            raw_dir / date / "reviews.csv.gz",
             dtype={"id": "string", "listing_id": "string"},
         )
+        raw_review_counts[date] = len(raw_reviews)
 
         # 2. Đọc listings_clean cùng snapshot
         listings_df = pd.read_csv(
-            DATA_DIR / "processed" / date / "listings_clean.csv",
+            processed_dir / date / "listings_clean.csv",
             dtype={"listing_id": "string"},
         )
 
@@ -388,6 +431,13 @@ if __name__ == "__main__":
             listings_df
         )
         review_flags = review_report["row_flags"]
+        record(date, "reviews", "assigned_scope", len(raw_reviews) - len(prepared_reviews),
+               len(raw_reviews), len(prepared_reviews))
+        record_flags(date, "reviews", review_report, {"text_valid", "listing_match", "date_valid"})
+        review_ids = prepared_reviews["review_id"]
+        record(date, "reviews", "review_seen_in_earlier_snapshot", review_ids.isin(seen_reviews).sum(),
+               len(prepared_reviews), len(prepared_reviews))
+        seen_reviews.update(review_ids.dropna())
 
         # 5. Ghép reviews + QA flags
         all_reviews = pd.concat(
@@ -426,7 +476,7 @@ if __name__ == "__main__":
             .head(10)
         )  
         # 7. Folder output
-        output_dir = DATA_DIR / "processed" / date
+        output_dir = processed_dir / date
         output_dir.mkdir(
             parents=True,
             exist_ok=True
@@ -448,23 +498,26 @@ if __name__ == "__main__":
     for date in snapshots:
 
         # 1. Đọc calendar raw
-        raw_calendar = pd.read_csv(
-            RAW_DIR / date / "calendar.csv.gz",
+        calendar_parts = []
+        raw_calendar_count = 0
+        for chunk in pd.read_csv(
+            raw_dir / date / "calendar.csv.gz",
             dtype={"listing_id": "string"},
-        )
+            chunksize=200_000,
+        ):
+            raw_calendar_count += len(chunk)
+            calendar_parts.append(prepare_calendar(chunk, phan_cong, date))
 
         # 2. Đọc listings_clean cùng snapshot
         listings_df = pd.read_csv(
-            DATA_DIR / "processed" / date / "listings_clean.csv",
+            processed_dir / date / "listings_clean.csv",
             dtype={"listing_id": "string"},
         )
 
         # 3. Chuẩn bị calendar của 1000 listings nhóm
-        prepared_calendar = prepare_calendar(
-            raw_calendar,
-            phan_cong,
-            date
-        )
+        prepared_calendar = pd.concat(calendar_parts, ignore_index=True)
+        record(date, "calendar", "assigned_scope", raw_calendar_count - len(prepared_calendar),
+               raw_calendar_count, len(prepared_calendar))
 
         # 4. Chạy QA calendar
         calendar_report = run_qa_calendar(
@@ -473,6 +526,7 @@ if __name__ == "__main__":
         )
 
         row_flags = calendar_report["row_flags"]
+        record_flags(date, "calendar", calendar_report, {"date_valid", "available_valid", "listing_match"})
 
         # 5. Ghép calendar với các QA flags
         calendar_qa_df = pd.concat(
@@ -496,7 +550,7 @@ if __name__ == "__main__":
         )
 
         # 8. Tạo folder output
-        output_dir = DATA_DIR / "processed" / date
+        output_dir = processed_dir / date
 
         output_dir.mkdir(
             parents=True,
@@ -533,4 +587,14 @@ if __name__ == "__main__":
             ).sum()
         )
 
-        print()          
+        print()
+
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(report_rows).to_csv(reports_dir / "qa_report.csv", index=False)
+    return raw_review_counts
+
+
+if __name__ == "__main__":
+    with (PROJECT_ROOT / "configs" / "city.yaml").open(encoding="utf-8-sig") as config_file:
+        config = yaml.safe_load(config_file)
+    run_qa(config)
