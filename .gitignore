@@ -225,3 +225,11 @@ data/processed/llm/
 reports/llm/
 .llm_install_backups/
 data/processed/llm_cache.jsonl
+
+# Toronto pipeline generated outputs
+/data/processed/
+/reports/llm/
+/reports/llm_smoke/
+/reports/qa_report.csv
+/reports/kpi_checks.csv
+/figures/*.png

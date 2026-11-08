@@ -1,31 +1,29 @@
-#Tệp cấu hình chứa tham số thành phố, mốc chụp, tiền tệ (EUR), threshold QA...
-import yaml
-city : toronto
-data_root :  canada/on
-currency : CAD 
-snapshots : 
+city: toronto
+data_root: canada/on/toronto
+currency: CAD
+snapshots:
   - "2025-09-11"
-  - "2025-12-12"
+  - "2025-11-11"
   - "2026-03-19"
   - "2026-06-15"
-raw/dir : data/raww
-processed_dir : data/processed
-qa:
-  price_max : ...
-  min_nights_cap: 365
-  dedupe_keys = [id,last_scraped]
-kpi : 
-  area_col = neighbourhood_cleansed
 
-llm : 
-  provider : gemini 
-  sample_size = 
-  aspect : 
-    - vị trí
-    - sạch sẽ
-    - chủ nhà
-    - giá trị 
-    - tiện nghi 
-    - độ ồn
-    - an toàn
-  cache : data/processed/llm_cache.json 
+raw_dir: data/raw
+processed_dir: data/processed
+samples_dir: data/samples
+figures_dir: figures
+reports_dir: reports
+
+qa:
+  price_max: 2000.0
+  min_nights_cap: 365
+  dedupe_keys: [id, last_scraped]
+
+kpi:
+  area_col: neighbourhood_cleansed
+
+snapshot_date: "2026-06-15"
+seed: 42
+llm:
+  sample_size: 1000
+  sample_snapshot_date: "2026-06-15"
+  sample_ids: data/samples/llm_review_ids.csv
