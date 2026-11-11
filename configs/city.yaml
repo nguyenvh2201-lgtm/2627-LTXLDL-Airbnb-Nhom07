@@ -2,36 +2,467 @@ city: toronto
 data_root: canada/on/toronto
 currency: CAD
 snapshots:
-  - "2025-09-11"
-  - "2025-12-12"
-  - "2026-03-19"
-  - "2026-06-15"
-
+- '2025-09-11'
+- '2026-03-19'
+- '2026-06-15'
+- '2026-09-16'
 raw_dir: data/raw
 processed_dir: data/processed
 samples_dir: data/samples
 figures_dir: figures
 reports_dir: reports
-
 qa:
   price_max: 2000.0
   min_nights_cap: 365
-  dedupe_keys: [id, last_scraped]
-
+  dedupe_keys:
+  - id
+  - last_scraped
+  accommodates_max: 20
+  beds_max: 30
+  iqr_multiplier: 1.5
+  rare_property_min: 10
+  missing_rate_warning: 0.1
+  room_types:
+  - Entire home/apt
+  - Private room
+  - Shared room
+  - Hotel room
+  room_aliases:
+    entire home/apt: Entire home/apt
+    private room: Private room
+    shared room: Shared room
+    hotel room: Hotel room
 kpi:
-  area_col: neighbourhood_cleansed
-
+  area_col: analysis_area
+  stakeholder: Cơ quan quản lý du lịch thành phố (giả định, nhóm cần xác nhận)
+  long_stay_nights: 30
+  high_availability_ratio: 0.75
+  professional_min_reviews: 10
 llm:
   provider: gemini
-  sample_size: 100
+  sample_size: 1000
   aspects:
-    - vị trí
-    - sạch sẽ
-    - chủ nhà
-    - giá trị
-    - tiện nghi
-    - độ ồn
-    - an toàn
+  - location
+  - cleanliness
+  - host
+  - value
+  - amenities
+  - noise
+  - safety
   cache: data/processed/llm_cache.jsonl
+  model: gemini-2.5-flash
+  api_url: https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent
+  api_key_env: GEMINI_API_KEY
+  batch_size: 10
+  rate_limit_per_min: 5
+  retries: 5
+  backoff: 2
+  timeout: 120
+  max_chars: 1500
+  prompt_version: v1
+  city_total_reviews: null
+  price_per_m_input: 0.3
+  price_per_m_output: 2.5
+  price_date: '2026-11-11'
+  aspect_labels:
+    location: vị trí
+    cleanliness: sạch sẽ
+    host: chủ nhà
+    value: giá trị
+    amenities: tiện nghi
+    noise: độ ồn
+    safety: an toàn
+  price_source: https://aistudio.google.com/docs/pricing#gemini-2.5-flash
+  price_basis: Standard paid tier text, USD per million tokens; free tier quota differs
+  deprecation_note: Official pricing announces automatic rerouting from 2026-12-01; recheck model and price before
+    rerun
+  assumed_output_tokens: 100
+  prompt_text: 'Bạn là hệ thống trích xuất thông tin từ đánh giá của khách Airbnb. Đánh giá có thể bằng nhiều ngôn
+    ngữ.
 
+    Với MỖI đánh giá, trả về một đối tượng JSON gồm:
+
+    - review_id: giữ nguyên id đã cho.
+
+    - sentiment: một trong ''positive'', ''mixed'', ''negative''. ''mixed'' khi có cả khen và chê rõ ràng. Nếu chỉ
+    có lời khen chung chung thì ''positive''. Chỉ ''negative'' khi nội dung chủ yếu là phàn nàn.
+
+    - aspects_praise: danh sách khía cạnh được KHEN, chọn trong: {aspects}. Chỉ chọn khi đánh giá nói trực tiếp.
+
+    - aspects_complaint: danh sách khía cạnh bị CHÊ, chọn trong cùng danh sách.
+
+    - language: mã ngôn ngữ ISO 639-1 của đánh giá (en, es, fr, ...). Dùng ''und'' nếu không xác định.
+
+    Quy tắc: không suy diễn ngoài văn bản; không thêm khía cạnh ngoài danh sách; nếu không có khía cạnh thì trả
+    danh sách rỗng; chỉ trả JSON, không giải thích.
+
+    '
 seed: 42
+inputs:
+  assignment: data/samples/assignment.csv
+  listing_ids: data/samples/listing_ids.csv
+  review_ids: data/samples/review_ids.csv
+  areas: data/samples/areas.csv
+  columns:
+    listing_ids:
+      id: id
+      analysis_area: analysis_area
+    review_ids:
+      id: id
+      in_llm_sample: in_llm_sample
+      in_hand_label: in_hand_label
+    areas:
+      area: area
+      lat_min: lat_min
+      lat_max: lat_max
+      lon_min: lon_min
+      lon_max: lon_max
+  hand_labels: data/samples/hand_labels.csv
+id_inspection:
+  source: data/samples/data-new.csv
+  class: UET.DSE2049 4
+  group: 7
+  true_markers:
+  - x
+  decimal_separator: ','
+  expected:
+    listings: 1000
+    reviews: 5000
+    llm_sample: 1000
+    hand_sample: 100
+    areas: 8
+  columns:
+    class:
+      index: 0
+      header: Lớp
+    group:
+      index: 1
+      header: Nhóm
+    assignment_code:
+      index: 2
+      header: Mã dữ liệu
+    listing_id:
+      index: 3
+      header: listing_id
+    listing_area:
+      index: 4
+      header: analysis_area
+    review_id:
+      index: 5
+      header: review_id
+    review_listing_id:
+      index: 6
+      header: listing_id
+    llm:
+      index: 7
+      header: Mẫu LLM
+    hand:
+      index: 8
+      header: Nhãn tay
+    city:
+      index: 9
+      header: Thành phố
+    area:
+      index: 10
+      header: analysis_area
+    lon_min:
+      index: 11
+      header: lon_min
+    lat_min:
+      index: 12
+      header: lat_min
+    lon_max:
+      index: 13
+      header: lon_max
+    lat_max:
+      index: 14
+      header: lat_max
+paths:
+  raw: data/raw
+  processed: data/processed
+  samples: data/samples
+  figures: figures
+  reports: reports
+io:
+  chunksize: 200000
+  processed_max_mb: 50
+  calendar_days: 365
+  calendar_columns:
+  - listing_id
+  - date
+  - available
+  - price
+  - adjusted_price
+  - minimum_nights
+  - maximum_nights
+download:
+  base_url: https://data.insideairbnb.com
+  timeout: 120
+  retries: 3
+  backoff: 2
+  block_bytes: 1048576
+expected:
+  listing_count: 1000
+  review_count: 5000
+  llm_count: 1000
+  hand_count: 100
+  area_count: 8
+  area_min: 120
+  area_max: 130
+  room_types:
+    Entire home/apt: 875
+    Private room: 125
+  by_snapshot:
+    '2025-09-11':
+      zero_reviews: 50
+    '2025-12-12':
+      zero_reviews: 30
+    '2026-03-19':
+      zero_reviews: 25
+    '2026-06-15':
+      zero_reviews: 25
+      missing_price: 20
+baseline:
+  lexicons:
+    en:
+      positive:
+      - good
+      - great
+      - excellent
+      - clean
+      - comfortable
+      - perfect
+      - lovely
+      - amazing
+      - friendly
+      - helpful
+      - recommend
+      - quiet
+      - safe
+      negative:
+      - bad
+      - dirty
+      - noisy
+      - terrible
+      - poor
+      - broken
+      - rude
+      - unsafe
+      - disappointing
+      - uncomfortable
+      - expensive
+      negations:
+      - not
+      - 'no'
+      - never
+      - without
+      contrast:
+      - but
+      - however
+      aspects:
+        location:
+        - location
+        - downtown
+        - station
+        - walk
+        cleanliness:
+        - clean
+        - dirty
+        - spotless
+        - dust
+        host:
+        - host
+        - responsive
+        - communication
+        value:
+        - price
+        - value
+        - expensive
+        - cheap
+        amenities:
+        - wifi
+        - kitchen
+        - bed
+        - shower
+        noise:
+        - noise
+        - noisy
+        - quiet
+        - loud
+        safety:
+        - safe
+        - unsafe
+        - security
+    es:
+      positive:
+      - bueno
+      - excelente
+      - limpio
+      - cómodo
+      - perfecto
+      - genial
+      - amable
+      - tranquilo
+      negative:
+      - malo
+      - sucio
+      - ruidoso
+      - roto
+      - caro
+      - terrible
+      negations:
+      - 'no'
+      - nunca
+      - sin
+      contrast:
+      - pero
+      - aunque
+      aspects:
+        location:
+        - ubicación
+        - centro
+        - metro
+        cleanliness:
+        - limpio
+        - sucio
+        - limpieza
+        host:
+        - anfitrión
+        - comunicación
+        value:
+        - precio
+        - caro
+        amenities:
+        - wifi
+        - cocina
+        - cama
+        noise:
+        - ruido
+        - ruidoso
+        - tranquilo
+        safety:
+        - seguro
+        - seguridad
+    fr:
+      positive:
+      - bien
+      - excellent
+      - propre
+      - confortable
+      - parfait
+      - super
+      - agréable
+      - calme
+      negative:
+      - sale
+      - bruyant
+      - mauvais
+      - cassé
+      - cher
+      - décevant
+      negations:
+      - pas
+      - jamais
+      - sans
+      contrast:
+      - mais
+      - cependant
+      aspects:
+        location:
+        - emplacement
+        - quartier
+        - métro
+        cleanliness:
+        - propre
+        - sale
+        - propreté
+        host:
+        - hôte
+        - accueil
+        - communication
+        value:
+        - prix
+        - cher
+        amenities:
+        - wifi
+        - cuisine
+        - lit
+        noise:
+        - bruyant
+        - calme
+        - bruit
+        safety:
+        - sécurité
+        - sûr
+    pt:
+      positive:
+      - bom
+      - ótimo
+      - excelente
+      - limpo
+      - confortável
+      - perfeito
+      - tranquilo
+      negative:
+      - ruim
+      - sujo
+      - barulhento
+      - caro
+      - quebrado
+      negations:
+      - não
+      - nunca
+      - sem
+      contrast:
+      - mas
+      - porém
+      aspects:
+        location:
+        - localização
+        - centro
+        cleanliness:
+        - limpo
+        - sujo
+        - limpeza
+        host:
+        - anfitrião
+        - comunicação
+        value:
+        - preço
+        - caro
+        amenities:
+        - wifi
+        - cozinha
+        - cama
+        noise:
+        - barulho
+        - barulhento
+        - tranquilo
+        safety:
+        - seguro
+        - segurança
+  fallback_sentiment: positive
+  negation_window: 3
+  aspect_window: 5
+  mixed_max_difference: 2
+  language_min_chars: 15
+  language_share_min: 0.03
+evaluation:
+  min_hand_labels: 100
+  bootstrap_iterations: 1000
+  confidence: 0.95
+  labels:
+  - positive
+  - mixed
+  - negative
+  short_review_chars: 40
+viz:
+  dpi: 200
+  width: 10
+  height: 5
+  price_percentile: 0.95
+report:
+  max_pages: 10
+decisions:
+  snapshot_exception: User confirmed keeping 2026-09-16 on 2026-11-11; report 72 missing listings and 235 missing
+    reviews; do not enforce original snapshot expectations

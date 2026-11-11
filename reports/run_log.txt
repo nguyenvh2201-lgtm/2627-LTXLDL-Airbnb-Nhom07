@@ -1,0 +1,188 @@
+2026-11-11 16:56:19,054 INFO Lọc snapshot 2025-09-11
+2026-11-11 16:56:40,205 INFO Lọc snapshot 2026-03-19
+2026-11-11 16:56:55,498 INFO Lọc snapshot 2026-06-15
+2026-11-11 16:57:16,247 INFO Lọc snapshot 2026-09-16
+2026-11-11 16:57:38,204 WARNING 2026-09-16: listing_count có 928, kỳ vọng 1000 (warning)
+2026-11-11 16:57:38,205 WARNING 2026-09-16: review_count có 4765, kỳ vọng 5000 (warning)
+2026-11-11 16:57:39,075 WARNING 2026-09-16: room_type:Entire home/apt có 805, kỳ vọng 875 (warning)
+2026-11-11 16:57:39,075 WARNING 2026-09-16: room_type:Private room có 123, kỳ vọng 125 (warning)
+2026-11-11 16:57:39,076 WARNING 2026-09-16: in_llm_sample có 955, kỳ vọng 1000 (warning)
+2026-11-11 16:57:39,076 WARNING 2026-09-16: in_hand_label có 92, kỳ vọng 100 (warning)
+2026-11-11 16:57:39,079 WARNING 2026-09-16: area_size_range có False, kỳ vọng True (warning)
+2026-11-11 16:57:39,080 WARNING 2026-09-16 chưa có bộ kỳ vọng riêng; tiếp tục với số quan sát thực, không bù ID thiếu
+2026-11-11 16:59:58,111 WARNING listings 2026-06-15: flag_missing_bedrooms vượt ngưỡng thiếu
+2026-11-11 16:59:58,693 WARNING listings 2026-09-16: flag_missing_price vượt ngưỡng thiếu
+2026-11-11 17:01:32,539 INFO === qa ===
+2026-11-11 17:01:33,578 WARNING listings 2026-06-15: flag_missing_bedrooms vượt ngưỡng thiếu
+2026-11-11 17:01:33,935 WARNING listings 2026-09-16: flag_missing_price vượt ngưỡng thiếu
+2026-11-11 17:01:46,382 INFO === kpi ===
+2026-11-11 17:01:52,792 WARNING Chưa có dự đoán LLM hợp lệ; K7 chưa có số liệu
+2026-11-11 17:01:52,808 INFO === llm ===
+2026-11-11 17:01:53,175 WARNING LLM chưa chạy: 1000 review thiếu cache; --skip-llm hoặc thiếu GEMINI_API_KEY
+2026-11-11 17:01:53,201 INFO === baseline ===
+2026-11-11 17:01:58,083 INFO === evaluate ===
+2026-11-11 17:02:00,920 WARNING Chưa có hand_labels.csv thật: không thể tính accuracy/F1
+2026-11-11 17:02:00,940 INFO data/processed: 8.15 MB (ngưỡng 50.00 MB)
+2026-11-11 17:02:00,946 INFO Đầu ra processed: baseline_results.csv, baseline_results.parquet, calendar_clean.parquet, calendar_raw_filtered.parquet, kpi_area.csv, kpi_llm.csv, kpi_summary.csv, kpi_time.csv, listings_clean.parquet, listings_raw_filtered.parquet, llm_results.csv, llm_results.parquet, llm_sample.parquet, reviews_clean.parquet, reviews_raw_filtered.parquet
+2026-11-11 17:02:00,951 INFO Đầu ra reports: baseline_language_coverage.csv, city_review_counts.csv, confusion_baseline.csv, confusion_llm.csv, cross_snapshot_duplicates.csv, data_dictionary.csv, error_analysis.csv, error_summary.md, eval_metrics.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, run_log.txt
+2026-11-11 17:02:00,952 INFO Đầu ra figures: 
+2026-11-11 17:04:12,371 INFO === kpi ===
+2026-11-11 17:04:18,726 WARNING Chưa có dự đoán LLM hợp lệ; K7 chưa có số liệu
+2026-11-11 17:04:18,749 INFO === viz ===
+2026-11-11 17:04:21,695 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:04:21,696 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:04:21,698 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:04:21,699 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:04:21,700 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:04:21,702 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:04:22,651 WARNING Bỏ hình fig_llm_01_sentiment_by_area.png: Chưa có kết quả LLM thật
+2026-11-11 17:04:22,652 WARNING Bỏ hình fig_llm_02_aspects.png: Chưa có kết quả LLM thật
+2026-11-11 17:04:22,652 WARNING Bỏ hình fig_llm_03_model_vs_baseline.png: Chưa có nhãn tay để đánh giá
+2026-11-11 17:04:22,653 WARNING Bỏ hình fig_llm_04_confusion_llm.png: Chưa có nhãn tay để đánh giá
+2026-11-11 17:04:22,653 WARNING Bỏ hình fig_llm_05_confusion_baseline.png: Chưa có nhãn tay để đánh giá
+2026-11-11 17:04:22,654 INFO === summary ===
+2026-11-11 17:04:23,944 INFO === report ===
+2026-11-11 17:04:25,605 INFO data/processed: 8.15 MB (ngưỡng 50.00 MB)
+2026-11-11 17:04:25,608 INFO Đầu ra processed: baseline_results.csv, baseline_results.parquet, calendar_clean.parquet, calendar_raw_filtered.parquet, kpi_area.csv, kpi_llm.csv, kpi_summary.csv, kpi_time.csv, listings_clean.parquet, listings_raw_filtered.parquet, llm_results.csv, llm_results.parquet, llm_sample.parquet, reviews_clean.parquet, reviews_raw_filtered.parquet
+2026-11-11 17:04:25,612 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, confusion_baseline.csv, confusion_llm.csv, cross_snapshot_duplicates.csv, data_dictionary.csv, error_analysis.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report.pdf, report_numbers.json, run_log.txt, summary_numbers.csv
+2026-11-11 17:04:25,613 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-11 17:10:08,918 INFO === download ===
+2026-11-11 17:10:09,456 INFO Đã xác thực 2025-09-11 listings
+2026-11-11 17:10:09,946 INFO Đã xác thực 2025-09-11 calendar
+2026-11-11 17:10:10,996 INFO Đã xác thực 2025-09-11 reviews
+2026-11-11 17:10:11,163 INFO Đã xác thực 2026-03-19 listings
+2026-11-11 17:10:11,494 INFO Đã xác thực 2026-03-19 calendar
+2026-11-11 17:10:12,422 INFO Đã xác thực 2026-03-19 reviews
+2026-11-11 17:10:12,651 INFO Đã xác thực 2026-06-15 listings
+2026-11-11 17:10:13,133 INFO Đã xác thực 2026-06-15 calendar
+2026-11-11 17:10:14,225 INFO Đã xác thực 2026-06-15 reviews
+2026-11-11 17:10:14,460 INFO Đã xác thực 2026-09-16 listings
+2026-11-11 17:10:14,973 INFO Đã xác thực 2026-09-16 calendar
+2026-11-11 17:10:16,156 INFO Đã xác thực 2026-09-16 reviews
+2026-11-11 17:10:16,177 INFO === filter ===
+2026-11-11 17:10:16,234 INFO Lọc snapshot 2025-09-11
+2026-11-11 17:10:33,674 INFO Lọc snapshot 2026-03-19
+2026-11-11 17:10:47,561 INFO Lọc snapshot 2026-06-15
+2026-11-11 17:11:05,110 INFO Lọc snapshot 2026-09-16
+2026-11-11 17:11:25,343 WARNING 2026-09-16: listing_count có 928, kỳ vọng 1000 (warning)
+2026-11-11 17:11:25,344 WARNING 2026-09-16: review_count có 4765, kỳ vọng 5000 (warning)
+2026-11-11 17:11:26,283 WARNING 2026-09-16: room_type:Entire home/apt có 805, kỳ vọng 875 (warning)
+2026-11-11 17:11:26,284 WARNING 2026-09-16: room_type:Private room có 123, kỳ vọng 125 (warning)
+2026-11-11 17:11:26,285 WARNING 2026-09-16: in_llm_sample có 955, kỳ vọng 1000 (warning)
+2026-11-11 17:11:26,285 WARNING 2026-09-16: in_hand_label có 92, kỳ vọng 100 (warning)
+2026-11-11 17:11:26,287 WARNING 2026-09-16: area_size_range có False, kỳ vọng True (warning)
+2026-11-11 17:11:26,288 WARNING 2026-09-16 chưa có bộ kỳ vọng riêng; tiếp tục với số quan sát thực, không bù ID thiếu
+2026-11-11 17:11:27,434 INFO === qa ===
+2026-11-11 17:11:28,657 WARNING listings 2026-06-15: flag_missing_bedrooms vượt ngưỡng thiếu
+2026-11-11 17:11:29,038 WARNING listings 2026-09-16: flag_missing_price vượt ngưỡng thiếu
+2026-11-11 17:11:41,282 INFO === kpi ===
+2026-11-11 17:11:47,183 WARNING Chưa có dự đoán LLM hợp lệ; K7 chưa có số liệu
+2026-11-11 17:11:47,205 INFO === llm ===
+2026-11-11 17:11:47,347 WARNING LLM chưa chạy: 1000 review thiếu cache; --skip-llm hoặc thiếu GEMINI_API_KEY
+2026-11-11 17:11:47,396 INFO === baseline ===
+2026-11-11 17:11:52,745 INFO === evaluate ===
+2026-11-11 17:11:55,837 WARNING Chưa có hand_labels.csv thật: không thể tính accuracy/F1
+2026-11-11 17:11:55,846 INFO === kpi ===
+2026-11-11 17:12:02,281 WARNING Chưa có dự đoán LLM hợp lệ; K7 chưa có số liệu
+2026-11-11 17:12:02,297 INFO === viz ===
+2026-11-11 17:12:04,456 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:12:04,457 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:12:04,458 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:12:04,459 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:12:04,460 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:12:04,461 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 17:12:05,239 WARNING Bỏ hình fig_llm_01_sentiment_by_area.png: Chưa có kết quả LLM thật
+2026-11-11 17:12:05,240 WARNING Bỏ hình fig_llm_02_aspects.png: Chưa có kết quả LLM thật
+2026-11-11 17:12:05,240 WARNING Bỏ hình fig_llm_03_model_vs_baseline.png: Chưa có nhãn tay để đánh giá
+2026-11-11 17:12:05,241 WARNING Bỏ hình fig_llm_04_confusion_llm.png: Chưa có nhãn tay để đánh giá
+2026-11-11 17:12:05,241 WARNING Bỏ hình fig_llm_05_confusion_baseline.png: Chưa có nhãn tay để đánh giá
+2026-11-11 17:12:05,243 INFO === summary ===
+2026-11-11 17:12:06,385 INFO === report ===
+2026-11-11 17:12:07,836 INFO data/processed: 8.15 MB (ngưỡng 50.00 MB)
+2026-11-11 17:12:07,841 INFO Đầu ra processed: baseline_results.csv, baseline_results.parquet, calendar_clean.parquet, calendar_raw_filtered.parquet, kpi_area.csv, kpi_llm.csv, kpi_summary.csv, kpi_time.csv, listings_clean.parquet, listings_raw_filtered.parquet, llm_cache.jsonl, llm_results.csv, llm_results.parquet, llm_sample.parquet, reviews_clean.parquet, reviews_raw_filtered.parquet
+2026-11-11 17:12:07,847 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, confusion_baseline.csv, confusion_llm.csv, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_analysis.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report-preview-1.png, report-preview-2.png, report-preview-3.png, report-preview-4.png, report-preview-5.png, report-preview-6.png, report.pdf, report_numbers.json, run_log.txt, security_check.json, summary_numbers.csv
+2026-11-11 17:12:07,849 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-11 17:19:28,475 INFO === llm ===
+2026-11-11 17:19:28,956 WARNING LLM chưa chạy: 1000 review thiếu cache; --skip-llm hoặc thiếu GEMINI_API_KEY
+2026-11-11 17:19:28,986 INFO === summary ===
+2026-11-11 17:19:30,075 INFO === report ===
+2026-11-11 17:19:31,925 INFO data/processed: 8.15 MB (ngưỡng 50.00 MB)
+2026-11-11 17:19:31,929 INFO Đầu ra processed: baseline_results.csv, baseline_results.parquet, calendar_clean.parquet, calendar_raw_filtered.parquet, kpi_area.csv, kpi_llm.csv, kpi_summary.csv, kpi_time.csv, listings_clean.parquet, listings_raw_filtered.parquet, llm_cache.jsonl, llm_results.csv, llm_results.parquet, llm_sample.parquet, reviews_clean.parquet, reviews_raw_filtered.parquet
+2026-11-11 17:19:31,939 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, confusion_baseline.csv, confusion_llm.csv, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_analysis.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report-preview-1.png, report-preview-2.png, report-preview-3.png, report-preview-4.png, report-preview-5.png, report-preview-6.png, report.pdf, report_numbers.json, run_log.txt, security_check.json, summary_numbers.csv, test_results.xml
+2026-11-11 17:19:31,941 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-11 20:50:17,689 INFO === kpi ===
+2026-11-11 20:50:24,719 WARNING Chưa có dự đoán LLM hợp lệ; K7 chưa có số liệu
+2026-11-11 20:50:24,737 INFO === llm ===
+2026-11-11 20:50:25,204 WARNING LLM chưa chạy: 1000 review thiếu cache; --skip-llm hoặc thiếu GEMINI_API_KEY
+2026-11-11 20:50:25,231 INFO === baseline ===
+2026-11-11 20:50:30,040 INFO === evaluate ===
+2026-11-11 20:50:32,856 WARNING Chưa có hand_labels.csv thật: không thể tính accuracy/F1
+2026-11-11 20:50:32,865 INFO data/processed: 8.01 MB (ngưỡng 50.00 MB)
+2026-11-11 20:50:32,868 INFO Đầu ra processed: baseline_results.parquet, calendar_clean.parquet, calendar_raw_filtered.parquet, kpi_area.csv, kpi_llm.csv, kpi_time.csv, listings_clean.parquet, listings_raw_filtered.parquet, llm_cache.jsonl, llm_results.parquet, llm_sample.parquet, reviews_clean.parquet, reviews_raw_filtered.parquet
+2026-11-11 20:50:32,873 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, clean_reproduction.json, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report.pdf, report_numbers.json, run_log.txt, security_check.json, submission_checklist.csv, summary_numbers.csv, test_results.xml, verification.md
+2026-11-11 20:50:32,875 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-11 21:12:14,923 INFO === download ===
+2026-11-11 21:12:15,158 INFO Đã xác thực 2025-09-11 listings
+2026-11-11 21:12:15,683 INFO Đã xác thực 2025-09-11 calendar
+2026-11-11 21:12:16,831 INFO Đã xác thực 2025-09-11 reviews
+2026-11-11 21:12:17,003 INFO Đã xác thực 2026-03-19 listings
+2026-11-11 21:12:17,365 INFO Đã xác thực 2026-03-19 calendar
+2026-11-11 21:12:18,292 INFO Đã xác thực 2026-03-19 reviews
+2026-11-11 21:12:18,532 INFO Đã xác thực 2026-06-15 listings
+2026-11-11 21:12:19,014 INFO Đã xác thực 2026-06-15 calendar
+2026-11-11 21:12:20,164 INFO Đã xác thực 2026-06-15 reviews
+2026-11-11 21:12:20,433 INFO Đã xác thực 2026-09-16 listings
+2026-11-11 21:12:21,032 INFO Đã xác thực 2026-09-16 calendar
+2026-11-11 21:12:22,283 INFO Đã xác thực 2026-09-16 reviews
+2026-11-11 21:12:22,323 INFO Lọc snapshot 2025-09-11
+2026-11-11 21:12:40,543 INFO Lọc snapshot 2026-03-19
+2026-11-11 21:12:55,980 INFO Lọc snapshot 2026-06-15
+2026-11-11 21:13:15,092 INFO Lọc snapshot 2026-09-16
+2026-11-11 21:13:33,528 WARNING 2026-09-16: listing_count có 928, kỳ vọng 1000 (warning)
+2026-11-11 21:13:33,528 WARNING 2026-09-16: review_count có 4765, kỳ vọng 5000 (warning)
+2026-11-11 21:13:34,349 WARNING 2026-09-16: room_type:Entire home/apt có 805, kỳ vọng 875 (warning)
+2026-11-11 21:13:34,350 WARNING 2026-09-16: room_type:Private room có 123, kỳ vọng 125 (warning)
+2026-11-11 21:13:34,350 WARNING 2026-09-16: in_llm_sample có 955, kỳ vọng 1000 (warning)
+2026-11-11 21:13:34,351 WARNING 2026-09-16: in_hand_label có 92, kỳ vọng 100 (warning)
+2026-11-11 21:13:34,353 WARNING 2026-09-16: area_size_range có False, kỳ vọng True (warning)
+2026-11-11 21:13:34,353 WARNING 2026-09-16 chưa có bộ kỳ vọng riêng; tiếp tục với số quan sát thực, không bù ID thiếu
+2026-11-11 21:13:35,322 INFO === qa ===
+2026-11-11 21:13:36,819 WARNING listings 2026-06-15: flag_missing_bedrooms vượt ngưỡng thiếu
+2026-11-11 21:13:37,300 WARNING listings 2026-09-16: flag_missing_price vượt ngưỡng thiếu
+2026-11-11 21:13:50,414 INFO === kpi ===
+2026-11-11 21:13:57,383 WARNING Chưa có dự đoán LLM hợp lệ; K7 chưa có số liệu
+2026-11-11 21:13:57,395 INFO === llm ===
+2026-11-11 21:13:57,534 WARNING LLM chưa chạy: 1000 review thiếu cache; --skip-llm hoặc thiếu GEMINI_API_KEY
+2026-11-11 21:13:57,559 INFO === baseline ===
+2026-11-11 21:14:02,491 INFO === evaluate ===
+2026-11-11 21:14:05,440 WARNING Chưa có hand_labels.csv thật: không thể tính accuracy/F1
+2026-11-11 21:14:05,444 INFO === kpi ===
+2026-11-11 21:14:12,508 WARNING Chưa có dự đoán LLM hợp lệ; K7 chưa có số liệu
+2026-11-11 21:14:12,523 INFO === viz ===
+2026-11-11 21:14:15,793 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 21:14:15,795 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 21:14:15,797 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 21:14:15,798 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 21:14:15,800 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 21:14:15,801 INFO Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2026-11-11 21:14:16,745 WARNING Bỏ hình fig_llm_01_sentiment_by_area.png: Chưa có kết quả LLM thật
+2026-11-11 21:14:16,746 WARNING Bỏ hình fig_llm_02_aspects.png: Chưa có kết quả LLM thật
+2026-11-11 21:14:16,747 WARNING Bỏ hình fig_llm_03_model_vs_baseline.png: Chưa có nhãn tay để đánh giá
+2026-11-11 21:14:16,747 WARNING Bỏ hình fig_llm_04_confusion_llm.png: Chưa có nhãn tay để đánh giá
+2026-11-11 21:14:16,748 WARNING Bỏ hình fig_llm_05_confusion_baseline.png: Chưa có nhãn tay để đánh giá
+2026-11-11 21:14:19,074 INFO data/processed: 8.01 MB (ngưỡng 50.00 MB)
+2026-11-11 21:14:19,076 INFO Đầu ra processed: baseline_results.parquet, calendar_clean.parquet, calendar_raw_filtered.parquet, kpi_area.csv, kpi_llm.csv, kpi_time.csv, listings_clean.parquet, listings_raw_filtered.parquet, llm_cache.jsonl, llm_results.parquet, llm_sample.parquet, reviews_clean.parquet, reviews_raw_filtered.parquet
+2026-11-11 21:14:19,082 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, clean_reproduction.json, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report.md, report.pdf, report_numbers.json, run_log.txt, security_check.json, submission_checklist.csv, summary_numbers.csv, test_results.xml, verification.md
+2026-11-11 21:14:19,083 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-11 22:02:53,928 INFO === labels ===
+2026-11-11 22:02:56,867 ERROR Pipeline dừng: Thiếu reviews_clean.parquet; hãy chạy bước trước
+2026-11-11 22:03:15,097 INFO === labels ===
+2026-11-11 22:03:17,863 INFO data/processed: 0.00 MB (ngưỡng 50.00 MB)
+2026-11-11 22:03:17,864 INFO Đầu ra processed: 
+2026-11-11 22:03:17,870 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, clean_reproduction.json, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report.md, report.pdf, report_numbers.json, run_log.txt, security_check.json, submission_checklist.csv, summary_numbers.csv, test_results.xml, verification.md
+2026-11-11 22:03:17,872 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-11 22:12:44,292 INFO === labels ===
+2026-11-11 22:12:47,510 INFO data/processed: 0.00 MB (ngưỡng 50.00 MB)
+2026-11-11 22:12:47,510 INFO Đầu ra processed: 
+2026-11-11 22:12:47,514 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, clean_reproduction.json, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report.md, report.pdf, report_numbers.json, run_log.txt, security_check.json, submission_checklist.csv, summary_numbers.csv, test_results.xml, verification.md
+2026-11-11 22:12:47,515 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png

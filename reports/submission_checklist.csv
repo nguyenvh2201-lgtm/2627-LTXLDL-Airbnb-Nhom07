@@ -1,0 +1,16 @@
+item,status,evidence
+pytest,Đạt,"27 tests, 0 failures/errors; python -m pytest -c notebooks/pytest.ini -q --junitxml=reports/test_results.xml"
+Kiểm dữ liệu bắt buộc,Đạt,72 checks; 7 warnings; reports/filter_checks.csv
+Khớp toàn bộ kỳ vọng bộ mốc gốc,Chưa đạt,"Mốc mới được người dùng giữ dù thiếu 72 listing, 235 review; missing_ids.csv"
+processed < giới hạn,Đạt,8.01 MB / 50 MB
+Nhãn tay thật hợp lệ,Chưa đạt,hand_labels.csv do nhóm tự gán; template không tính là gold
+"LLM đủ mẫu, JSON hợp lệ >98%",Chưa đạt,0/1000 prediction hợp lệ; không có khóa/cache thì chưa đạt
+Đánh giá LLM và baseline,Chưa đạt,0 dòng eval_metrics.csv
+Chi phí có nguồn/giả định,Đạt,"llm_cost_estimate.csv; scenario output token, chưa phải chi phí thật"
+Đủ hình cả ba góc độ,Chưa đạt,6/11 hình; LLM cần dữ liệu thật
+PDF <=10 trang,Đạt,6 trang; bản nháp thiếu nhận định/gold/LLM
+Mẫu khóa/file nhạy cảm,Đạt,python notebooks/tools/check_security.py; chỉ kiểm các mẫu được hỗ trợ
+Tái lập môi trường cô lập,Đạt,"clean_reproduction.json; bản làm việc chưa commit, không phải remote final"
+Git status sạch,Chưa đạt,git status --short; chưa commit các thay đổi
+Tag final/push và commit báo cáo,Chưa đạt,Chưa được xác nhận nộp; không tự tag/push
+"Repo riêng tư, mời giảng viên, điền liên kết",Chưa đạt,Nhóm cần tự xác nhận trên GitHub/bảng tính

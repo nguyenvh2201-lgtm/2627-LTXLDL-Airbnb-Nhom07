@@ -1,0 +1,300 @@
+{
+  "source": "data/data-new.csv",
+  "rows": 5578,
+  "selected_rows": 5000,
+  "excluded_rows": 578,
+  "columns": [
+    {
+      "index": 0,
+      "name": "Lớp",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 578,
+      "unique_nonempty": 1
+    },
+    {
+      "index": 1,
+      "name": "Nhóm",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 0,
+      "unique_nonempty": 1
+    },
+    {
+      "index": 2,
+      "name": "Mã dữ liệu",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 578,
+      "unique_nonempty": 1
+    },
+    {
+      "index": 3,
+      "name": "listing_id",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 4578,
+      "unique_nonempty": 1000
+    },
+    {
+      "index": 4,
+      "name": "analysis_area",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 4578,
+      "unique_nonempty": 8
+    },
+    {
+      "index": 5,
+      "name": "review_id",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 578,
+      "unique_nonempty": 5000
+    },
+    {
+      "index": 6,
+      "name": "listing_id",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 578,
+      "unique_nonempty": 705
+    },
+    {
+      "index": 7,
+      "name": "Mẫu LLM",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 4578,
+      "unique_nonempty": 1
+    },
+    {
+      "index": 8,
+      "name": "Nhãn tay",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 5478,
+      "unique_nonempty": 1
+    },
+    {
+      "index": 9,
+      "name": "Thành phố",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 5570,
+      "unique_nonempty": 1
+    },
+    {
+      "index": 10,
+      "name": "analysis_area",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 5570,
+      "unique_nonempty": 8
+    },
+    {
+      "index": 11,
+      "name": "lon_min",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 5570,
+      "unique_nonempty": 6
+    },
+    {
+      "index": 12,
+      "name": "lat_min",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 5570,
+      "unique_nonempty": 3
+    },
+    {
+      "index": 13,
+      "name": "lon_max",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 5570,
+      "unique_nonempty": 6
+    },
+    {
+      "index": 14,
+      "name": "lat_max",
+      "dtype": "string (giữ nguyên ID)",
+      "missing": 5570,
+      "unique_nonempty": 3
+    }
+  ],
+  "first_five_rows": [
+    [
+      "UET.DSE2049 4",
+      "7",
+      "DSE2049-C04-G07-toronto",
+      "363057",
+      "A08",
+      "3586050",
+      "817749",
+      "",
+      "",
+      "Toronto",
+      "A01",
+      "-79,647273",
+      "43,57647011",
+      "-79,42006839",
+      "43,6576896"
+    ],
+    [
+      "UET.DSE2049 4",
+      "7",
+      "DSE2049-C04-G07-toronto",
+      "366973",
+      "A02",
+      "3643024",
+      "817749",
+      "",
+      "",
+      "Toronto",
+      "A02",
+      "-79,42006839",
+      "43,57647011",
+      "-79,3957271",
+      "43,6576896"
+    ],
+    [
+      "UET.DSE2049 4",
+      "7",
+      "DSE2049-C04-G07-toronto",
+      "511463",
+      "A04",
+      "3801270",
+      "702286",
+      "",
+      "",
+      "Toronto",
+      "A03",
+      "-79,647273",
+      "43,6576896",
+      "-79,439125",
+      "43,84774"
+    ],
+    [
+      "UET.DSE2049 4",
+      "7",
+      "DSE2049-C04-G07-toronto",
+      "702286",
+      "A01",
+      "3844139",
+      "817749",
+      "",
+      "",
+      "Toronto",
+      "A04",
+      "-79,439125",
+      "43,6576896",
+      "-79,3957271",
+      "43,84774"
+    ],
+    [
+      "UET.DSE2049 4",
+      "7",
+      "DSE2049-C04-G07-toronto",
+      "703133",
+      "A01",
+      "5031226",
+      "817749",
+      "",
+      "",
+      "Toronto",
+      "A05",
+      "-79,3957271",
+      "43,57647011",
+      "-79,38195595",
+      "43,66403359"
+    ]
+  ],
+  "checks": [
+    {
+      "check": "listings",
+      "actual": 1000,
+      "expected": 1000,
+      "passed": true
+    },
+    {
+      "check": "listings_unique",
+      "actual": 1000,
+      "expected": 1000,
+      "passed": true
+    },
+    {
+      "check": "reviews",
+      "actual": 5000,
+      "expected": 5000,
+      "passed": true
+    },
+    {
+      "check": "reviews_unique",
+      "actual": 5000,
+      "expected": 5000,
+      "passed": true
+    },
+    {
+      "check": "areas",
+      "actual": 8,
+      "expected": 8,
+      "passed": true
+    },
+    {
+      "check": "areas_unique",
+      "actual": 8,
+      "expected": 8,
+      "passed": true
+    },
+    {
+      "check": "llm_sample",
+      "actual": 1000,
+      "expected": 1000,
+      "passed": true
+    },
+    {
+      "check": "hand_sample",
+      "actual": 100,
+      "expected": 100,
+      "passed": true
+    },
+    {
+      "check": "hand_subset_llm",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "review_listing_membership",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "listing_area_membership",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "check": "numeric_ids",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    }
+  ],
+  "area_counts": {
+    "A08": 123,
+    "A02": 127,
+    "A04": 129,
+    "A01": 130,
+    "A06": 123,
+    "A07": 120,
+    "A03": 120,
+    "A05": 128
+  },
+  "metadata_source": "city/currency/data_root/snapshots lấy từ config có sẵn, chưa xác minh từ bảng phân công gốc",
+  "snapshots_in_config_order": [
+    "2025-09-11",
+    "2026-03-19",
+    "2026-06-15",
+    "2026-09-16"
+  ],
+  "snapshots_chronological": [
+    "2025-09-11",
+    "2026-03-19",
+    "2026-06-15",
+    "2026-09-16"
+  ],
+  "assignment_codes": [
+    "DSE2049-C04-G07-toronto"
+  ]
+}
