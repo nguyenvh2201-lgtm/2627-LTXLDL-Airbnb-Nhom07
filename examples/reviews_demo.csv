@@ -1,4 +1,0 @@
-snapshot_date,review_id,listing_id,comments,split,text_valid,listing_match,exclude_from_llm_sample
-2026-06-15,DEMO-001,LIST-001,"The apartment was clean and the host was helpful.",analysis,true,true,false
-2026-06-15,DEMO-002,LIST-002,"The location was convenient but the street was noisy.",test,true,true,false
-2026-06-15,DEMO-003,LIST-003,"Not eligible because QA marks listing mismatch.",analysis,true,false,false
