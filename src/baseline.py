@@ -2,9 +2,13 @@
 import json
 import logging
 import re
+from pathlib import Path
+import sys
 import pandas as pd
 from langdetect import detect, DetectorFactory, LangDetectException
-from .download import path, read, save, csv_report, cli
+if not __package__:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from src.download import path, read, save, csv_report, cli
 
 
 def detect_language(text: str, cfg: dict) -> str:
@@ -52,7 +56,7 @@ def predict(text: str, language: str, lexicon: dict | None, cfg: dict) -> dict:
 
 def run(cfg: dict) -> None:
     """Cùng sample LLM, báo độ phủ ngôn ngữ chưa có từ điển."""
-    from .llm import select_sample
+    from src.llm import select_sample
     sample = select_sample(cfg)
     lexicons = cfg["baseline"]["lexicons"]
     results = []

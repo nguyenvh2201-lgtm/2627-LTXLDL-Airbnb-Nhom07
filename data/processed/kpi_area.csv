@@ -1,0 +1,2128 @@
+snapshot,area,kpi_id,value,unit,currency,n
+2025-09-11,Agincourt North,K4,0.0,%,,1
+2025-09-11,Agincourt North,K6,0.0,%,,1
+2025-09-11,Agincourt North,K8,0.0,%,,1
+2025-09-11,Agincourt South-Malvern West,K4,33.33333333333333,%,,3
+2025-09-11,Agincourt South-Malvern West,K6,0.0,%,,3
+2025-09-11,Agincourt South-Malvern West,K8,0.0,%,,3
+2025-09-11,Alderwood,K4,0.0,%,,2
+2025-09-11,Alderwood,K6,0.0,%,,2
+2025-09-11,Alderwood,K8,0.0,%,,2
+2025-09-11,Annex,K4,16.216216216216218,%,,37
+2025-09-11,Annex,K6,2.7027027027027026,%,,37
+2025-09-11,Annex,K8,29.72972972972973,%,,37
+2025-09-11,Banbury-Don Mills,K4,0.0,%,,3
+2025-09-11,Banbury-Don Mills,K6,0.0,%,,3
+2025-09-11,Banbury-Don Mills,K8,0.0,%,,3
+2025-09-11,Bathurst Manor,K4,0.0,%,,3
+2025-09-11,Bathurst Manor,K6,0.0,%,,3
+2025-09-11,Bathurst Manor,K8,33.33333333333333,%,,3
+2025-09-11,Bay Street Corridor,K4,16.666666666666664,%,,24
+2025-09-11,Bay Street Corridor,K6,0.0,%,,24
+2025-09-11,Bay Street Corridor,K8,25.0,%,,24
+2025-09-11,Bayview Village,K4,50.0,%,,2
+2025-09-11,Bayview Village,K6,0.0,%,,2
+2025-09-11,Bayview Village,K8,0.0,%,,2
+2025-09-11,Bayview Woods-Steeles,K4,0.0,%,,1
+2025-09-11,Bayview Woods-Steeles,K6,0.0,%,,1
+2025-09-11,Bayview Woods-Steeles,K8,0.0,%,,1
+2025-09-11,Bedford Park-Nortown,K4,0.0,%,,3
+2025-09-11,Bedford Park-Nortown,K6,0.0,%,,3
+2025-09-11,Bedford Park-Nortown,K8,33.33333333333333,%,,3
+2025-09-11,Beechborough-Greenbrook,K4,0.0,%,,1
+2025-09-11,Beechborough-Greenbrook,K6,0.0,%,,1
+2025-09-11,Beechborough-Greenbrook,K8,0.0,%,,1
+2025-09-11,Bendale,K4,0.0,%,,2
+2025-09-11,Bendale,K6,0.0,%,,2
+2025-09-11,Bendale,K8,0.0,%,,2
+2025-09-11,Birchcliffe-Cliffside,K4,0.0,%,,6
+2025-09-11,Birchcliffe-Cliffside,K6,16.666666666666664,%,,6
+2025-09-11,Birchcliffe-Cliffside,K8,0.0,%,,6
+2025-09-11,Black Creek,K4,0.0,%,,2
+2025-09-11,Black Creek,K6,0.0,%,,2
+2025-09-11,Black Creek,K8,0.0,%,,2
+2025-09-11,Blake-Jones,K4,0.0,%,,4
+2025-09-11,Blake-Jones,K6,0.0,%,,4
+2025-09-11,Blake-Jones,K8,25.0,%,,4
+2025-09-11,Briar Hill-Belgravia,K4,25.0,%,,4
+2025-09-11,Briar Hill-Belgravia,K6,50.0,%,,4
+2025-09-11,Briar Hill-Belgravia,K8,0.0,%,,4
+2025-09-11,Bridle Path-Sunnybrook-York Mills,K4,0.0,%,,1
+2025-09-11,Bridle Path-Sunnybrook-York Mills,K6,0.0,%,,1
+2025-09-11,Bridle Path-Sunnybrook-York Mills,K8,100.0,%,,1
+2025-09-11,Broadview North,K4,0.0,%,,1
+2025-09-11,Broadview North,K6,0.0,%,,1
+2025-09-11,Broadview North,K8,100.0,%,,1
+2025-09-11,Brookhaven-Amesbury,K4,0.0,%,,1
+2025-09-11,Brookhaven-Amesbury,K6,0.0,%,,1
+2025-09-11,Brookhaven-Amesbury,K8,100.0,%,,1
+2025-09-11,Cabbagetown-South St.James Town,K4,11.11111111111111,%,,9
+2025-09-11,Cabbagetown-South St.James Town,K6,11.11111111111111,%,,9
+2025-09-11,Cabbagetown-South St.James Town,K8,22.22222222222222,%,,9
+2025-09-11,Caledonia-Fairbank,K4,0.0,%,,1
+2025-09-11,Caledonia-Fairbank,K6,0.0,%,,1
+2025-09-11,Caledonia-Fairbank,K8,100.0,%,,1
+2025-09-11,Casa Loma,K4,0.0,%,,3
+2025-09-11,Casa Loma,K6,0.0,%,,3
+2025-09-11,Casa Loma,K8,33.33333333333333,%,,3
+2025-09-11,Centennial Scarborough,K4,0.0,%,,4
+2025-09-11,Centennial Scarborough,K6,0.0,%,,4
+2025-09-11,Centennial Scarborough,K8,0.0,%,,4
+2025-09-11,Church-Yonge Corridor,K4,19.230769230769234,%,,26
+2025-09-11,Church-Yonge Corridor,K6,7.6923076923076925,%,,26
+2025-09-11,Church-Yonge Corridor,K8,23.076923076923077,%,,26
+2025-09-11,Clairlea-Birchmount,K4,0.0,%,,3
+2025-09-11,Clairlea-Birchmount,K6,0.0,%,,3
+2025-09-11,Clairlea-Birchmount,K8,0.0,%,,3
+2025-09-11,Clanton Park,K4,16.666666666666664,%,,6
+2025-09-11,Clanton Park,K6,16.666666666666664,%,,6
+2025-09-11,Clanton Park,K8,16.666666666666664,%,,6
+2025-09-11,Cliffcrest,K4,0.0,%,,5
+2025-09-11,Cliffcrest,K6,20.0,%,,5
+2025-09-11,Cliffcrest,K8,0.0,%,,5
+2025-09-11,Corso Italia-Davenport,K4,0.0,%,,4
+2025-09-11,Corso Italia-Davenport,K6,0.0,%,,4
+2025-09-11,Corso Italia-Davenport,K8,25.0,%,,4
+2025-09-11,Danforth,K4,25.0,%,,4
+2025-09-11,Danforth,K6,0.0,%,,4
+2025-09-11,Danforth,K8,0.0,%,,4
+2025-09-11,Danforth East York,K4,0.0,%,,5
+2025-09-11,Danforth East York,K6,0.0,%,,5
+2025-09-11,Danforth East York,K8,0.0,%,,5
+2025-09-11,Don Valley Village,K4,20.0,%,,5
+2025-09-11,Don Valley Village,K6,0.0,%,,5
+2025-09-11,Don Valley Village,K8,0.0,%,,5
+2025-09-11,Dorset Park,K4,0.0,%,,2
+2025-09-11,Dorset Park,K6,0.0,%,,2
+2025-09-11,Dorset Park,K8,0.0,%,,2
+2025-09-11,Dovercourt-Wallace Emerson-Junction,K4,9.375,%,,32
+2025-09-11,Dovercourt-Wallace Emerson-Junction,K6,3.125,%,,32
+2025-09-11,Dovercourt-Wallace Emerson-Junction,K8,21.875,%,,32
+2025-09-11,Downsview-Roding-CFB,K4,0.0,%,,2
+2025-09-11,Downsview-Roding-CFB,K6,0.0,%,,2
+2025-09-11,Downsview-Roding-CFB,K8,0.0,%,,2
+2025-09-11,Dufferin Grove,K4,16.666666666666664,%,,12
+2025-09-11,Dufferin Grove,K6,8.333333333333332,%,,12
+2025-09-11,Dufferin Grove,K8,8.333333333333332,%,,12
+2025-09-11,East End-Danforth,K4,0.0,%,,7
+2025-09-11,East End-Danforth,K6,14.285714285714285,%,,7
+2025-09-11,East End-Danforth,K8,0.0,%,,7
+2025-09-11,Edenbridge-Humber Valley,K4,0.0,%,,4
+2025-09-11,Edenbridge-Humber Valley,K6,0.0,%,,4
+2025-09-11,Edenbridge-Humber Valley,K8,0.0,%,,4
+2025-09-11,Eglinton East,K4,0.0,%,,2
+2025-09-11,Eglinton East,K6,0.0,%,,2
+2025-09-11,Eglinton East,K8,50.0,%,,2
+2025-09-11,Englemount-Lawrence,K4,25.0,%,,4
+2025-09-11,Englemount-Lawrence,K6,0.0,%,,4
+2025-09-11,Englemount-Lawrence,K8,0.0,%,,4
+2025-09-11,Eringate-Centennial-West Deane,K4,0.0,%,,2
+2025-09-11,Eringate-Centennial-West Deane,K6,0.0,%,,2
+2025-09-11,Eringate-Centennial-West Deane,K8,0.0,%,,2
+2025-09-11,Etobicoke West Mall,K4,0.0,%,,3
+2025-09-11,Etobicoke West Mall,K6,0.0,%,,3
+2025-09-11,Etobicoke West Mall,K8,33.33333333333333,%,,3
+2025-09-11,Flemingdon Park,K4,0.0,%,,2
+2025-09-11,Flemingdon Park,K6,0.0,%,,2
+2025-09-11,Flemingdon Park,K8,0.0,%,,2
+2025-09-11,Forest Hill South,K4,0.0,%,,4
+2025-09-11,Forest Hill South,K6,25.0,%,,4
+2025-09-11,Forest Hill South,K8,0.0,%,,4
+2025-09-11,Glenfield-Jane Heights,K4,0.0,%,,2
+2025-09-11,Glenfield-Jane Heights,K6,0.0,%,,2
+2025-09-11,Glenfield-Jane Heights,K8,0.0,%,,2
+2025-09-11,Greenwood-Coxwell,K4,0.0,%,,5
+2025-09-11,Greenwood-Coxwell,K6,0.0,%,,5
+2025-09-11,Greenwood-Coxwell,K8,0.0,%,,5
+2025-09-11,Guildwood,K4,0.0,%,,4
+2025-09-11,Guildwood,K6,0.0,%,,4
+2025-09-11,Guildwood,K8,0.0,%,,4
+2025-09-11,Henry Farm,K4,0.0,%,,2
+2025-09-11,Henry Farm,K6,50.0,%,,2
+2025-09-11,Henry Farm,K8,0.0,%,,2
+2025-09-11,High Park North,K4,25.0,%,,8
+2025-09-11,High Park North,K6,0.0,%,,8
+2025-09-11,High Park North,K8,25.0,%,,8
+2025-09-11,High Park-Swansea,K4,30.76923076923077,%,,13
+2025-09-11,High Park-Swansea,K6,0.0,%,,13
+2025-09-11,High Park-Swansea,K8,7.6923076923076925,%,,13
+2025-09-11,Hillcrest Village,K4,0.0,%,,1
+2025-09-11,Hillcrest Village,K6,0.0,%,,1
+2025-09-11,Hillcrest Village,K8,0.0,%,,1
+2025-09-11,Humber Heights-Westmount,K4,0.0,%,,1
+2025-09-11,Humber Heights-Westmount,K6,0.0,%,,1
+2025-09-11,Humber Heights-Westmount,K8,100.0,%,,1
+2025-09-11,Humbermede,K4,50.0,%,,2
+2025-09-11,Humbermede,K6,0.0,%,,2
+2025-09-11,Humbermede,K8,50.0,%,,2
+2025-09-11,Humewood-Cedarvale,K4,0.0,%,,4
+2025-09-11,Humewood-Cedarvale,K6,0.0,%,,4
+2025-09-11,Humewood-Cedarvale,K8,0.0,%,,4
+2025-09-11,Islington-City Centre West,K4,8.333333333333332,%,,12
+2025-09-11,Islington-City Centre West,K6,0.0,%,,12
+2025-09-11,Islington-City Centre West,K8,33.33333333333333,%,,12
+2025-09-11,Junction Area,K4,0.0,%,,10
+2025-09-11,Junction Area,K6,0.0,%,,10
+2025-09-11,Junction Area,K8,20.0,%,,10
+2025-09-11,Keelesdale-Eglinton West,K4,66.66666666666666,%,,3
+2025-09-11,Keelesdale-Eglinton West,K6,0.0,%,,3
+2025-09-11,Keelesdale-Eglinton West,K8,33.33333333333333,%,,3
+2025-09-11,Kensington-Chinatown,K4,13.636363636363635,%,,22
+2025-09-11,Kensington-Chinatown,K6,0.0,%,,22
+2025-09-11,Kensington-Chinatown,K8,9.090909090909092,%,,22
+2025-09-11,Kingsview Village-The Westway,K4,0.0,%,,3
+2025-09-11,Kingsview Village-The Westway,K6,0.0,%,,3
+2025-09-11,Kingsview Village-The Westway,K8,0.0,%,,3
+2025-09-11,L'Amoreaux,K4,16.666666666666664,%,,6
+2025-09-11,L'Amoreaux,K6,0.0,%,,6
+2025-09-11,L'Amoreaux,K8,16.666666666666664,%,,6
+2025-09-11,Lambton Baby Point,K4,0.0,%,,1
+2025-09-11,Lambton Baby Point,K6,0.0,%,,1
+2025-09-11,Lambton Baby Point,K8,0.0,%,,1
+2025-09-11,Lansing-Westgate,K4,0.0,%,,3
+2025-09-11,Lansing-Westgate,K6,0.0,%,,3
+2025-09-11,Lansing-Westgate,K8,66.66666666666666,%,,3
+2025-09-11,Lawrence Park North,K4,0.0,%,,5
+2025-09-11,Lawrence Park North,K6,0.0,%,,5
+2025-09-11,Lawrence Park North,K8,20.0,%,,5
+2025-09-11,Leaside-Bennington,K4,33.33333333333333,%,,3
+2025-09-11,Leaside-Bennington,K6,0.0,%,,3
+2025-09-11,Leaside-Bennington,K8,0.0,%,,3
+2025-09-11,Little Portugal,K4,15.384615384615385,%,,26
+2025-09-11,Little Portugal,K6,3.8461538461538463,%,,26
+2025-09-11,Little Portugal,K8,26.923076923076923,%,,26
+2025-09-11,Long Branch,K4,0.0,%,,5
+2025-09-11,Long Branch,K6,0.0,%,,5
+2025-09-11,Long Branch,K8,20.0,%,,5
+2025-09-11,Malvern,K4,0.0,%,,6
+2025-09-11,Malvern,K6,0.0,%,,6
+2025-09-11,Malvern,K8,33.33333333333333,%,,6
+2025-09-11,Maple Leaf,K4,0.0,%,,1
+2025-09-11,Maple Leaf,K6,0.0,%,,1
+2025-09-11,Maple Leaf,K8,0.0,%,,1
+2025-09-11,Markland Wood,K4,0.0,%,,1
+2025-09-11,Markland Wood,K6,0.0,%,,1
+2025-09-11,Markland Wood,K8,0.0,%,,1
+2025-09-11,Milliken,K4,0.0,%,,1
+2025-09-11,Milliken,K6,0.0,%,,1
+2025-09-11,Milliken,K8,0.0,%,,1
+2025-09-11,Mimico (includes Humber Bay Shores),K4,0.0,%,,6
+2025-09-11,Mimico (includes Humber Bay Shores),K6,16.666666666666664,%,,6
+2025-09-11,Mimico (includes Humber Bay Shores),K8,0.0,%,,6
+2025-09-11,Moss Park,K4,4.0,%,,25
+2025-09-11,Moss Park,K6,12.0,%,,25
+2025-09-11,Moss Park,K8,16.0,%,,25
+2025-09-11,Mount Dennis,K4,25.0,%,,4
+2025-09-11,Mount Dennis,K6,0.0,%,,4
+2025-09-11,Mount Dennis,K8,0.0,%,,4
+2025-09-11,Mount Pleasant East,K4,0.0,%,,5
+2025-09-11,Mount Pleasant East,K6,0.0,%,,5
+2025-09-11,Mount Pleasant East,K8,0.0,%,,5
+2025-09-11,Mount Pleasant West,K4,28.57142857142857,%,,14
+2025-09-11,Mount Pleasant West,K6,7.142857142857142,%,,14
+2025-09-11,Mount Pleasant West,K8,35.714285714285715,%,,14
+2025-09-11,New Toronto,K4,0.0,%,,4
+2025-09-11,New Toronto,K6,0.0,%,,4
+2025-09-11,New Toronto,K8,50.0,%,,4
+2025-09-11,Newtonbrook East,K4,14.285714285714285,%,,7
+2025-09-11,Newtonbrook East,K6,14.285714285714285,%,,7
+2025-09-11,Newtonbrook East,K8,14.285714285714285,%,,7
+2025-09-11,Newtonbrook West,K4,0.0,%,,6
+2025-09-11,Newtonbrook West,K6,16.666666666666664,%,,6
+2025-09-11,Newtonbrook West,K8,0.0,%,,6
+2025-09-11,Niagara,K4,10.0,%,,40
+2025-09-11,Niagara,K6,7.5,%,,40
+2025-09-11,Niagara,K8,35.0,%,,40
+2025-09-11,North Riverdale,K4,16.666666666666664,%,,6
+2025-09-11,North Riverdale,K6,0.0,%,,6
+2025-09-11,North Riverdale,K8,16.666666666666664,%,,6
+2025-09-11,North St.James Town,K4,20.0,%,,5
+2025-09-11,North St.James Town,K6,20.0,%,,5
+2025-09-11,North St.James Town,K8,40.0,%,,5
+2025-09-11,O'Connor-Parkview,K4,0.0,%,,5
+2025-09-11,O'Connor-Parkview,K6,20.0,%,,5
+2025-09-11,O'Connor-Parkview,K8,20.0,%,,5
+2025-09-11,Oakridge,K4,0.0,%,,1
+2025-09-11,Oakridge,K6,0.0,%,,1
+2025-09-11,Oakridge,K8,0.0,%,,1
+2025-09-11,Oakwood Village,K4,9.090909090909092,%,,11
+2025-09-11,Oakwood Village,K6,0.0,%,,11
+2025-09-11,Oakwood Village,K8,18.181818181818183,%,,11
+2025-09-11,Old East York,K4,16.666666666666664,%,,6
+2025-09-11,Old East York,K6,0.0,%,,6
+2025-09-11,Old East York,K8,0.0,%,,6
+2025-09-11,Palmerston-Little Italy,K4,5.0,%,,20
+2025-09-11,Palmerston-Little Italy,K6,10.0,%,,20
+2025-09-11,Palmerston-Little Italy,K8,20.0,%,,20
+2025-09-11,Parkwoods-Donalda,K4,0.0,%,,5
+2025-09-11,Parkwoods-Donalda,K6,0.0,%,,5
+2025-09-11,Parkwoods-Donalda,K8,40.0,%,,5
+2025-09-11,Pelmo Park-Humberlea,K4,0.0,%,,1
+2025-09-11,Pelmo Park-Humberlea,K6,0.0,%,,1
+2025-09-11,Pelmo Park-Humberlea,K8,0.0,%,,1
+2025-09-11,Pleasant View,K4,0.0,%,,2
+2025-09-11,Pleasant View,K6,0.0,%,,2
+2025-09-11,Pleasant View,K8,0.0,%,,2
+2025-09-11,Regent Park,K4,0.0,%,,2
+2025-09-11,Regent Park,K6,0.0,%,,2
+2025-09-11,Regent Park,K8,100.0,%,,2
+2025-09-11,Rockcliffe-Smythe,K4,0.0,%,,10
+2025-09-11,Rockcliffe-Smythe,K6,10.0,%,,10
+2025-09-11,Rockcliffe-Smythe,K8,0.0,%,,10
+2025-09-11,Roncesvalles,K4,0.0,%,,7
+2025-09-11,Roncesvalles,K6,28.57142857142857,%,,7
+2025-09-11,Roncesvalles,K8,28.57142857142857,%,,7
+2025-09-11,Rosedale-Moore Park,K4,50.0,%,,2
+2025-09-11,Rosedale-Moore Park,K6,0.0,%,,2
+2025-09-11,Rosedale-Moore Park,K8,0.0,%,,2
+2025-09-11,Rouge,K4,0.0,%,,7
+2025-09-11,Rouge,K6,0.0,%,,7
+2025-09-11,Rouge,K8,14.285714285714285,%,,7
+2025-09-11,Runnymede-Bloor West Village,K4,0.0,%,,3
+2025-09-11,Runnymede-Bloor West Village,K6,0.0,%,,3
+2025-09-11,Runnymede-Bloor West Village,K8,33.33333333333333,%,,3
+2025-09-11,Scarborough Village,K4,0.0,%,,1
+2025-09-11,Scarborough Village,K6,0.0,%,,1
+2025-09-11,Scarborough Village,K8,0.0,%,,1
+2025-09-11,South Parkdale,K4,16.666666666666664,%,,12
+2025-09-11,South Parkdale,K6,0.0,%,,12
+2025-09-11,South Parkdale,K8,16.666666666666664,%,,12
+2025-09-11,South Riverdale,K4,0.0,%,,26
+2025-09-11,South Riverdale,K6,3.8461538461538463,%,,26
+2025-09-11,South Riverdale,K8,19.230769230769234,%,,26
+2025-09-11,St.Andrew-Windfields,K4,0.0,%,,1
+2025-09-11,St.Andrew-Windfields,K6,0.0,%,,1
+2025-09-11,St.Andrew-Windfields,K8,0.0,%,,1
+2025-09-11,Steeles,K4,0.0,%,,1
+2025-09-11,Steeles,K6,0.0,%,,1
+2025-09-11,Steeles,K8,100.0,%,,1
+2025-09-11,Stonegate-Queensway,K4,0.0,%,,11
+2025-09-11,Stonegate-Queensway,K6,0.0,%,,11
+2025-09-11,Stonegate-Queensway,K8,27.27272727272727,%,,11
+2025-09-11,Tam O'Shanter-Sullivan,K4,0.0,%,,4
+2025-09-11,Tam O'Shanter-Sullivan,K6,25.0,%,,4
+2025-09-11,Tam O'Shanter-Sullivan,K8,0.0,%,,4
+2025-09-11,Taylor-Massey,K4,0.0,%,,4
+2025-09-11,Taylor-Massey,K6,0.0,%,,4
+2025-09-11,Taylor-Massey,K8,50.0,%,,4
+2025-09-11,The Beaches,K4,0.0,%,,12
+2025-09-11,The Beaches,K6,0.0,%,,12
+2025-09-11,The Beaches,K8,41.66666666666667,%,,12
+2025-09-11,Thistletown-Beaumond Heights,K4,0.0,%,,3
+2025-09-11,Thistletown-Beaumond Heights,K6,0.0,%,,3
+2025-09-11,Thistletown-Beaumond Heights,K8,0.0,%,,3
+2025-09-11,Thorncliffe Park,K4,50.0,%,,2
+2025-09-11,Thorncliffe Park,K6,0.0,%,,2
+2025-09-11,Thorncliffe Park,K8,50.0,%,,2
+2025-09-11,Trinity-Bellwoods,K4,7.6923076923076925,%,,26
+2025-09-11,Trinity-Bellwoods,K6,3.8461538461538463,%,,26
+2025-09-11,Trinity-Bellwoods,K8,19.230769230769234,%,,26
+2025-09-11,University,K4,0.0,%,,6
+2025-09-11,University,K6,0.0,%,,6
+2025-09-11,University,K8,16.666666666666664,%,,6
+2025-09-11,Victoria Village,K4,0.0,%,,3
+2025-09-11,Victoria Village,K6,0.0,%,,3
+2025-09-11,Victoria Village,K8,0.0,%,,3
+2025-09-11,Waterfront Communities-The Island,K4,14.832535885167463,%,,209
+2025-09-11,Waterfront Communities-The Island,K6,5.741626794258373,%,,209
+2025-09-11,Waterfront Communities-The Island,K8,19.138755980861244,%,,209
+2025-09-11,West Hill,K4,0.0,%,,7
+2025-09-11,West Hill,K6,0.0,%,,7
+2025-09-11,West Hill,K8,28.57142857142857,%,,7
+2025-09-11,West Humber-Clairville,K4,0.0,%,,4
+2025-09-11,West Humber-Clairville,K6,0.0,%,,4
+2025-09-11,West Humber-Clairville,K8,0.0,%,,4
+2025-09-11,Westminster-Branson,K4,0.0,%,,1
+2025-09-11,Westminster-Branson,K6,0.0,%,,1
+2025-09-11,Westminster-Branson,K8,0.0,%,,1
+2025-09-11,Weston,K4,0.0,%,,5
+2025-09-11,Weston,K6,20.0,%,,5
+2025-09-11,Weston,K8,0.0,%,,5
+2025-09-11,Weston-Pellam Park,K4,12.5,%,,8
+2025-09-11,Weston-Pellam Park,K6,12.5,%,,8
+2025-09-11,Weston-Pellam Park,K8,12.5,%,,8
+2025-09-11,Wexford/Maryvale,K4,0.0,%,,3
+2025-09-11,Wexford/Maryvale,K6,0.0,%,,3
+2025-09-11,Wexford/Maryvale,K8,0.0,%,,3
+2025-09-11,Willowdale East,K4,14.285714285714285,%,,14
+2025-09-11,Willowdale East,K6,0.0,%,,14
+2025-09-11,Willowdale East,K8,14.285714285714285,%,,14
+2025-09-11,Willowdale West,K4,0.0,%,,3
+2025-09-11,Willowdale West,K6,0.0,%,,3
+2025-09-11,Willowdale West,K8,33.33333333333333,%,,3
+2025-09-11,Willowridge-Martingrove-Richview,K4,0.0,%,,2
+2025-09-11,Willowridge-Martingrove-Richview,K6,0.0,%,,2
+2025-09-11,Willowridge-Martingrove-Richview,K8,0.0,%,,2
+2025-09-11,Woburn,K4,0.0,%,,2
+2025-09-11,Woburn,K6,0.0,%,,2
+2025-09-11,Woburn,K8,50.0,%,,2
+2025-09-11,Woodbine Corridor,K4,0.0,%,,5
+2025-09-11,Woodbine Corridor,K6,0.0,%,,5
+2025-09-11,Woodbine Corridor,K8,20.0,%,,5
+2025-09-11,Woodbine-Lumsden,K4,50.0,%,,2
+2025-09-11,Woodbine-Lumsden,K6,0.0,%,,2
+2025-09-11,Woodbine-Lumsden,K8,0.0,%,,2
+2025-09-11,Wychwood,K4,0.0,%,,8
+2025-09-11,Wychwood,K6,0.0,%,,8
+2025-09-11,Wychwood,K8,12.5,%,,8
+2025-09-11,Yonge-Eglinton,K4,0.0,%,,1
+2025-09-11,Yonge-Eglinton,K6,0.0,%,,1
+2025-09-11,Yonge-Eglinton,K8,0.0,%,,1
+2025-09-11,Yonge-St.Clair,K4,0.0,%,,1
+2025-09-11,Yonge-St.Clair,K6,0.0,%,,1
+2025-09-11,Yonge-St.Clair,K8,0.0,%,,1
+2025-09-11,York University Heights,K4,0.0,%,,5
+2025-09-11,York University Heights,K6,0.0,%,,5
+2025-09-11,York University Heights,K8,20.0,%,,5
+2025-09-11,Yorkdale-Glen Park,K4,0.0,%,,2
+2025-09-11,Yorkdale-Glen Park,K6,50.0,%,,2
+2025-09-11,Yorkdale-Glen Park,K8,0.0,%,,2
+2026-03-19,Agincourt North,K4,0.0,%,,1
+2026-03-19,Agincourt North,K6,0.0,%,,1
+2026-03-19,Agincourt North,K8,0.0,%,,1
+2026-03-19,Agincourt South-Malvern West,K4,33.33333333333333,%,,3
+2026-03-19,Agincourt South-Malvern West,K6,0.0,%,,3
+2026-03-19,Agincourt South-Malvern West,K8,0.0,%,,3
+2026-03-19,Alderwood,K4,0.0,%,,2
+2026-03-19,Alderwood,K6,0.0,%,,2
+2026-03-19,Alderwood,K8,0.0,%,,2
+2026-03-19,Annex,K4,18.91891891891892,%,,37
+2026-03-19,Annex,K6,0.0,%,,37
+2026-03-19,Annex,K8,24.324324324324326,%,,37
+2026-03-19,Banbury-Don Mills,K4,0.0,%,,3
+2026-03-19,Banbury-Don Mills,K6,0.0,%,,3
+2026-03-19,Banbury-Don Mills,K8,0.0,%,,3
+2026-03-19,Bathurst Manor,K4,0.0,%,,3
+2026-03-19,Bathurst Manor,K6,0.0,%,,3
+2026-03-19,Bathurst Manor,K8,0.0,%,,3
+2026-03-19,Bay Street Corridor,K4,12.5,%,,24
+2026-03-19,Bay Street Corridor,K6,0.0,%,,24
+2026-03-19,Bay Street Corridor,K8,16.666666666666664,%,,24
+2026-03-19,Bayview Village,K4,50.0,%,,2
+2026-03-19,Bayview Village,K6,0.0,%,,2
+2026-03-19,Bayview Village,K8,0.0,%,,2
+2026-03-19,Bayview Woods-Steeles,K4,0.0,%,,1
+2026-03-19,Bayview Woods-Steeles,K6,0.0,%,,1
+2026-03-19,Bayview Woods-Steeles,K8,0.0,%,,1
+2026-03-19,Bedford Park-Nortown,K4,0.0,%,,3
+2026-03-19,Bedford Park-Nortown,K6,0.0,%,,3
+2026-03-19,Bedford Park-Nortown,K8,33.33333333333333,%,,3
+2026-03-19,Beechborough-Greenbrook,K4,0.0,%,,1
+2026-03-19,Beechborough-Greenbrook,K6,0.0,%,,1
+2026-03-19,Beechborough-Greenbrook,K8,100.0,%,,1
+2026-03-19,Bendale,K4,0.0,%,,2
+2026-03-19,Bendale,K6,0.0,%,,2
+2026-03-19,Bendale,K8,0.0,%,,2
+2026-03-19,Birchcliffe-Cliffside,K4,0.0,%,,6
+2026-03-19,Birchcliffe-Cliffside,K6,16.666666666666664,%,,6
+2026-03-19,Birchcliffe-Cliffside,K8,0.0,%,,6
+2026-03-19,Black Creek,K4,0.0,%,,2
+2026-03-19,Black Creek,K6,0.0,%,,2
+2026-03-19,Black Creek,K8,0.0,%,,2
+2026-03-19,Blake-Jones,K4,0.0,%,,4
+2026-03-19,Blake-Jones,K6,0.0,%,,4
+2026-03-19,Blake-Jones,K8,25.0,%,,4
+2026-03-19,Briar Hill-Belgravia,K4,25.0,%,,4
+2026-03-19,Briar Hill-Belgravia,K6,0.0,%,,4
+2026-03-19,Briar Hill-Belgravia,K8,0.0,%,,4
+2026-03-19,Bridle Path-Sunnybrook-York Mills,K4,100.0,%,,1
+2026-03-19,Bridle Path-Sunnybrook-York Mills,K6,0.0,%,,1
+2026-03-19,Bridle Path-Sunnybrook-York Mills,K8,0.0,%,,1
+2026-03-19,Broadview North,K4,0.0,%,,1
+2026-03-19,Broadview North,K6,0.0,%,,1
+2026-03-19,Broadview North,K8,0.0,%,,1
+2026-03-19,Brookhaven-Amesbury,K4,0.0,%,,1
+2026-03-19,Brookhaven-Amesbury,K6,0.0,%,,1
+2026-03-19,Brookhaven-Amesbury,K8,100.0,%,,1
+2026-03-19,Cabbagetown-South St.James Town,K4,11.11111111111111,%,,9
+2026-03-19,Cabbagetown-South St.James Town,K6,0.0,%,,9
+2026-03-19,Cabbagetown-South St.James Town,K8,0.0,%,,9
+2026-03-19,Caledonia-Fairbank,K4,0.0,%,,1
+2026-03-19,Caledonia-Fairbank,K6,0.0,%,,1
+2026-03-19,Caledonia-Fairbank,K8,100.0,%,,1
+2026-03-19,Casa Loma,K4,0.0,%,,3
+2026-03-19,Casa Loma,K6,0.0,%,,3
+2026-03-19,Casa Loma,K8,0.0,%,,3
+2026-03-19,Centennial Scarborough,K4,0.0,%,,4
+2026-03-19,Centennial Scarborough,K6,0.0,%,,4
+2026-03-19,Centennial Scarborough,K8,0.0,%,,4
+2026-03-19,Church-Yonge Corridor,K4,15.384615384615385,%,,26
+2026-03-19,Church-Yonge Corridor,K6,3.8461538461538463,%,,26
+2026-03-19,Church-Yonge Corridor,K8,15.384615384615385,%,,26
+2026-03-19,Clairlea-Birchmount,K4,0.0,%,,3
+2026-03-19,Clairlea-Birchmount,K6,0.0,%,,3
+2026-03-19,Clairlea-Birchmount,K8,33.33333333333333,%,,3
+2026-03-19,Clanton Park,K4,14.285714285714285,%,,7
+2026-03-19,Clanton Park,K6,0.0,%,,7
+2026-03-19,Clanton Park,K8,14.285714285714285,%,,7
+2026-03-19,Cliffcrest,K4,0.0,%,,5
+2026-03-19,Cliffcrest,K6,20.0,%,,5
+2026-03-19,Cliffcrest,K8,20.0,%,,5
+2026-03-19,Corso Italia-Davenport,K4,0.0,%,,4
+2026-03-19,Corso Italia-Davenport,K6,0.0,%,,4
+2026-03-19,Corso Italia-Davenport,K8,0.0,%,,4
+2026-03-19,Danforth,K4,25.0,%,,4
+2026-03-19,Danforth,K6,0.0,%,,4
+2026-03-19,Danforth,K8,25.0,%,,4
+2026-03-19,Danforth East York,K4,0.0,%,,5
+2026-03-19,Danforth East York,K6,0.0,%,,5
+2026-03-19,Danforth East York,K8,40.0,%,,5
+2026-03-19,Don Valley Village,K4,20.0,%,,5
+2026-03-19,Don Valley Village,K6,0.0,%,,5
+2026-03-19,Don Valley Village,K8,0.0,%,,5
+2026-03-19,Dorset Park,K4,0.0,%,,2
+2026-03-19,Dorset Park,K6,0.0,%,,2
+2026-03-19,Dorset Park,K8,0.0,%,,2
+2026-03-19,Dovercourt-Wallace Emerson-Junction,K4,9.375,%,,32
+2026-03-19,Dovercourt-Wallace Emerson-Junction,K6,0.0,%,,32
+2026-03-19,Dovercourt-Wallace Emerson-Junction,K8,25.0,%,,32
+2026-03-19,Downsview-Roding-CFB,K4,0.0,%,,2
+2026-03-19,Downsview-Roding-CFB,K6,0.0,%,,2
+2026-03-19,Downsview-Roding-CFB,K8,50.0,%,,2
+2026-03-19,Dufferin Grove,K4,0.0,%,,12
+2026-03-19,Dufferin Grove,K6,0.0,%,,12
+2026-03-19,Dufferin Grove,K8,8.333333333333332,%,,12
+2026-03-19,East End-Danforth,K4,0.0,%,,7
+2026-03-19,East End-Danforth,K6,14.285714285714285,%,,7
+2026-03-19,East End-Danforth,K8,0.0,%,,7
+2026-03-19,Edenbridge-Humber Valley,K4,0.0,%,,4
+2026-03-19,Edenbridge-Humber Valley,K6,0.0,%,,4
+2026-03-19,Edenbridge-Humber Valley,K8,0.0,%,,4
+2026-03-19,Eglinton East,K4,0.0,%,,2
+2026-03-19,Eglinton East,K6,0.0,%,,2
+2026-03-19,Eglinton East,K8,50.0,%,,2
+2026-03-19,Englemount-Lawrence,K4,25.0,%,,4
+2026-03-19,Englemount-Lawrence,K6,0.0,%,,4
+2026-03-19,Englemount-Lawrence,K8,0.0,%,,4
+2026-03-19,Eringate-Centennial-West Deane,K4,0.0,%,,2
+2026-03-19,Eringate-Centennial-West Deane,K6,0.0,%,,2
+2026-03-19,Eringate-Centennial-West Deane,K8,0.0,%,,2
+2026-03-19,Etobicoke West Mall,K4,0.0,%,,3
+2026-03-19,Etobicoke West Mall,K6,0.0,%,,3
+2026-03-19,Etobicoke West Mall,K8,33.33333333333333,%,,3
+2026-03-19,Flemingdon Park,K4,0.0,%,,2
+2026-03-19,Flemingdon Park,K6,0.0,%,,2
+2026-03-19,Flemingdon Park,K8,0.0,%,,2
+2026-03-19,Forest Hill South,K4,0.0,%,,4
+2026-03-19,Forest Hill South,K6,25.0,%,,4
+2026-03-19,Forest Hill South,K8,0.0,%,,4
+2026-03-19,Glenfield-Jane Heights,K4,0.0,%,,2
+2026-03-19,Glenfield-Jane Heights,K6,0.0,%,,2
+2026-03-19,Glenfield-Jane Heights,K8,0.0,%,,2
+2026-03-19,Greenwood-Coxwell,K4,0.0,%,,5
+2026-03-19,Greenwood-Coxwell,K6,0.0,%,,5
+2026-03-19,Greenwood-Coxwell,K8,0.0,%,,5
+2026-03-19,Guildwood,K4,25.0,%,,4
+2026-03-19,Guildwood,K6,0.0,%,,4
+2026-03-19,Guildwood,K8,0.0,%,,4
+2026-03-19,Henry Farm,K4,0.0,%,,2
+2026-03-19,Henry Farm,K6,0.0,%,,2
+2026-03-19,Henry Farm,K8,0.0,%,,2
+2026-03-19,High Park North,K4,25.0,%,,8
+2026-03-19,High Park North,K6,0.0,%,,8
+2026-03-19,High Park North,K8,25.0,%,,8
+2026-03-19,High Park-Swansea,K4,23.076923076923077,%,,13
+2026-03-19,High Park-Swansea,K6,0.0,%,,13
+2026-03-19,High Park-Swansea,K8,7.6923076923076925,%,,13
+2026-03-19,Hillcrest Village,K4,0.0,%,,1
+2026-03-19,Hillcrest Village,K6,0.0,%,,1
+2026-03-19,Hillcrest Village,K8,0.0,%,,1
+2026-03-19,Humber Heights-Westmount,K4,0.0,%,,1
+2026-03-19,Humber Heights-Westmount,K6,0.0,%,,1
+2026-03-19,Humber Heights-Westmount,K8,100.0,%,,1
+2026-03-19,Humbermede,K4,50.0,%,,2
+2026-03-19,Humbermede,K6,0.0,%,,2
+2026-03-19,Humbermede,K8,50.0,%,,2
+2026-03-19,Humewood-Cedarvale,K4,0.0,%,,4
+2026-03-19,Humewood-Cedarvale,K6,0.0,%,,4
+2026-03-19,Humewood-Cedarvale,K8,0.0,%,,4
+2026-03-19,Islington-City Centre West,K4,9.090909090909092,%,,11
+2026-03-19,Islington-City Centre West,K6,0.0,%,,11
+2026-03-19,Islington-City Centre West,K8,27.27272727272727,%,,11
+2026-03-19,Junction Area,K4,0.0,%,,10
+2026-03-19,Junction Area,K6,0.0,%,,10
+2026-03-19,Junction Area,K8,10.0,%,,10
+2026-03-19,Keelesdale-Eglinton West,K4,66.66666666666666,%,,3
+2026-03-19,Keelesdale-Eglinton West,K6,0.0,%,,3
+2026-03-19,Keelesdale-Eglinton West,K8,33.33333333333333,%,,3
+2026-03-19,Kensington-Chinatown,K4,9.090909090909092,%,,22
+2026-03-19,Kensington-Chinatown,K6,0.0,%,,22
+2026-03-19,Kensington-Chinatown,K8,31.818181818181817,%,,22
+2026-03-19,Kingsview Village-The Westway,K4,0.0,%,,3
+2026-03-19,Kingsview Village-The Westway,K6,0.0,%,,3
+2026-03-19,Kingsview Village-The Westway,K8,33.33333333333333,%,,3
+2026-03-19,L'Amoreaux,K4,33.33333333333333,%,,6
+2026-03-19,L'Amoreaux,K6,0.0,%,,6
+2026-03-19,L'Amoreaux,K8,0.0,%,,6
+2026-03-19,Lambton Baby Point,K4,0.0,%,,1
+2026-03-19,Lambton Baby Point,K6,0.0,%,,1
+2026-03-19,Lambton Baby Point,K8,0.0,%,,1
+2026-03-19,Lansing-Westgate,K4,0.0,%,,3
+2026-03-19,Lansing-Westgate,K6,0.0,%,,3
+2026-03-19,Lansing-Westgate,K8,33.33333333333333,%,,3
+2026-03-19,Lawrence Park North,K4,0.0,%,,5
+2026-03-19,Lawrence Park North,K6,0.0,%,,5
+2026-03-19,Lawrence Park North,K8,20.0,%,,5
+2026-03-19,Leaside-Bennington,K4,33.33333333333333,%,,3
+2026-03-19,Leaside-Bennington,K6,0.0,%,,3
+2026-03-19,Leaside-Bennington,K8,0.0,%,,3
+2026-03-19,Little Portugal,K4,19.230769230769234,%,,26
+2026-03-19,Little Portugal,K6,3.8461538461538463,%,,26
+2026-03-19,Little Portugal,K8,26.923076923076923,%,,26
+2026-03-19,Long Branch,K4,0.0,%,,5
+2026-03-19,Long Branch,K6,0.0,%,,5
+2026-03-19,Long Branch,K8,20.0,%,,5
+2026-03-19,Malvern,K4,0.0,%,,6
+2026-03-19,Malvern,K6,0.0,%,,6
+2026-03-19,Malvern,K8,33.33333333333333,%,,6
+2026-03-19,Maple Leaf,K4,0.0,%,,1
+2026-03-19,Maple Leaf,K6,0.0,%,,1
+2026-03-19,Maple Leaf,K8,100.0,%,,1
+2026-03-19,Markland Wood,K4,100.0,%,,1
+2026-03-19,Markland Wood,K6,0.0,%,,1
+2026-03-19,Markland Wood,K8,0.0,%,,1
+2026-03-19,Milliken,K4,0.0,%,,1
+2026-03-19,Milliken,K6,0.0,%,,1
+2026-03-19,Milliken,K8,0.0,%,,1
+2026-03-19,Mimico (includes Humber Bay Shores),K4,0.0,%,,6
+2026-03-19,Mimico (includes Humber Bay Shores),K6,0.0,%,,6
+2026-03-19,Mimico (includes Humber Bay Shores),K8,33.33333333333333,%,,6
+2026-03-19,Moss Park,K4,4.0,%,,25
+2026-03-19,Moss Park,K6,4.0,%,,25
+2026-03-19,Moss Park,K8,24.0,%,,25
+2026-03-19,Mount Dennis,K4,25.0,%,,4
+2026-03-19,Mount Dennis,K6,0.0,%,,4
+2026-03-19,Mount Dennis,K8,0.0,%,,4
+2026-03-19,Mount Pleasant East,K4,0.0,%,,5
+2026-03-19,Mount Pleasant East,K6,0.0,%,,5
+2026-03-19,Mount Pleasant East,K8,20.0,%,,5
+2026-03-19,Mount Pleasant West,K4,21.428571428571427,%,,14
+2026-03-19,Mount Pleasant West,K6,7.142857142857142,%,,14
+2026-03-19,Mount Pleasant West,K8,35.714285714285715,%,,14
+2026-03-19,New Toronto,K4,0.0,%,,4
+2026-03-19,New Toronto,K6,0.0,%,,4
+2026-03-19,New Toronto,K8,25.0,%,,4
+2026-03-19,Newtonbrook East,K4,14.285714285714285,%,,7
+2026-03-19,Newtonbrook East,K6,14.285714285714285,%,,7
+2026-03-19,Newtonbrook East,K8,28.57142857142857,%,,7
+2026-03-19,Newtonbrook West,K4,0.0,%,,6
+2026-03-19,Newtonbrook West,K6,0.0,%,,6
+2026-03-19,Newtonbrook West,K8,0.0,%,,6
+2026-03-19,Niagara,K4,10.0,%,,40
+2026-03-19,Niagara,K6,2.5,%,,40
+2026-03-19,Niagara,K8,27.500000000000004,%,,40
+2026-03-19,North Riverdale,K4,33.33333333333333,%,,6
+2026-03-19,North Riverdale,K6,0.0,%,,6
+2026-03-19,North Riverdale,K8,16.666666666666664,%,,6
+2026-03-19,North St.James Town,K4,20.0,%,,5
+2026-03-19,North St.James Town,K6,20.0,%,,5
+2026-03-19,North St.James Town,K8,20.0,%,,5
+2026-03-19,O'Connor-Parkview,K4,0.0,%,,5
+2026-03-19,O'Connor-Parkview,K6,20.0,%,,5
+2026-03-19,O'Connor-Parkview,K8,0.0,%,,5
+2026-03-19,Oakridge,K4,0.0,%,,1
+2026-03-19,Oakridge,K6,0.0,%,,1
+2026-03-19,Oakridge,K8,0.0,%,,1
+2026-03-19,Oakwood Village,K4,0.0,%,,11
+2026-03-19,Oakwood Village,K6,0.0,%,,11
+2026-03-19,Oakwood Village,K8,18.181818181818183,%,,11
+2026-03-19,Old East York,K4,16.666666666666664,%,,6
+2026-03-19,Old East York,K6,0.0,%,,6
+2026-03-19,Old East York,K8,0.0,%,,6
+2026-03-19,Palmerston-Little Italy,K4,5.0,%,,20
+2026-03-19,Palmerston-Little Italy,K6,5.0,%,,20
+2026-03-19,Palmerston-Little Italy,K8,15.0,%,,20
+2026-03-19,Parkwoods-Donalda,K4,0.0,%,,5
+2026-03-19,Parkwoods-Donalda,K6,0.0,%,,5
+2026-03-19,Parkwoods-Donalda,K8,60.0,%,,5
+2026-03-19,Pelmo Park-Humberlea,K4,0.0,%,,1
+2026-03-19,Pelmo Park-Humberlea,K6,0.0,%,,1
+2026-03-19,Pelmo Park-Humberlea,K8,0.0,%,,1
+2026-03-19,Pleasant View,K4,0.0,%,,2
+2026-03-19,Pleasant View,K6,0.0,%,,2
+2026-03-19,Pleasant View,K8,0.0,%,,2
+2026-03-19,Regent Park,K4,0.0,%,,2
+2026-03-19,Regent Park,K6,0.0,%,,2
+2026-03-19,Regent Park,K8,100.0,%,,2
+2026-03-19,Rockcliffe-Smythe,K4,0.0,%,,10
+2026-03-19,Rockcliffe-Smythe,K6,10.0,%,,10
+2026-03-19,Rockcliffe-Smythe,K8,10.0,%,,10
+2026-03-19,Roncesvalles,K4,0.0,%,,7
+2026-03-19,Roncesvalles,K6,14.285714285714285,%,,7
+2026-03-19,Roncesvalles,K8,14.285714285714285,%,,7
+2026-03-19,Rosedale-Moore Park,K4,50.0,%,,2
+2026-03-19,Rosedale-Moore Park,K6,0.0,%,,2
+2026-03-19,Rosedale-Moore Park,K8,0.0,%,,2
+2026-03-19,Rouge,K4,0.0,%,,7
+2026-03-19,Rouge,K6,0.0,%,,7
+2026-03-19,Rouge,K8,14.285714285714285,%,,7
+2026-03-19,Runnymede-Bloor West Village,K4,0.0,%,,3
+2026-03-19,Runnymede-Bloor West Village,K6,0.0,%,,3
+2026-03-19,Runnymede-Bloor West Village,K8,33.33333333333333,%,,3
+2026-03-19,Scarborough Village,K4,0.0,%,,1
+2026-03-19,Scarborough Village,K6,0.0,%,,1
+2026-03-19,Scarborough Village,K8,0.0,%,,1
+2026-03-19,South Parkdale,K4,8.333333333333332,%,,12
+2026-03-19,South Parkdale,K6,0.0,%,,12
+2026-03-19,South Parkdale,K8,0.0,%,,12
+2026-03-19,South Riverdale,K4,0.0,%,,26
+2026-03-19,South Riverdale,K6,0.0,%,,26
+2026-03-19,South Riverdale,K8,19.230769230769234,%,,26
+2026-03-19,St.Andrew-Windfields,K4,0.0,%,,1
+2026-03-19,St.Andrew-Windfields,K6,0.0,%,,1
+2026-03-19,St.Andrew-Windfields,K8,0.0,%,,1
+2026-03-19,Steeles,K4,0.0,%,,1
+2026-03-19,Steeles,K6,0.0,%,,1
+2026-03-19,Steeles,K8,100.0,%,,1
+2026-03-19,Stonegate-Queensway,K4,0.0,%,,11
+2026-03-19,Stonegate-Queensway,K6,0.0,%,,11
+2026-03-19,Stonegate-Queensway,K8,36.36363636363637,%,,11
+2026-03-19,Tam O'Shanter-Sullivan,K4,0.0,%,,4
+2026-03-19,Tam O'Shanter-Sullivan,K6,0.0,%,,4
+2026-03-19,Tam O'Shanter-Sullivan,K8,25.0,%,,4
+2026-03-19,Taylor-Massey,K4,0.0,%,,4
+2026-03-19,Taylor-Massey,K6,0.0,%,,4
+2026-03-19,Taylor-Massey,K8,50.0,%,,4
+2026-03-19,The Beaches,K4,0.0,%,,12
+2026-03-19,The Beaches,K6,0.0,%,,12
+2026-03-19,The Beaches,K8,41.66666666666667,%,,12
+2026-03-19,Thistletown-Beaumond Heights,K4,0.0,%,,3
+2026-03-19,Thistletown-Beaumond Heights,K6,0.0,%,,3
+2026-03-19,Thistletown-Beaumond Heights,K8,0.0,%,,3
+2026-03-19,Thorncliffe Park,K4,50.0,%,,2
+2026-03-19,Thorncliffe Park,K6,0.0,%,,2
+2026-03-19,Thorncliffe Park,K8,0.0,%,,2
+2026-03-19,Trinity-Bellwoods,K4,7.6923076923076925,%,,26
+2026-03-19,Trinity-Bellwoods,K6,3.8461538461538463,%,,26
+2026-03-19,Trinity-Bellwoods,K8,19.230769230769234,%,,26
+2026-03-19,University,K4,0.0,%,,6
+2026-03-19,University,K6,0.0,%,,6
+2026-03-19,University,K8,16.666666666666664,%,,6
+2026-03-19,Victoria Village,K4,0.0,%,,3
+2026-03-19,Victoria Village,K6,0.0,%,,3
+2026-03-19,Victoria Village,K8,0.0,%,,3
+2026-03-19,Waterfront Communities-The Island,K4,11.961722488038278,%,,209
+2026-03-19,Waterfront Communities-The Island,K6,3.349282296650718,%,,209
+2026-03-19,Waterfront Communities-The Island,K8,18.181818181818183,%,,209
+2026-03-19,West Hill,K4,0.0,%,,7
+2026-03-19,West Hill,K6,0.0,%,,7
+2026-03-19,West Hill,K8,28.57142857142857,%,,7
+2026-03-19,West Humber-Clairville,K4,0.0,%,,4
+2026-03-19,West Humber-Clairville,K6,0.0,%,,4
+2026-03-19,West Humber-Clairville,K8,0.0,%,,4
+2026-03-19,Westminster-Branson,K4,0.0,%,,1
+2026-03-19,Westminster-Branson,K6,0.0,%,,1
+2026-03-19,Westminster-Branson,K8,0.0,%,,1
+2026-03-19,Weston,K4,0.0,%,,5
+2026-03-19,Weston,K6,20.0,%,,5
+2026-03-19,Weston,K8,20.0,%,,5
+2026-03-19,Weston-Pellam Park,K4,12.5,%,,8
+2026-03-19,Weston-Pellam Park,K6,0.0,%,,8
+2026-03-19,Weston-Pellam Park,K8,12.5,%,,8
+2026-03-19,Wexford/Maryvale,K4,0.0,%,,3
+2026-03-19,Wexford/Maryvale,K6,0.0,%,,3
+2026-03-19,Wexford/Maryvale,K8,0.0,%,,3
+2026-03-19,Willowdale East,K4,14.285714285714285,%,,14
+2026-03-19,Willowdale East,K6,0.0,%,,14
+2026-03-19,Willowdale East,K8,28.57142857142857,%,,14
+2026-03-19,Willowdale West,K4,0.0,%,,3
+2026-03-19,Willowdale West,K6,0.0,%,,3
+2026-03-19,Willowdale West,K8,33.33333333333333,%,,3
+2026-03-19,Willowridge-Martingrove-Richview,K4,0.0,%,,2
+2026-03-19,Willowridge-Martingrove-Richview,K6,0.0,%,,2
+2026-03-19,Willowridge-Martingrove-Richview,K8,0.0,%,,2
+2026-03-19,Woburn,K4,0.0,%,,2
+2026-03-19,Woburn,K6,0.0,%,,2
+2026-03-19,Woburn,K8,50.0,%,,2
+2026-03-19,Woodbine Corridor,K4,0.0,%,,5
+2026-03-19,Woodbine Corridor,K6,0.0,%,,5
+2026-03-19,Woodbine Corridor,K8,20.0,%,,5
+2026-03-19,Woodbine-Lumsden,K4,50.0,%,,2
+2026-03-19,Woodbine-Lumsden,K6,0.0,%,,2
+2026-03-19,Woodbine-Lumsden,K8,0.0,%,,2
+2026-03-19,Wychwood,K4,0.0,%,,8
+2026-03-19,Wychwood,K6,0.0,%,,8
+2026-03-19,Wychwood,K8,12.5,%,,8
+2026-03-19,Yonge-Eglinton,K4,0.0,%,,1
+2026-03-19,Yonge-Eglinton,K6,0.0,%,,1
+2026-03-19,Yonge-Eglinton,K8,0.0,%,,1
+2026-03-19,Yonge-St.Clair,K4,0.0,%,,1
+2026-03-19,Yonge-St.Clair,K6,0.0,%,,1
+2026-03-19,Yonge-St.Clair,K8,0.0,%,,1
+2026-03-19,York University Heights,K4,0.0,%,,5
+2026-03-19,York University Heights,K6,0.0,%,,5
+2026-03-19,York University Heights,K8,20.0,%,,5
+2026-03-19,Yorkdale-Glen Park,K4,0.0,%,,2
+2026-03-19,Yorkdale-Glen Park,K6,50.0,%,,2
+2026-03-19,Yorkdale-Glen Park,K8,0.0,%,,2
+2026-06-15,Agincourt North,K4,0.0,%,,1
+2026-06-15,Agincourt North,K6,0.0,%,,1
+2026-06-15,Agincourt North,K8,0.0,%,,1
+2026-06-15,Agincourt South-Malvern West,K4,33.33333333333333,%,,3
+2026-06-15,Agincourt South-Malvern West,K6,0.0,%,,3
+2026-06-15,Agincourt South-Malvern West,K8,0.0,%,,3
+2026-06-15,Alderwood,K4,0.0,%,,2
+2026-06-15,Alderwood,K6,0.0,%,,2
+2026-06-15,Alderwood,K8,0.0,%,,2
+2026-06-15,Annex,K4,18.91891891891892,%,,37
+2026-06-15,Annex,K6,0.0,%,,37
+2026-06-15,Annex,K8,27.027027027027028,%,,37
+2026-06-15,Banbury-Don Mills,K4,0.0,%,,3
+2026-06-15,Banbury-Don Mills,K6,0.0,%,,3
+2026-06-15,Banbury-Don Mills,K8,0.0,%,,3
+2026-06-15,Bathurst Manor,K4,0.0,%,,3
+2026-06-15,Bathurst Manor,K6,0.0,%,,3
+2026-06-15,Bathurst Manor,K8,0.0,%,,3
+2026-06-15,Bay Street Corridor,K4,8.333333333333332,%,,24
+2026-06-15,Bay Street Corridor,K6,0.0,%,,24
+2026-06-15,Bay Street Corridor,K8,25.0,%,,24
+2026-06-15,Bayview Village,K4,50.0,%,,2
+2026-06-15,Bayview Village,K6,0.0,%,,2
+2026-06-15,Bayview Village,K8,0.0,%,,2
+2026-06-15,Bayview Woods-Steeles,K4,0.0,%,,1
+2026-06-15,Bayview Woods-Steeles,K6,0.0,%,,1
+2026-06-15,Bayview Woods-Steeles,K8,0.0,%,,1
+2026-06-15,Bedford Park-Nortown,K4,0.0,%,,3
+2026-06-15,Bedford Park-Nortown,K6,0.0,%,,3
+2026-06-15,Bedford Park-Nortown,K8,33.33333333333333,%,,3
+2026-06-15,Beechborough-Greenbrook,K4,0.0,%,,1
+2026-06-15,Beechborough-Greenbrook,K6,0.0,%,,1
+2026-06-15,Beechborough-Greenbrook,K8,100.0,%,,1
+2026-06-15,Bendale,K4,0.0,%,,2
+2026-06-15,Bendale,K6,0.0,%,,2
+2026-06-15,Bendale,K8,0.0,%,,2
+2026-06-15,Birchcliffe-Cliffside,K4,0.0,%,,6
+2026-06-15,Birchcliffe-Cliffside,K6,16.666666666666664,%,,6
+2026-06-15,Birchcliffe-Cliffside,K8,0.0,%,,6
+2026-06-15,Black Creek,K4,0.0,%,,2
+2026-06-15,Black Creek,K6,0.0,%,,2
+2026-06-15,Black Creek,K8,0.0,%,,2
+2026-06-15,Blake-Jones,K4,0.0,%,,4
+2026-06-15,Blake-Jones,K6,0.0,%,,4
+2026-06-15,Blake-Jones,K8,25.0,%,,4
+2026-06-15,Briar Hill-Belgravia,K4,25.0,%,,4
+2026-06-15,Briar Hill-Belgravia,K6,0.0,%,,4
+2026-06-15,Briar Hill-Belgravia,K8,25.0,%,,4
+2026-06-15,Bridle Path-Sunnybrook-York Mills,K4,0.0,%,,1
+2026-06-15,Bridle Path-Sunnybrook-York Mills,K6,0.0,%,,1
+2026-06-15,Bridle Path-Sunnybrook-York Mills,K8,0.0,%,,1
+2026-06-15,Broadview North,K4,0.0,%,,1
+2026-06-15,Broadview North,K6,0.0,%,,1
+2026-06-15,Broadview North,K8,0.0,%,,1
+2026-06-15,Brookhaven-Amesbury,K4,0.0,%,,1
+2026-06-15,Brookhaven-Amesbury,K6,0.0,%,,1
+2026-06-15,Brookhaven-Amesbury,K8,100.0,%,,1
+2026-06-15,Cabbagetown-South St.James Town,K4,11.11111111111111,%,,9
+2026-06-15,Cabbagetown-South St.James Town,K6,0.0,%,,9
+2026-06-15,Cabbagetown-South St.James Town,K8,22.22222222222222,%,,9
+2026-06-15,Caledonia-Fairbank,K4,0.0,%,,1
+2026-06-15,Caledonia-Fairbank,K6,0.0,%,,1
+2026-06-15,Caledonia-Fairbank,K8,100.0,%,,1
+2026-06-15,Casa Loma,K4,0.0,%,,3
+2026-06-15,Casa Loma,K6,0.0,%,,3
+2026-06-15,Casa Loma,K8,0.0,%,,3
+2026-06-15,Centennial Scarborough,K4,0.0,%,,4
+2026-06-15,Centennial Scarborough,K6,0.0,%,,4
+2026-06-15,Centennial Scarborough,K8,0.0,%,,4
+2026-06-15,Church-Yonge Corridor,K4,11.538461538461538,%,,26
+2026-06-15,Church-Yonge Corridor,K6,3.8461538461538463,%,,26
+2026-06-15,Church-Yonge Corridor,K8,19.230769230769234,%,,26
+2026-06-15,Clairlea-Birchmount,K4,0.0,%,,3
+2026-06-15,Clairlea-Birchmount,K6,0.0,%,,3
+2026-06-15,Clairlea-Birchmount,K8,33.33333333333333,%,,3
+2026-06-15,Clanton Park,K4,14.285714285714285,%,,7
+2026-06-15,Clanton Park,K6,0.0,%,,7
+2026-06-15,Clanton Park,K8,28.57142857142857,%,,7
+2026-06-15,Cliffcrest,K4,0.0,%,,5
+2026-06-15,Cliffcrest,K6,20.0,%,,5
+2026-06-15,Cliffcrest,K8,20.0,%,,5
+2026-06-15,Corso Italia-Davenport,K4,0.0,%,,4
+2026-06-15,Corso Italia-Davenport,K6,0.0,%,,4
+2026-06-15,Corso Italia-Davenport,K8,25.0,%,,4
+2026-06-15,Danforth,K4,25.0,%,,4
+2026-06-15,Danforth,K6,0.0,%,,4
+2026-06-15,Danforth,K8,25.0,%,,4
+2026-06-15,Danforth East York,K4,0.0,%,,5
+2026-06-15,Danforth East York,K6,0.0,%,,5
+2026-06-15,Danforth East York,K8,20.0,%,,5
+2026-06-15,Don Valley Village,K4,16.666666666666664,%,,6
+2026-06-15,Don Valley Village,K6,0.0,%,,6
+2026-06-15,Don Valley Village,K8,16.666666666666664,%,,6
+2026-06-15,Dorset Park,K4,0.0,%,,2
+2026-06-15,Dorset Park,K6,0.0,%,,2
+2026-06-15,Dorset Park,K8,0.0,%,,2
+2026-06-15,Dovercourt-Wallace Emerson-Junction,K4,9.375,%,,32
+2026-06-15,Dovercourt-Wallace Emerson-Junction,K6,0.0,%,,32
+2026-06-15,Dovercourt-Wallace Emerson-Junction,K8,28.125,%,,32
+2026-06-15,Downsview-Roding-CFB,K4,0.0,%,,2
+2026-06-15,Downsview-Roding-CFB,K6,0.0,%,,2
+2026-06-15,Downsview-Roding-CFB,K8,50.0,%,,2
+2026-06-15,Dufferin Grove,K4,8.333333333333332,%,,12
+2026-06-15,Dufferin Grove,K6,0.0,%,,12
+2026-06-15,Dufferin Grove,K8,8.333333333333332,%,,12
+2026-06-15,East End-Danforth,K4,0.0,%,,7
+2026-06-15,East End-Danforth,K6,14.285714285714285,%,,7
+2026-06-15,East End-Danforth,K8,14.285714285714285,%,,7
+2026-06-15,Edenbridge-Humber Valley,K4,0.0,%,,4
+2026-06-15,Edenbridge-Humber Valley,K6,0.0,%,,4
+2026-06-15,Edenbridge-Humber Valley,K8,0.0,%,,4
+2026-06-15,Eglinton East,K4,0.0,%,,2
+2026-06-15,Eglinton East,K6,0.0,%,,2
+2026-06-15,Eglinton East,K8,50.0,%,,2
+2026-06-15,Englemount-Lawrence,K4,25.0,%,,4
+2026-06-15,Englemount-Lawrence,K6,0.0,%,,4
+2026-06-15,Englemount-Lawrence,K8,0.0,%,,4
+2026-06-15,Eringate-Centennial-West Deane,K4,0.0,%,,2
+2026-06-15,Eringate-Centennial-West Deane,K6,0.0,%,,2
+2026-06-15,Eringate-Centennial-West Deane,K8,0.0,%,,2
+2026-06-15,Etobicoke West Mall,K4,0.0,%,,3
+2026-06-15,Etobicoke West Mall,K6,0.0,%,,3
+2026-06-15,Etobicoke West Mall,K8,33.33333333333333,%,,3
+2026-06-15,Flemingdon Park,K4,0.0,%,,2
+2026-06-15,Flemingdon Park,K6,0.0,%,,2
+2026-06-15,Flemingdon Park,K8,0.0,%,,2
+2026-06-15,Forest Hill South,K4,0.0,%,,4
+2026-06-15,Forest Hill South,K6,25.0,%,,4
+2026-06-15,Forest Hill South,K8,0.0,%,,4
+2026-06-15,Glenfield-Jane Heights,K4,0.0,%,,2
+2026-06-15,Glenfield-Jane Heights,K6,0.0,%,,2
+2026-06-15,Glenfield-Jane Heights,K8,0.0,%,,2
+2026-06-15,Greenwood-Coxwell,K4,0.0,%,,5
+2026-06-15,Greenwood-Coxwell,K6,0.0,%,,5
+2026-06-15,Greenwood-Coxwell,K8,20.0,%,,5
+2026-06-15,Guildwood,K4,25.0,%,,4
+2026-06-15,Guildwood,K6,0.0,%,,4
+2026-06-15,Guildwood,K8,25.0,%,,4
+2026-06-15,Henry Farm,K4,0.0,%,,2
+2026-06-15,Henry Farm,K6,0.0,%,,2
+2026-06-15,Henry Farm,K8,50.0,%,,2
+2026-06-15,High Park North,K4,25.0,%,,8
+2026-06-15,High Park North,K6,0.0,%,,8
+2026-06-15,High Park North,K8,25.0,%,,8
+2026-06-15,High Park-Swansea,K4,23.076923076923077,%,,13
+2026-06-15,High Park-Swansea,K6,0.0,%,,13
+2026-06-15,High Park-Swansea,K8,0.0,%,,13
+2026-06-15,Hillcrest Village,K4,0.0,%,,1
+2026-06-15,Hillcrest Village,K6,0.0,%,,1
+2026-06-15,Hillcrest Village,K8,0.0,%,,1
+2026-06-15,Humber Heights-Westmount,K4,0.0,%,,1
+2026-06-15,Humber Heights-Westmount,K6,0.0,%,,1
+2026-06-15,Humber Heights-Westmount,K8,100.0,%,,1
+2026-06-15,Humbermede,K4,50.0,%,,2
+2026-06-15,Humbermede,K6,0.0,%,,2
+2026-06-15,Humbermede,K8,50.0,%,,2
+2026-06-15,Humewood-Cedarvale,K4,0.0,%,,4
+2026-06-15,Humewood-Cedarvale,K6,0.0,%,,4
+2026-06-15,Humewood-Cedarvale,K8,0.0,%,,4
+2026-06-15,Islington-City Centre West,K4,9.090909090909092,%,,11
+2026-06-15,Islington-City Centre West,K6,0.0,%,,11
+2026-06-15,Islington-City Centre West,K8,27.27272727272727,%,,11
+2026-06-15,Junction Area,K4,0.0,%,,10
+2026-06-15,Junction Area,K6,0.0,%,,10
+2026-06-15,Junction Area,K8,10.0,%,,10
+2026-06-15,Keelesdale-Eglinton West,K4,66.66666666666666,%,,3
+2026-06-15,Keelesdale-Eglinton West,K6,0.0,%,,3
+2026-06-15,Keelesdale-Eglinton West,K8,33.33333333333333,%,,3
+2026-06-15,Kensington-Chinatown,K4,4.545454545454546,%,,22
+2026-06-15,Kensington-Chinatown,K6,0.0,%,,22
+2026-06-15,Kensington-Chinatown,K8,22.727272727272727,%,,22
+2026-06-15,Kingsview Village-The Westway,K4,0.0,%,,3
+2026-06-15,Kingsview Village-The Westway,K6,0.0,%,,3
+2026-06-15,Kingsview Village-The Westway,K8,33.33333333333333,%,,3
+2026-06-15,L'Amoreaux,K4,33.33333333333333,%,,6
+2026-06-15,L'Amoreaux,K6,0.0,%,,6
+2026-06-15,L'Amoreaux,K8,0.0,%,,6
+2026-06-15,Lambton Baby Point,K4,0.0,%,,1
+2026-06-15,Lambton Baby Point,K6,0.0,%,,1
+2026-06-15,Lambton Baby Point,K8,0.0,%,,1
+2026-06-15,Lansing-Westgate,K4,0.0,%,,3
+2026-06-15,Lansing-Westgate,K6,0.0,%,,3
+2026-06-15,Lansing-Westgate,K8,66.66666666666666,%,,3
+2026-06-15,Lawrence Park North,K4,0.0,%,,5
+2026-06-15,Lawrence Park North,K6,0.0,%,,5
+2026-06-15,Lawrence Park North,K8,60.0,%,,5
+2026-06-15,Leaside-Bennington,K4,33.33333333333333,%,,3
+2026-06-15,Leaside-Bennington,K6,0.0,%,,3
+2026-06-15,Leaside-Bennington,K8,0.0,%,,3
+2026-06-15,Little Portugal,K4,19.230769230769234,%,,26
+2026-06-15,Little Portugal,K6,3.8461538461538463,%,,26
+2026-06-15,Little Portugal,K8,23.076923076923077,%,,26
+2026-06-15,Long Branch,K4,0.0,%,,5
+2026-06-15,Long Branch,K6,0.0,%,,5
+2026-06-15,Long Branch,K8,20.0,%,,5
+2026-06-15,Malvern,K4,0.0,%,,6
+2026-06-15,Malvern,K6,0.0,%,,6
+2026-06-15,Malvern,K8,33.33333333333333,%,,6
+2026-06-15,Maple Leaf,K4,0.0,%,,1
+2026-06-15,Maple Leaf,K6,0.0,%,,1
+2026-06-15,Maple Leaf,K8,0.0,%,,1
+2026-06-15,Markland Wood,K4,0.0,%,,1
+2026-06-15,Markland Wood,K6,0.0,%,,1
+2026-06-15,Markland Wood,K8,0.0,%,,1
+2026-06-15,Milliken,K4,0.0,%,,1
+2026-06-15,Milliken,K6,0.0,%,,1
+2026-06-15,Milliken,K8,0.0,%,,1
+2026-06-15,Mimico (includes Humber Bay Shores),K4,0.0,%,,6
+2026-06-15,Mimico (includes Humber Bay Shores),K6,0.0,%,,6
+2026-06-15,Mimico (includes Humber Bay Shores),K8,16.666666666666664,%,,6
+2026-06-15,Moss Park,K4,8.0,%,,25
+2026-06-15,Moss Park,K6,4.0,%,,25
+2026-06-15,Moss Park,K8,20.0,%,,25
+2026-06-15,Mount Dennis,K4,25.0,%,,4
+2026-06-15,Mount Dennis,K6,0.0,%,,4
+2026-06-15,Mount Dennis,K8,0.0,%,,4
+2026-06-15,Mount Pleasant East,K4,0.0,%,,5
+2026-06-15,Mount Pleasant East,K6,0.0,%,,5
+2026-06-15,Mount Pleasant East,K8,20.0,%,,5
+2026-06-15,Mount Pleasant West,K4,21.428571428571427,%,,14
+2026-06-15,Mount Pleasant West,K6,7.142857142857142,%,,14
+2026-06-15,Mount Pleasant West,K8,50.0,%,,14
+2026-06-15,New Toronto,K4,0.0,%,,4
+2026-06-15,New Toronto,K6,0.0,%,,4
+2026-06-15,New Toronto,K8,25.0,%,,4
+2026-06-15,Newtonbrook East,K4,14.285714285714285,%,,7
+2026-06-15,Newtonbrook East,K6,14.285714285714285,%,,7
+2026-06-15,Newtonbrook East,K8,42.857142857142854,%,,7
+2026-06-15,Newtonbrook West,K4,0.0,%,,6
+2026-06-15,Newtonbrook West,K6,0.0,%,,6
+2026-06-15,Newtonbrook West,K8,0.0,%,,6
+2026-06-15,Niagara,K4,10.0,%,,40
+2026-06-15,Niagara,K6,2.5,%,,40
+2026-06-15,Niagara,K8,25.0,%,,40
+2026-06-15,North Riverdale,K4,33.33333333333333,%,,6
+2026-06-15,North Riverdale,K6,0.0,%,,6
+2026-06-15,North Riverdale,K8,16.666666666666664,%,,6
+2026-06-15,North St.James Town,K4,20.0,%,,5
+2026-06-15,North St.James Town,K6,20.0,%,,5
+2026-06-15,North St.James Town,K8,20.0,%,,5
+2026-06-15,O'Connor-Parkview,K4,0.0,%,,5
+2026-06-15,O'Connor-Parkview,K6,20.0,%,,5
+2026-06-15,O'Connor-Parkview,K8,20.0,%,,5
+2026-06-15,Oakridge,K4,0.0,%,,1
+2026-06-15,Oakridge,K6,0.0,%,,1
+2026-06-15,Oakridge,K8,0.0,%,,1
+2026-06-15,Oakwood Village,K4,0.0,%,,11
+2026-06-15,Oakwood Village,K6,0.0,%,,11
+2026-06-15,Oakwood Village,K8,18.181818181818183,%,,11
+2026-06-15,Old East York,K4,16.666666666666664,%,,6
+2026-06-15,Old East York,K6,0.0,%,,6
+2026-06-15,Old East York,K8,0.0,%,,6
+2026-06-15,Palmerston-Little Italy,K4,5.0,%,,20
+2026-06-15,Palmerston-Little Italy,K6,5.0,%,,20
+2026-06-15,Palmerston-Little Italy,K8,20.0,%,,20
+2026-06-15,Parkwoods-Donalda,K4,0.0,%,,5
+2026-06-15,Parkwoods-Donalda,K6,0.0,%,,5
+2026-06-15,Parkwoods-Donalda,K8,60.0,%,,5
+2026-06-15,Pelmo Park-Humberlea,K4,0.0,%,,1
+2026-06-15,Pelmo Park-Humberlea,K6,0.0,%,,1
+2026-06-15,Pelmo Park-Humberlea,K8,0.0,%,,1
+2026-06-15,Pleasant View,K4,0.0,%,,1
+2026-06-15,Pleasant View,K6,0.0,%,,1
+2026-06-15,Pleasant View,K8,0.0,%,,1
+2026-06-15,Regent Park,K4,0.0,%,,2
+2026-06-15,Regent Park,K6,0.0,%,,2
+2026-06-15,Regent Park,K8,100.0,%,,2
+2026-06-15,Rockcliffe-Smythe,K4,0.0,%,,10
+2026-06-15,Rockcliffe-Smythe,K6,10.0,%,,10
+2026-06-15,Rockcliffe-Smythe,K8,10.0,%,,10
+2026-06-15,Roncesvalles,K4,0.0,%,,7
+2026-06-15,Roncesvalles,K6,14.285714285714285,%,,7
+2026-06-15,Roncesvalles,K8,14.285714285714285,%,,7
+2026-06-15,Rosedale-Moore Park,K4,50.0,%,,2
+2026-06-15,Rosedale-Moore Park,K6,0.0,%,,2
+2026-06-15,Rosedale-Moore Park,K8,0.0,%,,2
+2026-06-15,Rouge,K4,0.0,%,,7
+2026-06-15,Rouge,K6,0.0,%,,7
+2026-06-15,Rouge,K8,0.0,%,,7
+2026-06-15,Runnymede-Bloor West Village,K4,0.0,%,,3
+2026-06-15,Runnymede-Bloor West Village,K6,0.0,%,,3
+2026-06-15,Runnymede-Bloor West Village,K8,33.33333333333333,%,,3
+2026-06-15,Scarborough Village,K4,0.0,%,,1
+2026-06-15,Scarborough Village,K6,0.0,%,,1
+2026-06-15,Scarborough Village,K8,0.0,%,,1
+2026-06-15,South Parkdale,K4,8.333333333333332,%,,12
+2026-06-15,South Parkdale,K6,0.0,%,,12
+2026-06-15,South Parkdale,K8,25.0,%,,12
+2026-06-15,South Riverdale,K4,0.0,%,,26
+2026-06-15,South Riverdale,K6,0.0,%,,26
+2026-06-15,South Riverdale,K8,23.076923076923077,%,,26
+2026-06-15,St.Andrew-Windfields,K4,0.0,%,,1
+2026-06-15,St.Andrew-Windfields,K6,0.0,%,,1
+2026-06-15,St.Andrew-Windfields,K8,0.0,%,,1
+2026-06-15,Steeles,K4,0.0,%,,1
+2026-06-15,Steeles,K6,0.0,%,,1
+2026-06-15,Steeles,K8,100.0,%,,1
+2026-06-15,Stonegate-Queensway,K4,0.0,%,,11
+2026-06-15,Stonegate-Queensway,K6,0.0,%,,11
+2026-06-15,Stonegate-Queensway,K8,27.27272727272727,%,,11
+2026-06-15,Tam O'Shanter-Sullivan,K4,0.0,%,,4
+2026-06-15,Tam O'Shanter-Sullivan,K6,0.0,%,,4
+2026-06-15,Tam O'Shanter-Sullivan,K8,50.0,%,,4
+2026-06-15,Taylor-Massey,K4,0.0,%,,4
+2026-06-15,Taylor-Massey,K6,0.0,%,,4
+2026-06-15,Taylor-Massey,K8,50.0,%,,4
+2026-06-15,The Beaches,K4,0.0,%,,12
+2026-06-15,The Beaches,K6,0.0,%,,12
+2026-06-15,The Beaches,K8,33.33333333333333,%,,12
+2026-06-15,Thistletown-Beaumond Heights,K4,0.0,%,,3
+2026-06-15,Thistletown-Beaumond Heights,K6,0.0,%,,3
+2026-06-15,Thistletown-Beaumond Heights,K8,33.33333333333333,%,,3
+2026-06-15,Thorncliffe Park,K4,50.0,%,,2
+2026-06-15,Thorncliffe Park,K6,0.0,%,,2
+2026-06-15,Thorncliffe Park,K8,50.0,%,,2
+2026-06-15,Trinity-Bellwoods,K4,0.0,%,,26
+2026-06-15,Trinity-Bellwoods,K6,3.8461538461538463,%,,26
+2026-06-15,Trinity-Bellwoods,K8,23.076923076923077,%,,26
+2026-06-15,University,K4,16.666666666666664,%,,6
+2026-06-15,University,K6,0.0,%,,6
+2026-06-15,University,K8,0.0,%,,6
+2026-06-15,Victoria Village,K4,0.0,%,,3
+2026-06-15,Victoria Village,K6,0.0,%,,3
+2026-06-15,Victoria Village,K8,0.0,%,,3
+2026-06-15,Waterfront Communities-The Island,K4,13.875598086124402,%,,209
+2026-06-15,Waterfront Communities-The Island,K6,3.349282296650718,%,,209
+2026-06-15,Waterfront Communities-The Island,K8,22.48803827751196,%,,209
+2026-06-15,West Hill,K4,0.0,%,,7
+2026-06-15,West Hill,K6,0.0,%,,7
+2026-06-15,West Hill,K8,28.57142857142857,%,,7
+2026-06-15,West Humber-Clairville,K4,0.0,%,,4
+2026-06-15,West Humber-Clairville,K6,0.0,%,,4
+2026-06-15,West Humber-Clairville,K8,0.0,%,,4
+2026-06-15,Westminster-Branson,K4,0.0,%,,1
+2026-06-15,Westminster-Branson,K6,0.0,%,,1
+2026-06-15,Westminster-Branson,K8,0.0,%,,1
+2026-06-15,Weston,K4,0.0,%,,5
+2026-06-15,Weston,K6,20.0,%,,5
+2026-06-15,Weston,K8,20.0,%,,5
+2026-06-15,Weston-Pellam Park,K4,12.5,%,,8
+2026-06-15,Weston-Pellam Park,K6,0.0,%,,8
+2026-06-15,Weston-Pellam Park,K8,12.5,%,,8
+2026-06-15,Wexford/Maryvale,K4,0.0,%,,3
+2026-06-15,Wexford/Maryvale,K6,0.0,%,,3
+2026-06-15,Wexford/Maryvale,K8,33.33333333333333,%,,3
+2026-06-15,Willowdale East,K4,14.285714285714285,%,,14
+2026-06-15,Willowdale East,K6,0.0,%,,14
+2026-06-15,Willowdale East,K8,28.57142857142857,%,,14
+2026-06-15,Willowdale West,K4,0.0,%,,3
+2026-06-15,Willowdale West,K6,0.0,%,,3
+2026-06-15,Willowdale West,K8,66.66666666666666,%,,3
+2026-06-15,Willowridge-Martingrove-Richview,K4,0.0,%,,2
+2026-06-15,Willowridge-Martingrove-Richview,K6,0.0,%,,2
+2026-06-15,Willowridge-Martingrove-Richview,K8,0.0,%,,2
+2026-06-15,Woburn,K4,0.0,%,,2
+2026-06-15,Woburn,K6,0.0,%,,2
+2026-06-15,Woburn,K8,50.0,%,,2
+2026-06-15,Woodbine Corridor,K4,0.0,%,,5
+2026-06-15,Woodbine Corridor,K6,0.0,%,,5
+2026-06-15,Woodbine Corridor,K8,40.0,%,,5
+2026-06-15,Woodbine-Lumsden,K4,50.0,%,,2
+2026-06-15,Woodbine-Lumsden,K6,0.0,%,,2
+2026-06-15,Woodbine-Lumsden,K8,0.0,%,,2
+2026-06-15,Wychwood,K4,0.0,%,,8
+2026-06-15,Wychwood,K6,0.0,%,,8
+2026-06-15,Wychwood,K8,12.5,%,,8
+2026-06-15,Yonge-Eglinton,K4,0.0,%,,1
+2026-06-15,Yonge-Eglinton,K6,0.0,%,,1
+2026-06-15,Yonge-Eglinton,K8,0.0,%,,1
+2026-06-15,Yonge-St.Clair,K4,0.0,%,,1
+2026-06-15,Yonge-St.Clair,K6,0.0,%,,1
+2026-06-15,Yonge-St.Clair,K8,0.0,%,,1
+2026-06-15,York University Heights,K4,0.0,%,,5
+2026-06-15,York University Heights,K6,0.0,%,,5
+2026-06-15,York University Heights,K8,20.0,%,,5
+2026-06-15,Yorkdale-Glen Park,K4,0.0,%,,2
+2026-06-15,Yorkdale-Glen Park,K6,50.0,%,,2
+2026-06-15,Yorkdale-Glen Park,K8,0.0,%,,2
+2026-09-16,Agincourt North,K1,144.09,CAD/đêm,CAD,1
+2026-09-16,Agincourt North,K4,0.0,%,,1
+2026-09-16,Agincourt North,K6,0.0,%,,1
+2026-09-16,Agincourt North,K8,0.0,%,,1
+2026-09-16,Agincourt South-Malvern West,K1,101.41,CAD/đêm,CAD,3
+2026-09-16,Agincourt South-Malvern West,K4,33.33333333333333,%,,3
+2026-09-16,Agincourt South-Malvern West,K6,0.0,%,,3
+2026-09-16,Agincourt South-Malvern West,K8,0.0,%,,3
+2026-09-16,Alderwood,K1,88.69,CAD/đêm,CAD,2
+2026-09-16,Alderwood,K4,0.0,%,,2
+2026-09-16,Alderwood,K6,0.0,%,,2
+2026-09-16,Alderwood,K8,0.0,%,,2
+2026-09-16,Annex,K1,321.66499999999996,CAD/đêm,CAD,30
+2026-09-16,Annex,K4,17.142857142857142,%,,35
+2026-09-16,Annex,K6,0.0,%,,35
+2026-09-16,Annex,K8,22.857142857142858,%,,35
+2026-09-16,Banbury-Don Mills,K1,218.44,CAD/đêm,CAD,3
+2026-09-16,Banbury-Don Mills,K4,0.0,%,,3
+2026-09-16,Banbury-Don Mills,K6,0.0,%,,3
+2026-09-16,Banbury-Don Mills,K8,0.0,%,,3
+2026-09-16,Bathurst Manor,K1,254.66,CAD/đêm,CAD,3
+2026-09-16,Bathurst Manor,K4,0.0,%,,3
+2026-09-16,Bathurst Manor,K6,0.0,%,,3
+2026-09-16,Bathurst Manor,K8,33.33333333333333,%,,3
+2026-09-16,Bay Street Corridor,K1,312.30499999999995,CAD/đêm,CAD,22
+2026-09-16,Bay Street Corridor,K4,13.043478260869565,%,,23
+2026-09-16,Bay Street Corridor,K6,0.0,%,,23
+2026-09-16,Bay Street Corridor,K8,26.08695652173913,%,,23
+2026-09-16,Bayview Village,K1,,CAD/đêm,CAD,0
+2026-09-16,Bayview Village,K4,50.0,%,,2
+2026-09-16,Bayview Village,K6,0.0,%,,2
+2026-09-16,Bayview Village,K8,0.0,%,,2
+2026-09-16,Bayview Woods-Steeles,K1,91.51,CAD/đêm,CAD,1
+2026-09-16,Bayview Woods-Steeles,K4,0.0,%,,1
+2026-09-16,Bayview Woods-Steeles,K6,0.0,%,,1
+2026-09-16,Bayview Woods-Steeles,K8,0.0,%,,1
+2026-09-16,Bedford Park-Nortown,K1,96.595,CAD/đêm,CAD,2
+2026-09-16,Bedford Park-Nortown,K4,0.0,%,,3
+2026-09-16,Bedford Park-Nortown,K6,0.0,%,,3
+2026-09-16,Bedford Park-Nortown,K8,0.0,%,,3
+2026-09-16,Beechborough-Greenbrook,K1,378.0,CAD/đêm,CAD,1
+2026-09-16,Beechborough-Greenbrook,K4,0.0,%,,1
+2026-09-16,Beechborough-Greenbrook,K6,0.0,%,,1
+2026-09-16,Beechborough-Greenbrook,K8,100.0,%,,1
+2026-09-16,Bendale,K1,146.99,CAD/đêm,CAD,2
+2026-09-16,Bendale,K4,0.0,%,,2
+2026-09-16,Bendale,K6,0.0,%,,2
+2026-09-16,Bendale,K8,0.0,%,,2
+2026-09-16,Birchcliffe-Cliffside,K1,237.93,CAD/đêm,CAD,4
+2026-09-16,Birchcliffe-Cliffside,K4,0.0,%,,4
+2026-09-16,Birchcliffe-Cliffside,K6,25.0,%,,4
+2026-09-16,Birchcliffe-Cliffside,K8,50.0,%,,4
+2026-09-16,Black Creek,K1,56.67,CAD/đêm,CAD,1
+2026-09-16,Black Creek,K4,0.0,%,,2
+2026-09-16,Black Creek,K6,0.0,%,,2
+2026-09-16,Black Creek,K8,0.0,%,,2
+2026-09-16,Blake-Jones,K1,277.67,CAD/đêm,CAD,3
+2026-09-16,Blake-Jones,K4,0.0,%,,3
+2026-09-16,Blake-Jones,K6,0.0,%,,3
+2026-09-16,Blake-Jones,K8,33.33333333333333,%,,3
+2026-09-16,Briar Hill-Belgravia,K1,114.54,CAD/đêm,CAD,3
+2026-09-16,Briar Hill-Belgravia,K4,25.0,%,,4
+2026-09-16,Briar Hill-Belgravia,K6,0.0,%,,4
+2026-09-16,Briar Hill-Belgravia,K8,0.0,%,,4
+2026-09-16,Broadview North,K1,160.82,CAD/đêm,CAD,1
+2026-09-16,Broadview North,K4,0.0,%,,1
+2026-09-16,Broadview North,K6,0.0,%,,1
+2026-09-16,Broadview North,K8,0.0,%,,1
+2026-09-16,Brookhaven-Amesbury,K1,207.8,CAD/đêm,CAD,1
+2026-09-16,Brookhaven-Amesbury,K4,0.0,%,,1
+2026-09-16,Brookhaven-Amesbury,K6,0.0,%,,1
+2026-09-16,Brookhaven-Amesbury,K8,100.0,%,,1
+2026-09-16,Cabbagetown-South St.James Town,K1,225.895,CAD/đêm,CAD,8
+2026-09-16,Cabbagetown-South St.James Town,K4,11.11111111111111,%,,9
+2026-09-16,Cabbagetown-South St.James Town,K6,0.0,%,,9
+2026-09-16,Cabbagetown-South St.James Town,K8,11.11111111111111,%,,9
+2026-09-16,Caledonia-Fairbank,K1,152.58,CAD/đêm,CAD,1
+2026-09-16,Caledonia-Fairbank,K4,0.0,%,,1
+2026-09-16,Caledonia-Fairbank,K6,0.0,%,,1
+2026-09-16,Caledonia-Fairbank,K8,100.0,%,,1
+2026-09-16,Casa Loma,K1,248.66,CAD/đêm,CAD,2
+2026-09-16,Casa Loma,K4,0.0,%,,2
+2026-09-16,Casa Loma,K6,0.0,%,,2
+2026-09-16,Casa Loma,K8,50.0,%,,2
+2026-09-16,Centennial Scarborough,K1,266.005,CAD/đêm,CAD,2
+2026-09-16,Centennial Scarborough,K4,0.0,%,,3
+2026-09-16,Centennial Scarborough,K6,0.0,%,,3
+2026-09-16,Centennial Scarborough,K8,0.0,%,,3
+2026-09-16,Church-Yonge Corridor,K1,260.67,CAD/đêm,CAD,17
+2026-09-16,Church-Yonge Corridor,K4,17.391304347826086,%,,23
+2026-09-16,Church-Yonge Corridor,K6,4.3478260869565215,%,,23
+2026-09-16,Church-Yonge Corridor,K8,26.08695652173913,%,,23
+2026-09-16,Clairlea-Birchmount,K1,81.03,CAD/đêm,CAD,2
+2026-09-16,Clairlea-Birchmount,K4,0.0,%,,2
+2026-09-16,Clairlea-Birchmount,K6,0.0,%,,2
+2026-09-16,Clairlea-Birchmount,K8,50.0,%,,2
+2026-09-16,Clanton Park,K1,257.645,CAD/đêm,CAD,6
+2026-09-16,Clanton Park,K4,14.285714285714285,%,,7
+2026-09-16,Clanton Park,K6,0.0,%,,7
+2026-09-16,Clanton Park,K8,28.57142857142857,%,,7
+2026-09-16,Cliffcrest,K1,103.985,CAD/đêm,CAD,4
+2026-09-16,Cliffcrest,K4,0.0,%,,5
+2026-09-16,Cliffcrest,K6,20.0,%,,5
+2026-09-16,Cliffcrest,K8,20.0,%,,5
+2026-09-16,Corso Italia-Davenport,K1,149.0,CAD/đêm,CAD,3
+2026-09-16,Corso Italia-Davenport,K4,0.0,%,,4
+2026-09-16,Corso Italia-Davenport,K6,0.0,%,,4
+2026-09-16,Corso Italia-Davenport,K8,0.0,%,,4
+2026-09-16,Danforth,K1,83.67,CAD/đêm,CAD,3
+2026-09-16,Danforth,K4,0.0,%,,3
+2026-09-16,Danforth,K6,0.0,%,,3
+2026-09-16,Danforth,K8,0.0,%,,3
+2026-09-16,Danforth East York,K1,230.5,CAD/đêm,CAD,3
+2026-09-16,Danforth East York,K4,0.0,%,,5
+2026-09-16,Danforth East York,K6,0.0,%,,5
+2026-09-16,Danforth East York,K8,20.0,%,,5
+2026-09-16,Don Valley Village,K1,94.76,CAD/đêm,CAD,5
+2026-09-16,Don Valley Village,K4,20.0,%,,5
+2026-09-16,Don Valley Village,K6,0.0,%,,5
+2026-09-16,Don Valley Village,K8,20.0,%,,5
+2026-09-16,Dorset Park,K1,77.0,CAD/đêm,CAD,1
+2026-09-16,Dorset Park,K4,0.0,%,,2
+2026-09-16,Dorset Park,K6,0.0,%,,2
+2026-09-16,Dorset Park,K8,0.0,%,,2
+2026-09-16,Dovercourt-Wallace Emerson-Junction,K1,128.60500000000002,CAD/đêm,CAD,24
+2026-09-16,Dovercourt-Wallace Emerson-Junction,K4,11.11111111111111,%,,27
+2026-09-16,Dovercourt-Wallace Emerson-Junction,K6,0.0,%,,27
+2026-09-16,Dovercourt-Wallace Emerson-Junction,K8,18.51851851851852,%,,27
+2026-09-16,Downsview-Roding-CFB,K1,165.06,CAD/đêm,CAD,2
+2026-09-16,Downsview-Roding-CFB,K4,0.0,%,,2
+2026-09-16,Downsview-Roding-CFB,K6,0.0,%,,2
+2026-09-16,Downsview-Roding-CFB,K8,0.0,%,,2
+2026-09-16,Dufferin Grove,K1,102.985,CAD/đêm,CAD,10
+2026-09-16,Dufferin Grove,K4,27.27272727272727,%,,11
+2026-09-16,Dufferin Grove,K6,0.0,%,,11
+2026-09-16,Dufferin Grove,K8,18.181818181818183,%,,11
+2026-09-16,East End-Danforth,K1,151.94,CAD/đêm,CAD,5
+2026-09-16,East End-Danforth,K4,0.0,%,,7
+2026-09-16,East End-Danforth,K6,14.285714285714285,%,,7
+2026-09-16,East End-Danforth,K8,0.0,%,,7
+2026-09-16,Edenbridge-Humber Valley,K1,73.395,CAD/đêm,CAD,2
+2026-09-16,Edenbridge-Humber Valley,K4,0.0,%,,2
+2026-09-16,Edenbridge-Humber Valley,K6,0.0,%,,2
+2026-09-16,Edenbridge-Humber Valley,K8,0.0,%,,2
+2026-09-16,Eglinton East,K1,54.0,CAD/đêm,CAD,2
+2026-09-16,Eglinton East,K4,0.0,%,,2
+2026-09-16,Eglinton East,K6,0.0,%,,2
+2026-09-16,Eglinton East,K8,50.0,%,,2
+2026-09-16,Englemount-Lawrence,K1,183.815,CAD/đêm,CAD,2
+2026-09-16,Englemount-Lawrence,K4,50.0,%,,2
+2026-09-16,Englemount-Lawrence,K6,0.0,%,,2
+2026-09-16,Englemount-Lawrence,K8,0.0,%,,2
+2026-09-16,Eringate-Centennial-West Deane,K1,481.16,CAD/đêm,CAD,2
+2026-09-16,Eringate-Centennial-West Deane,K4,0.0,%,,2
+2026-09-16,Eringate-Centennial-West Deane,K6,0.0,%,,2
+2026-09-16,Eringate-Centennial-West Deane,K8,0.0,%,,2
+2026-09-16,Etobicoke West Mall,K1,365.5,CAD/đêm,CAD,3
+2026-09-16,Etobicoke West Mall,K4,0.0,%,,3
+2026-09-16,Etobicoke West Mall,K6,0.0,%,,3
+2026-09-16,Etobicoke West Mall,K8,33.33333333333333,%,,3
+2026-09-16,Flemingdon Park,K1,261.08,CAD/đêm,CAD,2
+2026-09-16,Flemingdon Park,K4,0.0,%,,2
+2026-09-16,Flemingdon Park,K6,0.0,%,,2
+2026-09-16,Flemingdon Park,K8,0.0,%,,2
+2026-09-16,Forest Hill South,K1,308.8,CAD/đêm,CAD,1
+2026-09-16,Forest Hill South,K4,0.0,%,,3
+2026-09-16,Forest Hill South,K6,33.33333333333333,%,,3
+2026-09-16,Forest Hill South,K8,0.0,%,,3
+2026-09-16,Glenfield-Jane Heights,K1,233.6,CAD/đêm,CAD,1
+2026-09-16,Glenfield-Jane Heights,K4,0.0,%,,2
+2026-09-16,Glenfield-Jane Heights,K6,0.0,%,,2
+2026-09-16,Glenfield-Jane Heights,K8,0.0,%,,2
+2026-09-16,Greenwood-Coxwell,K1,194.14,CAD/đêm,CAD,5
+2026-09-16,Greenwood-Coxwell,K4,0.0,%,,5
+2026-09-16,Greenwood-Coxwell,K6,0.0,%,,5
+2026-09-16,Greenwood-Coxwell,K8,0.0,%,,5
+2026-09-16,Guildwood,K1,145.335,CAD/đêm,CAD,4
+2026-09-16,Guildwood,K4,25.0,%,,4
+2026-09-16,Guildwood,K6,0.0,%,,4
+2026-09-16,Guildwood,K8,0.0,%,,4
+2026-09-16,Henry Farm,K1,306.28499999999997,CAD/đêm,CAD,2
+2026-09-16,Henry Farm,K4,0.0,%,,2
+2026-09-16,Henry Farm,K6,0.0,%,,2
+2026-09-16,Henry Farm,K8,100.0,%,,2
+2026-09-16,High Park North,K1,193.0,CAD/đêm,CAD,7
+2026-09-16,High Park North,K4,25.0,%,,8
+2026-09-16,High Park North,K6,0.0,%,,8
+2026-09-16,High Park North,K8,25.0,%,,8
+2026-09-16,High Park-Swansea,K1,121.35,CAD/đêm,CAD,10
+2026-09-16,High Park-Swansea,K4,15.384615384615385,%,,13
+2026-09-16,High Park-Swansea,K6,0.0,%,,13
+2026-09-16,High Park-Swansea,K8,0.0,%,,13
+2026-09-16,Hillcrest Village,K1,56.2,CAD/đêm,CAD,1
+2026-09-16,Hillcrest Village,K4,0.0,%,,1
+2026-09-16,Hillcrest Village,K6,0.0,%,,1
+2026-09-16,Hillcrest Village,K8,0.0,%,,1
+2026-09-16,Humber Heights-Westmount,K1,95.71,CAD/đêm,CAD,1
+2026-09-16,Humber Heights-Westmount,K4,0.0,%,,1
+2026-09-16,Humber Heights-Westmount,K6,0.0,%,,1
+2026-09-16,Humber Heights-Westmount,K8,100.0,%,,1
+2026-09-16,Humbermede,K1,202.31,CAD/đêm,CAD,2
+2026-09-16,Humbermede,K4,50.0,%,,2
+2026-09-16,Humbermede,K6,0.0,%,,2
+2026-09-16,Humbermede,K8,50.0,%,,2
+2026-09-16,Humewood-Cedarvale,K1,182.75,CAD/đêm,CAD,2
+2026-09-16,Humewood-Cedarvale,K4,0.0,%,,4
+2026-09-16,Humewood-Cedarvale,K6,0.0,%,,4
+2026-09-16,Humewood-Cedarvale,K8,0.0,%,,4
+2026-09-16,Islington-City Centre West,K1,187.53,CAD/đêm,CAD,9
+2026-09-16,Islington-City Centre West,K4,9.090909090909092,%,,11
+2026-09-16,Islington-City Centre West,K6,0.0,%,,11
+2026-09-16,Islington-City Centre West,K8,27.27272727272727,%,,11
+2026-09-16,Junction Area,K1,123.28999999999999,CAD/đêm,CAD,8
+2026-09-16,Junction Area,K4,0.0,%,,9
+2026-09-16,Junction Area,K6,0.0,%,,9
+2026-09-16,Junction Area,K8,22.22222222222222,%,,9
+2026-09-16,Keelesdale-Eglinton West,K1,81.15,CAD/đêm,CAD,3
+2026-09-16,Keelesdale-Eglinton West,K4,66.66666666666666,%,,3
+2026-09-16,Keelesdale-Eglinton West,K6,0.0,%,,3
+2026-09-16,Keelesdale-Eglinton West,K8,33.33333333333333,%,,3
+2026-09-16,Kensington-Chinatown,K1,164.03,CAD/đêm,CAD,16
+2026-09-16,Kensington-Chinatown,K4,4.545454545454546,%,,22
+2026-09-16,Kensington-Chinatown,K6,0.0,%,,22
+2026-09-16,Kensington-Chinatown,K8,22.727272727272727,%,,22
+2026-09-16,Kingsview Village-The Westway,K1,107.5,CAD/đêm,CAD,3
+2026-09-16,Kingsview Village-The Westway,K4,0.0,%,,3
+2026-09-16,Kingsview Village-The Westway,K6,0.0,%,,3
+2026-09-16,Kingsview Village-The Westway,K8,33.33333333333333,%,,3
+2026-09-16,L'Amoreaux,K1,75.315,CAD/đêm,CAD,6
+2026-09-16,L'Amoreaux,K4,33.33333333333333,%,,6
+2026-09-16,L'Amoreaux,K6,0.0,%,,6
+2026-09-16,L'Amoreaux,K8,16.666666666666664,%,,6
+2026-09-16,Lambton Baby Point,K1,,CAD/đêm,CAD,0
+2026-09-16,Lambton Baby Point,K4,0.0,%,,1
+2026-09-16,Lambton Baby Point,K6,0.0,%,,1
+2026-09-16,Lambton Baby Point,K8,0.0,%,,1
+2026-09-16,Lansing-Westgate,K1,273.33,CAD/đêm,CAD,3
+2026-09-16,Lansing-Westgate,K4,0.0,%,,3
+2026-09-16,Lansing-Westgate,K6,0.0,%,,3
+2026-09-16,Lansing-Westgate,K8,66.66666666666666,%,,3
+2026-09-16,Lawrence Park North,K1,318.5,CAD/đêm,CAD,2
+2026-09-16,Lawrence Park North,K4,0.0,%,,4
+2026-09-16,Lawrence Park North,K6,0.0,%,,4
+2026-09-16,Lawrence Park North,K8,50.0,%,,4
+2026-09-16,Leaside-Bennington,K1,445.33,CAD/đêm,CAD,1
+2026-09-16,Leaside-Bennington,K4,33.33333333333333,%,,3
+2026-09-16,Leaside-Bennington,K6,0.0,%,,3
+2026-09-16,Leaside-Bennington,K8,0.0,%,,3
+2026-09-16,Little Portugal,K1,173.425,CAD/đêm,CAD,24
+2026-09-16,Little Portugal,K4,24.0,%,,25
+2026-09-16,Little Portugal,K6,4.0,%,,25
+2026-09-16,Little Portugal,K8,32.0,%,,25
+2026-09-16,Long Branch,K1,134.19,CAD/đêm,CAD,4
+2026-09-16,Long Branch,K4,0.0,%,,5
+2026-09-16,Long Branch,K6,0.0,%,,5
+2026-09-16,Long Branch,K8,20.0,%,,5
+2026-09-16,Malvern,K1,74.5,CAD/đêm,CAD,6
+2026-09-16,Malvern,K4,0.0,%,,6
+2026-09-16,Malvern,K6,0.0,%,,6
+2026-09-16,Malvern,K8,33.33333333333333,%,,6
+2026-09-16,Maple Leaf,K1,657.0,CAD/đêm,CAD,1
+2026-09-16,Maple Leaf,K4,0.0,%,,1
+2026-09-16,Maple Leaf,K6,0.0,%,,1
+2026-09-16,Maple Leaf,K8,100.0,%,,1
+2026-09-16,Milliken,K1,94.5,CAD/đêm,CAD,1
+2026-09-16,Milliken,K4,0.0,%,,1
+2026-09-16,Milliken,K6,0.0,%,,1
+2026-09-16,Milliken,K8,0.0,%,,1
+2026-09-16,Mimico (includes Humber Bay Shores),K1,202.83499999999998,CAD/đêm,CAD,4
+2026-09-16,Mimico (includes Humber Bay Shores),K4,0.0,%,,5
+2026-09-16,Mimico (includes Humber Bay Shores),K6,0.0,%,,5
+2026-09-16,Mimico (includes Humber Bay Shores),K8,0.0,%,,5
+2026-09-16,Moss Park,K1,206.275,CAD/đêm,CAD,18
+2026-09-16,Moss Park,K4,4.3478260869565215,%,,23
+2026-09-16,Moss Park,K6,4.3478260869565215,%,,23
+2026-09-16,Moss Park,K8,26.08695652173913,%,,23
+2026-09-16,Mount Dennis,K1,152.01,CAD/đêm,CAD,4
+2026-09-16,Mount Dennis,K4,25.0,%,,4
+2026-09-16,Mount Dennis,K6,0.0,%,,4
+2026-09-16,Mount Dennis,K8,0.0,%,,4
+2026-09-16,Mount Pleasant East,K1,152.9,CAD/đêm,CAD,4
+2026-09-16,Mount Pleasant East,K4,0.0,%,,4
+2026-09-16,Mount Pleasant East,K6,0.0,%,,4
+2026-09-16,Mount Pleasant East,K8,50.0,%,,4
+2026-09-16,Mount Pleasant West,K1,209.515,CAD/đêm,CAD,12
+2026-09-16,Mount Pleasant West,K4,21.428571428571427,%,,14
+2026-09-16,Mount Pleasant West,K6,7.142857142857142,%,,14
+2026-09-16,Mount Pleasant West,K8,50.0,%,,14
+2026-09-16,New Toronto,K1,119.65,CAD/đêm,CAD,2
+2026-09-16,New Toronto,K4,0.0,%,,3
+2026-09-16,New Toronto,K6,0.0,%,,3
+2026-09-16,New Toronto,K8,33.33333333333333,%,,3
+2026-09-16,Newtonbrook East,K1,82.79,CAD/đêm,CAD,5
+2026-09-16,Newtonbrook East,K4,14.285714285714285,%,,7
+2026-09-16,Newtonbrook East,K6,14.285714285714285,%,,7
+2026-09-16,Newtonbrook East,K8,42.857142857142854,%,,7
+2026-09-16,Newtonbrook West,K1,122.35,CAD/đêm,CAD,6
+2026-09-16,Newtonbrook West,K4,0.0,%,,6
+2026-09-16,Newtonbrook West,K6,0.0,%,,6
+2026-09-16,Newtonbrook West,K8,0.0,%,,6
+2026-09-16,Niagara,K1,336.125,CAD/đêm,CAD,32
+2026-09-16,Niagara,K4,10.526315789473683,%,,38
+2026-09-16,Niagara,K6,2.631578947368421,%,,38
+2026-09-16,Niagara,K8,36.84210526315789,%,,38
+2026-09-16,North Riverdale,K1,172.93,CAD/đêm,CAD,6
+2026-09-16,North Riverdale,K4,33.33333333333333,%,,6
+2026-09-16,North Riverdale,K6,0.0,%,,6
+2026-09-16,North Riverdale,K8,16.666666666666664,%,,6
+2026-09-16,North St.James Town,K1,164.9,CAD/đêm,CAD,3
+2026-09-16,North St.James Town,K4,20.0,%,,5
+2026-09-16,North St.James Town,K6,20.0,%,,5
+2026-09-16,North St.James Town,K8,40.0,%,,5
+2026-09-16,O'Connor-Parkview,K1,108.46,CAD/đêm,CAD,3
+2026-09-16,O'Connor-Parkview,K4,0.0,%,,5
+2026-09-16,O'Connor-Parkview,K6,20.0,%,,5
+2026-09-16,O'Connor-Parkview,K8,40.0,%,,5
+2026-09-16,Oakridge,K1,168.25,CAD/đêm,CAD,1
+2026-09-16,Oakridge,K4,0.0,%,,1
+2026-09-16,Oakridge,K6,0.0,%,,1
+2026-09-16,Oakridge,K8,100.0,%,,1
+2026-09-16,Oakwood Village,K1,149.23,CAD/đêm,CAD,9
+2026-09-16,Oakwood Village,K4,0.0,%,,11
+2026-09-16,Oakwood Village,K6,0.0,%,,11
+2026-09-16,Oakwood Village,K8,36.36363636363637,%,,11
+2026-09-16,Old East York,K1,358.18,CAD/đêm,CAD,5
+2026-09-16,Old East York,K4,0.0,%,,5
+2026-09-16,Old East York,K6,0.0,%,,5
+2026-09-16,Old East York,K8,0.0,%,,5
+2026-09-16,Palmerston-Little Italy,K1,172.0,CAD/đêm,CAD,17
+2026-09-16,Palmerston-Little Italy,K4,5.263157894736842,%,,19
+2026-09-16,Palmerston-Little Italy,K6,5.263157894736842,%,,19
+2026-09-16,Palmerston-Little Italy,K8,15.789473684210526,%,,19
+2026-09-16,Parkwoods-Donalda,K1,156.5,CAD/đêm,CAD,4
+2026-09-16,Parkwoods-Donalda,K4,0.0,%,,5
+2026-09-16,Parkwoods-Donalda,K6,0.0,%,,5
+2026-09-16,Parkwoods-Donalda,K8,60.0,%,,5
+2026-09-16,Pelmo Park-Humberlea,K1,200.0,CAD/đêm,CAD,1
+2026-09-16,Pelmo Park-Humberlea,K4,0.0,%,,1
+2026-09-16,Pelmo Park-Humberlea,K6,0.0,%,,1
+2026-09-16,Pelmo Park-Humberlea,K8,0.0,%,,1
+2026-09-16,Regent Park,K1,,CAD/đêm,CAD,0
+2026-09-16,Regent Park,K4,0.0,%,,2
+2026-09-16,Regent Park,K6,0.0,%,,2
+2026-09-16,Regent Park,K8,100.0,%,,2
+2026-09-16,Rockcliffe-Smythe,K1,77.68,CAD/đêm,CAD,7
+2026-09-16,Rockcliffe-Smythe,K4,10.0,%,,10
+2026-09-16,Rockcliffe-Smythe,K6,10.0,%,,10
+2026-09-16,Rockcliffe-Smythe,K8,10.0,%,,10
+2026-09-16,Roncesvalles,K1,117.25,CAD/đêm,CAD,5
+2026-09-16,Roncesvalles,K4,0.0,%,,5
+2026-09-16,Roncesvalles,K6,0.0,%,,5
+2026-09-16,Roncesvalles,K8,20.0,%,,5
+2026-09-16,Rosedale-Moore Park,K1,109.95,CAD/đêm,CAD,1
+2026-09-16,Rosedale-Moore Park,K4,50.0,%,,2
+2026-09-16,Rosedale-Moore Park,K6,0.0,%,,2
+2026-09-16,Rosedale-Moore Park,K8,0.0,%,,2
+2026-09-16,Rouge,K1,134.12,CAD/đêm,CAD,5
+2026-09-16,Rouge,K4,0.0,%,,6
+2026-09-16,Rouge,K6,0.0,%,,6
+2026-09-16,Rouge,K8,16.666666666666664,%,,6
+2026-09-16,Runnymede-Bloor West Village,K1,101.94500000000001,CAD/đêm,CAD,2
+2026-09-16,Runnymede-Bloor West Village,K4,0.0,%,,3
+2026-09-16,Runnymede-Bloor West Village,K6,0.0,%,,3
+2026-09-16,Runnymede-Bloor West Village,K8,0.0,%,,3
+2026-09-16,Scarborough Village,K1,208.25,CAD/đêm,CAD,1
+2026-09-16,Scarborough Village,K4,0.0,%,,1
+2026-09-16,Scarborough Village,K6,0.0,%,,1
+2026-09-16,Scarborough Village,K8,0.0,%,,1
+2026-09-16,South Parkdale,K1,181.78,CAD/đêm,CAD,9
+2026-09-16,South Parkdale,K4,9.090909090909092,%,,11
+2026-09-16,South Parkdale,K6,0.0,%,,11
+2026-09-16,South Parkdale,K8,18.181818181818183,%,,11
+2026-09-16,South Riverdale,K1,295.0,CAD/đêm,CAD,21
+2026-09-16,South Riverdale,K4,0.0,%,,25
+2026-09-16,South Riverdale,K6,0.0,%,,25
+2026-09-16,South Riverdale,K8,24.0,%,,25
+2026-09-16,St.Andrew-Windfields,K1,291.5,CAD/đêm,CAD,1
+2026-09-16,St.Andrew-Windfields,K4,0.0,%,,1
+2026-09-16,St.Andrew-Windfields,K6,0.0,%,,1
+2026-09-16,St.Andrew-Windfields,K8,0.0,%,,1
+2026-09-16,Steeles,K1,54.04,CAD/đêm,CAD,1
+2026-09-16,Steeles,K4,0.0,%,,1
+2026-09-16,Steeles,K6,0.0,%,,1
+2026-09-16,Steeles,K8,100.0,%,,1
+2026-09-16,Stonegate-Queensway,K1,257.25,CAD/đêm,CAD,8
+2026-09-16,Stonegate-Queensway,K4,0.0,%,,10
+2026-09-16,Stonegate-Queensway,K6,0.0,%,,10
+2026-09-16,Stonegate-Queensway,K8,40.0,%,,10
+2026-09-16,Tam O'Shanter-Sullivan,K1,379.0,CAD/đêm,CAD,3
+2026-09-16,Tam O'Shanter-Sullivan,K4,0.0,%,,4
+2026-09-16,Tam O'Shanter-Sullivan,K6,0.0,%,,4
+2026-09-16,Tam O'Shanter-Sullivan,K8,25.0,%,,4
+2026-09-16,Taylor-Massey,K1,97.525,CAD/đêm,CAD,4
+2026-09-16,Taylor-Massey,K4,0.0,%,,4
+2026-09-16,Taylor-Massey,K6,0.0,%,,4
+2026-09-16,Taylor-Massey,K8,50.0,%,,4
+2026-09-16,The Beaches,K1,267.995,CAD/đêm,CAD,10
+2026-09-16,The Beaches,K4,0.0,%,,12
+2026-09-16,The Beaches,K6,0.0,%,,12
+2026-09-16,The Beaches,K8,33.33333333333333,%,,12
+2026-09-16,Thistletown-Beaumond Heights,K1,436.73,CAD/đêm,CAD,3
+2026-09-16,Thistletown-Beaumond Heights,K4,0.0,%,,3
+2026-09-16,Thistletown-Beaumond Heights,K6,0.0,%,,3
+2026-09-16,Thistletown-Beaumond Heights,K8,33.33333333333333,%,,3
+2026-09-16,Thorncliffe Park,K1,217.75,CAD/đêm,CAD,2
+2026-09-16,Thorncliffe Park,K4,50.0,%,,2
+2026-09-16,Thorncliffe Park,K6,0.0,%,,2
+2026-09-16,Thorncliffe Park,K8,50.0,%,,2
+2026-09-16,Trinity-Bellwoods,K1,225.0,CAD/đêm,CAD,23
+2026-09-16,Trinity-Bellwoods,K4,0.0,%,,26
+2026-09-16,Trinity-Bellwoods,K6,3.8461538461538463,%,,26
+2026-09-16,Trinity-Bellwoods,K8,26.923076923076923,%,,26
+2026-09-16,University,K1,148.85,CAD/đêm,CAD,4
+2026-09-16,University,K4,16.666666666666664,%,,6
+2026-09-16,University,K6,0.0,%,,6
+2026-09-16,University,K8,0.0,%,,6
+2026-09-16,Victoria Village,K1,322.5,CAD/đêm,CAD,2
+2026-09-16,Victoria Village,K4,0.0,%,,3
+2026-09-16,Victoria Village,K6,0.0,%,,3
+2026-09-16,Victoria Village,K8,0.0,%,,3
+2026-09-16,Waterfront Communities-The Island,K1,280.33500000000004,CAD/đêm,CAD,162
+2026-09-16,Waterfront Communities-The Island,K4,13.541666666666666,%,,192
+2026-09-16,Waterfront Communities-The Island,K6,2.072538860103627,%,,193
+2026-09-16,Waterfront Communities-The Island,K8,22.279792746113987,%,,193
+2026-09-16,West Hill,K1,104.83,CAD/đêm,CAD,6
+2026-09-16,West Hill,K4,0.0,%,,6
+2026-09-16,West Hill,K6,0.0,%,,6
+2026-09-16,West Hill,K8,16.666666666666664,%,,6
+2026-09-16,West Humber-Clairville,K1,78.33,CAD/đêm,CAD,1
+2026-09-16,West Humber-Clairville,K4,0.0,%,,2
+2026-09-16,West Humber-Clairville,K6,0.0,%,,2
+2026-09-16,West Humber-Clairville,K8,0.0,%,,2
+2026-09-16,Westminster-Branson,K1,,CAD/đêm,CAD,0
+2026-09-16,Westminster-Branson,K4,0.0,%,,1
+2026-09-16,Westminster-Branson,K6,0.0,%,,1
+2026-09-16,Westminster-Branson,K8,0.0,%,,1
+2026-09-16,Weston,K1,121.11999999999999,CAD/đêm,CAD,4
+2026-09-16,Weston,K4,0.0,%,,4
+2026-09-16,Weston,K6,25.0,%,,4
+2026-09-16,Weston,K8,25.0,%,,4
+2026-09-16,Weston-Pellam Park,K1,84.28,CAD/đêm,CAD,8
+2026-09-16,Weston-Pellam Park,K4,12.5,%,,8
+2026-09-16,Weston-Pellam Park,K6,0.0,%,,8
+2026-09-16,Weston-Pellam Park,K8,12.5,%,,8
+2026-09-16,Wexford/Maryvale,K1,105.66,CAD/đêm,CAD,2
+2026-09-16,Wexford/Maryvale,K4,0.0,%,,2
+2026-09-16,Wexford/Maryvale,K6,0.0,%,,2
+2026-09-16,Wexford/Maryvale,K8,50.0,%,,2
+2026-09-16,Willowdale East,K1,160.595,CAD/đêm,CAD,10
+2026-09-16,Willowdale East,K4,16.666666666666664,%,,12
+2026-09-16,Willowdale East,K6,0.0,%,,12
+2026-09-16,Willowdale East,K8,25.0,%,,12
+2026-09-16,Willowdale West,K1,72.42,CAD/đêm,CAD,3
+2026-09-16,Willowdale West,K4,0.0,%,,3
+2026-09-16,Willowdale West,K6,0.0,%,,3
+2026-09-16,Willowdale West,K8,66.66666666666666,%,,3
+2026-09-16,Willowridge-Martingrove-Richview,K1,32.56,CAD/đêm,CAD,1
+2026-09-16,Willowridge-Martingrove-Richview,K4,0.0,%,,1
+2026-09-16,Willowridge-Martingrove-Richview,K6,0.0,%,,1
+2026-09-16,Willowridge-Martingrove-Richview,K8,0.0,%,,1
+2026-09-16,Woburn,K1,308.385,CAD/đêm,CAD,2
+2026-09-16,Woburn,K4,0.0,%,,2
+2026-09-16,Woburn,K6,0.0,%,,2
+2026-09-16,Woburn,K8,50.0,%,,2
+2026-09-16,Woodbine Corridor,K1,222.0,CAD/đêm,CAD,5
+2026-09-16,Woodbine Corridor,K4,0.0,%,,5
+2026-09-16,Woodbine Corridor,K6,0.0,%,,5
+2026-09-16,Woodbine Corridor,K8,40.0,%,,5
+2026-09-16,Woodbine-Lumsden,K1,120.07000000000001,CAD/đêm,CAD,2
+2026-09-16,Woodbine-Lumsden,K4,50.0,%,,2
+2026-09-16,Woodbine-Lumsden,K6,0.0,%,,2
+2026-09-16,Woodbine-Lumsden,K8,0.0,%,,2
+2026-09-16,Wychwood,K1,138.25,CAD/đêm,CAD,6
+2026-09-16,Wychwood,K4,0.0,%,,6
+2026-09-16,Wychwood,K6,0.0,%,,6
+2026-09-16,Wychwood,K8,33.33333333333333,%,,6
+2026-09-16,Yonge-Eglinton,K1,,CAD/đêm,CAD,0
+2026-09-16,Yonge-Eglinton,K4,0.0,%,,1
+2026-09-16,Yonge-Eglinton,K6,0.0,%,,1
+2026-09-16,Yonge-Eglinton,K8,0.0,%,,1
+2026-09-16,Yonge-St.Clair,K1,355.0,CAD/đêm,CAD,1
+2026-09-16,Yonge-St.Clair,K4,0.0,%,,1
+2026-09-16,Yonge-St.Clair,K6,0.0,%,,1
+2026-09-16,Yonge-St.Clair,K8,0.0,%,,1
+2026-09-16,York University Heights,K1,84.945,CAD/đêm,CAD,4
+2026-09-16,York University Heights,K4,0.0,%,,5
+2026-09-16,York University Heights,K6,0.0,%,,5
+2026-09-16,York University Heights,K8,40.0,%,,5
+2026-09-16,Yorkdale-Glen Park,K1,81.86,CAD/đêm,CAD,2
+2026-09-16,Yorkdale-Glen Park,K4,0.0,%,,2
+2026-09-16,Yorkdale-Glen Park,K6,50.0,%,,2
+2026-09-16,Yorkdale-Glen Park,K8,0.0,%,,2
+2025-09-11,Agincourt North,K2,23.28767123287672,%,,365
+2025-09-11,Agincourt South-Malvern West,K2,41.64383561643835,%,,1095
+2025-09-11,Alderwood,K2,51.917808219178085,%,,730
+2025-09-11,Annex,K2,42.59163272861903,%,,13505
+2025-09-11,Banbury-Don Mills,K2,55.15981735159817,%,,1095
+2025-09-11,Bathurst Manor,K2,47.853881278538815,%,,1095
+2025-09-11,Bay Street Corridor,K2,46.22146118721461,%,,8760
+2025-09-11,Bayview Village,K2,41.0958904109589,%,,730
+2025-09-11,Bayview Woods-Steeles,K2,80.54794520547945,%,,365
+2025-09-11,Bedford Park-Nortown,K2,46.3013698630137,%,,1095
+2025-09-11,Beechborough-Greenbrook,K2,30.136986301369863,%,,365
+2025-09-11,Bendale,K2,45.47945205479452,%,,730
+2025-09-11,Birchcliffe-Cliffside,K2,29.863013698630137,%,,2190
+2025-09-11,Black Creek,K2,67.12328767123287,%,,730
+2025-09-11,Blake-Jones,K2,32.46575342465754,%,,1460
+2025-09-11,Briar Hill-Belgravia,K2,33.9041095890411,%,,1460
+2025-09-11,Bridle Path-Sunnybrook-York Mills,K2,1.9178082191780854,%,,365
+2025-09-11,Broadview North,K2,22.46575342465753,%,,365
+2025-09-11,Brookhaven-Amesbury,K2,11.780821917808215,%,,365
+2025-09-11,Cabbagetown-South St.James Town,K2,30.776255707762555,%,,3285
+2025-09-11,Caledonia-Fairbank,K2,8.21917808219178,%,,365
+2025-09-11,Casa Loma,K2,51.598173515981735,%,,1095
+2025-09-11,Centennial Scarborough,K2,58.21917808219178,%,,1460
+2025-09-11,Church-Yonge Corridor,K2,35.806111696522656,%,,9490
+2025-09-11,Clairlea-Birchmount,K2,32.51141552511415,%,,1095
+2025-09-11,Clanton Park,K2,42.602739726027394,%,,2190
+2025-09-11,Cliffcrest,K2,45.80821917808219,%,,1825
+2025-09-11,Corso Italia-Davenport,K2,30.890410958904113,%,,1460
+2025-09-11,Danforth,K2,75.20547945205479,%,,1460
+2025-09-11,Danforth East York,K2,66.79452054794521,%,,1825
+2025-09-11,Don Valley Village,K2,41.8082191780822,%,,1825
+2025-09-11,Dorset Park,K2,84.10958904109589,%,,730
+2025-09-11,Dovercourt-Wallace Emerson-Junction,K2,49.61472602739726,%,,11680
+2025-09-11,Downsview-Roding-CFB,K2,40.410958904109584,%,,730
+2025-09-11,Dufferin Grove,K2,45.114155251141554,%,,4380
+2025-09-11,East End-Danforth,K2,34.09001956947162,%,,2555
+2025-09-11,Edenbridge-Humber Valley,K2,55.75342465753425,%,,1460
+2025-09-11,Eglinton East,K2,4.246575342465753,%,,730
+2025-09-11,Englemount-Lawrence,K2,34.10958904109589,%,,1460
+2025-09-11,Eringate-Centennial-West Deane,K2,34.10958904109589,%,,730
+2025-09-11,Etobicoke West Mall,K2,36.62100456621005,%,,1095
+2025-09-11,Flemingdon Park,K2,21.780821917808225,%,,730
+2025-09-11,Forest Hill South,K2,28.219178082191775,%,,1460
+2025-09-11,Glenfield-Jane Heights,K2,25.616438356164384,%,,730
+2025-09-11,Greenwood-Coxwell,K2,39.34246575342466,%,,1825
+2025-09-11,Guildwood,K2,31.027397260273972,%,,1460
+2025-09-11,Henry Farm,K2,3.9726027397260277,%,,730
+2025-09-11,High Park North,K2,47.636986301369866,%,,2920
+2025-09-11,High Park-Swansea,K2,53.10853530031612,%,,4745
+2025-09-11,Hillcrest Village,K2,56.16438356164384,%,,365
+2025-09-11,Humber Heights-Westmount,K2,5.47945205479452,%,,365
+2025-09-11,Humbermede,K2,30.410958904109584,%,,730
+2025-09-11,Humewood-Cedarvale,K2,69.31506849315068,%,,1460
+2025-09-11,Islington-City Centre West,K2,42.465753424657535,%,,4380
+2025-09-11,Junction Area,K2,51.45205479452055,%,,3650
+2025-09-11,Keelesdale-Eglinton West,K2,37.89954337899544,%,,1095
+2025-09-11,Kensington-Chinatown,K2,43.92278953922789,%,,8030
+2025-09-11,Kingsview Village-The Westway,K2,29.497716894977167,%,,1095
+2025-09-11,L'Amoreaux,K2,55.205479452054796,%,,2190
+2025-09-11,Lambton Baby Point,K2,53.6986301369863,%,,365
+2025-09-11,Lansing-Westgate,K2,36.5296803652968,%,,1095
+2025-09-11,Lawrence Park North,K2,34.41095890410959,%,,1825
+2025-09-11,Leaside-Bennington,K2,41.27853881278539,%,,1095
+2025-09-11,Little Portugal,K2,38.40885142255005,%,,9490
+2025-09-11,Long Branch,K2,27.78082191780822,%,,1825
+2025-09-11,Malvern,K2,48.21917808219178,%,,2190
+2025-09-11,Maple Leaf,K2,87.94520547945206,%,,365
+2025-09-11,Markland Wood,K2,77.8082191780822,%,,365
+2025-09-11,Milliken,K2,26.027397260273975,%,,365
+2025-09-11,Mimico (includes Humber Bay Shores),K2,51.27853881278539,%,,2190
+2025-09-11,Moss Park,K2,43.75890410958904,%,,9125
+2025-09-11,Mount Dennis,K2,69.24657534246576,%,,1460
+2025-09-11,Mount Pleasant East,K2,44.27397260273973,%,,1825
+2025-09-11,Mount Pleasant West,K2,31.80039138943248,%,,5110
+2025-09-11,New Toronto,K2,33.9041095890411,%,,1460
+2025-09-11,Newtonbrook East,K2,36.634050880626226,%,,2555
+2025-09-11,Newtonbrook West,K2,49.31506849315068,%,,2190
+2025-09-11,Niagara,K2,40.57534246575343,%,,14600
+2025-09-11,North Riverdale,K2,35.890410958904106,%,,2190
+2025-09-11,North St.James Town,K2,30.52054794520548,%,,1825
+2025-09-11,O'Connor-Parkview,K2,50.57534246575342,%,,1825
+2025-09-11,Oakridge,K2,30.410958904109584,%,,365
+2025-09-11,Oakwood Village,K2,43.11332503113326,%,,4015
+2025-09-11,Old East York,K2,53.97260273972603,%,,2190
+2025-09-11,Palmerston-Little Italy,K2,53.671232876712324,%,,7300
+2025-09-11,Parkwoods-Donalda,K2,39.013698630136986,%,,1825
+2025-09-11,Pelmo Park-Humberlea,K2,79.72602739726027,%,,365
+2025-09-11,Pleasant View,K2,63.287671232876704,%,,730
+2025-09-11,Regent Park,K2,3.561643835616435,%,,730
+2025-09-11,Rockcliffe-Smythe,K2,52.027397260273965,%,,3650
+2025-09-11,Roncesvalles,K2,48.25831702544031,%,,2555
+2025-09-11,Rosedale-Moore Park,K2,51.23287671232877,%,,730
+2025-09-11,Rouge,K2,36.007827788649706,%,,2555
+2025-09-11,Runnymede-Bloor West Village,K2,11.963470319634705,%,,1095
+2025-09-11,Scarborough Village,K2,42.465753424657535,%,,365
+2025-09-11,South Parkdale,K2,40.02283105022831,%,,4380
+2025-09-11,South Riverdale,K2,47.41833508956796,%,,9490
+2025-09-11,St.Andrew-Windfields,K2,100.0,%,,365
+2025-09-11,Steeles,K2,16.712328767123285,%,,365
+2025-09-11,Stonegate-Queensway,K2,37.03611457036114,%,,4015
+2025-09-11,Tam O'Shanter-Sullivan,K2,44.38356164383561,%,,1460
+2025-09-11,Taylor-Massey,K2,37.6027397260274,%,,1460
+2025-09-11,The Beaches,K2,39.06392694063927,%,,4380
+2025-09-11,Thistletown-Beaumond Heights,K2,33.698630136986296,%,,1095
+2025-09-11,Thorncliffe Park,K2,26.986301369863007,%,,730
+2025-09-11,Trinity-Bellwoods,K2,49.536354056902,%,,9490
+2025-09-11,University,K2,54.885844748858446,%,,2190
+2025-09-11,Victoria Village,K2,31.872146118721457,%,,1095
+2025-09-11,Waterfront Communities-The Island,K2,44.90266762797405,%,,76285
+2025-09-11,West Hill,K2,20.587084148727985,%,,2555
+2025-09-11,West Humber-Clairville,K2,40.68493150684932,%,,1460
+2025-09-11,Westminster-Branson,K2,83.28767123287672,%,,365
+2025-09-11,Weston,K2,37.42465753424658,%,,1825
+2025-09-11,Weston-Pellam Park,K2,55.410958904109584,%,,2920
+2025-09-11,Wexford/Maryvale,K2,54.429223744292244,%,,1095
+2025-09-11,Willowdale East,K2,36.90802348336595,%,,5110
+2025-09-11,Willowdale West,K2,25.844748858447485,%,,1095
+2025-09-11,Willowridge-Martingrove-Richview,K2,57.53424657534247,%,,730
+2025-09-11,Woburn,K2,0.0,%,,730
+2025-09-11,Woodbine Corridor,K2,46.57534246575342,%,,1825
+2025-09-11,Woodbine-Lumsden,K2,54.10958904109589,%,,730
+2025-09-11,Wychwood,K2,21.027397260273972,%,,2920
+2025-09-11,Yonge-Eglinton,K2,84.38356164383562,%,,365
+2025-09-11,Yonge-St.Clair,K2,60.273972602739725,%,,365
+2025-09-11,York University Heights,K2,60.49315068493151,%,,1825
+2025-09-11,Yorkdale-Glen Park,K2,28.904109589041095,%,,730
+2026-03-19,Agincourt North,K2,63.01369863013699,%,,365
+2026-03-19,Agincourt South-Malvern West,K2,56.5296803652968,%,,1095
+2026-03-19,Alderwood,K2,61.09589041095891,%,,730
+2026-03-19,Annex,K2,34.861162532395404,%,,13505
+2026-03-19,Banbury-Don Mills,K2,44.10958904109589,%,,1095
+2026-03-19,Bathurst Manor,K2,66.57534246575342,%,,1095
+2026-03-19,Bay Street Corridor,K2,47.56849315068493,%,,8760
+2026-03-19,Bayview Village,K2,53.28767123287671,%,,730
+2026-03-19,Bayview Woods-Steeles,K2,75.89041095890411,%,,365
+2026-03-19,Bedford Park-Nortown,K2,40.730593607305934,%,,1095
+2026-03-19,Beechborough-Greenbrook,K2,9.589041095890416,%,,365
+2026-03-19,Bendale,K2,23.6986301369863,%,,730
+2026-03-19,Birchcliffe-Cliffside,K2,22.420091324200907,%,,2190
+2026-03-19,Black Creek,K2,70.13698630136986,%,,730
+2026-03-19,Blake-Jones,K2,45.136986301369866,%,,1460
+2026-03-19,Briar Hill-Belgravia,K2,45.41095890410959,%,,1460
+2026-03-19,Bridle Path-Sunnybrook-York Mills,K2,50.95890410958904,%,,365
+2026-03-19,Broadview North,K2,65.20547945205479,%,,365
+2026-03-19,Brookhaven-Amesbury,K2,21.36986301369863,%,,365
+2026-03-19,Cabbagetown-South St.James Town,K2,43.16590563165905,%,,3285
+2026-03-19,Caledonia-Fairbank,K2,3.561643835616435,%,,365
+2026-03-19,Casa Loma,K2,48.31050228310503,%,,1095
+2026-03-19,Centennial Scarborough,K2,40.34246575342466,%,,1460
+2026-03-19,Church-Yonge Corridor,K2,38.50368809272919,%,,9490
+2026-03-19,Clairlea-Birchmount,K2,20.730593607305934,%,,1095
+2026-03-19,Clanton Park,K2,40.93933463796478,%,,2555
+2026-03-19,Cliffcrest,K2,38.73972602739726,%,,1825
+2026-03-19,Corso Italia-Davenport,K2,34.31506849315068,%,,1460
+2026-03-19,Danforth,K2,54.31506849315069,%,,1460
+2026-03-19,Danforth East York,K2,40.76712328767124,%,,1825
+2026-03-19,Don Valley Village,K2,49.97260273972602,%,,1825
+2026-03-19,Dorset Park,K2,86.16438356164385,%,,730
+2026-03-19,Dovercourt-Wallace Emerson-Junction,K2,42.42294520547946,%,,11680
+2026-03-19,Downsview-Roding-CFB,K2,35.75342465753425,%,,730
+2026-03-19,Dufferin Grove,K2,51.71232876712328,%,,4380
+2026-03-19,East End-Danforth,K2,30.919765166340508,%,,2555
+2026-03-19,Edenbridge-Humber Valley,K2,34.794520547945204,%,,1460
+2026-03-19,Eglinton East,K2,0.2739726027397249,%,,730
+2026-03-19,Englemount-Lawrence,K2,43.83561643835616,%,,1460
+2026-03-19,Eringate-Centennial-West Deane,K2,31.36986301369863,%,,730
+2026-03-19,Etobicoke West Mall,K2,54.429223744292244,%,,1095
+2026-03-19,Flemingdon Park,K2,34.24657534246576,%,,730
+2026-03-19,Forest Hill South,K2,28.767123287671236,%,,1460
+2026-03-19,Glenfield-Jane Heights,K2,30.68493150684931,%,,730
+2026-03-19,Greenwood-Coxwell,K2,58.136986301369866,%,,1825
+2026-03-19,Guildwood,K2,34.04109589041096,%,,1460
+2026-03-19,Henry Farm,K2,26.71232876712328,%,,730
+2026-03-19,High Park North,K2,58.11643835616438,%,,2920
+2026-03-19,High Park-Swansea,K2,43.013698630136986,%,,4745
+2026-03-19,Hillcrest Village,K2,37.534246575342465,%,,365
+2026-03-19,Humber Heights-Westmount,K2,0.2739726027397249,%,,365
+2026-03-19,Humbermede,K2,30.958904109589035,%,,730
+2026-03-19,Humewood-Cedarvale,K2,49.58904109589041,%,,1460
+2026-03-19,Islington-City Centre West,K2,36.66251556662515,%,,4015
+2026-03-19,Junction Area,K2,58.21917808219178,%,,3650
+2026-03-19,Keelesdale-Eglinton West,K2,41.46118721461187,%,,1095
+2026-03-19,Kensington-Chinatown,K2,42.81444582814446,%,,8030
+2026-03-19,Kingsview Village-The Westway,K2,35.25114155251141,%,,1095
+2026-03-19,L'Amoreaux,K2,66.57534246575342,%,,2190
+2026-03-19,Lambton Baby Point,K2,54.24657534246575,%,,365
+2026-03-19,Lansing-Westgate,K2,39.36073059360731,%,,1095
+2026-03-19,Lawrence Park North,K2,22.95890410958904,%,,1825
+2026-03-19,Leaside-Bennington,K2,39.36073059360731,%,,1095
+2026-03-19,Little Portugal,K2,38.46153846153846,%,,9490
+2026-03-19,Long Branch,K2,43.342465753424655,%,,1825
+2026-03-19,Malvern,K2,45.205479452054796,%,,2190
+2026-03-19,Maple Leaf,K2,15.616438356164386,%,,365
+2026-03-19,Markland Wood,K2,30.68493150684931,%,,365
+2026-03-19,Milliken,K2,35.06849315068493,%,,365
+2026-03-19,Mimico (includes Humber Bay Shores),K2,36.02739726027397,%,,2190
+2026-03-19,Moss Park,K2,42.72876712328767,%,,9125
+2026-03-19,Mount Dennis,K2,60.75342465753424,%,,1460
+2026-03-19,Mount Pleasant East,K2,41.47945205479452,%,,1825
+2026-03-19,Mount Pleasant West,K2,35.538160469667325,%,,5110
+2026-03-19,New Toronto,K2,53.15068493150685,%,,1460
+2026-03-19,Newtonbrook East,K2,41.956947162426616,%,,2555
+2026-03-19,Newtonbrook West,K2,45.47945205479452,%,,2190
+2026-03-19,Niagara,K2,41.52739726027397,%,,14600
+2026-03-19,North Riverdale,K2,43.652968036529685,%,,2190
+2026-03-19,North St.James Town,K2,55.506849315068486,%,,1825
+2026-03-19,O'Connor-Parkview,K2,45.26027397260274,%,,1825
+2026-03-19,Oakridge,K2,63.01369863013699,%,,365
+2026-03-19,Oakwood Village,K2,48.09464508094645,%,,4015
+2026-03-19,Old East York,K2,61.826484018264836,%,,2190
+2026-03-19,Palmerston-Little Italy,K2,57.73972602739725,%,,7300
+2026-03-19,Parkwoods-Donalda,K2,28.98630136986301,%,,1825
+2026-03-19,Pelmo Park-Humberlea,K2,80.82191780821918,%,,365
+2026-03-19,Pleasant View,K2,62.73972602739726,%,,730
+2026-03-19,Regent Park,K2,16.98630136986301,%,,730
+2026-03-19,Rockcliffe-Smythe,K2,40.16438356164384,%,,3650
+2026-03-19,Roncesvalles,K2,41.330724070450096,%,,2555
+2026-03-19,Rosedale-Moore Park,K2,58.76712328767123,%,,730
+2026-03-19,Rouge,K2,32.40704500978474,%,,2555
+2026-03-19,Runnymede-Bloor West Village,K2,28.219178082191775,%,,1095
+2026-03-19,Scarborough Village,K2,47.397260273972606,%,,365
+2026-03-19,South Parkdale,K2,47.42009132420091,%,,4380
+2026-03-19,South Riverdale,K2,47.77660695468915,%,,9490
+2026-03-19,St.Andrew-Windfields,K2,83.83561643835617,%,,365
+2026-03-19,Steeles,K2,0.2739726027397249,%,,365
+2026-03-19,Stonegate-Queensway,K2,36.587795765877964,%,,4015
+2026-03-19,Tam O'Shanter-Sullivan,K2,31.36986301369863,%,,1460
+2026-03-19,Taylor-Massey,K2,31.71232876712329,%,,1460
+2026-03-19,The Beaches,K2,33.53881278538813,%,,4380
+2026-03-19,Thistletown-Beaumond Heights,K2,46.94063926940639,%,,1095
+2026-03-19,Thorncliffe Park,K2,28.49315068493151,%,,730
+2026-03-19,Trinity-Bellwoods,K2,48.81981032665964,%,,9490
+2026-03-19,University,K2,54.01826484018265,%,,2190
+2026-03-19,Victoria Village,K2,40.821917808219176,%,,1095
+2026-03-19,Waterfront Communities-The Island,K2,42.99796814576915,%,,76285
+2026-03-19,West Hill,K2,19.647749510763212,%,,2555
+2026-03-19,West Humber-Clairville,K2,45.06849315068493,%,,1460
+2026-03-19,Westminster-Branson,K2,75.89041095890411,%,,365
+2026-03-19,Weston,K2,30.794520547945204,%,,1825
+2026-03-19,Weston-Pellam Park,K2,39.7945205479452,%,,2920
+2026-03-19,Wexford/Maryvale,K2,71.05022831050228,%,,1095
+2026-03-19,Willowdale East,K2,41.3894324853229,%,,5110
+2026-03-19,Willowdale West,K2,27.488584474885847,%,,1095
+2026-03-19,Willowridge-Martingrove-Richview,K2,59.726027397260275,%,,730
+2026-03-19,Woburn,K2,0.136986301369868,%,,730
+2026-03-19,Woodbine Corridor,K2,46.794520547945204,%,,1825
+2026-03-19,Woodbine-Lumsden,K2,45.61643835616438,%,,730
+2026-03-19,Wychwood,K2,32.089041095890416,%,,2920
+2026-03-19,Yonge-Eglinton,K2,76.98630136986301,%,,365
+2026-03-19,Yonge-St.Clair,K2,58.9041095890411,%,,365
+2026-03-19,York University Heights,K2,41.917808219178085,%,,1825
+2026-03-19,Yorkdale-Glen Park,K2,34.24657534246576,%,,730
+2026-06-15,Agincourt North,K2,53.6986301369863,%,,365
+2026-06-15,Agincourt South-Malvern West,K2,52.6027397260274,%,,1095
+2026-06-15,Alderwood,K2,52.05479452054795,%,,730
+2026-06-15,Annex,K2,38.489448352462055,%,,13505
+2026-06-15,Banbury-Don Mills,K2,59.360730593607315,%,,1095
+2026-06-15,Bathurst Manor,K2,60.36529680365297,%,,1095
+2026-06-15,Bay Street Corridor,K2,43.97260273972603,%,,8760
+2026-06-15,Bayview Village,K2,48.49315068493151,%,,730
+2026-06-15,Bayview Woods-Steeles,K2,87.3972602739726,%,,365
+2026-06-15,Bedford Park-Nortown,K2,50.502283105022826,%,,1095
+2026-06-15,Beechborough-Greenbrook,K2,10.410958904109592,%,,365
+2026-06-15,Bendale,K2,43.28767123287671,%,,730
+2026-06-15,Birchcliffe-Cliffside,K2,36.3013698630137,%,,2190
+2026-06-15,Black Creek,K2,58.63013698630137,%,,730
+2026-06-15,Blake-Jones,K2,35.75342465753425,%,,1460
+2026-06-15,Briar Hill-Belgravia,K2,42.32876712328767,%,,1460
+2026-06-15,Bridle Path-Sunnybrook-York Mills,K2,54.794520547945204,%,,365
+2026-06-15,Broadview North,K2,56.16438356164384,%,,365
+2026-06-15,Brookhaven-Amesbury,K2,20.273972602739732,%,,365
+2026-06-15,Cabbagetown-South St.James Town,K2,38.630136986301366,%,,3285
+2026-06-15,Caledonia-Fairbank,K2,15.616438356164386,%,,365
+2026-06-15,Casa Loma,K2,45.57077625570777,%,,1095
+2026-06-15,Centennial Scarborough,K2,43.9041095890411,%,,1460
+2026-06-15,Church-Yonge Corridor,K2,36.59641728134879,%,,9490
+2026-06-15,Clairlea-Birchmount,K2,22.831050228310502,%,,1095
+2026-06-15,Clanton Park,K2,42.27005870841487,%,,2555
+2026-06-15,Cliffcrest,K2,38.246575342465746,%,,1825
+2026-06-15,Corso Italia-Davenport,K2,32.534246575342465,%,,1460
+2026-06-15,Danforth,K2,60.0,%,,1460
+2026-06-15,Danforth East York,K2,51.28767123287672,%,,1825
+2026-06-15,Don Valley Village,K2,34.200913242009136,%,,2190
+2026-06-15,Dorset Park,K2,89.31506849315069,%,,730
+2026-06-15,Dovercourt-Wallace Emerson-Junction,K2,49.18664383561644,%,,11680
+2026-06-15,Downsview-Roding-CFB,K2,48.082191780821915,%,,730
+2026-06-15,Dufferin Grove,K2,46.461187214611876,%,,4380
+2026-06-15,East End-Danforth,K2,26.692759295499023,%,,2555
+2026-06-15,Edenbridge-Humber Valley,K2,44.041095890410965,%,,1460
+2026-06-15,Eglinton East,K2,3.150684931506853,%,,730
+2026-06-15,Englemount-Lawrence,K2,53.082191780821915,%,,1460
+2026-06-15,Eringate-Centennial-West Deane,K2,36.712328767123296,%,,730
+2026-06-15,Etobicoke West Mall,K2,41.00456621004567,%,,1095
+2026-06-15,Flemingdon Park,K2,45.205479452054796,%,,730
+2026-06-15,Forest Hill South,K2,28.356164383561644,%,,1460
+2026-06-15,Glenfield-Jane Heights,K2,30.68493150684931,%,,730
+2026-06-15,Greenwood-Coxwell,K2,44.82191780821918,%,,1825
+2026-06-15,Guildwood,K2,43.56164383561644,%,,1460
+2026-06-15,Henry Farm,K2,15.890410958904111,%,,730
+2026-06-15,High Park North,K2,57.87671232876712,%,,2920
+2026-06-15,High Park-Swansea,K2,52.5395152792413,%,,4745
+2026-06-15,Hillcrest Village,K2,80.27397260273973,%,,365
+2026-06-15,Humber Heights-Westmount,K2,0.8219178082191747,%,,365
+2026-06-15,Humbermede,K2,29.589041095890412,%,,730
+2026-06-15,Humewood-Cedarvale,K2,57.054794520547944,%,,1460
+2026-06-15,Islington-City Centre West,K2,41.66874221668743,%,,4015
+2026-06-15,Junction Area,K2,59.150684931506845,%,,3650
+2026-06-15,Keelesdale-Eglinton West,K2,37.71689497716895,%,,1095
+2026-06-15,Kensington-Chinatown,K2,51.59402241594022,%,,8030
+2026-06-15,Kingsview Village-The Westway,K2,33.242009132420094,%,,1095
+2026-06-15,L'Amoreaux,K2,59.77168949771689,%,,2190
+2026-06-15,Lambton Baby Point,K2,74.52054794520548,%,,365
+2026-06-15,Lansing-Westgate,K2,29.22374429223744,%,,1095
+2026-06-15,Lawrence Park North,K2,36.986301369863014,%,,1825
+2026-06-15,Leaside-Bennington,K2,62.55707762557078,%,,1095
+2026-06-15,Little Portugal,K2,36.05900948366701,%,,9490
+2026-06-15,Long Branch,K2,45.42465753424657,%,,1825
+2026-06-15,Malvern,K2,45.57077625570777,%,,2190
+2026-06-15,Maple Leaf,K2,40.54794520547945,%,,365
+2026-06-15,Markland Wood,K2,66.02739726027397,%,,365
+2026-06-15,Milliken,K2,31.780821917808222,%,,365
+2026-06-15,Mimico (includes Humber Bay Shores),K2,45.15981735159818,%,,2190
+2026-06-15,Moss Park,K2,43.62739726027397,%,,9125
+2026-06-15,Mount Dennis,K2,66.43835616438356,%,,1460
+2026-06-15,Mount Pleasant East,K2,44.602739726027394,%,,1825
+2026-06-15,Mount Pleasant West,K2,25.107632093933464,%,,5110
+2026-06-15,New Toronto,K2,54.794520547945204,%,,1460
+2026-06-15,Newtonbrook East,K2,42.27005870841487,%,,2555
+2026-06-15,Newtonbrook West,K2,51.68949771689497,%,,2190
+2026-06-15,Niagara,K2,42.12328767123288,%,,14600
+2026-06-15,North Riverdale,K2,32.69406392694064,%,,2190
+2026-06-15,North St.James Town,K2,53.80821917808218,%,,1825
+2026-06-15,O'Connor-Parkview,K2,51.23287671232877,%,,1825
+2026-06-15,Oakridge,K2,44.38356164383561,%,,365
+2026-06-15,Oakwood Village,K2,41.344956413449566,%,,4015
+2026-06-15,Old East York,K2,45.29680365296803,%,,2190
+2026-06-15,Palmerston-Little Italy,K2,54.205479452054796,%,,7300
+2026-06-15,Parkwoods-Donalda,K2,33.42465753424657,%,,1825
+2026-06-15,Pelmo Park-Humberlea,K2,76.43835616438356,%,,365
+2026-06-15,Pleasant View,K2,50.68493150684932,%,,365
+2026-06-15,Regent Park,K2,10.410958904109592,%,,730
+2026-06-15,Rockcliffe-Smythe,K2,47.31506849315068,%,,3650
+2026-06-15,Roncesvalles,K2,55.146771037182,%,,2555
+2026-06-15,Rosedale-Moore Park,K2,58.08219178082192,%,,730
+2026-06-15,Rouge,K2,37.3385518590998,%,,2555
+2026-06-15,Runnymede-Bloor West Village,K2,29.771689497716892,%,,1095
+2026-06-15,Scarborough Village,K2,40.0,%,,365
+2026-06-15,South Parkdale,K2,42.054794520547944,%,,4380
+2026-06-15,South Riverdale,K2,48.46153846153847,%,,9490
+2026-06-15,St.Andrew-Windfields,K2,92.32876712328768,%,,365
+2026-06-15,Steeles,K2,0.2739726027397249,%,,365
+2026-06-15,Stonegate-Queensway,K2,40.47322540473225,%,,4015
+2026-06-15,Tam O'Shanter-Sullivan,K2,30.68493150684931,%,,1460
+2026-06-15,Taylor-Massey,K2,26.0958904109589,%,,1460
+2026-06-15,The Beaches,K2,46.94063926940639,%,,4380
+2026-06-15,Thistletown-Beaumond Heights,K2,50.593607305936075,%,,1095
+2026-06-15,Thorncliffe Park,K2,14.7945205479452,%,,730
+2026-06-15,Trinity-Bellwoods,K2,52.98208640674393,%,,9490
+2026-06-15,University,K2,55.4337899543379,%,,2190
+2026-06-15,Victoria Village,K2,54.337899543378995,%,,1095
+2026-06-15,Waterfront Communities-The Island,K2,43.708461689716195,%,,76285
+2026-06-15,West Hill,K2,22.661448140900198,%,,2555
+2026-06-15,West Humber-Clairville,K2,53.4931506849315,%,,1460
+2026-06-15,Westminster-Branson,K2,75.89041095890411,%,,365
+2026-06-15,Weston,K2,27.616438356164387,%,,1825
+2026-06-15,Weston-Pellam Park,K2,50.719178082191775,%,,2920
+2026-06-15,Wexford/Maryvale,K2,45.75342465753425,%,,1095
+2026-06-15,Willowdale East,K2,36.55577299412916,%,,5110
+2026-06-15,Willowdale West,K2,11.232876712328766,%,,1095
+2026-06-15,Willowridge-Martingrove-Richview,K2,43.6986301369863,%,,730
+2026-06-15,Woburn,K2,0.136986301369868,%,,730
+2026-06-15,Woodbine Corridor,K2,47.83561643835617,%,,1825
+2026-06-15,Woodbine-Lumsden,K2,47.534246575342465,%,,730
+2026-06-15,Wychwood,K2,30.92465753424658,%,,2920
+2026-06-15,Yonge-Eglinton,K2,95.89041095890411,%,,365
+2026-06-15,Yonge-St.Clair,K2,68.76712328767123,%,,365
+2026-06-15,York University Heights,K2,32.82191780821918,%,,1825
+2026-06-15,Yorkdale-Glen Park,K2,27.123287671232877,%,,730
+2026-09-16,Agincourt North,K2,28.219178082191775,%,,365
+2026-09-16,Agincourt South-Malvern West,K2,46.666666666666664,%,,1095
+2026-09-16,Alderwood,K2,51.917808219178085,%,,730
+2026-09-16,Annex,K2,46.12915851272016,%,,12775
+2026-09-16,Banbury-Don Mills,K2,56.71232876712329,%,,1095
+2026-09-16,Bathurst Manor,K2,33.972602739726035,%,,1095
+2026-09-16,Bay Street Corridor,K2,41.17927337701013,%,,8395
+2026-09-16,Bayview Village,K2,51.917808219178085,%,,730
+2026-09-16,Bayview Woods-Steeles,K2,75.89041095890411,%,,365
+2026-09-16,Bedford Park-Nortown,K2,71.78082191780821,%,,1095
+2026-09-16,Beechborough-Greenbrook,K2,4.657534246575345,%,,365
+2026-09-16,Bendale,K2,64.24657534246576,%,,730
+2026-09-16,Birchcliffe-Cliffside,K2,12.465753424657533,%,,1460
+2026-09-16,Black Creek,K2,33.013698630136986,%,,730
+2026-09-16,Blake-Jones,K2,32.51141552511415,%,,1095
+2026-09-16,Briar Hill-Belgravia,K2,27.123287671232877,%,,1460
+2026-09-16,Broadview North,K2,38.082191780821915,%,,365
+2026-09-16,Brookhaven-Amesbury,K2,9.31506849315068,%,,365
+2026-09-16,Cabbagetown-South St.James Town,K2,39.08675799086758,%,,3285
+2026-09-16,Caledonia-Fairbank,K2,9.589041095890416,%,,365
+2026-09-16,Casa Loma,K2,44.657534246575345,%,,730
+2026-09-16,Centennial Scarborough,K2,28.401826484018265,%,,1095
+2026-09-16,Church-Yonge Corridor,K2,39.15425848719476,%,,8395
+2026-09-16,Clairlea-Birchmount,K2,8.904109589041099,%,,730
+2026-09-16,Clanton Park,K2,25.16634050880626,%,,2555
+2026-09-16,Cliffcrest,K2,38.630136986301366,%,,1825
+2026-09-16,Corso Italia-Davenport,K2,47.87671232876713,%,,1460
+2026-09-16,Danforth,K2,76.62100456621005,%,,1095
+2026-09-16,Danforth East York,K2,64.43835616438356,%,,1825
+2026-09-16,Don Valley Village,K2,41.75342465753425,%,,1825
+2026-09-16,Dorset Park,K2,96.43835616438356,%,,730
+2026-09-16,Dovercourt-Wallace Emerson-Junction,K2,47.204464738711316,%,,9855
+2026-09-16,Downsview-Roding-CFB,K2,59.86301369863014,%,,730
+2026-09-16,Dufferin Grove,K2,43.56164383561644,%,,4015
+2026-09-16,East End-Danforth,K2,37.025440313111545,%,,2555
+2026-09-16,Edenbridge-Humber Valley,K2,38.21917808219178,%,,730
+2026-09-16,Eglinton East,K2,0.6849315068493178,%,,730
+2026-09-16,Englemount-Lawrence,K2,53.97260273972603,%,,730
+2026-09-16,Eringate-Centennial-West Deane,K2,31.917808219178077,%,,730
+2026-09-16,Etobicoke West Mall,K2,36.986301369863014,%,,1095
+2026-09-16,Flemingdon Park,K2,32.46575342465754,%,,730
+2026-09-16,Forest Hill South,K2,24.200913242009136,%,,1095
+2026-09-16,Glenfield-Jane Heights,K2,26.43835616438356,%,,730
+2026-09-16,Greenwood-Coxwell,K2,36.0,%,,1825
+2026-09-16,Guildwood,K2,38.561643835616444,%,,1460
+2026-09-16,Henry Farm,K2,8.082191780821912,%,,730
+2026-09-16,High Park North,K2,49.246575342465746,%,,2920
+2026-09-16,High Park-Swansea,K2,51.35932560590095,%,,4745
+2026-09-16,Hillcrest Village,K2,55.06849315068494,%,,365
+2026-09-16,Humber Heights-Westmount,K2,0.2739726027397249,%,,365
+2026-09-16,Humbermede,K2,20.410958904109588,%,,730
+2026-09-16,Humewood-Cedarvale,K2,56.16438356164384,%,,1460
+2026-09-16,Islington-City Centre West,K2,39.30261519302615,%,,4015
+2026-09-16,Junction Area,K2,49.74124809741248,%,,3285
+2026-09-16,Keelesdale-Eglinton West,K2,34.42922374429224,%,,1095
+2026-09-16,Kensington-Chinatown,K2,46.03985056039851,%,,8030
+2026-09-16,Kingsview Village-The Westway,K2,27.488584474885847,%,,1095
+2026-09-16,L'Amoreaux,K2,56.118721461187214,%,,2190
+2026-09-16,Lambton Baby Point,K2,52.87671232876712,%,,365
+2026-09-16,Lansing-Westgate,K2,32.32876712328767,%,,1095
+2026-09-16,Lawrence Park North,K2,46.84931506849315,%,,1460
+2026-09-16,Leaside-Bennington,K2,51.87214611872146,%,,1095
+2026-09-16,Little Portugal,K2,34.564383561643844,%,,9125
+2026-09-16,Long Branch,K2,44.657534246575345,%,,1825
+2026-09-16,Malvern,K2,43.42465753424658,%,,2190
+2026-09-16,Maple Leaf,K2,17.808219178082197,%,,365
+2026-09-16,Milliken,K2,75.34246575342466,%,,365
+2026-09-16,Mimico (includes Humber Bay Shores),K2,46.95890410958904,%,,1825
+2026-09-16,Moss Park,K2,38.30851697438952,%,,8395
+2026-09-16,Mount Dennis,K2,59.86301369863014,%,,1460
+2026-09-16,Mount Pleasant East,K2,27.73972602739726,%,,1460
+2026-09-16,Mount Pleasant West,K2,24.305283757338547,%,,5110
+2026-09-16,New Toronto,K2,41.00456621004567,%,,1095
+2026-09-16,Newtonbrook East,K2,31.702544031311152,%,,2555
+2026-09-16,Newtonbrook West,K2,47.07762557077626,%,,2190
+2026-09-16,Niagara,K2,38.154289834174484,%,,13870
+2026-09-16,North Riverdale,K2,32.602739726027394,%,,2190
+2026-09-16,North St.James Town,K2,45.534246575342465,%,,1825
+2026-09-16,O'Connor-Parkview,K2,38.246575342465746,%,,1825
+2026-09-16,Oakridge,K2,16.164383561643834,%,,365
+2026-09-16,Oakwood Village,K2,28.991282689912822,%,,4015
+2026-09-16,Old East York,K2,40.657534246575345,%,,1825
+2026-09-16,Palmerston-Little Italy,K2,48.6085075702956,%,,6935
+2026-09-16,Parkwoods-Donalda,K2,30.410958904109584,%,,1825
+2026-09-16,Pelmo Park-Humberlea,K2,79.45205479452055,%,,365
+2026-09-16,Regent Park,K2,2.465753424657535,%,,730
+2026-09-16,Rockcliffe-Smythe,K2,51.56164383561644,%,,3650
+2026-09-16,Roncesvalles,K2,44.21917808219178,%,,1825
+2026-09-16,Rosedale-Moore Park,K2,52.6027397260274,%,,730
+2026-09-16,Rouge,K2,29.452054794520542,%,,2190
+2026-09-16,Runnymede-Bloor West Village,K2,65.29680365296804,%,,1095
+2026-09-16,Scarborough Village,K2,44.657534246575345,%,,365
+2026-09-16,South Parkdale,K2,42.91407222914072,%,,4015
+2026-09-16,South Riverdale,K2,49.34794520547945,%,,9125
+2026-09-16,St.Andrew-Windfields,K2,80.0,%,,365
+2026-09-16,Steeles,K2,0.2739726027397249,%,,365
+2026-09-16,Stonegate-Queensway,K2,35.86301369863014,%,,3650
+2026-09-16,Tam O'Shanter-Sullivan,K2,40.821917808219176,%,,1460
+2026-09-16,Taylor-Massey,K2,28.972602739726028,%,,1460
+2026-09-16,The Beaches,K2,50.273972602739725,%,,4380
+2026-09-16,Thistletown-Beaumond Heights,K2,42.37442922374429,%,,1095
+2026-09-16,Thorncliffe Park,K2,23.56164383561644,%,,730
+2026-09-16,Trinity-Bellwoods,K2,46.57534246575342,%,,9490
+2026-09-16,University,K2,52.283105022831045,%,,2190
+2026-09-16,Victoria Village,K2,44.84018264840183,%,,1095
+2026-09-16,Waterfront Communities-The Island,K2,42.05266519980127,%,,70445
+2026-09-16,West Hill,K2,20.77625570776256,%,,2190
+2026-09-16,West Humber-Clairville,K2,65.61643835616438,%,,730
+2026-09-16,Westminster-Branson,K2,75.89041095890411,%,,365
+2026-09-16,Weston,K2,15.068493150684937,%,,1460
+2026-09-16,Weston-Pellam Park,K2,40.273972602739725,%,,2920
+2026-09-16,Wexford/Maryvale,K2,40.95890410958904,%,,730
+2026-09-16,Willowdale East,K2,34.70319634703196,%,,4380
+2026-09-16,Willowdale West,K2,16.43835616438356,%,,1095
+2026-09-16,Willowridge-Martingrove-Richview,K2,71.78082191780821,%,,365
+2026-09-16,Woburn,K2,0.136986301369868,%,,730
+2026-09-16,Woodbine Corridor,K2,35.561643835616444,%,,1825
+2026-09-16,Woodbine-Lumsden,K2,40.410958904109584,%,,730
+2026-09-16,Wychwood,K2,19.406392694063925,%,,2190
+2026-09-16,Yonge-Eglinton,K2,100.0,%,,365
+2026-09-16,Yonge-St.Clair,K2,59.45205479452055,%,,365
+2026-09-16,York University Heights,K2,28.219178082191775,%,,1825
+2026-09-16,Yorkdale-Glen Park,K2,16.301369863013704,%,,730

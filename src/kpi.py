@@ -7,10 +7,14 @@ Một KPI có thể xuất hiện ở hai bảng nếu cần xem theo cả khu v
 """
 
 import logging
+from pathlib import Path
+import sys
 import numpy as np
 import pandas as pd
 
-from .download import cli, csv_report, path, read
+if not __package__:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from src.download import cli, csv_report, path, read
 
 
 LLM_COLUMNS = ["area", "kpi_id", "aspect", "value", "unit", "n"]
@@ -153,7 +157,10 @@ def llm_kpi(cfg: dict, reviews: pd.DataFrame) -> pd.DataFrame:
 
     # ID review có thể xuất hiện qua nhiều mốc. Giữ một mapping để không đếm
     # cùng review nhiều lần; vùng mẫu lấy từ danh sách listing được giao.
-    review_listings = reviews.drop_duplicates("id")[["id", "listing_id"]]
+    review_listings = (
+        reviews.sort_values("snapshot")
+        .drop_duplicates("id", keep="last")[["id", "listing_id"]]
+    )
     assigned_areas = pd.read_csv(
         cfg["_root"] / cfg["inputs"]["listing_ids"], dtype=str
     ).rename(columns={"id": "listing_id", "analysis_area": "area"})

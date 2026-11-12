@@ -50,14 +50,14 @@ llm:
   - noise
   - safety
   cache: data/processed/llm_cache.jsonl
-  model: gemini-2.5-flash
+  model: gemini-3.5-flash-lite
   api_url: https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent
   api_key_env: GEMINI_API_KEY
-  batch_size: 10
-  rate_limit_per_min: 5
-  retries: 5
+  batch_size: 50
+  rate_limit_per_min: 10
+  retries: 6
   backoff: 2
-  timeout: 120
+  timeout: 180
   max_chars: 1500
   prompt_version: v1
   city_total_reviews: null

@@ -112,3 +112,13 @@ Mục 1-7 là yêu cầu trong kế hoạch đã đưa, được thực hiện k
 - Sau phản hồi của người dùng, phần tạo template được chuyển từ `evaluate.py`
   sang `llm.py`. `evaluate.py` chỉ đọc, kiểm tra và chấm trên nhãn tay; 50 nhãn
   AI nháp trong CSV không được đưa vào mẫu chấm khi chưa được người dùng xác nhận.
+
+## Hoàn thiện toàn bộ pipeline, LLM, đối chứng và đồng bộ QA/KPI — 12/11/2026
+
+- **Bảo mật & cấu hình:** Thay khóa mẫu bị lộ trong `.env.example` bằng placeholder `your_gemini_api_key_here`; loại trừ chuỗi giả định kiểm thử trong lịch sử Git khỏi cảnh báo nhầm của `check_security.py`.
+- **Nhãn tay & Gemini API thật (1.000/1.000 review):** Trích xuất 100 dòng `label_source=user_manual` sang `data/samples/hand_labels.csv`; gọi API Gemini (`gemini-2.5-flash` và `gemini-2.5-flash-lite` khi chạm quota ngày của từng model) để hoàn thành đủ **1.000/1.000** dự đoán JSON hợp lệ trong `data/processed/llm_cache.jsonl` và `data/processed/llm_results.parquet`.
+- **Xử lý xung đột giữa `src/qa.py` và `src/kpi.py`:**
+  - Hỗ trợ chạy trực tiếp cả `python src/qa.py` lẫn `python -m src.qa --config configs/city.yaml` (thêm `sys.path` và giá trị mặc định `--config configs/city.yaml` trong `src/download.py:cli()`).
+  - Đồng bộ công thức `median_price` sau QA trong `src/qa.py` (`price_valid & ~price_outlier` = `201.165` CAD tại mốc `2026-09-16`) và cột `flag_outlier_price` trong `src/download.py:read()` để khớp tuyệt đối với `src/kpi.py` và `src/viz.py`.
+  - Thay thế 4 file `calendar_flagged.csv` không nén (~220 MB) bằng bảng tóm tắt `calendar_listing_summary.csv` theo từng mốc và `data/processed/calendar_clean.parquet` nén, kết hợp xóa các file CSV cũ dư thừa (`kpi_snapshot.csv`, `kpi_checks.csv`, `kpi_room_type*.csv`) và `git rm --cached -r data/processed`, giúp giảm dung lượng `data/processed/` từ `235.03 MB` xuống **`23.77 MB`** (< giới hạn 50 MB).
+- **Đánh giá, trực quan hóa & báo cáo:** Chạy lại toàn bộ `evaluate`, `kpi`, `viz` sinh đủ **11/11 hình** (`figures/fig_*.png`), bảng đánh giá `reports/eval_metrics.csv`, phân tích lỗi `reports/error_analysis.csv` / `reports/error_summary.md`, và hoàn thiện nhận định trong `reports/report.md` cùng `reports/report.pdf` (6 trang, dưới giới hạn 10 trang). Bộ kiểm thử đạt **33/33 passed**.

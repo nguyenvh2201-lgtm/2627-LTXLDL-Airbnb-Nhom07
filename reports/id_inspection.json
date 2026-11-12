@@ -1,5 +1,5 @@
 {
-  "source": "data/data-new.csv",
+  "source": "data/samples/data-new.csv",
   "rows": 5578,
   "selected_rows": 5000,
   "excluded_rows": 578,

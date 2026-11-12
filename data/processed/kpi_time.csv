@@ -1,0 +1,116 @@
+snapshot,period,kpi_id,value,unit,currency,n,review_count
+2025-09-11,2025-09,K3,66.1110269232712,%,,19797,
+2025-09-11,2025-10,K3,45.02903225806452,%,,31000,
+2025-09-11,2025-11,K3,31.97,%,,30000,
+2025-09-11,2025-12,K3,33.099999999999994,%,,31000,
+2025-09-11,2026-01,K3,30.76451612903226,%,,31000,
+2025-09-11,2026-02,K3,29.34285714285715,%,,28000,
+2025-09-11,2026-03,K3,37.91612903225806,%,,31000,
+2025-09-11,2026-04,K3,41.45666666666666,%,,30000,
+2025-09-11,2026-05,K3,41.91612903225806,%,,31000,
+2025-09-11,2026-06,K3,53.65,%,,30000,
+2025-09-11,2026-07,K3,55.777419354838706,%,,31000,
+2025-09-11,2026-08,K3,55.19354838709678,%,,31000,
+2025-09-11,2026-09,K3,55.33666568656277,%,,10203,
+2026-03-19,2026-03,K3,57.64362220058423,%,,12324,
+2026-03-19,2026-04,K3,46.19,%,,30000,
+2026-03-19,2026-05,K3,36.1741935483871,%,,31000,
+2026-03-19,2026-06,K3,36.22666666666666,%,,30000,
+2026-03-19,2026-07,K3,35.651612903225804,%,,31000,
+2026-03-19,2026-08,K3,34.37096774193549,%,,31000,
+2026-03-19,2026-09,K3,33.18,%,,30000,
+2026-03-19,2026-10,K3,39.50322580645162,%,,31000,
+2026-03-19,2026-11,K3,38.696666666666665,%,,30000,
+2026-03-19,2026-12,K3,47.164516129032265,%,,31000,
+2026-03-19,2027-01,K3,54.60967741935484,%,,31000,
+2026-03-19,2027-02,K3,55.225,%,,28000,
+2026-03-19,2027-03,K3,54.69586635253801,%,,18676,
+2026-06-15,2026-06,K3,65.41065444847159,%,,14623,
+2026-06-15,2026-07,K3,52.035483870967745,%,,31000,
+2026-06-15,2026-08,K3,43.00000000000001,%,,31000,
+2026-06-15,2026-09,K3,33.873333333333335,%,,30000,
+2026-06-15,2026-10,K3,33.664516129032265,%,,31000,
+2026-06-15,2026-11,K3,29.25333333333333,%,,30000,
+2026-06-15,2026-12,K3,36.23870967741936,%,,31000,
+2026-06-15,2027-01,K3,39.87419354838709,%,,31000,
+2026-06-15,2027-02,K3,39.55714285714286,%,,28000,
+2026-06-15,2027-03,K3,47.52258064516129,%,,31000,
+2026-06-15,2027-04,K3,53.510000000000005,%,,30000,
+2026-06-15,2027-05,K3,54.26451612903226,%,,31000,
+2026-06-15,2027-06,K3,55.543994277167194,%,,15377,
+2026-09-16,2026-09,K3,71.34416543574594,%,,12186,
+2026-09-16,2026-10,K3,50.75083426028921,%,,28768,
+2026-09-16,2026-11,K3,34.360632183908045,%,,27840,
+2026-09-16,2026-12,K3,32.09121245828699,%,,28768,
+2026-09-16,2027-01,K3,30.137652947719683,%,,28768,
+2026-09-16,2027-02,K3,27.293719211822665,%,,25984,
+2026-09-16,2027-03,K3,32.056451612903224,%,,28768,
+2026-09-16,2027-04,K3,37.95977011494253,%,,27840,
+2026-09-16,2027-05,K3,38.58801446051168,%,,28768,
+2026-09-16,2027-06,K3,45.53879310344827,%,,27840,
+2026-09-16,2027-07,K3,51.81451612903225,%,,28768,
+2026-09-16,2027-08,K3,51.88403781979978,%,,28768,
+2026-09-16,2027-09,K3,52.51692858055449,%,,15654,
+pooled_unique_review_sample,2013Q1,K5,0.004,sample reviews/listing/quarter,,1000,4.0
+pooled_unique_review_sample,2013Q2,K5,0.003,sample reviews/listing/quarter,,1000,3.0
+pooled_unique_review_sample,2013Q3,K5,0.007,sample reviews/listing/quarter,,1000,7.0
+pooled_unique_review_sample,2013Q4,K5,0.006,sample reviews/listing/quarter,,1000,6.0
+pooled_unique_review_sample,2014Q1,K5,0.001,sample reviews/listing/quarter,,1000,1.0
+pooled_unique_review_sample,2014Q2,K5,0.003,sample reviews/listing/quarter,,1000,3.0
+pooled_unique_review_sample,2014Q3,K5,0.003,sample reviews/listing/quarter,,1000,3.0
+pooled_unique_review_sample,2014Q4,K5,0.003,sample reviews/listing/quarter,,1000,3.0
+pooled_unique_review_sample,2015Q1,K5,0.002,sample reviews/listing/quarter,,1000,2.0
+pooled_unique_review_sample,2015Q2,K5,0.014,sample reviews/listing/quarter,,1000,14.0
+pooled_unique_review_sample,2015Q3,K5,0.019,sample reviews/listing/quarter,,1000,19.0
+pooled_unique_review_sample,2015Q4,K5,0.014,sample reviews/listing/quarter,,1000,14.0
+pooled_unique_review_sample,2016Q1,K5,0.014,sample reviews/listing/quarter,,1000,14.0
+pooled_unique_review_sample,2016Q2,K5,0.03,sample reviews/listing/quarter,,1000,30.0
+pooled_unique_review_sample,2016Q3,K5,0.051,sample reviews/listing/quarter,,1000,51.0
+pooled_unique_review_sample,2016Q4,K5,0.04,sample reviews/listing/quarter,,1000,40.0
+pooled_unique_review_sample,2017Q1,K5,0.028,sample reviews/listing/quarter,,1000,28.0
+pooled_unique_review_sample,2017Q2,K5,0.077,sample reviews/listing/quarter,,1000,77.0
+pooled_unique_review_sample,2017Q3,K5,0.085,sample reviews/listing/quarter,,1000,85.0
+pooled_unique_review_sample,2017Q4,K5,0.075,sample reviews/listing/quarter,,1000,75.0
+pooled_unique_review_sample,2018Q1,K5,0.063,sample reviews/listing/quarter,,1000,63.0
+pooled_unique_review_sample,2018Q2,K5,0.107,sample reviews/listing/quarter,,1000,107.0
+pooled_unique_review_sample,2018Q3,K5,0.135,sample reviews/listing/quarter,,1000,135.0
+pooled_unique_review_sample,2018Q4,K5,0.086,sample reviews/listing/quarter,,1000,86.0
+pooled_unique_review_sample,2019Q1,K5,0.05,sample reviews/listing/quarter,,1000,50.0
+pooled_unique_review_sample,2019Q2,K5,0.117,sample reviews/listing/quarter,,1000,117.0
+pooled_unique_review_sample,2019Q3,K5,0.115,sample reviews/listing/quarter,,1000,115.0
+pooled_unique_review_sample,2019Q4,K5,0.1,sample reviews/listing/quarter,,1000,100.0
+pooled_unique_review_sample,2020Q1,K5,0.062,sample reviews/listing/quarter,,1000,62.0
+pooled_unique_review_sample,2020Q2,K5,0.02,sample reviews/listing/quarter,,1000,20.0
+pooled_unique_review_sample,2020Q3,K5,0.041,sample reviews/listing/quarter,,1000,41.0
+pooled_unique_review_sample,2020Q4,K5,0.022,sample reviews/listing/quarter,,1000,22.0
+pooled_unique_review_sample,2021Q1,K5,0.018,sample reviews/listing/quarter,,1000,18.0
+pooled_unique_review_sample,2021Q2,K5,0.029,sample reviews/listing/quarter,,1000,29.0
+pooled_unique_review_sample,2021Q3,K5,0.071,sample reviews/listing/quarter,,1000,71.0
+pooled_unique_review_sample,2021Q4,K5,0.088,sample reviews/listing/quarter,,1000,88.0
+pooled_unique_review_sample,2022Q1,K5,0.059,sample reviews/listing/quarter,,1000,59.0
+pooled_unique_review_sample,2022Q2,K5,0.142,sample reviews/listing/quarter,,1000,142.0
+pooled_unique_review_sample,2022Q3,K5,0.186,sample reviews/listing/quarter,,1000,186.0
+pooled_unique_review_sample,2022Q4,K5,0.142,sample reviews/listing/quarter,,1000,142.0
+pooled_unique_review_sample,2023Q1,K5,0.099,sample reviews/listing/quarter,,1000,99.0
+pooled_unique_review_sample,2023Q2,K5,0.225,sample reviews/listing/quarter,,1000,225.0
+pooled_unique_review_sample,2023Q3,K5,0.295,sample reviews/listing/quarter,,1000,295.0
+pooled_unique_review_sample,2023Q4,K5,0.169,sample reviews/listing/quarter,,1000,169.0
+pooled_unique_review_sample,2024Q1,K5,0.131,sample reviews/listing/quarter,,1000,131.0
+pooled_unique_review_sample,2024Q2,K5,0.309,sample reviews/listing/quarter,,1000,309.0
+pooled_unique_review_sample,2024Q3,K5,0.388,sample reviews/listing/quarter,,1000,388.0
+pooled_unique_review_sample,2024Q4,K5,0.301,sample reviews/listing/quarter,,1000,301.0
+pooled_unique_review_sample,2025Q1,K5,0.165,sample reviews/listing/quarter,,1000,165.0
+pooled_unique_review_sample,2025Q2,K5,0.369,sample reviews/listing/quarter,,1000,369.0
+pooled_unique_review_sample,2025Q3,K5,0.417,sample reviews/listing/quarter,,1000,417.0
+2025-09-11,2025-09-11,K2,43.281917808219184,%,,365000,
+2025-09-11,2025-09-11,K4,10.4,%,,1000,
+2025-09-11,2025-09-11,K6,5.0,%,,1000,
+2026-03-19,2026-03-19,K2,42.6813698630137,%,,365000,
+2026-03-19,2026-03-19,K4,9.6,%,,1000,
+2026-03-19,2026-03-19,K6,2.5,%,,1000,
+2026-06-15,2026-06-15,K2,43.62164383561644,%,,365000,
+2026-06-15,2026-06-15,K4,9.6,%,,1000,
+2026-06-15,2026-06-15,K6,2.5,%,,1000,
+2026-09-16,2026-09-16,K2,41.17737364194615,%,,338720,
+2026-09-16,2026-09-16,K4,10.140237324703344,%,,927,
+2026-09-16,2026-09-16,K6,2.2629310344827585,%,,928,

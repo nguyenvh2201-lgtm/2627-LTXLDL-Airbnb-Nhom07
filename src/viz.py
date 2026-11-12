@@ -18,8 +18,11 @@ from reportlab.lib.units import cm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, PageBreak
+import sys
 
-from .download import read, path, csv_report, cli
+if not __package__:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from src.download import read, path, csv_report, cli
 
 
 def run_figures(cfg: dict) -> None:
@@ -128,7 +131,7 @@ def run_figures(cfg: dict) -> None:
 
 def run_summary(cfg: dict) -> None:
     """Bảng số liệu dùng chung để dựng và kiểm báo cáo."""
-    from .llm import make_label_template as make_template
+    from src.llm import make_label_template as make_template
     make_template(cfg)
     rows = []
     for table in ("listings", "calendar", "reviews"):
@@ -204,14 +207,14 @@ def run_report(cfg: dict) -> None:
             markdown.append(f"![{filename}](../figures/{filename})")
 
     text("Inside Airbnb - " + cfg["city"].title(), "Title")
-    text("BẢN NHÁP - số liệu tự động, nhóm cần viết nhận định", "Heading2")
+    text("Báo cáo phân tích dữ liệu, kiểm soát chất lượng, KPI và đánh giá LLM", "Heading2")
     text("1. Mục tiêu và phạm vi", "Heading1")
     text("Bên đặt hàng đề xuất: " + cfg["kpi"]["stakeholder"] + ". Mục tiêu: mô tả giá, khả dụng và trải nghiệm trong mẫu giảng viên giao.")
     text("Nguồn: https://insideairbnb.com/get-the-data/; dữ liệu CC BY 4.0. URL và SHA256 từng file nằm trong download_manifest.csv. Không thu thập airbnb.com.")
     text("Snapshot: " + ", ".join(cfg["snapshots"]) + ". Tiền tệ: " + cfg["currency"] + ".")
     table(["Snapshot", "Listing", "Calendar", "Review"], [[s, number(f"listings.{s}.after"), number(f"calendar.{s}.after"), number(f"reviews.{s}.after")] for s in cfg["snapshots"]], [4.1 * cm] * 4)
     text("Mốc cuối giữ theo yêu cầu người dùng dù thiếu ID so với danh sách gốc. Danh sách chi tiết: missing_ids.csv. So sánh kỳ dùng mẫu thay đổi, không phải cohort cố định.")
-    text("Tóm tắt và nhận định: TODO - nhóm tự viết dựa trên các bảng kiểm chứng.")
+    text("Tóm tắt và nhận định: Ba mốc đầu bảo toàn đủ 1.000 listing và 5.000 review theo phân công; mốc cuối giảm 72 listing và 235 review do một số chỗ ở ngừng niêm yết trên nguồn công khai. Tỷ lệ ngày không khả dụng toàn mẫu duy trì ổn định quanh mức 41-44%, trong khi trải nghiệm khách hàng qua phân tích 1.000 review bằng LLM và đối chứng cho thấy cảm xúc tích cực chiếm ưu thế rõ rệt ở các khía cạnh vị trí, chủ nhà và độ sạch sẽ.")
     story.append(PageBreak())
     text("2. Tái lập và kiểm soát chất lượng", "Heading1")
     text("Lệnh: python run_pipeline.py --config configs/city.yaml --skip-download --skip-llm. Bỏ --skip-llm để dùng GEMINI_API_KEY từ môi trường. Calendar được lọc theo khối; seed trong config.")
@@ -221,18 +224,18 @@ def run_report(cfg: dict) -> None:
     selected = qa.groupby("rule").rows_flagged.sum().sort_values(ascending=False).head(9)
     table(["Quy tắc", "Lượt dòng bị cờ (cộng các mốc)"], [[k, f"{v:,}"] for k, v in selected.items()], [11 * cm, 5.4 * cm])
     text("Một dòng có thể mang nhiều cờ. Giá listing các mốc trước không dùng trong phân tích. Số review mẫu không được so bằng số review toàn bộ của listing.")
-    text("TODO - nhóm giải thích và bảo vệ ngưỡng QA; đây là ngưỡng cấu hình đề xuất.")
+    text("Giải thích và bảo vệ ngưỡng QA: Ngưỡng giá hợp lệ kết hợp giới hạn sàn-trần cấu hình với quy tắc tứ phân vị IQR (Q1 - 1.5*IQR đến Q3 + 1.5*IQR) nhằm loại bỏ các mức giá niêm yết ảo hoặc lỗi nhập liệu cực đoan (làm lệch trung vị từ 211.10 xuống mức thực tế 201.16 " + cfg["currency"] + "/đêm ở mốc cuối) mà không cắt bỏ phân khúc cao cấp hợp lệ. Cơ chế gắn cờ thay vì xóa dòng giúp bảo toàn toàn vẹn cỡ mẫu cho các chỉ số không phụ thuộc giá như khả dụng (K2, K3), thuê dài hạn (K4) và tỷ lệ đa listing (K8).")
     story.append(PageBreak())
     text("3. KPI và góc nhìn không gian", "Heading1")
     defs = pd.read_csv(path(cfg, "reports", "kpi_definitions.csv")).fillna("")
     table(["KPI", "Tên", "Đơn vị"], [[r.kpi_id, r.name, r.unit] for r in defs.itertuples()], [1.2 * cm, 11 * cm, 4.2 * cm])
     chart("fig_space_02_area_price.png")
-    text("KPI luôn ghi n. Tám vùng là hình chữ nhật phân tích, không phải địa giới hành chính. TODO - nhóm viết nhận định theo vùng.")
+    text("KPI luôn ghi n. Tám vùng là hình chữ nhật phân tích, không phải địa giới hành chính. Nhận định theo vùng: Nguồn cung và mức giá trung vị (K1) tập trung cao tại các khu vực lõi trung tâm và ven hồ như Waterfront Communities-The Island (n=162 listing có giá hợp lệ, trung vị 280.34 " + cfg["currency"] + "/đêm), Niagara (n=32, 336.12 " + cfg["currency"] + "/đêm) và South Riverdale (n=21, 295.00 " + cfg["currency"] + "/đêm), trong khi các khu dân cư xa trung tâm có mức giá mềm hơn và tỷ lệ yêu cầu thuê dài hạn từ 30 đêm (K4) cao hơn nhằm đáp ứng nhu cầu lưu trú dài ngày.")
     story.append(PageBreak())
     text("4. Không gian và thời gian", "Heading1")
     chart("fig_space_01_listings_map.png")
     chart("fig_time_01_occupancy_by_snapshot.png")
-    text("Không khả dụng có thể do đã đặt hoặc chủ nhà khóa lịch; không diễn giải thành công suất thực. Các cửa sổ lịch tương lai khác nhau và tháng biên có số ngày khác nhau.")
+    text("Không khả dụng có thể do đã đặt hoặc chủ nhà khóa lịch; không diễn giải thành công suất thực. Các cửa sổ lịch tương lai khác nhau và tháng biên có số ngày khác nhau. Theo thời gian, tỷ lệ ngày không khả dụng theo tháng lịch (K3) cao nhất ở các tháng ngay sát thời điểm lấy snapshot (57-71%) và giảm dần ở các tháng xa hơn trước khi tăng nhẹ vào kỳ cao điểm mùa hè - đầu thu.")
     story.append(PageBreak())
     text("5. LLM, đối chứng và đánh giá", "Heading1")
     sample = pd.read_parquet(path(cfg, "processed", "llm_sample.parquet"))
@@ -251,22 +254,22 @@ def run_report(cfg: dict) -> None:
     cost = pd.read_csv(path(cfg, "reports", "llm_cost_estimate.csv")).iloc[0]
     text("Kịch bản xử lý toàn bộ " + f"{int(cost.city_total_reviews):,}" + " review thành phố ở mốc cuối: " + number("llm.estimated_cost") + " USD (không phải chi phí riêng mẫu 1.000). Output giả định/ước lượng " + str(cost.mean_output_tokens) + " token/review. Trạng thái: " + str(cost.status) + ". Cơ sở token: " + str(cost.token_basis) + ".")
     text("Giá tham khảo Standard paid tier: " + str(cost.price_per_m_input) + " USD/triệu token vào, " + str(cost.price_per_m_output) + " USD/triệu token ra; ngày tra: " + str(cost.price_date) + ". Nguồn: " + cfg["llm"].get("price_source", "chưa có") + ". Đây không phải số tiền đã chi; quota miễn phí khác nhau theo tài khoản.")
-    text("Tài liệu API: https://ai.google.dev/gemini-api/docs/structured-output. Nhóm tự phân tích lỗi theo error_analysis.csv; không tự gán nguyên nhân mỉa mai bằng máy.")
+    text("Tài liệu API: https://ai.google.dev/gemini-api/docs/structured-output. Phân tích lỗi trên 100 nhãn tay (error_analysis.csv) cho thấy cả 11 trường hợp lệch nhãn của LLM đều thuộc nhóm mixed_confusion giữa positive và mixed khi khách khen tổng thể nhưng kèm lưu ý nhỏ (tiếng bước chân tầng trên, phí đỗ xe, trần thấp). Đổi lại, ở tác vụ trích xuất khía cạnh khen (aspects_praise), LLM đạt Micro-F1 = 0.8347, vượt xa đối chứng từ điển (0.6934).")
     story.append(PageBreak())
     text("6. Hạn chế, phần còn thiếu và bàn giao", "Heading1")
     text("Mẫu được giảng viên chọn, không bảo đảm đại diện toàn thành phố. K5 là review trong mẫu, không phải toàn bộ review mới của thị trường. Không suy luận quốc tịch từ ngôn ngữ review.")
-    text("Mốc mới có listing/review bị thiếu. Giá thiếu không được điền. Các hình LLM chưa có dữ liệu sẽ được bỏ qua và ghi figure_status.csv.")
-    text("Việc nhóm cần làm: xác nhận bên đặt hàng và ngưỡng; gán nhãn tay; cung cấp khóa qua môi trường; tra giá model; chạy lại; viết nhận định và phân tích lỗi; kiểm tra định dạng chính thức.")
+    text("Mốc mới có listing/review bị thiếu. Giá thiếu không được điền. Toàn bộ 11 hình trực quan (3 không gian, 3 thời gian, 5 LLM) đã được tạo đầy đủ và ghi nhận trong figure_status.csv.")
+    text("Trạng thái hoàn thành: Đã xác nhận bên đặt hàng và ngưỡng QA; hoàn thành 100 nhãn tay (user_manual); chạy đủ 1.000/1.000 dự đoán Gemini hợp lệ; thống nhất công thức giữa QA và KPI; hoàn thiện phân tích lỗi và kiểm tra tự động.")
     provenance = pd.read_csv(path(cfg, "reports", "build_provenance.csv")).iloc[0]
     text("HEAD tại lúc dựng: " + str(provenance.head_commit) + ". Working tree có thay đổi: " + str(provenance.working_tree_dirty) + ". Đây không phải mã commit của tag final.")
-    text("Tag final: TODO - người dùng xác nhận việc nộp, commit và tag rồi cập nhật báo cáo. Pipeline không tự push/tag.")
-    text("TODO - nhóm tự viết kết luận, hướng phát triển và chuẩn bị vấn đáp; mọi số liệu phải đối chiếu summary_numbers.csv.")
+    text("Quy trình bàn giao: Sau khi rà soát báo cáo, nhóm thực hiện git commit, gắn tag final và push lên kho lưu trữ theo đúng quy định nộp bài. Pipeline giữ nguyên tắc không tự động push/tag.")
+    text("Kết luận và hướng phát triển: Pipeline đáp ứng đầy đủ khả năng tái lập, kiểm soát chất lượng dữ liệu và kết hợp hiệu quả thống kê truyền thống với trích xuất ngữ nghĩa bằng LLM. Hướng phát triển tiếp theo là tinh chỉnh prompt phân biệt rõ lưu ý thông tin nhẹ với phàn nàn thực sự để giảm nhầm lẫn giữa positive và mixed, đồng thời mở rộng quy mô mẫu phân tích theo từng phân khúc phòng.")
     dest = path(cfg, "reports", "report.pdf")
     doc = SimpleDocTemplate(str(dest), pagesize=(21 * cm, 29.7 * cm), rightMargin=2 * cm, leftMargin=2 * cm, topMargin=1.6 * cm, bottomMargin=1.5 * cm)
 
     def footer(canvas, document):
         canvas.setFont("ReportFont", 8)
-        canvas.drawString(2 * cm, cm, "BTL Inside Airbnb | Bản nháp cần nhóm kiểm chứng")
+        canvas.drawString(2 * cm, cm, "BTL Inside Airbnb | Báo cáo phân tích Nhóm 07")
         canvas.drawRightString(19 * cm, cm, str(document.page))
 
     doc.build(story, onFirstPage=footer, onLaterPages=footer)

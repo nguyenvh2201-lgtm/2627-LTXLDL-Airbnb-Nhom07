@@ -5,8 +5,8 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-# Ghép mẫu để chính mã kiểm tra không trông giống khóa thật.
-PATTERNS = [re.compile("AIza" + r"[A-Za-z0-9_-]{35}"), re.compile("sk-" + r"[A-Za-z0-9_-]{32,}")]
+# Ghép mẫu để chính mã kiểm tra không trông giống khóa thật; loại trừ chuỗi giả test (AIza123456...).
+PATTERNS = [re.compile("AIza" + r"(?!1234567890)[A-Za-z0-9_-]{35}"), re.compile("sk-" + r"[A-Za-z0-9_-]{32,}")]
 
 
 def main() -> None:

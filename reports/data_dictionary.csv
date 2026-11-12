@@ -1,148 +1,58 @@
-table,column,dtype,meaning,qa_notes
-listings,id,str,id,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,listing_url,str,listing_url,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,scrape_id,int64,scrape_id,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,last_scraped,datetime64[us],last_scraped,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,source,str,source,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,name,str,name,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,description,str,description,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,neighborhood_overview,str,neighborhood_overview,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,picture_url,str,picture_url,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_id,string,host_id,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_url,str,host_url,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_name,str,host_name,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_since,str,host_since,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_location,str,host_location,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_about,str,host_about,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_response_time,str,host_response_time,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_response_rate,Float64,host_response_rate,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_acceptance_rate,Float64,host_acceptance_rate,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_is_superhost,str,host_is_superhost,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_thumbnail_url,str,host_thumbnail_url,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_picture_url,str,host_picture_url,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_neighbourhood,str,host_neighbourhood,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_listings_count,float64,host_listings_count,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_total_listings_count,float64,host_total_listings_count,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_verifications,str,host_verifications,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_has_profile_pic,str,host_has_profile_pic,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_identity_verified,str,host_identity_verified,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,neighbourhood,str,neighbourhood,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,neighbourhood_cleansed,str,neighbourhood_cleansed,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,neighbourhood_group_cleansed,float64,neighbourhood_group_cleansed,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,latitude,float64,latitude,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,longitude,float64,longitude,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,property_type,str,property_type,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,room_type,str,room_type,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,accommodates,int64,accommodates,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,bathrooms,float64,bathrooms,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,bathrooms_text,str,bathrooms_text,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,bedrooms,float64,bedrooms,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,beds,float64,beds,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,amenities,str,amenities,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,price,Float64,price,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,minimum_nights,float64,minimum_nights,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,maximum_nights,float64,maximum_nights,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,minimum_minimum_nights,float64,minimum_minimum_nights,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,maximum_minimum_nights,float64,maximum_minimum_nights,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,minimum_maximum_nights,float64,minimum_maximum_nights,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,maximum_maximum_nights,float64,maximum_maximum_nights,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,minimum_nights_avg_ntm,float64,minimum_nights_avg_ntm,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,maximum_nights_avg_ntm,float64,maximum_nights_avg_ntm,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,calendar_updated,float64,calendar_updated,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,has_availability,str,has_availability,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,availability_30,int64,availability_30,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,availability_60,int64,availability_60,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,availability_90,int64,availability_90,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,availability_365,int64,availability_365,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,calendar_last_scraped,str,calendar_last_scraped,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,number_of_reviews,int64,number_of_reviews,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,number_of_reviews_ltm,int64,number_of_reviews_ltm,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,number_of_reviews_l30d,int64,number_of_reviews_l30d,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,availability_eoy,int64,availability_eoy,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,number_of_reviews_ly,int64,number_of_reviews_ly,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,estimated_occupancy_l365d,int64,estimated_occupancy_l365d,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,estimated_revenue_l365d,float64,estimated_revenue_l365d,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,first_review,datetime64[us],first_review,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,last_review,datetime64[us],last_review,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,review_scores_rating,float64,review_scores_rating,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,review_scores_accuracy,float64,review_scores_accuracy,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,review_scores_cleanliness,float64,review_scores_cleanliness,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,review_scores_checkin,float64,review_scores_checkin,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,review_scores_communication,float64,review_scores_communication,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,review_scores_location,float64,review_scores_location,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,review_scores_value,float64,review_scores_value,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,license,str,license,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,instant_bookable,str,instant_bookable,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,calculated_host_listings_count,int64,calculated_host_listings_count,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,calculated_host_listings_count_entire_homes,int64,calculated_host_listings_count_entire_homes,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,calculated_host_listings_count_private_rooms,int64,calculated_host_listings_count_private_rooms,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,calculated_host_listings_count_shared_rooms,int64,calculated_host_listings_count_shared_rooms,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,reviews_per_month,float64,reviews_per_month,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,analysis_area,string,analysis_area,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,snapshot,str,snapshot,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_profile_id,float64,host_profile_id,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,host_profile_url,str,host_profile_url,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,hosts_time_as_user_years,float64,hosts_time_as_user_years,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,hosts_time_as_user_months,float64,hosts_time_as_user_months,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,hosts_time_as_host_years,float64,hosts_time_as_host_years,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,hosts_time_as_host_months,float64,hosts_time_as_host_months,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,price_quote_checkin_date,str,price_quote_checkin_date,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,price_quote_checkout_date,str,price_quote_checkout_date,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,price_quote_total_price,float64,price_quote_total_price,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,price_quote_price_per_night,float64,price_quote_price_per_night,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,price_quote_raw,str,price_quote_raw,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_invalid_price_type,bool,Cờ QA: invalid_price_type,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_invalid_first_review,bool,Cờ QA: invalid_first_review,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_invalid_last_review,bool,Cờ QA: invalid_last_review,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_invalid_last_scraped,bool,Cờ QA: invalid_last_scraped,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_missing_bedrooms,bool,Cờ QA: missing_bedrooms,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_missing_review_scores_rating,bool,Cờ QA: missing_review_scores_rating,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_missing_review_scores_accuracy,bool,Cờ QA: missing_review_scores_accuracy,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_missing_review_scores_cleanliness,bool,Cờ QA: missing_review_scores_cleanliness,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_missing_review_scores_checkin,bool,Cờ QA: missing_review_scores_checkin,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_missing_review_scores_communication,bool,Cờ QA: missing_review_scores_communication,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_missing_review_scores_location,bool,Cờ QA: missing_review_scores_location,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_missing_review_scores_value,bool,Cờ QA: missing_review_scores_value,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_invalid_host_response_rate,bool,Cờ QA: invalid_host_response_rate,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_invalid_host_acceptance_rate,bool,Cờ QA: invalid_host_acceptance_rate,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_outlier_accommodates,bool,Cờ QA: outlier_accommodates,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_outlier_beds,bool,Cờ QA: outlier_beds,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_room_type_variant,bool,Cờ QA: room_type_variant,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,property_type_grp,str,property_type_grp,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_rare_property,bool,Cờ QA: rare_property,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_review_date_order,bool,Cờ QA: review_date_order,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_review_count_lower_than_sample,bool,Cờ QA: review_count_lower_than_sample,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_calendar_missing_days,bool,Cờ QA: calendar_missing_days,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_outlier_price,bool,Cờ QA: outlier_price,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_price_iqr,bool,Cờ QA: price_iqr,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_outlier_minimum_nights,bool,Cờ QA: outlier_minimum_nights,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_duplicate,bool,Cờ QA: duplicate,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-listings,flag_missing_price,object,Cờ QA: missing_price,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,listing_id,string,listing_id,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,date,datetime64[us],date,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,available,boolean,available,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,price,Float64,price,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,adjusted_price,float64,adjusted_price,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,minimum_nights,int64,minimum_nights,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,maximum_nights,int64,maximum_nights,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,snapshot,str,snapshot,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,flag_invalid_price_type,bool,Cờ QA: invalid_price_type,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,flag_invalid_available,bool,Cờ QA: invalid_available,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,flag_invalid_date,bool,Cờ QA: invalid_date,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,flag_outlier_price,bool,Cờ QA: outlier_price,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,flag_price_iqr,bool,Cờ QA: price_iqr,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,flag_outlier_minimum_nights,bool,Cờ QA: outlier_minimum_nights,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-calendar,flag_duplicate,bool,Cờ QA: duplicate,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,listing_id,string,listing_id,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,id,str,id,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,date,datetime64[us],date,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,reviewer_id,string,reviewer_id,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,reviewer_name,str,reviewer_name,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,comments,str,comments,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,in_llm_sample,bool,in_llm_sample,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,in_hand_label,bool,in_hand_label,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,snapshot,str,snapshot,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,flag_invalid_date,bool,Cờ QA: invalid_date,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,flag_empty_comment,bool,Cờ QA: empty_comment,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,flag_repeated_text_reviewer,bool,Cờ QA: repeated_text_reviewer,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
-reviews,flag_duplicate,bool,Cờ QA: duplicate,price listings chỉ dùng ở snapshot cuối; cờ không đồng nghĩa đã xóa
+﻿table,column,dtype,non_null_count,null_count,description
+listings_clean,snapshot_date,str,928,0,Ngày mốc chụp dữ liệu (YYYY-MM-DD)
+listings_clean,listing_id,string,928,0,Mã định danh chỗ ở (chuỗi ký tự)
+listings_clean,neighbourhood_cleansed,str,928,0,Tên khu vực hành chính đã chuẩn hóa của Inside Airbnb
+listings_clean,room_type,str,928,0,"Loại phòng (Entire home/apt, Private room, ...)"
+listings_clean,price_cad,Float64,814,114,Giá phòng mỗi đêm đã chuẩn hóa sang số thực
+listings_clean,price_valid,boolean,928,0,Cờ giá hợp lệ (không thiếu và > 0)
+listings_clean,price_outlier,boolean,928,0,Cờ giá ngoại lai theo quy tắc IQR trên giá dương hợp lệ
+listings_clean,room_type_valid,bool,928,0,Cột kiểm tra QA / cờ trạng thái (room_type_valid)
+listings_clean,review_scores_rating,float64,907,21,"Điểm đánh giá trung bình của listing [1, 5]"
+listings_clean,rating_valid,bool,928,0,Cột kiểm tra QA / cờ trạng thái (rating_valid)
+listings_clean,latitude,float64,928,0,Vĩ độ địa lý của listing
+listings_clean,longitude,float64,928,0,Kinh độ địa lý của listing
+listings_clean,last_scraped,str,928,0,Ngày thu thập bản ghi thực tế
+listings_clean,availability_365,int64,928,0,Số ngày còn trống trong 365 ngày tới theo bảng listings
+listings_clean,number_of_reviews,int64,928,0,Tổng số lượng đánh giá tích lũy của listing
+listings_clean,missing_price,bool,928,0,Cờ thiếu giá niêm yết gốc
+listings_clean,analysis_area,str,928,0,Mã vùng phân tích hình chữ nhật của nhóm (A01-A08)
+listings_clean,price,str,814,114,Giá gốc dạng chuỗi trong dữ liệu nguồn
+listings_clean,minimum_nights,float64,927,1,Số đêm lưu trú tối thiểu
+listings_clean,maximum_nights,float64,927,1,Số đêm lưu trú tối đa
+listings_clean,duplicate_full_row,bool,928,0,Cột kiểm tra QA / cờ trạng thái (duplicate_full_row)
+listings_clean,duplicate_listing_id,bool,928,0,Cột kiểm tra QA / cờ trạng thái (duplicate_listing_id)
+listings_clean,duplicate_listing,bool[pyarrow],928,0,Cột kiểm tra QA / cờ trạng thái (duplicate_listing)
+listings_clean,duplicate_listing_full_row,bool,928,0,Cột kiểm tra QA / cờ trạng thái (duplicate_listing_full_row)
+listings_clean,wrong_price_type,bool,928,0,Cờ lỗi định dạng giá không chuyển được sang số
+listings_clean,invalid_price,boolean,814,114,Cờ giá <= 0
+listings_clean,invalid_minimum_nights,bool,928,0,Cột kiểm tra QA / cờ trạng thái (invalid_minimum_nights)
+listings_clean,invalid_maximum_nights,bool,928,0,Cột kiểm tra QA / cờ trạng thái (invalid_maximum_nights)
+listings_clean,min_greater_max,bool,928,0,Cột kiểm tra QA / cờ trạng thái (min_greater_max)
+listings_clean,invalid_availability_365,bool,928,0,Cột kiểm tra QA / cờ trạng thái (invalid_availability_365)
+listings_clean,analysis_area_valid,bool,928,0,Cột kiểm tra QA / cờ trạng thái (analysis_area_valid)
+listings_clean,category_mismatch,bool,928,0,Cột kiểm tra QA / cờ trạng thái (category_mismatch)
+listings_clean,invalid_rating,bool,928,0,Cột kiểm tra QA / cờ trạng thái (invalid_rating)
+listings_clean,missing_listing_id,bool[pyarrow],928,0,Cột kiểm tra QA / cờ trạng thái (missing_listing_id)
+reviews_clean,snapshot_date,str,4765,0,Ngày mốc chụp dữ liệu (YYYY-MM-DD)
+reviews_clean,review_id,string,4765,0,Mã định danh đánh giá (chuỗi ký tự)
+reviews_clean,listing_id,string,4765,0,Mã định danh chỗ ở (chuỗi ký tự)
+reviews_clean,date,datetime64[us],4765,0,Ngày của đánh giá hoặc ngày lịch đã chuẩn hóa datetime
+reviews_clean,comments,str,4765,0,Nội dung đánh giá văn bản gốc
+reviews_clean,comment_markup,boolean,4765,0,Cờ đánh giá gốc có chứa thẻ HTML
+reviews_clean,comment_clean,str,4765,0,Nội dung đánh giá sau khi gỡ thẻ HTML và chuẩn hóa khoảng trắng
+reviews_clean,comment_empty,bool,4765,0,Cờ đánh giá rỗng sau khi làm sạch
+reviews_clean,missing_review_id,bool[pyarrow],4765,0,Cột kiểm tra QA / cờ trạng thái (missing_review_id)
+reviews_clean,missing_listing_id,bool[pyarrow],4765,0,Cột kiểm tra QA / cờ trạng thái (missing_listing_id)
+reviews_clean,duplicate_review_full_row,bool,4765,0,Cột kiểm tra QA / cờ trạng thái (duplicate_review_full_row)
+reviews_clean,duplicate_review_id,bool[pyarrow],4765,0,Cột kiểm tra QA / cờ trạng thái (duplicate_review_id)
+reviews_clean,date_missing,bool[pyarrow],4765,0,Cột kiểm tra QA / cờ trạng thái (date_missing)
+reviews_clean,wrong_date_type,bool[pyarrow],4765,0,Cột kiểm tra QA / cờ trạng thái (wrong_date_type)
+reviews_clean,date_valid,bool,4765,0,Cột kiểm tra QA / cờ trạng thái (date_valid)
+reviews_clean,review_after_scrape,bool,4765,0,Cột kiểm tra QA / cờ trạng thái (review_after_scrape)
+reviews_clean,listing_not_found,bool[pyarrow],4765,0,Cột kiểm tra QA / cờ trạng thái (listing_not_found)
+reviews_clean,text_valid,bool,4765,0,Cờ đánh giá có nội dung hợp lệ để phân tích
+reviews_clean,listing_match,bool,4765,0,Cột kiểm tra QA / cờ trạng thái (listing_match)
+calendar_clean,snapshot,str,338720,0,Ngày mốc chụp dữ liệu (YYYY-MM-DD)
+calendar_clean,listing_id,string,338720,0,Mã định danh chỗ ở (chuỗi ký tự)
+calendar_clean,date,datetime64[us],338720,0,Ngày của đánh giá hoặc ngày lịch đã chuẩn hóa datetime
+calendar_clean,available,float64,338720,0,"Trạng thái phòng trống quy đổi số (1.0 = trống, 0.0 = không trống)"

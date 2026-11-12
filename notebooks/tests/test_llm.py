@@ -30,6 +30,20 @@ def test_retry(cfg, monkeypatch):
     assert post.call_args.kwargs["headers"]["x-goog-api-key"] == "test-key"
 
 
+def test_http_429_exhausted_stops_without_splitting(clean_fixture, monkeypatch):
+    cfg = clean_fixture
+    cfg["llm"]["retries"] = 2
+    cfg["_options"]["skip_llm"] = False
+    monkeypatch.setenv(cfg["llm"]["api_key_env"], "test-key")
+    response = Mock(status_code=429, headers={"Retry-After": "0"})
+    post = Mock(return_value=response)
+    monkeypatch.setattr(llm.requests, "post", post)
+    monkeypatch.setattr(llm.time, "sleep", lambda _: None)
+    with pytest.raises(ConnectionError, match="Gemini HTTP 429"):
+        llm.run(cfg)
+    assert post.call_count == 2
+
+
 def test_http_400_shows_api_reason_without_key(cfg, monkeypatch):
     response = Mock(status_code=400)
     response.json.return_value = {"error": {"status": "INVALID_ARGUMENT", "message": "Invalid schema; key=test-key"}}

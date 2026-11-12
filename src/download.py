@@ -84,7 +84,11 @@ def read(cfg: dict, name: str) -> pd.DataFrame:
             frame = frame.rename(columns={"listing_id": "id", "price_cad": "price",
                                           "price_outlier": "flag_outlier_price"})
             frame["price"] = pd.to_numeric(frame["price"], errors="coerce")
-            frame["flag_outlier_minimum_nights"] = frame["invalid_minimum_nights"].fillna(False).astype(bool)
+            valid_price = frame["price_valid"].fillna(False).astype(bool) if "price_valid" in frame else frame["price"].gt(0)
+            frame["flag_outlier_price"] = frame["flag_outlier_price"].fillna(False).astype(bool) | ~valid_price
+            min_invalid = frame["invalid_minimum_nights"].fillna(False).astype(bool)
+            min_gt_max = frame["min_greater_max"].fillna(False).astype(bool) if "min_greater_max" in frame else False
+            frame["flag_outlier_minimum_nights"] = min_invalid | min_gt_max
             frame["minimum_nights"] = pd.to_numeric(frame["minimum_nights"], errors="coerce")
             frame["number_of_reviews"] = pd.to_numeric(frame["number_of_reviews"], errors="coerce")
         elif name == "reviews_clean":
@@ -111,9 +115,9 @@ def money(series: pd.Series) -> pd.Series:
 
 
 def cli(run) -> None:
-    """Cho phép python -m src.<bước> --config ..."""
+    """Cho phép python -m src.<bước> --config ... hoặc python src/<bước>.py"""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", required=True)
+    parser.add_argument("--config", default=str(Path(__file__).resolve().parents[1] / "configs/city.yaml"))
     parser.add_argument("--skip-llm", action="store_true")
     parser.add_argument("--skip-download", action="store_true")
     parser.add_argument("--limit", type=int)

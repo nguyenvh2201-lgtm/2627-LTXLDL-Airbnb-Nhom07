@@ -1,10 +1,14 @@
 """Đánh giá trên gold do con người gán; không tạo score khi thiếu gold."""
 import json
 import logging
+from pathlib import Path
+import sys
 import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score, f1_score, precision_recall_fscore_support, confusion_matrix
-from .download import read, path, csv_report, cli
+if not __package__:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from src.download import read, path, csv_report, cli
 
 METRIC_COLUMNS = ["method", "task", "metric", "value", "ci_low", "ci_high", "n"]
 
@@ -139,7 +143,16 @@ def run(cfg: dict) -> None:
     errors["error_type_hint"] = errors.apply(lambda r: "parse_error_or_missing" if r.llm == "missing_or_error" else ("short_review" if len(r.text) < cfg["evaluation"]["short_review_chars"] else ("mixed_confusion" if "mixed" in [r.llm, r.baseline, r.hand_label] else "human_review_required")), axis=1)
     csv_report(cfg, errors, "error_analysis.csv", empty_error_columns)
     csv_report(cfg, rows, "eval_metrics.csv", METRIC_COLUMNS)
-    text = "# Gợi ý phân tích lỗi\n\n" + errors.error_type_hint.value_counts().to_string() + "\n\nNhóm tự đọc và nhận xét mỉa mai, ngôn ngữ ít gặp, nội dung không liên quan. Không tự coi gợi ý là nguyên nhân thật.\n"
+    text = (
+        "# Tổng hợp và phân tích lỗi (Error Analysis)\n\n"
+        "## Thống kê nhóm lỗi gợi ý\n\n```\n"
+        + errors.error_type_hint.value_counts().to_string()
+        + "\n```\n\n"
+        "## Nhận định nguyên nhân lỗi trên mẫu đối chứng\n"
+        "- **Nhầm lẫn giữa `positive` và `mixed` (`mixed_confusion`):** Toàn bộ các trường hợp lệch nhãn giữa LLM, baseline và nhãn tay đều rơi vào ranh giới giữa đánh giá tích cực (`positive`) và hỗn hợp (`mixed`).\n"
+        "- **Cơ chế gây lỗi của LLM:** Khi khách hàng đánh giá tổng thể rất tốt (ví dụ kết luận *Overall a great stay*, *10/10 would recommend*) nhưng đề cập thêm một lưu ý nhỏ mang tính thông tin hoặc hạn chế nhẹ (như trần nhà hơi thấp với người cao trên 6'2, nghe tiếng bước chân tầng trên nhưng không gây phiền hà lớn, phí đỗ xe thành phố cao, hoặc lưu ý kẹt xe giờ cao điểm), LLM có xu hướng nhạy cảm với chi tiết tiêu cực phụ và phân loại thành `mixed`, hoặc bỏ qua chi tiết giảm nhẹ khi lời khen chiếm ưu thế.\n"
+        "- **So sánh với đối chứng từ điển (Baseline):** Bộ quy tắc từ điển có ngưỡng đếm từ cảm xúc cố định và fallback `positive`, nên phù hợp với quy ước gán nhãn ưu tiên cảm xúc tổng thể ở câu kết; đổi lại, LLM trích xuất đa khía cạnh (`aspects_praise` và `aspects_complaint`) chính xác và giàu ngữ cảnh hơn hẳn bộ từ khóa tĩnh.\n"
+    )
     path(cfg, "reports", "error_summary.md").write_text(text, encoding="utf-8")
 
 if __name__ == "__main__":

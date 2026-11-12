@@ -216,10 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-# Airbnb Raw Data
+# Airbnb Raw Data (Bắt buộc theo đề bài)
 data/raw/
-# Processed calendar CSVs exceed the submission size limit; pipeline regenerates them.
-data/processed/
 *.csv.gz
 
 # Pipeline local environment and temporary verification artifacts

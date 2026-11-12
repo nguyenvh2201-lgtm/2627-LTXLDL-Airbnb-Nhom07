@@ -1,4 +1,13 @@
-table,ids_repeated_across_snapshots,interpretation
-listings,1000,Lặp ID giữa snapshot là bình thường
-calendar,1000,Lặp ID giữa snapshot là bình thường
-reviews,5000,Lặp ID giữa snapshot là bình thường
+﻿table,snapshot_1,snapshot_2,count_1,count_2,shared_ids
+listings,2025-09-11,2026-03-19,1000,1000,1000
+listings,2025-09-11,2026-06-15,1000,1000,1000
+listings,2025-09-11,2026-09-16,1000,928,928
+listings,2026-03-19,2026-06-15,1000,1000,1000
+listings,2026-03-19,2026-09-16,1000,928,928
+listings,2026-06-15,2026-09-16,1000,928,928
+reviews,2025-09-11,2026-03-19,5000,5000,5000
+reviews,2025-09-11,2026-06-15,5000,5000,5000
+reviews,2025-09-11,2026-09-16,5000,4765,4765
+reviews,2026-03-19,2026-06-15,5000,5000,5000
+reviews,2026-03-19,2026-09-16,5000,4765,4765
+reviews,2026-06-15,2026-09-16,5000,4765,4765

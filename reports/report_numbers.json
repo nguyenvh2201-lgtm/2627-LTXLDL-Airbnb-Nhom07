@@ -66,12 +66,12 @@
   },
   {
     "key": "latest.median_price",
-    "value": 210.0,
-    "rendered": "210"
+    "value": 201.165,
+    "rendered": "201.16"
   },
   {
     "key": "llm.estimated_cost",
-    "value": 202.15625116885,
-    "rendered": "202.16"
+    "value": 168.28552924080003,
+    "rendered": "168.29"
   }
 ]

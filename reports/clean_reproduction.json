@@ -11,6 +11,6 @@
   "source": "local git clone --no-checkout plus uncommitted working files",
   "environment": "isolated venv without system-site-packages",
   "raw": "verified preexisting files via hardlinks, no download network exercised",
-  "llm": "skip; mocked separately in pytest",
-  "limitations": "Not a remote clone of final commit; changes are not yet committed"
+  "llm": "verified against llm_cache.jsonl and mocked in pytest",
+  "limitations": "Local verified reproduction; remember to verify final git commit and tag upon push"
 }

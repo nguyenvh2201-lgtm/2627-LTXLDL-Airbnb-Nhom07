@@ -133,7 +133,7 @@ RULES = {
         "table": "listings",
         "condition": "Cùng listing_id xuất hiện ở hai mốc nhưng room_type khác nhau",
         "reason": "Theo dõi thay đổi loại phòng giữa các mốc; thay đổi chưa mặc định là lỗi",
-        "action": "Ghi nhận thay đổi, giữ dòng; hàm diff_room_type chưa được gọi trong report",
+        "action": "Chỉ ghi nhận thay đổi giữa các cặp mốc vào qa_report.csv, giữ dòng",
     },
     # Reviews
     "missing_review_id": {
@@ -706,23 +706,6 @@ def review_changes_date(df1,df2):
     return merged[["review_id", "date_1", "date_2", "date_changed"]]
 
 
-def review_listing_change(reviews_before, reviews_after):
-    matched = reviews_before[
-        ["review_id", "listing_id"]
-    ].merge(
-        reviews_after[["review_id", "listing_id"]],
-        on="review_id",
-        how="inner",
-        suffixes=("_before", "_after")
-    )
-
-    matched["review_listing_changed"] = (
-        matched["listing_id_before"]
-        != matched["listing_id_after"]
-    )
-    return matched
-
-
 def check_review_listing_changed(df1, df2):
     merged = df1.merge(
     df2,
@@ -1146,13 +1129,21 @@ def process_calendar(date, phan_cong, listings_df, *, raw_dir=None,
         exist_ok=True
     )
 
-    # Lưu dữ liệu theo ngày cùng toàn bộ cờ để đối chiếu QA.
-    calendar_qa_df.to_csv(
-        output_dir / "calendar_flagged.csv", index=False
+    # Lưu bảng tổng hợp lịch theo listing tại mỗi mốc để tiết kiệm dung lượng.
+    calendar_summary.to_csv(
+        output_dir / "calendar_listing_summary.csv", index=False
     )
 
-    # Summary chỉ dùng trong bộ nhớ để kiểm tra; khi cần có thể tính lại từ
-    # calendar_flagged.csv, tránh lưu hai bản calendar cho cùng một mốc.
+    clean_calendar = calendar_qa_df.loc[
+        ~calendar_qa_df["duplicate_calendar"].fillna(False).astype(bool)
+        & ~calendar_qa_df["calendar_available_conflict"].fillna(False).astype(bool),
+        ["snapshot_date", "listing_id", "date_parsed", "available_clean"],
+    ].rename(columns={"snapshot_date": "snapshot", "date_parsed": "date"})
+    clean_calendar["available"] = clean_calendar["available_clean"].map(
+        {"t": 1.0, "f": 0.0, "true": 1.0, "false": 0.0}
+    )
+    clean_calendar = clean_calendar.drop(columns=["available_clean"])
+
     # 9. Check nhanh
     print("CALENDAR:", date)
     print("Shape:", calendar_summary.shape)
@@ -1178,7 +1169,7 @@ def process_calendar(date, phan_cong, listings_df, *, raw_dir=None,
     )
 
     print()
-    return calendar_summary
+    return clean_calendar
 
 
 
@@ -1255,12 +1246,23 @@ def report_table(report_rows, snapshot, table, before, after, flags):
 
     metrics = [("row_count", len(before), len(after), "Đơn vị: dòng.")]
     if table == "listings":
-        # Cùng quy tắc chuyển giá ở hai phía, không tự loại ngoại lai.
+        valid_after = after.loc[after["price_valid"] & ~after["price_outlier"], "price_cad"]
         metrics.append((
             "median_price", clean_price(before["price"]).median(),
-            after["price_cad"].median(),
-            "Đơn vị: tiền tệ trong config. Trung vị giá numeric, bỏ giá thiếu; "
-            "giữ giá không dương và ngoại lai ở cả hai phía.",
+            valid_after.median(),
+            "Đơn vị: tiền tệ trong config. Trước QA: trung vị giá numeric bỏ giá thiếu; "
+            "sau QA: trung vị giá hợp lệ (price_valid và không bị cờ price_outlier, khớp với KPI K1).",
+        ))
+        min_before = pd.to_numeric(before["minimum_nights"], errors="coerce")
+        min_after = pd.to_numeric(
+            after.loc[~after["invalid_minimum_nights"] & ~after["min_greater_max"], "minimum_nights"],
+            errors="coerce",
+        )
+        metrics.append((
+            "long_stay_share_pct",
+            float(min_before.dropna().ge(30).mean() * 100) if min_before.notna().any() else np.nan,
+            float(min_after.dropna().ge(30).mean() * 100) if min_after.notna().any() else np.nan,
+            "Đơn vị: %. Tỷ lệ listing yêu cầu tối thiểu từ 30 đêm trở lên trước và sau lọc cờ minimum_nights (KPI K4).",
         ))
     elif table == "reviews":
         metrics.append((
@@ -1269,6 +1271,22 @@ def report_table(report_rows, snapshot, table, before, after, flags):
             after["comment_clean"].fillna("").astype("string").str.len().mean(),
             "Đơn vị: ký tự/review. Trung bình độ dài comments gốc so với "
             "comment_clean; bình luận thiếu được tính là 0 ký tự.",
+        ))
+    elif table == "calendar":
+        avail_before = before["available"].astype("string").str.strip().str.lower().map(
+            {"t": 1.0, "true": 1.0, "f": 0.0, "false": 0.0}
+        )
+        valid_cal = (
+            after["available_valid"].fillna(False).astype(bool)
+            & ~after["duplicate_calendar"].fillna(False).astype(bool)
+            & ~after["calendar_available_conflict"].fillna(False).astype(bool)
+        )
+        avail_after = after.loc[valid_cal, "available_true"].astype(float)
+        metrics.append((
+            "unavailable_rate_pct",
+            float((1.0 - avail_before.dropna().mean()) * 100) if avail_before.notna().any() else np.nan,
+            float((1.0 - avail_after.mean()) * 100) if len(avail_after) else np.nan,
+            "Đơn vị: %. Tỷ lệ ngày không khả dụng trước và sau khi loại dòng trùng/mâu thuẫn trạng thái (KPI K2).",
         ))
     for name, value_before, value_after, note in metrics:
         if pd.isna(value_before) or pd.isna(value_after):
@@ -1336,6 +1354,108 @@ def report_review_snapshots(report_rows, reviews_by_snapshot):
             )
 
 
+def report_listing_snapshots(report_rows, listings_by_snapshot):
+    """So sánh loại phòng (room_type) của cùng listing giữa các cặp mốc."""
+    for snapshot_1, snapshot_2 in combinations(listings_by_snapshot, 2):
+        df1 = listings_by_snapshot[snapshot_1]
+        df2 = listings_by_snapshot[snapshot_2]
+        u1 = df1.loc[
+            ~missing_listing_id(df1)["missing_listing_id"]
+            & ~df1["listing_id"].duplicated(keep=False),
+            ["listing_id", "room_type"],
+        ]
+        u2 = df2.loc[
+            ~missing_listing_id(df2)["missing_listing_id"]
+            & ~df2["listing_id"].duplicated(keep=False),
+            ["listing_id", "room_type"],
+        ]
+        changes = diff_room_type(u1, u2)
+        add_report_row(
+            report_rows, snapshot_1, "listings", "room_change",
+            checked=len(changes), flagged=int(changes["room_change"].sum()),
+            compared_snapshot=snapshot_2, action="record_only",
+            note="Cùng listing_id xuất hiện duy nhất ở cả hai mốc nhưng room_type thay đổi; giữ các dòng.",
+        )
+
+
+def export_cross_snapshot_duplicates(listings_by_snapshot, reviews_by_snapshot, reports_dir):
+    """Xuất thống kê ID lặp lại giữa các mốc ra cross_snapshot_duplicates.csv."""
+    rows = []
+    for table, by_snap, col in (
+        ("listings", listings_by_snapshot, "listing_id"),
+        ("reviews", reviews_by_snapshot, "review_id"),
+    ):
+        for s1, s2 in combinations(by_snap, 2):
+            ids1 = set(by_snap[s1][col].dropna())
+            ids2 = set(by_snap[s2][col].dropna())
+            rows.append({
+                "table": table,
+                "snapshot_1": s1,
+                "snapshot_2": s2,
+                "count_1": len(ids1),
+                "count_2": len(ids2),
+                "shared_ids": len(ids1 & ids2),
+            })
+    output = reports_dir / "cross_snapshot_duplicates.csv"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(rows).to_csv(output, index=False, encoding="utf-8-sig")
+    return output
+
+
+def export_data_dictionary(listings_df, reviews_df, calendar_df, reports_dir):
+    """Tạo từ điển dữ liệu (data_dictionary.csv) cho ba bảng sạch sau QA."""
+    descriptions = {
+        "snapshot_date": "Ngày mốc chụp dữ liệu (YYYY-MM-DD)",
+        "snapshot": "Ngày mốc chụp dữ liệu (YYYY-MM-DD)",
+        "listing_id": "Mã định danh chỗ ở (chuỗi ký tự)",
+        "review_id": "Mã định danh đánh giá (chuỗi ký tự)",
+        "neighbourhood_cleansed": "Tên khu vực hành chính đã chuẩn hóa của Inside Airbnb",
+        "analysis_area": "Mã vùng phân tích hình chữ nhật của nhóm (A01-A08)",
+        "room_type": "Loại phòng (Entire home/apt, Private room, ...)",
+        "price_cad": "Giá phòng mỗi đêm đã chuẩn hóa sang số thực",
+        "price": "Giá gốc dạng chuỗi trong dữ liệu nguồn",
+        "price_valid": "Cờ giá hợp lệ (không thiếu và > 0)",
+        "price_outlier": "Cờ giá ngoại lai theo quy tắc IQR trên giá dương hợp lệ",
+        "missing_price": "Cờ thiếu giá niêm yết gốc",
+        "wrong_price_type": "Cờ lỗi định dạng giá không chuyển được sang số",
+        "invalid_price": "Cờ giá <= 0",
+        "minimum_nights": "Số đêm lưu trú tối thiểu",
+        "maximum_nights": "Số đêm lưu trú tối đa",
+        "availability_365": "Số ngày còn trống trong 365 ngày tới theo bảng listings",
+        "number_of_reviews": "Tổng số lượng đánh giá tích lũy của listing",
+        "review_scores_rating": "Điểm đánh giá trung bình của listing [1, 5]",
+        "latitude": "Vĩ độ địa lý của listing",
+        "longitude": "Kinh độ địa lý của listing",
+        "last_scraped": "Ngày thu thập bản ghi thực tế",
+        "date": "Ngày của đánh giá hoặc ngày lịch đã chuẩn hóa datetime",
+        "comments": "Nội dung đánh giá văn bản gốc",
+        "comment_clean": "Nội dung đánh giá sau khi gỡ thẻ HTML và chuẩn hóa khoảng trắng",
+        "comment_markup": "Cờ đánh giá gốc có chứa thẻ HTML",
+        "comment_empty": "Cờ đánh giá rỗng sau khi làm sạch",
+        "text_valid": "Cờ đánh giá có nội dung hợp lệ để phân tích",
+        "available": "Trạng thái phòng trống quy đổi số (1.0 = trống, 0.0 = không trống)",
+    }
+    rows = []
+    for table_name, df in (
+        ("listings_clean", listings_df),
+        ("reviews_clean", reviews_df),
+        ("calendar_clean", calendar_df),
+    ):
+        for col in df.columns:
+            rows.append({
+                "table": table_name,
+                "column": col,
+                "dtype": str(df[col].dtype),
+                "non_null_count": int(df[col].notna().sum()),
+                "null_count": int(df[col].isna().sum()),
+                "description": descriptions.get(col, f"Cột kiểm tra QA / cờ trạng thái ({col})"),
+            })
+    output = reports_dir / "data_dictionary.csv"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(rows).to_csv(output, index=False, encoding="utf-8-sig")
+    return output
+
+
 def export_qa_report(report_rows, reports_dir):
     """Xuất một lần sau khi hoàn tất tất cả các mốc và các cặp so sánh."""
     output = reports_dir / "qa_report.csv"
@@ -1352,7 +1472,10 @@ def export_qa_report(report_rows, reports_dir):
 
 def run(cfg):
     """Chạy QA theo cấu hình của pipeline, không gắn cứng thành phố hay mốc."""
-    from .download import path
+    import sys
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from src.download import path
     raw_dir = path(cfg, "raw")
     processed_dir = path(cfg, "processed")
     reports_dir = path(cfg, "reports")
@@ -1364,28 +1487,45 @@ def run(cfg):
     })
     snapshots = cfg["snapshots"]
     report_rows = []
+    listings_by_snapshot = {}
     reviews_by_snapshot = {}
+    calendar_blocks = []
     for date in snapshots:
         listings_df = process_listings(
             date, phan_cong, raw_dir, processed_dir=processed_dir, report_rows=report_rows,
         )
+        listings_by_snapshot[date] = listings_df
         reviews_by_snapshot[date] = process_reviews(
             date, phan_cong, listings_df, raw_dir=raw_dir,
             processed_dir=processed_dir, report_rows=report_rows,
         )
-        process_calendar(
+        calendar_blocks.append(process_calendar(
             date, phan_cong, listings_df, raw_dir=raw_dir,
             processed_dir=processed_dir, report_rows=report_rows,
             chunksize=cfg["io"]["chunksize"],
-        )
+        ))
         process_neighbourhoods(date, raw_dir, processed_dir)
+    from src.download import save
+    calendar_all = pd.concat(calendar_blocks, ignore_index=True)
+    save(cfg, calendar_all, "calendar_clean")
+    report_listing_snapshots(report_rows, listings_by_snapshot)
     report_review_snapshots(report_rows, reviews_by_snapshot)
     export_qa_report(report_rows, reports_dir)
+    export_cross_snapshot_duplicates(listings_by_snapshot, reviews_by_snapshot, reports_dir)
+    export_data_dictionary(
+        listings_by_snapshot[snapshots[-1]],
+        reviews_by_snapshot[snapshots[-1]],
+        calendar_blocks[-1],
+        reports_dir,
+    )
 
 
 def main():
-    from .download import load_config
-    run(load_config(ROOT / "configs/city.yaml"))
+    import sys
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from src.download import cli
+    cli(run)
 
 
 if __name__ == "__main__":
