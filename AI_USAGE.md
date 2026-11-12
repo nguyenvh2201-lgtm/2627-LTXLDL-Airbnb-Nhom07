@@ -1,5 +1,57 @@
 # Nhật ký sử dụng AI
 
+## Hoàn thiện QA và bàn giao dữ liệu processed — 12/11/2026
+
+### Công cụ và phạm vi hỗ trợ
+
+- Codex hỗ trợ đọc, giải thích và rà soát `src/qa.py`, đối chiếu giao diện
+  với KPI/LLM, sửa mã QA và cập nhật kiểm thử trong `notebooks/tests/test_qa.py`.
+- Hoàn thiện kiểm tra ngày review: gom ngày thu thập theo listing, chỉ so sánh
+  khi có đúng một ngày hợp lệ; thêm `scraped_date_conflict` và
+  `review_date_uncheckable` vào CSV sạch và báo cáo. Một ngày hợp lệ vẫn được
+  dùng nếu các bản ghi listing còn lại thiếu/sai ngày; không tự sửa ngày gốc.
+- Danh sách loại phòng lấy từ `qa.room_types`; khu vực lấy từ bảng phân công
+  `listing_ids.csv`. Phạm vi nhóm giữ hai loại Entire home/apt và Private room.
+- Bổ sung kiểm tra thiếu, sai kiểu, không hữu hạn, không nguyên, ngoài phạm vi,
+  min > max cho minimum_nights/maximum_nights/availability_365; áp dụng
+  `qa.min_nights_cap`. Giữ giá trị gốc, tạo các cờ và cột `*_valid`.
+- Có sửa hàm `read()` trong `src/download.py` để ánh xạ
+  `minimum_nights_valid` sang cờ mà K4 sử dụng; giữ cách đọc đầu ra QA cũ.
+  Thay đổi này là giao diện QA → KPI, không thay đổi chức năng tải từ mạng.
+- Sửa CLI của QA để chạy được bằng đường dẫn file hoặc `python -m src.qa`,
+  đọc tham số `--config` thay vì bỏ qua tham số và dùng đường dẫn ghi cứng.
+- Người dùng bổ sung `pd.to_numeric(errors="coerce")` cho check_rating theo
+  gợi ý của Codex; giá trị sai kiểu trở thành thiếu và bị đánh dấu không hợp lệ.
+
+### Prompt và quyết định trong lượt làm việc
+
+- “bạn hoàn thiện nốt cho tôi đi” → sửa check_review_date và đầu ra QA.
+- “bạn sửa giúp tôi tiếp phần này” → cấu hình hóa kiểm tra danh mục.
+- “hoàn thiện nốt phần check numeric cho tôi” → bộ cờ numeric và nối K4.
+- Ảnh lỗi import khi chạy `python src/qa.py` → sửa CLI và thêm kiểm thử chạy file/module.
+- “bạn cập nhật vào ai usage xong commit cho tôi…”; lựa chọn “Gộp vào nhánh
+  qa/update-processed-data” → ghi nhận hỗ trợ AI, commit thay đổi và gộp vào
+  nhánh QA được chỉ định. Không tự push hay tạo tag nộp bài.
+
+### Lỗi AI gặp và kiểm chứng thực tế
+
+- Python mặc định trong công cụ là bản MSYS thiếu pytest; chuyển sang
+  Python Anaconda có sẵn để kiểm thử, không khai lần chạy lỗi là thành công.
+- Kiểm thử subprocess trên Windows ban đầu lỗi mã hóa cp1252 khi in tiếng
+  Việt; cấu hình tiến trình kiểm thử dùng UTF-8 và chạy lại thành công.
+- 24 test QA/KPI chạy đạt, gồm dữ liệu lỗi, đổi ngưỡng/danh mục, giữ nguyên
+  đầu vào, truyền cờ đến báo cáo/KPI và hai cách gọi CLI với cấu hình thử.
+- Kiểm tra CSV processed của bốn mốc với hàm numeric và số cờ trong báo cáo:
+  ba mốc đầu 1.000 listing/5.000 review; mốc cuối 928 listing/4.765 review.
+  Không bù bản ghi giả. Kiểm tra riêng rating với "bad", thiếu và "4.5"
+  cho kết quả hợp lệ lần lượt False, False, True.
+- Các kiểm thử CLI dùng dữ liệu tổng hợp trong thư mục tạm. Codex không chạy
+  lại toàn bộ QA trên dữ liệu thật trong lượt commit; kiểm tra các CSV hiện có.
+- Smoke test toàn pipeline chưa chạy được trong môi trường kiểm thử hiện tại
+  do thiếu langdetect. Không gọi Gemini thật trong các thay đổi QA này.
+- Điểm còn cần phối hợp: K1 trong src/kpi.py chưa lọc price_valid, nên giá
+  không dương vẫn có thể tham gia tính giá trung vị. Chưa sửa KPI giá trong lượt này.
+
 ## Công cụ đã dùng (vào việc gì)
 
 - 11/11/2026: Codex đọc yêu cầu/mã, viết pipeline Python, config, tests, tài liệu,

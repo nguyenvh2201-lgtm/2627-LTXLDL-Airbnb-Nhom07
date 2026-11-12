@@ -84,7 +84,13 @@ def read(cfg: dict, name: str) -> pd.DataFrame:
             frame = frame.rename(columns={"listing_id": "id", "price_cad": "price",
                                           "price_outlier": "flag_outlier_price"})
             frame["price"] = pd.to_numeric(frame["price"], errors="coerce")
-            frame["flag_outlier_minimum_nights"] = frame["invalid_minimum_nights"].fillna(False).astype(bool)
+            # Dữ liệu mới có cờ tổng hợp cả thiếu/sai kiểu, ngưỡng và min > max.
+            # Giữ khả năng đọc các đầu ra QA cũ chưa có cột này.
+            frame["flag_outlier_minimum_nights"] = (
+                ~frame["minimum_nights_valid"].fillna(False).astype(bool)
+                if "minimum_nights_valid" in frame
+                else frame["invalid_minimum_nights"].fillna(False).astype(bool)
+            )
             frame["minimum_nights"] = pd.to_numeric(frame["minimum_nights"], errors="coerce")
             frame["number_of_reviews"] = pd.to_numeric(frame["number_of_reviews"], errors="coerce")
         elif name == "reviews_clean":
