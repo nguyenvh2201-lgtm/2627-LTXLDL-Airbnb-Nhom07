@@ -56,6 +56,12 @@
   QA và báo cáo/CSV; bỏ listings/reviews tháng 12/2025 theo bốn mốc hiện tại.
   Giữ lịch sử hai nhánh và các test QA cũ còn tương thích. Chạy kết hợp
   31 test QA/KPI đạt (3 cảnh báo từ dữ liệu ngày/giá thiếu trong test).
+- Theo ảnh góp ý tiếp theo của người dùng, tách bảng `phan_cong` ghép theo
+  index thành `listing_assignment` (listing_id, analysis_area) và
+  `review_assignment` (review_id). Listings/calendar dùng bảng listing;
+  reviews dùng bảng review. Không tạo quan hệ giả giữa hai danh sách và
+  không sinh dòng thiếu do độ dài khác nhau. Giữ thay đổi ROOT của người dùng.
+  Chạy lại 31 test QA/KPI đạt, bao gồm fixture có số listing và review khác nhau.
 
 ## Công cụ đã dùng (vào việc gì)
 

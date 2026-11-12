@@ -6,10 +6,9 @@ import shutil
 import yaml
 from itertools import combinations
 # Tính từ vị trí qa.py, không phụ thuộc thư mục đang mở terminal.
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = PROJECT_ROOT / "data"
-RAW_DIR = DATA_DIR / "raw"
 ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = ROOT / "data"
+RAW_DIR = DATA_DIR / "raw"
 # Mô tả quy tắc dùng để tổng hợp báo cáo QA.
 # Các điều kiện kiểm tra thực tế được viết trong các hàm check_*.
 TAG = r"<[a-zA-Z/][^>]*>"
@@ -347,16 +346,16 @@ def check_listing_match(reviews_df, listings_df):
 # 2. LISTINGS: CHUẨN BỊ, KIỂM TRA, SO SÁNH VÀ XỬ LÝ
 # ============================================================================
 
-def prepare_listings(raw_listings, phan_cong,snapshot_date):
+def prepare_listings(raw_listings, listing_assignment, snapshot_date):
     """Chuẩn bị listings của nhóm cho một mốc dữ liệu.
 
     Nhận listings gốc có cột id và bảng phân công có listing_id,
     analysis_area. Lọc id theo phân công, ghép khu vực phân tích rồi
     trả về DataFrame có thêm listing_id, analysis_area và snapshot_date.
     """
-    mask = raw_listings['id'].isin(phan_cong["listing_id"])
+    mask = raw_listings['id'].isin(listing_assignment["listing_id"])
     raw_listings = raw_listings[mask]
-    bang_area = phan_cong[["listing_id","analysis_area"]]
+    bang_area = listing_assignment[["listing_id","analysis_area"]]
     bang_moi = raw_listings.merge(
     bang_area,
     left_on = "id",
@@ -566,7 +565,7 @@ def run_qa_listings(df, allowed_room_types, allowed_areas, min_nights_cap):
     return report
 
 
-def process_listings(date, phan_cong, raw_dir, *, allowed_room_types,
+def process_listings(date, listing_assignment, raw_dir, *, allowed_room_types,
                      allowed_areas, min_nights_cap, processed_dir=None, report_rows=None):
     """Đọc, chuẩn bị, chạy QA và lưu listings của một mốc.
 
@@ -581,10 +580,10 @@ def process_listings(date, phan_cong, raw_dir, *, allowed_room_types,
             df[column] = pd.NA
     if df["neighbourhood_cleansed"].isna().all():
         df["neighbourhood_cleansed"] = df["id"].map(
-            phan_cong.dropna(subset=["listing_id"]).drop_duplicates("listing_id")
+            listing_assignment.dropna(subset=["listing_id"]).drop_duplicates("listing_id")
             .set_index("listing_id")["analysis_area"]
         )
-    prepare = prepare_listings(df,phan_cong,date)
+    prepare = prepare_listings(df, listing_assignment, date)
     report = run_qa_listings(prepare, allowed_room_types, allowed_areas, min_nights_cap)
     row_flags = report["row_flags"]
     all_data = pd.concat(
@@ -646,14 +645,14 @@ def process_listings(date, phan_cong, raw_dir, *, allowed_room_types,
 # 3. REVIEWS: CHUẨN BỊ, KIỂM TRA, SO SÁNH VÀ XỬ LÝ
 # ============================================================================
 
-def prepare_reviews(raw_reviews, phan_cong, snapshot_date):
+def prepare_reviews(raw_reviews, review_assignment, snapshot_date):
     """Lọc reviews theo review_id được giao trong bảng phân công.
 
     Nhận reviews gốc có cột id và bảng phân công có review_id.
     Trả về bản sao các review khớp, đổi id thành review_id và thêm
     snapshot_date. Hàm lọc theo mã review, không lọc theo mã listing.
     """
-    mask = raw_reviews["id"].isin(phan_cong["review_id"].dropna())
+    mask = raw_reviews["id"].isin(review_assignment["review_id"].dropna())
     bang_moi = raw_reviews[mask].copy()
     bang_moi = bang_moi.rename(
         columns={"id": "review_id"}
@@ -862,7 +861,7 @@ def run_qa_reviews(reviews_df,raw_listings):
     return report
 
 
-def process_reviews(date, phan_cong, listings_df, *, raw_dir=None,
+def process_reviews(date, review_assignment, listings_df, *, raw_dir=None,
                     processed_dir=None, report_rows=None):
     """Đọc, chuẩn bị, chạy QA và lưu reviews của một mốc.
 
@@ -875,10 +874,10 @@ def process_reviews(date, phan_cong, listings_df, *, raw_dir=None,
     )
 
 
-    # 3. Lọc reviews thuộc 1000 listings của nhóm
+    # 3. Lọc theo danh sách review_id được giao độc lập với danh sách listing.
     prepared_reviews = prepare_reviews(
         raw_reviews,
-        phan_cong,
+        review_assignment,
         date
     )
 
@@ -961,13 +960,13 @@ def process_reviews(date, phan_cong, listings_df, *, raw_dir=None,
 # 4. CALENDAR: CHUẨN BỊ, KIỂM TRA, TỔNG HỢP VÀ XỬ LÝ
 # ============================================================================
 
-def prepare_calendar(raw_calendar,phan_cong,snapshot):
+def prepare_calendar(raw_calendar, listing_assignment, snapshot):
     """Chuẩn bị calendar cho các listing được phân công tại một mốc.
 
     Hai bảng đầu vào cần có listing_id. Lọc calendar theo mã listing
-    trong phan_cong và trả về bản sao có thêm snapshot_date.
+    trong listing_assignment và trả về bản sao có thêm snapshot_date.
     """
-    mask = raw_calendar["listing_id"].isin(phan_cong["listing_id"])
+    mask = raw_calendar["listing_id"].isin(listing_assignment["listing_id"])
     raw_calendar = raw_calendar[mask]
     bang_moi = raw_calendar.copy()
     bang_moi["snapshot_date"] = snapshot
@@ -1144,7 +1143,7 @@ def calendar_listing_summary(calendar_qa_df):
     return summary
 
 
-def process_calendar(date, phan_cong, listings_df, *, raw_dir=None,
+def process_calendar(date, listing_assignment, listings_df, *, raw_dir=None,
                      processed_dir=None, report_rows=None, chunksize=100_000):
     """Đọc, chạy QA và lưu calendar chi tiết của một mốc.
 
@@ -1164,7 +1163,7 @@ def process_calendar(date, phan_cong, listings_df, *, raw_dir=None,
     if missing_columns:
         raise ValueError(f"Calendar {date} thiếu cột bắt buộc: {sorted(missing_columns)}")
     columns = [column for column in columns if column in available_columns]
-    listing_ids = set(phan_cong["listing_id"].dropna())
+    listing_ids = set(listing_assignment["listing_id"].dropna())
     parts = []
     with pd.read_csv(
         calendar_path, dtype={"listing_id": "string"},
@@ -1432,25 +1431,26 @@ def run(cfg):
     allowed_room_types = cfg["qa"]["room_types"]
     allowed_areas = listings["analysis_area"].dropna().unique().tolist()
     reviews = pd.read_csv(cfg["_root"] / cfg["inputs"]["review_ids"], dtype={"id": "string"})
-    phan_cong = pd.DataFrame({
-        "listing_id": listings["id"], "analysis_area": listings["analysis_area"],
-        "review_id": reviews["id"],
-    })
+    # Hai danh sách độc lập; không ghép theo index hay suy ra liên kết review/listing.
+    listing_assignment = listings[["id", "analysis_area"]].rename(
+        columns={"id": "listing_id"}
+    )
+    review_assignment = reviews[["id"]].rename(columns={"id": "review_id"})
     snapshots = cfg["snapshots"]
     report_rows = []
     reviews_by_snapshot = {}
     for date in snapshots:
         listings_df = process_listings(
-            date, phan_cong, raw_dir, processed_dir=processed_dir, report_rows=report_rows,
+            date, listing_assignment, raw_dir, processed_dir=processed_dir, report_rows=report_rows,
             allowed_room_types=allowed_room_types, allowed_areas=allowed_areas,
             min_nights_cap=cfg["qa"]["min_nights_cap"],
         )
         reviews_by_snapshot[date] = process_reviews(
-            date, phan_cong, listings_df, raw_dir=raw_dir,
+            date, review_assignment, listings_df, raw_dir=raw_dir,
             processed_dir=processed_dir, report_rows=report_rows,
         )
         process_calendar(
-            date, phan_cong, listings_df, raw_dir=raw_dir,
+            date, listing_assignment, listings_df, raw_dir=raw_dir,
             processed_dir=processed_dir, report_rows=report_rows,
             chunksize=cfg["io"]["chunksize"],
         )
