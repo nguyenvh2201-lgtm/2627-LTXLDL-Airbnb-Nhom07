@@ -1,0 +1,11 @@
+{
+  "forbidden_tracked_files": [],
+  "secret_pattern_paths": [],
+  "secret_pattern_in_history": false,
+  "ignored_paths": [
+    ".env",
+    "data/raw/placeholder",
+    ".venv/placeholder"
+  ],
+  "scope": "pattern audit only; not proof no other secret formats exist"
+}

@@ -1,9 +1,0 @@
-snapshot_date,room_type,n_listings,n_price_valid,median_price_cad,price_q1_cad,price_q3_cad,n_room_type_valid,room_type_share,n_calendar_listings,availability_share_mean,calendar_coverage_mean,n_rating_valid,median_rating
-2025-09-11,Entire home/apt,875,830,190.5,125.0,270.75,1000,0.875,875,0.57,1.0,825,4.92
-2025-09-11,Private room,125,117,74.0,54.0,104.0,1000,0.125,125,0.5475,1.0,125,4.89
-2025-12-12,Entire home/apt,875,0,,,,1000,0.875,875,0.5949,1.0,845,4.91
-2025-12-12,Private room,125,0,,,,1000,0.125,125,0.5728,1.0,125,4.88
-2026-03-19,Entire home/apt,875,851,223.21,126.94,351.18,1000,0.875,875,0.5795,1.0,850,4.9
-2026-03-19,Private room,125,123,84.54,54.32,155.25,1000,0.125,125,0.5292,1.0,125,4.88
-2026-06-15,Entire home/apt,875,855,255.62,138.43,418.0,1000,0.875,875,0.5678,1.0,850,4.9
-2026-06-15,Private room,125,125,91.58,55.11,176.0,1000,0.125,125,0.5359,1.0,125,4.89

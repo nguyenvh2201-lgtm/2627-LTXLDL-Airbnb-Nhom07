@@ -1,0 +1,77 @@
+[
+  {
+    "key": "listings.2025-09-11.after",
+    "value": 1000.0,
+    "rendered": "1,000"
+  },
+  {
+    "key": "calendar.2025-09-11.after",
+    "value": 365000.0,
+    "rendered": "365,000"
+  },
+  {
+    "key": "reviews.2025-09-11.after",
+    "value": 5000.0,
+    "rendered": "5,000"
+  },
+  {
+    "key": "listings.2026-03-19.after",
+    "value": 1000.0,
+    "rendered": "1,000"
+  },
+  {
+    "key": "calendar.2026-03-19.after",
+    "value": 365000.0,
+    "rendered": "365,000"
+  },
+  {
+    "key": "reviews.2026-03-19.after",
+    "value": 5000.0,
+    "rendered": "5,000"
+  },
+  {
+    "key": "listings.2026-06-15.after",
+    "value": 1000.0,
+    "rendered": "1,000"
+  },
+  {
+    "key": "calendar.2026-06-15.after",
+    "value": 365000.0,
+    "rendered": "365,000"
+  },
+  {
+    "key": "reviews.2026-06-15.after",
+    "value": 5000.0,
+    "rendered": "5,000"
+  },
+  {
+    "key": "listings.2026-09-16.after",
+    "value": 928.0,
+    "rendered": "928"
+  },
+  {
+    "key": "calendar.2026-09-16.after",
+    "value": 338720.0,
+    "rendered": "338,720"
+  },
+  {
+    "key": "reviews.2026-09-16.after",
+    "value": 4765.0,
+    "rendered": "4,765"
+  },
+  {
+    "key": "latest.missing_price",
+    "value": 114.0,
+    "rendered": "114"
+  },
+  {
+    "key": "latest.median_price",
+    "value": 210.0,
+    "rendered": "210"
+  },
+  {
+    "key": "llm.estimated_cost",
+    "value": 202.15625116885,
+    "rendered": "202.16"
+  }
+]

@@ -1,0 +1,73 @@
+check,snapshot,expected,actual,passed,severity
+listing_count,2025-09-11,1000,1000,True,error
+listing_unique,2025-09-11,1000,1000,True,error
+review_count,2025-09-11,5000,5000,True,error
+review_unique,2025-09-11,5000,5000,True,error
+calendar_listing_ids,2025-09-11,True,True,True,error
+calendar_unique_dates,2025-09-11,0,0,True,error
+calendar_days_per_listing,2025-09-11,True,True,True,error
+calendar_valid_dates,2025-09-11,True,True,True,error
+calendar_contiguous_days,2025-09-11,True,True,True,error
+calendar_rows,2025-09-11,365000,365000,True,error
+room_type:Entire home/apt,2025-09-11,875,875,True,error
+room_type:Private room,2025-09-11,125,125,True,error
+in_llm_sample,2025-09-11,1000,1000,True,error
+in_hand_label,2025-09-11,100,100,True,error
+hand_subset_llm,2025-09-11,True,True,True,error
+area_count,2025-09-11,8,8,True,error
+area_size_range,2025-09-11,True,True,True,error
+zero_reviews,2025-09-11,50,50,True,error
+listing_count,2026-03-19,1000,1000,True,error
+listing_unique,2026-03-19,1000,1000,True,error
+review_count,2026-03-19,5000,5000,True,error
+review_unique,2026-03-19,5000,5000,True,error
+calendar_listing_ids,2026-03-19,True,True,True,error
+calendar_unique_dates,2026-03-19,0,0,True,error
+calendar_days_per_listing,2026-03-19,True,True,True,error
+calendar_valid_dates,2026-03-19,True,True,True,error
+calendar_contiguous_days,2026-03-19,True,True,True,error
+calendar_rows,2026-03-19,365000,365000,True,error
+room_type:Entire home/apt,2026-03-19,875,875,True,error
+room_type:Private room,2026-03-19,125,125,True,error
+in_llm_sample,2026-03-19,1000,1000,True,error
+in_hand_label,2026-03-19,100,100,True,error
+hand_subset_llm,2026-03-19,True,True,True,error
+area_count,2026-03-19,8,8,True,error
+area_size_range,2026-03-19,True,True,True,error
+zero_reviews,2026-03-19,25,25,True,error
+listing_count,2026-06-15,1000,1000,True,error
+listing_unique,2026-06-15,1000,1000,True,error
+review_count,2026-06-15,5000,5000,True,error
+review_unique,2026-06-15,5000,5000,True,error
+calendar_listing_ids,2026-06-15,True,True,True,error
+calendar_unique_dates,2026-06-15,0,0,True,error
+calendar_days_per_listing,2026-06-15,True,True,True,error
+calendar_valid_dates,2026-06-15,True,True,True,error
+calendar_contiguous_days,2026-06-15,True,True,True,error
+calendar_rows,2026-06-15,365000,365000,True,error
+room_type:Entire home/apt,2026-06-15,875,875,True,error
+room_type:Private room,2026-06-15,125,125,True,error
+in_llm_sample,2026-06-15,1000,1000,True,error
+in_hand_label,2026-06-15,100,100,True,error
+hand_subset_llm,2026-06-15,True,True,True,error
+area_count,2026-06-15,8,8,True,error
+area_size_range,2026-06-15,True,True,True,error
+zero_reviews,2026-06-15,25,25,True,error
+missing_price,2026-06-15,20,20,True,error
+listing_count,2026-09-16,1000,928,False,warning
+listing_unique,2026-09-16,928,928,True,error
+review_count,2026-09-16,5000,4765,False,warning
+review_unique,2026-09-16,4765,4765,True,error
+calendar_listing_ids,2026-09-16,True,True,True,warning
+calendar_unique_dates,2026-09-16,0,0,True,error
+calendar_days_per_listing,2026-09-16,True,True,True,warning
+calendar_valid_dates,2026-09-16,True,True,True,error
+calendar_contiguous_days,2026-09-16,True,True,True,error
+calendar_rows,2026-09-16,338720,338720,True,warning
+room_type:Entire home/apt,2026-09-16,875,805,False,warning
+room_type:Private room,2026-09-16,125,123,False,warning
+in_llm_sample,2026-09-16,1000,955,False,warning
+in_hand_label,2026-09-16,100,92,False,warning
+hand_subset_llm,2026-09-16,True,True,True,error
+area_count,2026-09-16,8,8,True,warning
+area_size_range,2026-09-16,True,False,False,warning
