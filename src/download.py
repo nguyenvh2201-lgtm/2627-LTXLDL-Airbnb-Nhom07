@@ -3,6 +3,7 @@ import argparse
 import csv
 import gzip
 import hashlib
+import json
 import logging
 import time
 from datetime import date, datetime, timezone
@@ -135,15 +136,32 @@ TABLE_KEYS = {"listings": {"id"}, "calendar": {"listing_id", "date"}, "reviews":
 
 def build_url(cfg: dict, snapshot: str, table: str) -> str:
     """Chỉ dựng URL dữ liệu Inside Airbnb."""
+    if table == "neighbourhoods":
+        return f"{cfg['download']['base_url']}/{cfg['data_root']}/{snapshot}/visualisations/neighbourhoods.geojson"
     if table not in TABLE_KEYS:
         raise ValueError(f"Bảng không hợp lệ: {table}")
     return f"{cfg['download']['base_url']}/{cfg['data_root']}/{snapshot}/data/{table}.csv.gz"
 
 
 def verify_file(source: Path, table: str) -> str:
-    """Đọc hết gzip theo block để kiểm CRC, đồng thời tính SHA256 file nén."""
+    """Kiểm CSV gzip hoặc GeoJSON ranh giới và tính SHA256 của tệp."""
     if not source.exists() or source.stat().st_size == 0:
         raise ValueError(f"Tệp thiếu/rỗng: {source}")
+    if table == "neighbourhoods":
+        document = json.loads(source.read_text(encoding="utf-8-sig"))
+        if (not isinstance(document, dict)
+                or document.get("type") != "FeatureCollection"
+                or not isinstance(document.get("features"), list)
+                or not document["features"]):
+            raise ValueError(f"GeoJSON không phải FeatureCollection có dữ liệu: {source}")
+        for feature in document["features"]:
+            if (not isinstance(feature, dict) or feature.get("type") != "Feature"
+                    or not isinstance(feature.get("geometry"), dict)
+                    or feature["geometry"].get("type") not in ("Polygon", "MultiPolygon")
+                    or not feature["geometry"].get("coordinates")):
+                raise ValueError(f"GeoJSON thiếu hình học ranh giới: {source}")
+        with source.open("rb") as handle:
+            return hashlib.file_digest(handle, "sha256").hexdigest()
     with gzip.open(source, "rt", encoding="utf-8") as handle:
         columns = next(csv.reader(handle))
         if not TABLE_KEYS[table].issubset(columns):
@@ -184,8 +202,9 @@ def run_download(cfg: dict) -> None:
     """Kiểm các file có sẵn; skip-download vẫn xác thực và lập manifest."""
     records = []
     for snapshot in cfg["snapshots"]:
-        for table in TABLE_KEYS:
-            source = path(cfg, "raw", f"{snapshot}/{table}.csv.gz")
+        for table in (*TABLE_KEYS, "neighbourhoods"):
+            filename = "neighbourhoods.geojson" if table == "neighbourhoods" else f"{table}.csv.gz"
+            source = path(cfg, "raw", f"{snapshot}/{filename}")
             url = build_url(cfg, snapshot, table)
             downloaded = False
             try:

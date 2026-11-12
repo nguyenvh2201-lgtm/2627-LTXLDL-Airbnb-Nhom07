@@ -36,6 +36,14 @@ def raw_fixture(cfg):
     for snapshot in cfg["snapshots"]:
         folder = root / cfg["paths"]["raw"] / snapshot
         folder.mkdir()
+        (folder / "neighbourhoods.geojson").write_text(json.dumps({
+            "type": "FeatureCollection", "features": [{
+                "type": "Feature", "properties": {"neighbourhood": "Test area"},
+                "geometry": {"type": "Polygon", "coordinates": [
+                    [[0, 0], [1, 0], [1, 1], [0, 0]],
+                ]},
+            }],
+        }), encoding="utf-8")
         listings = pd.DataFrame({"id": ["1", "2", "3"], "room_type": ["Entire home/apt", "Private room", "Hotel room"], "price": ["$100.00", "$200.00", "$999.00"], "number_of_reviews": [2, 1, 0], "minimum_nights": [2, 30, 1], "maximum_nights": [365] * 3, "bedrooms": [1, None, 1], "beds": [1, 2, 1], "accommodates": [2, 4, 2], "property_type": ["Apartment"] * 3, "first_review": ["2029-01-01"] * 3, "last_review": ["2029-10-01"] * 3, "last_scraped": [snapshot] * 3, "review_scores_rating": [5, None, 4], "host_response_rate": ["100%", "bad", "80%"], "latitude": [0.5, 1.5, 3], "longitude": [0.5, 1.5, 3], "host_id": ["11", "22", "33"]})
         listings.to_csv(folder / "listings.csv.gz", index=False)
         calendar = pd.DataFrame([{"listing_id": str(i), "date": str(d.date()), "available": "t" if j == 0 else "f", "price": "$100", "minimum_nights": 1, "maximum_nights": 365} for i in (1, 2, 3) for j, d in enumerate(pd.date_range(snapshot, periods=3))])

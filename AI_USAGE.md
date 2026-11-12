@@ -1,5 +1,23 @@
 # Nhật ký sử dụng AI
 
+## Bổ sung tải GeoJSON trên feature/nguyenvh-login — 12/11/2026
+
+- Theo yêu cầu người dùng sau khi cập nhật nhánh, Codex bổ sung tải
+  `neighbourhoods.geojson` từ `visualisations/` cho từng snapshot trong
+  `src/download.py`. Tái sử dụng retry/tệp tạm, kiểm tra GeoJSON ranh giới
+  và ghi SHA256/nguồn/trạng thái tải vào download_manifest.csv.
+- File có sẵn được kiểm tra và tái sử dụng; skip-download báo lỗi khi
+  thiếu/hỏng GeoJSON. Không đổi phần KPI/LLM hay khôi phục toàn bộ stash QA cũ.
+- Khôi phục các kiểm thử download/fixture liên quan từ stash đã giữ trước
+  khi đổi nhánh (hai file test không có thay đổi giữa các phiên bản nền).
+- 13 test download/QA/KPI đạt; mạng tải được giả lập trong test, chưa tải
+  GeoJSON thật trong lượt này. Có một cảnh báo phiên bản numexpr của môi trường.
+- Chuyển riêng bốn file download/test/AI_USAGE sang qa/update-processed-data
+  theo lựa chọn của người dùng, giữ nguyên QA và CSV đang sửa ở thư mục chính.
+  Trên nhánh đích: 8 test download đạt. Kiểm tra mở rộng có 38 test đạt và
+  1 test QA cũ lỗi map bảng ngày rỗng với pandas hiện tại; src/qa.py không
+  thay đổi trong commit này. Không khai toàn bộ kiểm thử nhánh đích đều đạt.
+
 ## Hoàn thiện QA và bàn giao dữ liệu processed — 12/11/2026
 
 ### Công cụ và phạm vi hỗ trợ
