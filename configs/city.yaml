@@ -33,7 +33,7 @@ qa:
     shared room: Shared room
     hotel room: Hotel room
 kpi:
-  area_col: analysis_area
+  area_col: neighbourhood_cleansed
   stakeholder: Cơ quan quản lý du lịch thành phố (giả định, nhóm cần xác nhận)
   long_stay_nights: 30
   high_availability_ratio: 0.75
@@ -215,13 +215,23 @@ expected:
   by_snapshot:
     '2025-09-11':
       zero_reviews: 50
-    '2025-12-12':
-      zero_reviews: 30
     '2026-03-19':
       zero_reviews: 25
     '2026-06-15':
       zero_reviews: 25
       missing_price: 20
+    '2026-09-16':
+      listing_count: 928
+      review_count: 4765
+      llm_count: 955
+      hand_count: 92
+      area_min: 110
+      area_max: 120
+      room_types:
+        Entire home/apt: 805
+        Private room: 123
+      zero_reviews: 21
+      missing_price: 114
 baseline:
   lexicons:
     en:

@@ -21,6 +21,8 @@ def validate_labels(labels: pd.DataFrame, sample: pd.DataFrame, cfg: dict) -> pd
         raise ValueError("ID nhãn tay nằm ngoài mẫu LLM hiện tại")
     if not labels.sentiment.isin(cfg["evaluation"]["labels"]).all():
         raise ValueError("Nhãn cảm xúc thiếu/không hợp lệ")
+    if "label_source" in labels and labels.label_source.ne("user_manual").any():
+        raise ValueError("Gợi ý AI chưa được người gán xác nhận không phải nhãn tay")
     for column in ("aspects_praise", "aspects_complaint"):
         if column in labels:
             def parse(value):
@@ -56,18 +58,37 @@ def bootstrap(truth, prediction, cfg: dict) -> dict:
     return {key: np.quantile([v[key] for v in values], [alpha, 1 - alpha]) for key in values[0]}
 
 
+def read_hand_labels(cfg: dict) -> pd.DataFrame | None:
+    """Đọc nhãn tay; dùng 100 dòng đã xác nhận trong template khi chưa có file riêng."""
+    source = cfg["_root"] / cfg["inputs"]["hand_labels"]
+    if not source.exists():
+        source = path(cfg, "samples", "hand_labels_template.csv")
+        if not source.exists():
+            return None
+    labels = pd.read_csv(source, dtype={"review_id": str})
+    if "label_source" in labels:
+        labels = labels.loc[labels.label_source.eq("user_manual")].copy()
+    return labels
+
+
 def run(cfg: dict) -> None:
     """So sánh công bằng trên cùng gold; lỗi/thiếu LLM được tính là sai."""
-    destination = cfg["_root"] / cfg["inputs"]["hand_labels"]
     empty_error_columns = ["review_id", "text", "hand_label", "llm", "baseline", "error_type_hint"]
-    if not destination.exists():
-        logging.warning("Chưa có hand_labels.csv thật: không thể tính accuracy/F1")
+    labels = read_hand_labels(cfg)
+    if labels is None or labels.empty:
+        logging.warning("Chưa có nhãn tay thật: không thể tính accuracy/F1")
         csv_report(cfg, [], "eval_metrics.csv", METRIC_COLUMNS)
-        path(cfg, "reports", "error_summary.md").write_text("# Chưa có nhãn tay\nKhông có số liệu đánh giá. Nhóm điền hand_labels.csv rồi chạy lại.\n", encoding="utf-8")
+        path(cfg, "reports", "error_summary.md").write_text("# Chưa có nhãn tay\nKhông có số liệu đánh giá. Nhóm gán nhãn tay rồi chạy lại.\n", encoding="utf-8")
         return
     sample = read(cfg, "llm_sample")
-    gold = validate_labels(pd.read_csv(destination, dtype={"review_id": str}), sample, cfg)
+    gold = validate_labels(labels, sample, cfg)
     frames = {method: read(cfg, method + "_results") for method in ("llm", "baseline")}
+    valid_llm = frames["llm"].sentiment.notna() & ~frames["llm"].parse_error
+    if not valid_llm.any():
+        logging.warning("Chưa có dự đoán Gemini hợp lệ: chưa thể đánh giá LLM so với baseline")
+        csv_report(cfg, [], "eval_metrics.csv", METRIC_COLUMNS)
+        path(cfg, "reports", "error_summary.md").write_text("# Chưa có kết quả Gemini\nĐã có nhãn tay, nhưng chưa có dự đoán Gemini hợp lệ để so sánh.\n", encoding="utf-8")
+        return
     rows, predictions = [], {}
     for method, frame in frames.items():
         if frame.review_id.duplicated().any():
@@ -120,37 +141,6 @@ def run(cfg: dict) -> None:
     csv_report(cfg, rows, "eval_metrics.csv", METRIC_COLUMNS)
     text = "# Gợi ý phân tích lỗi\n\n" + errors.error_type_hint.value_counts().to_string() + "\n\nNhóm tự đọc và nhận xét mỉa mai, ngôn ngữ ít gặp, nội dung không liên quan. Không tự coi gợi ý là nguyên nhân thật.\n"
     path(cfg, "reports", "error_summary.md").write_text(text, encoding="utf-8")
-
-def make_label_template(cfg: dict):
-    """Lấy comment_clean sau QA, theo thứ tự nhãn tay trong data-new.csv."""
-    spec = cfg["id_inspection"]
-    source = pd.read_csv(cfg["_root"] / spec["source"], dtype=str, keep_default_na=False)
-    columns = spec["columns"]
-    selected = source.iloc[:, columns["class"]["index"]].str.strip().eq(spec["class"])
-    selected &= source.iloc[:, columns["group"]["index"]].str.strip().eq(str(spec["group"]))
-    selected &= source.iloc[:, columns["hand"]["index"]].str.strip().str.lower().isin(
-        [marker.lower() for marker in spec["true_markers"]]
-    )
-    ordered_ids = source.loc[selected].iloc[:, columns["review_id"]["index"]].str.strip().tolist()
-    if len(ordered_ids) != len(set(ordered_ids)):
-        raise ValueError("review_id nhãn tay bị trùng trong data-new.csv")
-    cleaned = []
-    for snapshot in cfg["snapshots"]:
-        source_file = path(cfg, "processed", f"{snapshot}/reviews_clean.csv")
-        if not source_file.exists():
-            raise ValueError(f"Thiếu {source_file}; hãy chạy QA trước khi tạo mẫu nhãn tay")
-        cleaned.append(pd.read_csv(source_file, dtype={"review_id": str}, usecols=["review_id", "comment_clean"]))
-    reviews = pd.concat(cleaned, ignore_index=True).drop_duplicates("review_id", keep="last")
-    rows = reviews.set_index("review_id").reindex(ordered_ids)
-    if rows.comment_clean.isna().any():
-        missing = rows.index[rows.comment_clean.isna()].tolist()
-        raise ValueError(f"Review nhãn tay thiếu nội dung sạch sau QA: {missing[:5]}")
-    rows = rows.rename(columns={"comment_clean": "comments"}).reset_index()
-    for name in ("sentiment", "aspects_praise", "aspects_complaint", "language"):
-        rows[name] = ""
-    dest = path(cfg, "samples", "hand_labels_template.csv")
-    rows.to_csv(dest, index=False, encoding="utf-8-sig")
-    return dest
 
 if __name__ == "__main__":
     cli(run)

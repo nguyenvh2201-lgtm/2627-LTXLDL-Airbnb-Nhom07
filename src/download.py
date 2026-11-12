@@ -63,9 +63,40 @@ def save(cfg: dict, df: pd.DataFrame, name: str) -> None:
 def read(cfg: dict, name: str) -> pd.DataFrame:
     """Báo bước đầu vào còn thiếu rõ ràng."""
     source = path(cfg, "processed", name + ".parquet")
-    if not source.exists():
+    if source.exists():
+        return pd.read_parquet(source)
+    # QA lưu CSV theo mốc. Đọc trực tiếp các file đó để không tạo thêm
+    # một bản Parquet trùng dữ liệu sạch trong data/processed/.
+    csv_name = {"listings_clean": "listings_clean.csv",
+                "reviews_clean": "reviews_clean.csv",
+                "calendar_clean": "calendar_flagged.csv"}.get(name)
+    if csv_name is None:
         raise ValueError(f"Thiếu {source.name}; hãy chạy bước trước")
-    return pd.read_parquet(source)
+    blocks = []
+    for snapshot in cfg["snapshots"]:
+        target = path(cfg, "processed", f"{snapshot}/{csv_name}")
+        if not target.exists():
+            raise ValueError(f"Thiếu {target}; hãy chạy QA trước")
+        frame = pd.read_csv(target, dtype={"listing_id": str, "review_id": str, "id": str})
+        frame = frame.rename(columns={"snapshot_date": "snapshot"})
+        if name == "listings_clean":
+            frame = frame.drop(columns=["price"], errors="ignore")
+            frame = frame.rename(columns={"listing_id": "id", "price_cad": "price",
+                                          "price_outlier": "flag_outlier_price"})
+            frame["price"] = pd.to_numeric(frame["price"], errors="coerce")
+            frame["flag_outlier_minimum_nights"] = frame["invalid_minimum_nights"].fillna(False).astype(bool)
+            frame["minimum_nights"] = pd.to_numeric(frame["minimum_nights"], errors="coerce")
+            frame["number_of_reviews"] = pd.to_numeric(frame["number_of_reviews"], errors="coerce")
+        elif name == "reviews_clean":
+            frame = frame.rename(columns={"review_id": "id"})
+            frame["date"] = pd.to_datetime(frame["date"], errors="coerce")
+        else:
+            frame["date"] = pd.to_datetime(frame["date_parsed"], errors="coerce")
+            frame["available"] = frame["available_clean"].map({"t": 1.0, "f": 0.0, "true": 1.0, "false": 0.0})
+            frame = frame.loc[~frame["duplicate_calendar"].fillna(False).astype(bool)
+                              & ~frame["calendar_available_conflict"].fillna(False).astype(bool)]
+        blocks.append(frame)
+    return pd.concat(blocks, ignore_index=True)
 
 
 def csv_report(cfg: dict, records, filename: str, columns=None) -> None:
@@ -194,8 +225,13 @@ def filtered_chunks(source, ids: set, key: str, chunksize: int, usecols=None) ->
 def validate_snapshot(cfg: dict, snapshot: str, listings: pd.DataFrame, calendar: pd.DataFrame, reviews: pd.DataFrame, ids: tuple) -> list:
     """Kỳ vọng mốc chưa biết chỉ cảnh báo; lỗi cấu trúc luôn dừng."""
     expected = cfg.get("expected", {})
-    known = snapshot in expected.get("by_snapshot", {})
+    by_snapshot = expected.get("by_snapshot", {})
+    known = snapshot in by_snapshot
+    snapshot_expected = by_snapshot.get(snapshot, {})
     records = []
+
+    def wanted(name, fallback):
+        return snapshot_expected.get(name, expected.get(name, fallback))
 
     def check(name, actual, wanted, structural=False):
         passed = actual == wanted
@@ -204,9 +240,9 @@ def validate_snapshot(cfg: dict, snapshot: str, listings: pd.DataFrame, calendar
         if not passed:
             logging.warning("%s: %s có %s, kỳ vọng %s (%s)", snapshot, name, actual, wanted, severity)
 
-    check("listing_count", len(listings), expected.get("listing_count", len(ids[0])))
+    check("listing_count", len(listings), wanted("listing_count", len(ids[0])))
     check("listing_unique", listings.id.nunique(), len(listings), True)
-    check("review_count", len(reviews), expected.get("review_count", len(ids[1])))
+    check("review_count", len(reviews), wanted("review_count", len(ids[1])))
     check("review_unique", reviews.id.nunique(), len(reviews), True)
     check("calendar_listing_ids", set(calendar.listing_id) == set(listings.id), True)
     check("calendar_unique_dates", int(calendar.duplicated(["listing_id", "date"]).sum()), 0, True)
@@ -217,15 +253,18 @@ def validate_snapshot(cfg: dict, snapshot: str, listings: pd.DataFrame, calendar
     ranges = calendar.assign(parsed_date=parsed_dates).groupby("listing_id").parsed_date.agg(["min", "max", "nunique"])
     check("calendar_contiguous_days", bool(((ranges["max"] - ranges["min"]).dt.days + 1).eq(ranges["nunique"]).all()), True, True)
     check("calendar_rows", len(calendar), len(listings) * cfg["io"]["calendar_days"])
-    for room, count in expected.get("room_types", {}).items():
+    for room, count in wanted("room_types", {}).items():
         check("room_type:" + room, int(listings.room_type.eq(room).sum()), count)
     for field, key in (("in_llm_sample", "llm_count"), ("in_hand_label", "hand_count")):
-        check(field, int(reviews[field].sum()), expected.get(key, int(ids[1][field].sum())))
+        check(field, int(reviews[field].sum()), wanted(key, int(ids[1][field].sum())))
     check("hand_subset_llm", bool((~reviews.in_hand_label | reviews.in_llm_sample).all()), True, True)
     areas = listings.analysis_area.value_counts()
-    check("area_count", len(areas), expected.get("area_count", len(ids[2])))
-    check("area_size_range", bool(areas.between(expected.get("area_min", 0), expected.get("area_max", len(listings))).all()), True)
-    for name, count in expected.get("by_snapshot", {}).get(snapshot, {}).items():
+    check("area_count", len(areas), wanted("area_count", len(ids[2])))
+    check("area_size_range", bool(areas.between(wanted("area_min", 0), wanted("area_max", len(listings))).all()), True)
+    for name in ("zero_reviews", "missing_price"):
+        if name not in snapshot_expected:
+            continue
+        count = snapshot_expected[name]
         actual = int(listings.number_of_reviews.eq(0).sum()) if name == "zero_reviews" else int(listings.price.isna().sum())
         check(name, actual, count)
     if not known:

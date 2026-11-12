@@ -54,12 +54,14 @@ def run_figures(cfg: dict) -> None:
         ax.text((row.lon_min + row.lon_max) / 2, (row.lat_min + row.lat_max) / 2, row.area, fontsize=8, ha="center", va="center", bbox={"facecolor": "white", "alpha": 0.8, "edgecolor": "none", "pad": 1})
     finish(fig, ax, "fig_space_01_listings_map.png", "Listing và 8 vùng mẫu (không phải ranh giới hành chính)", "Kinh độ", "Vĩ độ", cfg["snapshots"][-1])
     for kid, filename, title, unit in (("K1", "fig_space_02_area_price.png", "Giá trung vị theo vùng, n = số listing có giá hợp lệ", cfg["currency"] + "/đêm"), ("K2", "fig_space_03_area_occupancy.png", "Ngày không khả dụng theo vùng (không phải booking thực)", "% ngày")):
-        data = area.loc[area.kpi_id.eq(kid) & area.snapshot.eq(cfg["snapshots"][-1])].sort_values("area")
+        data = area.loc[area.kpi_id.eq(kid) & area.snapshot.eq(cfg["snapshots"][-1])].dropna(subset=["value"])
+        data = data.nlargest(12, "n").sort_values("value")
         fig, ax = figure()
         bars = ax.bar(data.area, data.value, color=plt.cm.viridis(np.linspace(0.2, 0.8, len(data))))
         ax.bar_label(bars, labels=[f"n={n:,}" for n in data.n], fontsize=8)
         ax.margins(y=0.18)
-        finish(fig, ax, filename, title, "Vùng phân tích", unit, cfg["snapshots"][-1])
+        ax.tick_params(axis="x", rotation=75, labelsize=7)
+        finish(fig, ax, filename, title + " (12 neighbourhood có mẫu lớn nhất)", "neighbourhood_cleansed", unit, cfg["snapshots"][-1])
     fig, ax = figure()
     for snapshot, group in times.loc[times.kpi_id.eq("K3")].groupby("snapshot"):
         ax.plot(pd.to_datetime(group.period), group.value, marker=".", label=snapshot)
@@ -126,7 +128,7 @@ def run_figures(cfg: dict) -> None:
 
 def run_summary(cfg: dict) -> None:
     """Bảng số liệu dùng chung để dựng và kiểm báo cáo."""
-    from .evaluate import make_label_template as make_template
+    from .llm import make_label_template as make_template
     make_template(cfg)
     rows = []
     for table in ("listings", "calendar", "reviews"):
@@ -139,7 +141,10 @@ def run_summary(cfg: dict) -> None:
     latest = listings.loc[listings.snapshot.eq(cfg["snapshots"][-1])]
     rows.extend([{"key": "latest.missing_price", "value": int(latest.price.isna().sum()), "unit": "listings", "source": "listings_clean"}, {"key": "latest.median_price", "value": latest.loc[~latest.flag_outlier_price, "price"].median(), "unit": cfg["currency"], "source": "listings_clean"}])
     for name in ("area", "time", "llm"):
-        frame = pd.read_csv(path(cfg, "processed", f"kpi_{name}.csv"))
+        source = path(cfg, "processed", f"kpi_{name}.csv")
+        if not source.exists() and name == "llm":
+            continue
+        frame = pd.read_csv(source)
         for i, row in frame.iterrows():
             rows.append({"key": f"kpi_{name}.{i}.{row.kpi_id}", "value": row.value, "unit": row.unit, "source": f"kpi_{name}.csv"})
     for filename in ("eval_metrics.csv", "llm_cost_estimate.csv"):
@@ -213,7 +218,7 @@ def run_report(cfg: dict) -> None:
     text("QA gắn cờ thiếu dữ liệu, ngoại lai, sai kiểu, danh mục, trùng và nhất quán chéo. KPI trước/sau trong qa_report.csv là tác động giả định loại dòng của từng rule, không phải số dòng thực bị xóa.")
     text("Thiếu giá ở mốc cuối: " + number("latest.missing_price") + " listing. Giá trung vị sau lọc giá bất hợp lý: " + number("latest.median_price") + " " + cfg["currency"] + "/đêm.")
     qa = pd.read_csv(path(cfg, "reports", "qa_report.csv"))
-    selected = qa.groupby("rule_name").rows_affected.sum().sort_values(ascending=False).head(9)
+    selected = qa.groupby("rule").rows_flagged.sum().sort_values(ascending=False).head(9)
     table(["Quy tắc", "Lượt dòng bị cờ (cộng các mốc)"], [[k, f"{v:,}"] for k, v in selected.items()], [11 * cm, 5.4 * cm])
     text("Một dòng có thể mang nhiều cờ. Giá listing các mốc trước không dùng trong phân tích. Số review mẫu không được so bằng số review toàn bộ của listing.")
     text("TODO - nhóm giải thích và bảo vệ ngưỡng QA; đây là ngưỡng cấu hình đề xuất.")

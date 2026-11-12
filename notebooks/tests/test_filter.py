@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-from src.download import filtered_chunks, run_filter as run
+from src.download import filtered_chunks, run_filter as run, validate_snapshot, load_ids
 from src.download import verify_file, build_url
 from src.download import path, read
 
@@ -36,6 +36,18 @@ def test_unknown_snapshot_warns(raw_fixture):
     run(raw_fixture)
     checks = pd.read_csv(path(raw_fixture, "reports", "filter_checks.csv"))
     assert set(checks.loc[~checks.passed, "severity"]) == {"warning"}
+
+
+def test_snapshot_expected_overrides_global_counts(raw_fixture):
+    run(raw_fixture)
+    snapshot = raw_fixture["snapshots"][0]
+    tables = [read(raw_fixture, name) for name in
+              ("listings_raw_filtered", "calendar_raw_filtered", "reviews_raw_filtered")]
+    listings, calendar, reviews = [table.loc[table.snapshot.eq(snapshot)] for table in tables]
+    raw_fixture["expected"]["listing_count"] = 999
+    raw_fixture["expected"]["by_snapshot"][snapshot]["listing_count"] = 2
+    checks = validate_snapshot(raw_fixture, snapshot, listings, calendar, reviews, load_ids(raw_fixture))
+    assert next(row for row in checks if row["check"] == "listing_count")["passed"]
 
 
 def test_verify_gzip(raw_fixture, tmp_path):

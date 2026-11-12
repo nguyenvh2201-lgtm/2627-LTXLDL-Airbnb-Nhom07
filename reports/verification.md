@@ -61,3 +61,22 @@ Hướng dẫn hiện hành: README.md. Cấu trúc src hiện có đúng bảy 
 - `reports/report.md` cùng PDF được tạo bởi src/viz.py; không tạo thư mục report ở gốc.
 - Chưa chạy lại clone môi trường sạch sau lần gộp này; clean_reproduction.json là bằng chứng lần trước.
 - Chưa gọi API thật và chưa có gold; các phần đó vẫn chưa hoàn thành.
+
+## Đối chiếu đề đầy đủ — 12/11/2026
+
+Các kết quả phía trên là lịch sử kiểm tra, không mô tả trạng thái nộp hiện tại.
+Đã sửa QA để nhận cấu hình từ lệnh một lần, nối CSV sau QA vào các bước tiếp,
+thống nhất bộ K1–K8 đang dùng trong pipeline với bảng định nghĩa, và sửa test QA
+đã lệch API. Chạy bộ kiểm thử hiện tại với `-p no:cacheprovider`: **27 passed**;
+smoke dùng bốn mốc 2030 và Gemini giả trong thư mục tạm. Không tạo thêm file
+trong repo khi kiểm tra lượt này.
+
+Còn thiếu nhãn tay thật, dự đoán Gemini thật, KPI K7 có giá trị, hình LLM và
+`reports/report.pdf` (đã bị xoá trước lượt kiểm tra). Dữ liệu processed đang
+được Git theo dõi khoảng 219,8 MiB, vượt giới hạn 50 MB của đề. `.gitignore`
+không tự bỏ theo dõi tệp đã tracked; thao tác bỏ theo dõi đã bị cơ chế duyệt
+tự động từ chối, nên chưa xử lý được phần này.
+
+Sau đó người dùng tự điền 100 nhãn đầu trong template; 50 review bổ sung được
+Codex gán nhãn AI nháp và đánh dấu `AI_draft`. Bước đánh giá chỉ đọc 100 dòng
+`user_manual`; chưa có Gemini hợp lệ nên vẫn chưa xuất accuracy/F1 thực.

@@ -1,47 +1,55 @@
 import pandas as pd
-from src.qa import clean_table, REPORT_COLUMNS, metric
+from src.qa import check_available, check_comments, check_duplicate_review, run_qa_listings
 from src.download import read, path, money
 
 
-def test_money_and_raw_boolean_metric():
+def test_money_and_available_normalization():
     values = money(pd.Series(["$1,234.00", "CA$20.50", None, "bad"]))
     assert values.iloc[0] == 1234
     assert values.iloc[1] == 20.5
     assert values.iloc[2:].isna().all()
-    assert metric(pd.DataFrame({"available": ["t", "f", "bad"]}))[1] == 50
+    flags = check_available(pd.DataFrame({"available": [" t ", "F", "bad"]}))
+    assert flags.available_valid.tolist() == [True, True, False]
+    assert flags.available_true.tolist() == [True, False, False]
 
 
-def test_qa_schema_and_flags(clean_fixture):
+def test_qa_report_has_rule_explanations_and_clean_data(clean_fixture):
     cfg = clean_fixture
     report = pd.read_csv(path(cfg, "reports", "qa_report.csv"))
-    assert list(report.columns) == REPORT_COLUMNS
+    assert {"rule", "condition", "reason", "action", "action_detail",
+            "rows_checked", "rows_flagged", "metric_before", "metric_after"} <= set(report)
+    assert report.loc[report.rule.eq("missing_price"), "reason"].notna().all()
+    assert report.rule.eq("review_id_repeated").any()
     listings = read(cfg, "listings_clean")
-    assert listings.loc[listings.snapshot.ne(cfg["snapshots"][-1]), "price"].isna().all()
-    assert listings.flag_missing_bedrooms.sum() == 4
-    assert listings.flag_invalid_host_response_rate.sum() == 4
+    assert len(listings) == 8
+    assert set(listings.snapshot) == set(cfg["snapshots"])
     assert not read(cfg, "calendar_clean").available.isna().any()
 
 
-def test_outlier_category_cross_consistency(clean_fixture):
-    cfg = clean_fixture
-    refs = {name: read(cfg, name + "_raw_filtered") for name in ("listings", "calendar", "reviews")}
-    frame = refs["listings"].loc[lambda x: x.snapshot.eq(cfg["snapshots"][-1])].copy().reset_index(drop=True)
-    frame.loc[0, ["price", "minimum_nights", "beds", "accommodates"]] = [99999, 999, 999, 0]
-    frame.loc[0, "room_type"] = "UNKNOWN"
-    frame.loc[0, "first_review"] = "2040-01-01"
-    frame.loc[0, "number_of_reviews"] = 0
-    clean, _ = clean_table(cfg, "listings", frame, refs)
-    for flag in ("outlier_price", "outlier_minimum_nights", "outlier_beds", "outlier_accommodates", "room_type_variant", "review_date_order", "review_count_lower_than_sample"):
-        assert clean.loc[0, "flag_" + flag], flag
-    assert clean.loc[0, "room_type"] == "Other"
+def test_outlier_and_category_flags():
+    frame = pd.DataFrame({
+        "listing_id": ["1", "2", "3", "4"],
+        "price": ["$100", "$100", "$100", "$99999"],
+        "minimum_nights": [1, 1, 1, 0],
+        "maximum_nights": [365] * 4,
+        "availability_365": [100] * 4,
+        "room_type": ["Entire home/apt"] * 3 + ["UNKNOWN"],
+        "analysis_area": ["A01"] * 4,
+        "review_scores_rating": [5.0] * 4,
+    })
+    flags = run_qa_listings(frame)["row_flags"]
+    assert bool(flags.loc[3, "price_outlier"])
+    assert bool(flags.loc[3, "invalid_minimum_nights"])
+    assert bool(flags.loc[3, "category_mismatch"])
 
 
-def test_empty_review_and_duplicate(clean_fixture):
-    cfg = clean_fixture
-    frame = read(cfg, "reviews_raw_filtered").head(2).copy()
-    frame.loc[frame.index[0], "comments"] = " "
-    frame = pd.concat([frame, frame.iloc[[1]]], ignore_index=True)
-    clean, report = clean_table(cfg, "reviews", frame, {})
-    assert len(clean) == 2
-    assert clean.flag_empty_comment.sum() == 1
-    assert any(r["rows_after"] < r["rows_before"] for r in report)
+def test_empty_review_and_duplicate_flags():
+    frame = pd.DataFrame({
+        "review_id": ["1", "2", "2"],
+        "comments": ["  ", "<br>Good stay", "<br>Good stay"],
+    })
+    comments = check_comments(frame)
+    duplicates = check_duplicate_review(frame)
+    assert bool(comments.loc[0, "comment_empty"])
+    assert comments.loc[1, "comment_clean"] == "Good stay"
+    assert duplicates.duplicate_id.tolist() == [False, True, True]

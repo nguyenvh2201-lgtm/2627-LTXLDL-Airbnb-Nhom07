@@ -21,6 +21,9 @@ def test_label_validation(cfg):
         validate_labels(gold, pd.DataFrame({"id": ["1", "2"]}), cfg)
     with pytest.raises(ValueError):
         validate_labels(gold.iloc[:1], pd.DataFrame({"id": ["1", "2", "3"]}), cfg)
+    gold["label_source"] = ["user_manual", "user_manual", "AI_draft"]
+    with pytest.raises(ValueError, match="AI"):
+        validate_labels(gold, pd.DataFrame({"id": ["1", "2", "3"]}), cfg)
 
 
 def test_negation_and_mixed(cfg):

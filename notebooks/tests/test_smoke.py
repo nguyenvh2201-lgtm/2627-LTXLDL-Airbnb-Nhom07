@@ -4,7 +4,7 @@ from src import download, qa, kpi, llm, baseline, evaluate, viz
 from src.download import run_filter as filter_run
 from src.download import path, read
 from notebooks.tools.check_report_numbers import check
-from src.evaluate import make_label_template as label_template
+from src.llm import make_label_template as label_template
 
 
 def test_full_pipeline_with_mock_api(raw_fixture, monkeypatch):

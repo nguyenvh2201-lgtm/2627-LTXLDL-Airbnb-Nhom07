@@ -518,6 +518,14 @@ def process_listings(date, phan_cong, raw_dir, *, processed_dir=None, report_row
         raw_dir / date / "listings.csv.gz",
         dtype={"id": "string"},
     )
+    for column in ("neighbourhood_cleansed", "availability_365"):
+        if column not in df:
+            df[column] = pd.NA
+    if df["neighbourhood_cleansed"].isna().all():
+        df["neighbourhood_cleansed"] = df["id"].map(
+            phan_cong.dropna(subset=["listing_id"]).drop_duplicates("listing_id")
+            .set_index("listing_id")["analysis_area"]
+        )
     prepare = prepare_listings(df,phan_cong,date)
     report = run_qa_listings(prepare)
     row_flags = report["row_flags"]
@@ -1181,6 +1189,8 @@ def process_calendar(date, phan_cong, listings_df, *, raw_dir=None,
 def process_neighbourhoods(date, raw_dir, processed_dir):
     """Xuất ranh giới giữ nguyên nội dung sang file neighbourhoods_cleansed."""
     source = raw_dir / date / "neighbourhoods.geojson"
+    if not source.exists():
+        return None
     output_dir = processed_dir / date
     output_dir.mkdir(parents=True, exist_ok=True)
     output = output_dir / "neighbourhoods_cleansed.geojson"
@@ -1199,12 +1209,16 @@ def add_report_row(report_rows, snapshot, table, rule, checked, flagged, *,
                    action="flag_only", metric_name=None, metric_before=None,
                    metric_after=None, note=""):
     """Thêm một kết quả QA; chỉ ghi số dòng xóa khi thực sự lọc dòng."""
+    definition = RULES.get(rule, {})
     report_rows.append({
         "snapshot_date": snapshot,
         "compared_snapshot": compared_snapshot,
         "table": table,
         "rule": rule,
+        "condition": definition.get("condition", "Xem metric_name và note"),
+        "reason": definition.get("reason", "Đối chiếu dữ liệu trước và sau QA"),
         "action": action,
+        "action_detail": definition.get("action", "Chỉ đo, không tự xoá dòng"),
         "rows_checked": checked,
         "rows_flagged": flagged,
         "rows_removed": (
@@ -1336,19 +1350,19 @@ def export_qa_report(report_rows, reports_dir):
 # 7. MAIN: CHẠY TOÀN BỘ CÁC MỐC
 # ============================================================================
 
-def main():
-    """Đọc phân công và xử lý ba bảng theo từng mốc dữ liệu."""
-    with (ROOT / "configs/city.yaml").open(encoding="utf-8") as file:
-        config = yaml.safe_load(file)
-    raw_dir = PROJECT_ROOT / config["raw_dir"]
-    processed_dir = PROJECT_ROOT / config["processed_dir"]
-    reports_dir = PROJECT_ROOT / config["reports_dir"]
-    phan_cong = pd.read_csv(
-        PROJECT_ROOT / config["id_inspection"]["source"],
-        encoding="utf-8",
-        dtype={"listing_id": "string", "review_id": "string"},
-    )
-    snapshots = config["snapshots"]
+def run(cfg):
+    """Chạy QA theo cấu hình của pipeline, không gắn cứng thành phố hay mốc."""
+    from .download import path
+    raw_dir = path(cfg, "raw")
+    processed_dir = path(cfg, "processed")
+    reports_dir = path(cfg, "reports")
+    listings = pd.read_csv(cfg["_root"] / cfg["inputs"]["listing_ids"], dtype={"id": "string"})
+    reviews = pd.read_csv(cfg["_root"] / cfg["inputs"]["review_ids"], dtype={"id": "string"})
+    phan_cong = pd.DataFrame({
+        "listing_id": listings["id"], "analysis_area": listings["analysis_area"],
+        "review_id": reviews["id"],
+    })
+    snapshots = cfg["snapshots"]
     report_rows = []
     reviews_by_snapshot = {}
     for date in snapshots:
@@ -1362,10 +1376,16 @@ def main():
         process_calendar(
             date, phan_cong, listings_df, raw_dir=raw_dir,
             processed_dir=processed_dir, report_rows=report_rows,
+            chunksize=cfg["io"]["chunksize"],
         )
         process_neighbourhoods(date, raw_dir, processed_dir)
     report_review_snapshots(report_rows, reviews_by_snapshot)
     export_qa_report(report_rows, reports_dir)
+
+
+def main():
+    from .download import load_config
+    run(load_config(ROOT / "configs/city.yaml"))
 
 
 if __name__ == "__main__":

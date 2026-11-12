@@ -1,4 +1,4 @@
-"""Gemini REST, schema nghiêm ngặt, cache và chế độ không gọi mạng."""
+"""Chuẩn bị mẫu review, template nhãn; gọi Gemini với cache và JSON schema."""
 import hashlib
 import json
 import logging
@@ -15,10 +15,23 @@ RESULT_COLUMNS = ["review_id", "sentiment", "aspects_praise", "aspects_complaint
 
 
 def select_sample(cfg: dict) -> pd.DataFrame:
-    """Ưu tiên mẫu giảng viên; mốc mới không có cờ thì phân tầng vùng/ngôn ngữ có seed."""
-    reviews = read(cfg, "reviews_clean").sort_values("snapshot").drop_duplicates("id", keep="last")
-    reviews = reviews.loc[~reviews.flag_empty_comment].copy()
-    mapping = pd.read_csv(cfg["_root"] / cfg["inputs"]["listing_ids"], dtype=str).rename(columns={"id": "listing_id"})
+    """Lấy review đã QA, bản mới nhất mỗi ID, và cờ mẫu của giảng viên."""
+    blocks = []
+    for snapshot in cfg["snapshots"]:
+        source = path(cfg, "processed", f"{snapshot}/reviews_clean.csv")
+        if not source.exists():
+            raise ValueError(f"Thiếu {source}; hãy chạy QA trước bước LLM")
+        block = pd.read_csv(source, dtype={"review_id": str, "listing_id": str},
+                            usecols=["review_id", "listing_id", "comment_clean"])
+        block["snapshot"] = snapshot
+        blocks.append(block)
+    reviews = pd.concat(blocks, ignore_index=True)
+    reviews = reviews.sort_values("snapshot").drop_duplicates("review_id", keep="last")
+    reviews = reviews.rename(columns={"review_id": "id", "comment_clean": "comments"})
+    reviews = reviews.loc[reviews.comments.notna() & reviews.comments.str.strip().ne("")].copy()
+    flags = pd.read_csv(cfg["_root"] / cfg["inputs"]["review_ids"], dtype={"id": str})
+    mapping = pd.read_csv(cfg["_root"] / cfg["inputs"]["listing_ids"], dtype={"id": str}).rename(columns={"id": "listing_id"})
+    reviews = reviews.merge(flags[["id", "in_llm_sample"]], on="id", how="inner", validate="one_to_one")
     reviews = reviews.merge(mapping, on="listing_id", how="left", validate="many_to_one")
     if "in_llm_sample" in reviews and reviews.in_llm_sample.any():
         sample = reviews.loc[reviews.in_llm_sample].copy()
@@ -39,6 +52,57 @@ def select_sample(cfg: dict) -> pd.DataFrame:
     save(cfg, sample, "llm_sample")
     csv_report(cfg, [{"strategy": strategy, "n": len(sample), "seed": cfg["seed"], "source": "reviews_clean, unique id, nonempty comment"}], "llm_sampling.csv")
     return sample
+
+
+def make_label_template(cfg: dict):
+    """Lấy comment_clean sau QA theo danh sách ID nhãn tay đã lọc."""
+    spec = cfg["id_inspection"]
+    source_path = cfg["_root"] / spec["source"]
+    if source_path.exists():
+        source = pd.read_csv(source_path, dtype=str, keep_default_na=False)
+        columns = spec["columns"]
+        selected = source.iloc[:, columns["class"]["index"]].str.strip().eq(spec["class"])
+        selected &= source.iloc[:, columns["group"]["index"]].str.strip().eq(str(spec["group"]))
+        selected &= source.iloc[:, columns["hand"]["index"]].str.strip().str.lower().isin(
+            [marker.lower() for marker in spec["true_markers"]]
+        )
+        ordered_ids = source.loc[selected].iloc[:, columns["review_id"]["index"]].str.strip().tolist()
+    else:
+        assigned = pd.read_csv(cfg["_root"] / cfg["inputs"]["review_ids"], dtype={"id": str})
+        ordered_ids = assigned.loc[assigned["in_hand_label"].astype(bool), "id"].tolist()
+    if len(ordered_ids) != len(set(ordered_ids)):
+        raise ValueError("review_id nhãn tay bị trùng trong data-new.csv")
+    cleaned = []
+    for snapshot in cfg["snapshots"]:
+        source_file = path(cfg, "processed", f"{snapshot}/reviews_clean.csv")
+        if not source_file.exists():
+            raise ValueError(f"Thiếu {source_file}; hãy chạy QA trước khi tạo mẫu nhãn tay")
+        cleaned.append(pd.read_csv(source_file, dtype={"review_id": str}, usecols=["review_id", "comment_clean"]))
+    reviews = pd.concat(cleaned, ignore_index=True).drop_duplicates("review_id", keep="last")
+    rows = reviews.set_index("review_id").reindex(ordered_ids)
+    if rows.comment_clean.isna().any():
+        missing = rows.index[rows.comment_clean.isna()].tolist()
+        raise ValueError(f"Review nhãn tay thiếu nội dung sạch sau QA: {missing[:5]}")
+    rows = rows.rename(columns={"comment_clean": "comments"}).reset_index()
+    for name in ("sentiment", "aspects_praise", "aspects_complaint", "language"):
+        rows[name] = ""
+    dest = path(cfg, "samples", "hand_labels_template.csv")
+    if dest.exists():
+        # Giữ nhãn nhóm đã điền và các review bổ sung khi pipeline chạy lại.
+        existing = pd.read_csv(dest, dtype={"review_id": str}, keep_default_na=False)
+        if existing.review_id.duplicated().any():
+            raise ValueError("hand_labels_template.csv có review_id trùng")
+        existing_by_id = existing.set_index("review_id")
+        for column in existing_by_id.columns.difference(["comments"]):
+            rows[column] = rows.review_id.map(existing_by_id[column]).fillna("")
+        extra = existing.loc[~existing.review_id.isin(rows.review_id)].copy()
+        available_text = reviews.set_index("review_id")["comment_clean"]
+        extra = extra.loc[extra.review_id.isin(available_text.index)]
+        extra["comments"] = extra.review_id.map(available_text)
+        rows = pd.concat([rows, extra], ignore_index=True)
+        rows = rows.reindex(columns=existing.columns)
+    rows.to_csv(dest, index=False, encoding="utf-8-sig")
+    return dest
 
 
 def cache_key(review_id: str, text: str, model: str, version: str, prompt: str = "") -> str:
@@ -77,6 +141,10 @@ def schema(aspects: list) -> dict:
 class GeminiClient:
     """Giới hạn tốc độ cả retry; khóa chỉ nằm trong header, không trong URL/log."""
     def __init__(self, cfg: dict, key: str):
+        invalid = sorted({f"U+{ord(char):04X}" for char in key if ord(char) < 33 or ord(char) > 126})
+        if not key or invalid:
+            detail = ", ".join(invalid[:5]) if invalid else "khóa rỗng"
+            raise ValueError(f"GEMINI_API_KEY không phải khóa nguyên vẹn ({detail}); hãy bấm Copy trên khóa trong AI Studio và không copy lệnh sau đó")
         self.settings = cfg["llm"]
         self.key = key
         self.next_call = 0.0
@@ -103,7 +171,17 @@ class GeminiClient:
                             retry_after = 0
                     raise ValueError(f"HTTP {response.status_code}")
                 if response.status_code >= 400:
-                    raise PermissionError(f"Gemini HTTP {response.status_code}; kiểm tra model, quyền và quota")
+                    try:
+                        error = response.json().get("error", {})
+                        status = str(error.get("status", "UNKNOWN"))
+                        message = str(error.get("message", "API không trả chi tiết lỗi"))
+                    except (ValueError, AttributeError, TypeError):
+                        status = "NON_JSON"
+                        content_type = response.headers.get("Content-Type", "không rõ")
+                        preview = re.sub(r"\s+", " ", response.text.replace(self.key, "[đã che khóa]")).strip()[:400]
+                        message = f"Content-Type={content_type}; phản hồi={preview or '[rỗng]'}"
+                    message = message.replace(self.key, "[đã che khóa]")
+                    raise PermissionError(f"Gemini HTTP {response.status_code} {status}: {message[:600]}")
                 body = response.json()
                 text = "".join(p.get("text", "") for p in body["candidates"][0]["content"]["parts"] if not p.get("thought"))
                 result = validate_results(json.loads(text), [r["review_id"] for r in batch], settings["aspects"])
@@ -190,11 +268,14 @@ def run(cfg: dict) -> None:
             try:
                 for start in range(0, len(pending), settings["batch_size"]):
                     process(pending[start:start + settings["batch_size"]])
-            except PermissionError as exc:
-                logging.warning("%s; giữ cache đã có, các bước khác tiếp tục", exc)
+            except PermissionError:
+                # Cache các lô thành công vẫn còn để lần chạy sau tiếp tục.
+                raise
     frame = pd.DataFrame(results, columns=RESULT_COLUMNS)
     save(cfg, frame, "llm_results")
     estimate_cost(cfg, sample, frame, client.usage if client else [], prompt)
+    if client and not (frame.sentiment.notna() & ~frame.parse_error).any():
+        raise ValueError("Gemini không trả dự đoán hợp lệ nào; xem cảnh báo API phía trên")
 
 
 if __name__ == "__main__":

@@ -186,3 +186,89 @@
 2026-11-11 22:12:47,510 INFO Đầu ra processed: 
 2026-11-11 22:12:47,514 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, clean_reproduction.json, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report.md, report.pdf, report_numbers.json, run_log.txt, security_check.json, submission_checklist.csv, summary_numbers.csv, test_results.xml, verification.md
 2026-11-11 22:12:47,515 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-11 23:03:28,254 INFO === llm ===
+2026-11-11 23:04:00,886 INFO === llm ===
+2026-11-11 23:04:01,728 WARNING LLM chưa chạy: 20 review thiếu cache; --skip-llm hoặc thiếu GEMINI_API_KEY
+2026-11-11 23:04:01,758 INFO === baseline ===
+2026-11-11 23:04:03,576 INFO === evaluate ===
+2026-11-11 23:04:10,874 INFO === download ===
+2026-11-11 23:04:11,080 INFO Đã xác thực 2025-09-11 listings
+2026-11-11 23:04:11,616 INFO Đã xác thực 2025-09-11 calendar
+2026-11-11 23:04:12,712 INFO Đã xác thực 2025-09-11 reviews
+2026-11-11 23:04:12,914 INFO Đã xác thực 2026-03-19 listings
+2026-11-11 23:04:13,338 INFO Đã xác thực 2026-03-19 calendar
+2026-11-11 23:04:14,421 INFO Đã xác thực 2026-03-19 reviews
+2026-11-11 23:04:14,738 INFO Đã xác thực 2026-06-15 listings
+2026-11-11 23:04:15,320 INFO Đã xác thực 2026-06-15 calendar
+2026-11-11 23:04:15,985 WARNING Chưa có hand_labels.csv thật: không thể tính accuracy/F1
+2026-11-11 23:04:15,994 INFO data/processed: 0.07 MB (ngưỡng 50.00 MB)
+2026-11-11 23:04:15,996 INFO Đầu ra processed: baseline_results.parquet, kpi_area.csv, kpi_checks.csv, kpi_room_type.csv, kpi_room_type_missing.csv, kpi_snapshot.csv, kpi_time.csv, llm_cache.jsonl, llm_results.parquet, llm_sample.parquet
+2026-11-11 23:04:16,002 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, clean_reproduction.json, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report.md, report.pdf, report_numbers.json, run_log.txt, security_check.json, submission_checklist.csv, summary_numbers.csv, test_results.xml, verification.md
+2026-11-11 23:04:16,003 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-11 23:04:16,567 INFO Đã xác thực 2026-06-15 reviews
+2026-11-11 23:04:16,844 INFO Đã xác thực 2026-09-16 listings
+2026-11-11 23:04:17,455 INFO Đã xác thực 2026-09-16 calendar
+2026-11-11 23:04:18,794 INFO Đã xác thực 2026-09-16 reviews
+2026-11-11 23:04:18,850 INFO Lọc snapshot 2025-09-11
+2026-11-11 23:04:25,289 INFO === llm ===
+2026-11-11 23:04:25,775 WARNING LLM chưa chạy: 1000 review thiếu cache; --skip-llm hoặc thiếu GEMINI_API_KEY
+2026-11-11 23:04:25,806 INFO data/processed: 0.19 MB (ngưỡng 50.00 MB)
+2026-11-11 23:04:25,808 INFO Đầu ra processed: baseline_results.parquet, kpi_area.csv, kpi_checks.csv, kpi_room_type.csv, kpi_room_type_missing.csv, kpi_snapshot.csv, kpi_time.csv, llm_cache.jsonl, llm_results.parquet, llm_sample.parquet
+2026-11-11 23:04:25,814 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, clean_reproduction.json, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report.md, report.pdf, report_numbers.json, run_log.txt, security_check.json, submission_checklist.csv, summary_numbers.csv, test_results.xml, verification.md
+2026-11-11 23:04:25,815 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-11 23:04:38,763 INFO Lọc snapshot 2026-03-19
+2026-11-11 23:04:54,447 INFO Lọc snapshot 2026-06-15
+2026-11-11 23:05:15,253 INFO Lọc snapshot 2026-09-16
+2026-11-11 23:05:37,545 WARNING 2026-09-16: listing_count có 928, kỳ vọng 1000 (warning)
+2026-11-11 23:05:37,546 WARNING 2026-09-16: review_count có 4765, kỳ vọng 5000 (warning)
+2026-11-11 23:05:38,589 WARNING 2026-09-16: room_type:Entire home/apt có 805, kỳ vọng 875 (warning)
+2026-11-11 23:05:38,590 WARNING 2026-09-16: room_type:Private room có 123, kỳ vọng 125 (warning)
+2026-11-11 23:05:38,591 WARNING 2026-09-16: in_llm_sample có 955, kỳ vọng 1000 (warning)
+2026-11-11 23:05:38,592 WARNING 2026-09-16: in_hand_label có 92, kỳ vọng 100 (warning)
+2026-11-11 23:05:38,594 WARNING 2026-09-16: area_size_range có False, kỳ vọng True (warning)
+2026-11-11 23:05:38,594 WARNING 2026-09-16 chưa có bộ kỳ vọng riêng; tiếp tục với số quan sát thực, không bù ID thiếu
+2026-11-11 23:05:39,741 INFO === qa ===
+2026-11-11 23:06:58,891 INFO === llm ===
+2026-11-11 23:06:59,389 WARNING LLM chưa chạy: 1000 review thiếu cache; --skip-llm hoặc thiếu GEMINI_API_KEY
+2026-11-11 23:06:59,411 INFO === baseline ===
+2026-11-11 23:07:04,607 INFO === evaluate ===
+2026-11-11 23:07:07,498 WARNING Chưa có hand_labels.csv thật: không thể tính accuracy/F1
+2026-11-11 23:07:07,507 INFO data/processed: 4.08 MB (ngưỡng 50.00 MB)
+2026-11-11 23:07:07,510 INFO Đầu ra processed: baseline_results.parquet, calendar_raw_filtered.parquet, kpi_area.csv, kpi_checks.csv, kpi_room_type.csv, kpi_room_type_missing.csv, kpi_snapshot.csv, kpi_time.csv, listings_raw_filtered.parquet, llm_cache.jsonl, llm_results.parquet, llm_sample.parquet, reviews_raw_filtered.parquet
+2026-11-11 23:07:07,514 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, clean_reproduction.json, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report.md, report.pdf, report_numbers.json, run_log.txt, security_check.json, submission_checklist.csv, summary_numbers.csv, test_results.xml, verification.md
+2026-11-11 23:07:07,516 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-12 10:54:30,729 INFO === llm ===
+2026-11-12 10:54:31,928 WARNING Gemini HTTP 400; kiểm tra model, quyền và quota; giữ cache đã có, các bước khác tiếp tục
+2026-11-12 10:54:31,967 INFO data/processed: 234.50 MB (ngưỡng 50.00 MB)
+2026-11-12 10:54:31,967 WARNING Không commit data/processed: vượt giới hạn dung lượng
+2026-11-12 10:54:31,970 INFO Đầu ra processed: baseline_results.parquet, calendar_raw_filtered.parquet, kpi_area.csv, kpi_checks.csv, kpi_room_type.csv, kpi_room_type_missing.csv, kpi_snapshot.csv, kpi_time.csv, listings_raw_filtered.parquet, llm_cache.jsonl, llm_results.parquet, llm_sample.parquet, reviews_raw_filtered.parquet
+2026-11-12 10:54:31,975 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, clean_reproduction.json, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report_numbers.json, run_log.txt, security_check.json, submission_checklist.csv, summary_numbers.csv, test_results.xml, verification.md
+2026-11-12 10:54:31,977 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-12 10:55:32,033 INFO === llm ===
+2026-11-12 10:55:33,087 WARNING Gemini HTTP 400; kiểm tra model, quyền và quota; giữ cache đã có, các bước khác tiếp tục
+2026-11-12 10:55:33,119 INFO data/processed: 234.50 MB (ngưỡng 50.00 MB)
+2026-11-12 10:55:33,120 WARNING Không commit data/processed: vượt giới hạn dung lượng
+2026-11-12 10:55:33,122 INFO Đầu ra processed: baseline_results.parquet, calendar_raw_filtered.parquet, kpi_area.csv, kpi_checks.csv, kpi_room_type.csv, kpi_room_type_missing.csv, kpi_snapshot.csv, kpi_time.csv, listings_raw_filtered.parquet, llm_cache.jsonl, llm_results.parquet, llm_sample.parquet, reviews_raw_filtered.parquet
+2026-11-12 10:55:33,126 INFO Đầu ra reports: baseline_language_coverage.csv, build_provenance.csv, city_review_counts.csv, clean_reproduction.json, cross_snapshot_duplicates.csv, data_dictionary.csv, download_manifest.csv, error_summary.md, eval_metrics.csv, figure_status.csv, filter_checks.csv, id_inspection.json, kpi_definitions.csv, llm_cost_estimate.csv, llm_sampling.csv, missing_ids.csv, qa_report.csv, report_numbers.json, run_log.txt, security_check.json, submission_checklist.csv, summary_numbers.csv, test_results.xml, verification.md
+2026-11-12 10:55:33,129 INFO Đầu ra figures: fig_space_01_listings_map.png, fig_space_02_area_price.png, fig_space_03_area_occupancy.png, fig_time_01_occupancy_by_snapshot.png, fig_time_02_kpi_trend.png, fig_time_03_reviews_per_quarter.png
+2026-11-12 10:59:41,922 INFO === llm ===
+2026-11-12 10:59:42,935 ERROR Pipeline dừng: Gemini HTTP 400 UNKNOWN: API không trả chi tiết lỗi dạng JSON
+2026-11-12 11:01:01,988 INFO === llm ===
+2026-11-12 11:01:03,008 ERROR Pipeline dừng: Gemini HTTP 400 NON_JSON: Content-Type=text/html; charset=UTF-8; phản hồi=<html><title>Error 400 (Bad Request)!!1</title></html>
+2026-11-12 11:11:44,664 INFO === llm ===
+2026-11-12 11:11:45,051 WARNING Gemini lần 1 thất bại (InvalidHeader); không log nội dung/key
+2026-11-12 11:11:57,050 WARNING Gemini lần 2 thất bại (InvalidHeader); không log nội dung/key
+2026-11-12 11:12:09,051 WARNING Gemini lần 3 thất bại (InvalidHeader); không log nội dung/key
+2026-11-12 11:12:21,052 WARNING Gemini lần 4 thất bại (InvalidHeader); không log nội dung/key
+2026-11-12 11:12:33,051 WARNING Gemini lần 5 thất bại (InvalidHeader); không log nội dung/key
+2026-11-12 11:12:45,052 WARNING Gemini lần 1 thất bại (InvalidHeader); không log nội dung/key
+2026-11-12 11:12:57,053 WARNING Gemini lần 2 thất bại (InvalidHeader); không log nội dung/key
+2026-11-12 11:14:12,431 INFO === llm ===
+2026-11-12 11:14:12,844 ERROR Pipeline dừng: GEMINI_API_KEY chứa khoảng trắng/xuống dòng hoặc ký tự không hợp lệ; hãy sao chép lại khóa
+2026-11-12 13:08:16,404 INFO === llm ===
+2026-11-12 13:08:16,812 ERROR Pipeline dừng: GEMINI_API_KEY chứa khoảng trắng/xuống dòng hoặc ký tự không hợp lệ; hãy sao chép lại khóa
+2026-11-12 13:16:42,781 INFO === llm ===
+2026-11-12 13:16:43,182 ERROR Pipeline dừng: GEMINI_API_KEY còn ký tự không hợp lệ (U+00E0, U+00F3, U+0110, U+1ED9); hãy sao chép lại đúng giá trị khóa
+2026-11-12 13:20:07,682 INFO === llm ===
+2026-11-12 13:20:08,046 WARNING GEMINI_API_KEY: đã bỏ 11 ký tự khoảng trắng/định dạng khi sao chép
+2026-11-12 13:20:08,612 ERROR Pipeline dừng: Gemini HTTP 400 INVALID_ARGUMENT: API key not valid. Please pass a valid API key.

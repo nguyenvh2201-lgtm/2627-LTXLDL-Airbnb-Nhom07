@@ -17,18 +17,18 @@ Mục 1-7 là yêu cầu trong kế hoạch đã đưa, được thực hiện k
 “làm hết đi”; không phải bảy lượt hội thoại riêng.
 
 1. “phân tích theo cái datanew…” và mục 12.2: tách cột trùng tên, lọc lớp/nhóm
-   → tools/inspect_ids.py, data/samples/*.csv.
-2. Mục 12.3-12.4: config, CLI, tải stream/lọc chunk → src/config.py, utils.py,
-   download.py, filter.py, run_pipeline.py.
+   → notebooks/tools/inspect_ids.py, data/samples/*.csv.
+2. Mục 12.3-12.4: config, CLI, tải stream/lọc chunk → src/download.py,
+   run_pipeline.py.
 3. Mục 12.5-12.6: QA gắn cờ/tác động, KPI vùng/thời gian → src/qa.py, kpi.py.
 4. Mục 12.7: JSON schema/retry/cache, thiếu key vẫn chạy → src/llm.py,
-   prompts/extract_v1.txt (giữ nguyên nội dung prompt yêu cầu).
+   configs/city.yaml (llm.prompt_text).
 5. Mục 12.8: baseline, gold do người gán, CI/lỗi → src/baseline.py,
-   evaluate.py, tools/make_label_template.py.
-6. Mục 12.9-12.10: hình, tests/smoke/đổi mốc → src/viz.py, tests/,
-   tools/check_config_swap.py, tools/clean_reproduce.py.
+   evaluate.py, notebooks/tools/.
+6. Mục 12.9-12.10: hình, tests/smoke/đổi mốc → src/viz.py, notebooks/tests/,
+   notebooks/tools/check_config_swap.py, notebooks/tools/clean_reproduce.py.
 7. Mục 12.11-12.12: không bịa báo cáo, checklist, không tự push/tag →
-   src/report.py, summary.py, tools/check_report_numbers.py, README.
+   src/viz.py, notebooks/tools/check_report_numbers.py, README.
 8. Người dùng: “Giữ 16/09/2026, báo rõ thiếu 72 listing” → giữ mốc, xuất
    missing_ids.csv, không áp kỳ vọng tháng 12/2025 cho tháng 9/2026.
 
@@ -78,7 +78,7 @@ Mục 1-7 là yêu cầu trong kế hoạch đã đưa, được thực hiện k
 
 - Người dùng yêu cầu chỉ giữ các thư mục và bảy mô-đun src giống ảnh đề bài.
 - Gộp config/utils/filter vào download.py; summary/report vào viz.py;
-  công cụ mẫu nhãn trống vào evaluate.make_label_template.
+  công cụ tạo mẫu nhãn trống vào llm.make_label_template.
 - Prompt và bốn từ điển được giữ nguyên nội dung trong city.yaml. CSV nguồn
   chuyển vào data/samples; báo cáo Markdown chuyển vào reports.
 - Giữ bộ kiểm thử/công cụ trong notebooks; cập nhật import, CLI và README.
@@ -88,3 +88,27 @@ Mục 1-7 là yêu cầu trong kế hoạch đã đưa, được thực hiện k
   các kiểm tra phủ định/cảm xúc hỗn hợp được giữ nguyên.
 - Kiểm chứng: 27 tests đạt, kiểm đổi cấu hình 7 tests đạt, pipeline dữ liệu thật
   với --skip-download --skip-llm exit 0, 15 số báo cáo khớp, kiểm mẫu khóa đạt.
+
+## Đối chiếu toàn bộ đề — 12/11/2026
+
+- Codex đọc đề bài người dùng gửi, sửa giao diện QA/KPI với lệnh một lần,
+  chuyển dữ liệu sạch theo mốc vào KPI, thống nhất 8 KPI hoạt động của pipeline,
+  và cập nhật test QA theo API hiện tại. Bộ 27 test chạy đạt trong thư mục tạm;
+  chưa chạy lại toàn pipeline trên dữ liệu thật trong lượt này để tránh tạo file mới.
+- Chưa có 100 nhãn tay đã điền, dự đoán Gemini thật, K7 có giá trị, hình LLM
+  hay PDF cuối. Không khai các phần này là đã hoàn thành.
+- `data/processed/` hiện có khoảng 220 MiB file đã được Git theo dõi, vượt
+  giới hạn 50 MB. Đã thêm ignore cho output mới; thao tác bỏ theo dõi file cũ
+  trong Git chưa thực hiện vì cơ chế duyệt tự động từ chối thay đổi index.
+- Theo yêu cầu chọn thêm review để gán nhãn tay: Codex dùng dự đoán baseline
+  và dấu hiệu phàn nàn trong văn bản để chọn 50 review ngoài 100 review ban đầu.
+  `selection_hint` chỉ là gợi ý cách chọn; 50 dòng được gán nhãn AI nháp và
+  đánh dấu `label_source=AI_draft`. Không biến dự đoán máy thành nhãn đúng.
+- Theo yêu cầu tiếp theo, Codex đã chuẩn hóa cú pháp khía cạnh của 100 nhãn
+  người dùng đã điền sang JSON cho bảy mục cấu hình; tên mục cũ/ngoài danh mục
+  được giữ ở `original_aspects_*` và `other_aspects_*`. Codex cũng điền
+  `suggested_*` và nhãn nháp cho 50 review mới. Các dòng đó vẫn có
+  `label_source=AI_draft`, chưa được tính là nhãn tay và cần người dùng tự xác nhận.
+- Sau phản hồi của người dùng, phần tạo template được chuyển từ `evaluate.py`
+  sang `llm.py`. `evaluate.py` chỉ đọc, kiểm tra và chấm trên nhãn tay; 50 nhãn
+  AI nháp trong CSV không được đưa vào mẫu chấm khi chưa được người dùng xác nhận.

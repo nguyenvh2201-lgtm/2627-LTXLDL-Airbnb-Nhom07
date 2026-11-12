@@ -75,27 +75,61 @@ Linux/macOS thay đường dẫn Python bằng `.venv/bin/python`.
 
 ## Nhãn tay và Gemini
 
-Tạo mẫu trống (pipeline đầy đủ cũng tạo mẫu này):
+Tạo/cập nhật mẫu gán nhãn (pipeline đầy đủ cũng gọi bước này):
 
 ```powershell
 .\.venv\Scripts\python.exe run_pipeline.py --config configs/city.yaml --only labels
 ```
 
-Nhóm tự đọc 100 review trong `data/samples/hand_labels_template.csv`, điền
-`sentiment` bằng `positive`, `mixed` hoặc `negative`, lưu thành
-`data/samples/hand_labels.csv`. Giữ ID dạng Text khi dùng Excel để tránh làm tròn.
-Template được tạo lại khi chạy tổng hợp; tệp `hand_labels.csv` không bị ghi đè.
-Không dùng AI tạo gold rồi khai là nhãn tay.
+`data/samples/hand_labels_template.csv` hiện có 100 review ban đầu và 50 review
+bổ sung được ưu tiên vì baseline hoặc câu chữ gợi ý `negative`/`mixed`. Cột
+`selection_hint` chỉ ghi cách chọn mẫu, **không phải nhãn đúng**. 100 dòng đầu do
+người dùng tự gán đã được chuẩn hóa cú pháp khía cạnh; giá trị gốc giữ trong
+`original_aspects_*`, mục ngoài bảy khía cạnh cấu hình giữ trong `other_aspects_*`.
+50 dòng cuối đã được AI điền bản nháp vào `sentiment`, khía cạnh và ngôn ngữ;
+các cột `suggested_*` giữ lại gợi ý gốc để đối chiếu. Chúng có
+`label_source=AI_draft`, không tính là nhãn tay. Nhóm cần đọc và xác nhận từng
+review rồi đổi `label_source` thành `user_manual`. Sau khi kiểm tra toàn bộ, lưu thành
+`data/samples/hand_labels.csv`. Giữ ID dạng Text khi
+dùng Excel để tránh làm tròn. Chạy lại bước `labels` giữ các nhãn và 50 dòng bổ
+sung trong template; tệp `hand_labels.csv` không bị ghi đè. Không dùng dự đoán
+baseline/LLM làm gold. Mẫu bổ sung được chọn có chủ đích nên tỷ lệ lớp trong 150
+review không đại diện cho toàn bộ review thành phố.
+Nếu chưa tạo `hand_labels.csv`, bước đánh giá dùng 100 dòng `user_manual` trong
+template; 50 dòng `AI_draft` không được tính. Chỉ xuất chỉ số so sánh khi đã có
+dự đoán Gemini hợp lệ.
 
-Khía cạnh tùy chọn: nhập mảng JSON như `["cleanliness"]`; `[]` nghĩa đã kiểm
-và không có khía cạnh, trống nghĩa chưa gán. Language tùy chọn: mã hai chữ hoặc `und`.
+Khía cạnh trong `aspects_praise`/`aspects_complaint` dùng mảng JSON như
+`["cleanliness"]`; `[]` nghĩa đã kiểm và không có khía cạnh, trống nghĩa chưa gán.
+Language tùy chọn: mã hai chữ hoặc `und`. Mã đánh giá từ chối dòng
+`label_source=AI_draft` để không khai dự đoán AI thành nhãn tay.
 
 Khóa chỉ đọc từ biến môi trường; pipeline **không tự đọc `.env`**:
 
+Trước khi chạy Gemini, cần có `data/processed/<mốc>/reviews_clean.csv`
+do `python src/qa.py` tạo ra. Dùng Python trong `.venv` vì môi trường
+`(base)` có thể thiếu `pyarrow` và `langdetect`.
+
+Nhập hàm dưới đây vào PowerShell **trước khi** sao chép khóa. Sau đó bấm
+**Copy** trên chính khóa trong Google AI Studio, trở lại PowerShell và **gõ tay**
+`Set-GeminiKey` rồi Enter; copy thêm lệnh khác sẽ ghi đè clipboard.
+
 ```powershell
-$env:GEMINI_API_KEY = "THAY_BANG_KHOA_CUA_BAN"
+function Set-GeminiKey {
+    $copied = (Get-Clipboard -Raw).Trim()
+    if ($copied -notmatch '^[\x21-\x7E]+$') { throw "Clipboard không chứa khóa API nguyên vẹn" }
+    $env:GEMINI_API_KEY = $copied
+    Write-Host "Đã nạp khóa, độ dài: $($copied.Length)"
+}
+```
+
+Khi đã nạp khóa, thử một review, rồi tăng lên 20. Chỉ chạy toàn bộ khi mẫu thử
+có dự đoán Gemini hợp lệ:
+
+```powershell
+.\.venv\Scripts\python.exe run_pipeline.py --config configs/city.yaml --only llm --limit 1
 .\.venv\Scripts\python.exe run_pipeline.py --config configs/city.yaml --only llm --limit 20
-.\.venv\Scripts\python.exe run_pipeline.py --config configs/city.yaml --only llm,baseline,evaluate,kpi,viz
+.\.venv\Scripts\python.exe run_pipeline.py --config configs/city.yaml --only llm,baseline,evaluate,kpi,figures
 ```
 
 Lần chạy thử chỉ xuất mẫu giới hạn; lần tiếp theo không có `--limit` sẽ xử lý
@@ -117,7 +151,9 @@ chức năng đã gộp. Chạy riêng cần có dữ liệu từ các bước t
 ## Đầu ra và giới hạn phân tích
 
 - `data/processed/*_raw_filtered.parquet`: bảng đã lọc, đầu vào QA.
-- `data/processed/*_clean.parquet`: bảng sạch và cờ QA.
+- `data/processed/<snapshot>/listings_clean.csv`, `reviews_clean.csv`,
+  `calendar_flagged.csv`: bảng sau QA và cờ kiểm tra. Các bước sau đọc trực tiếp
+  các tệp này, không tạo thêm Parquet sạch trùng nội dung.
 - `data/processed/kpi_area.csv`, `kpi_time.csv`, `kpi_llm.csv`: KPI.
 - `data/processed/llm_sample.parquet`, `llm_results.parquet`, `llm_cache.jsonl`,
   `baseline_results.parquet`: mẫu và dự đoán.
@@ -130,8 +166,9 @@ Xem `reports/figure_status.csv` và chạy công cụ checklist để biết ph�
 
 Giá listing chỉ dùng mốc cuối; loại giá thiếu/ngoài ngưỡng khỏi KPI giá.
 Ngày không khả dụng có thể do chủ nhà khóa lịch, không đồng nghĩa booking.
-K5 chỉ mô tả review trong mẫu, không ngoại suy toàn thành phố. Tám vùng là
-hình chữ nhật, không phải địa giới hành chính. Không suy quốc tịch từ ngôn ngữ.
+K5 chỉ mô tả review trong mẫu, không ngoại suy toàn thành phố. KPI không gian
+theo `neighbourhood_cleansed`; bản đồ tám vùng mẫu là hình chữ nhật phân tích,
+không phải địa giới hành chính. Không suy quốc tịch từ ngôn ngữ.
 ID lặp giữa snapshot là bình thường; LLM dùng bản mới nhất của mỗi review ID.
 QA chủ yếu gắn cờ; KPI trước/sau là tác động giả định loại riêng dòng bị từng cờ.
 Baseline fallback positive là giả định, không học từ gold.
@@ -174,6 +211,9 @@ khi chạy lại `viz`/`report`, hoặc sửa nội dung bộ sinh báo cáo. B�
 HEAD ghi trong báo cáo là commit tại lúc dựng, không tự động là commit/tag final.
 Checklist có mục xác nhận thủ công, cần đối chiếu thực tế trên GitHub.
 Không commit raw, `.env`, khóa, `.venv`; processed chỉ commit nếu dưới 50 MB.
+Hiện các CSV calendar sau QA đã được Git theo dõi và toàn bộ `data/processed/`
+vượt 50 MB. `.gitignore` chặn tệp mới nhưng không bỏ theo dõi tệp cũ; cần bỏ
+theo dõi chúng trước khi nộp, vẫn giữ tệp trên máy để chạy lại.
 
 Nguồn dữ liệu: Inside Airbnb, CC BY 4.0. URL, SHA256 và thời điểm xác thực
 nằm trong `reports/download_manifest.csv`; file có sẵn không bịa thời điểm tải.

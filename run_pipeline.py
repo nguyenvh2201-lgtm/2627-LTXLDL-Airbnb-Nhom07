@@ -9,7 +9,7 @@ STEPS = ["download", "qa", "kpi", "llm", "baseline", "evaluate", "kpi", "viz"]
 # Các bước phụ vẫn gọi được riêng dù đã gộp vào bảy mô-đun chính.
 EXTRA_STEPS = {
     "filter": ("download", "run_filter"),
-    "labels": ("evaluate", "make_label_template"),
+    "labels": ("llm", "make_label_template"),
     "figures": ("viz", "run_figures"),
     "summary": ("viz", "run_summary"),
     "report": ("viz", "run_report"),
@@ -36,7 +36,7 @@ def main() -> int:
             logging.info("=== %s ===", step)
             module, function = EXTRA_STEPS.get(step, (step, "run"))
             getattr(importlib.import_module("src." + module), function)(cfg)
-        size = sum(p.stat().st_size for p in path(cfg, "processed").glob("*") if p.is_file()) / 1e6
+        size = sum(p.stat().st_size for p in path(cfg, "processed").rglob("*") if p.is_file()) / 1e6
         logging.info("data/processed: %.2f MB (ngưỡng %.2f MB)", size, cfg["io"]["processed_max_mb"])
         if size >= cfg["io"]["processed_max_mb"]:
             logging.warning("Không commit data/processed: vượt giới hạn dung lượng")

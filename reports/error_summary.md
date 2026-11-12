@@ -1,2 +1,2 @@
-# Chưa có nhãn tay
-Không có số liệu đánh giá. Nhóm điền hand_labels.csv rồi chạy lại.
+# Chưa có kết quả Gemini
+Đã có nhãn tay, nhưng chưa có dự đoán Gemini hợp lệ để so sánh.

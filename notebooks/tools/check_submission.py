@@ -25,18 +25,18 @@ def run(cfg: dict) -> None:
     checks = pd.read_csv(path(cfg, "reports", "filter_checks.csv"))
     add("Kiểm dữ liệu bắt buộc", not ((~checks.passed) & checks.severity.eq("error")).any(), f"{len(checks)} checks; {int((~checks.passed).sum())} warnings; reports/filter_checks.csv")
     add("Khớp toàn bộ kỳ vọng bộ mốc gốc", bool(checks.passed.all()), "Mốc mới được người dùng giữ dù thiếu 72 listing, 235 review; missing_ids.csv")
-    size = sum(p.stat().st_size for p in path(cfg, "processed").glob("*") if p.is_file()) / 1e6
+    size = sum(p.stat().st_size for p in path(cfg, "processed").rglob("*") if p.is_file()) / 1e6
     add("processed < giới hạn", size < cfg["io"]["processed_max_mb"], f"{size:.2f} MB / {cfg['io']['processed_max_mb']} MB")
-    gold_path = cfg["_root"] / cfg["inputs"]["hand_labels"]
     valid_gold = False
-    if gold_path.exists():
-        from src.evaluate import validate_labels
+    from src.evaluate import read_hand_labels, validate_labels
+    hand_labels = read_hand_labels(cfg)
+    if hand_labels is not None and not hand_labels.empty:
         try:
-            validate_labels(pd.read_csv(gold_path, dtype={"review_id": str}), pd.read_parquet(path(cfg, "processed", "llm_sample.parquet")), cfg)
+            validate_labels(hand_labels, pd.read_parquet(path(cfg, "processed", "llm_sample.parquet")), cfg)
             valid_gold = True
         except ValueError:
             pass
-    add("Nhãn tay thật hợp lệ", valid_gold, "hand_labels.csv do nhóm tự gán; template không tính là gold")
+    add("Nhãn tay thật hợp lệ", valid_gold, "100 dòng label_source=user_manual trong template; 50 dòng AI_draft không tính")
     predictions = pd.read_parquet(path(cfg, "processed", "llm_results.parquet"))
     valid_count = int((predictions.sentiment.notna() & ~predictions.parse_error).sum())
     add("LLM đủ mẫu, JSON hợp lệ >98%", valid_count > cfg["llm"]["sample_size"] * .98, f"{valid_count}/{cfg['llm']['sample_size']} prediction hợp lệ; không có khóa/cache thì chưa đạt")
@@ -45,8 +45,10 @@ def run(cfg: dict) -> None:
     add("Chi phí có nguồn/giả định", path(cfg, "reports", "llm_cost_estimate.csv").exists(), "llm_cost_estimate.csv; scenario output token, chưa phải chi phí thật")
     figures = pd.read_csv(path(cfg, "reports", "figure_status.csv"))
     add("Đủ hình cả ba góc độ", figures.status.eq("created").all(), f"{int(figures.status.eq('created').sum())}/{len(figures)} hình; LLM cần dữ liệu thật")
-    pages = len(PdfReader(path(cfg, "reports", "report.pdf")).pages)
-    add("PDF <=10 trang", pages <= cfg["report"]["max_pages"], f"{pages} trang; bản nháp thiếu nhận định/gold/LLM")
+    pdf = path(cfg, "reports", "report.pdf")
+    pages = len(PdfReader(pdf).pages) if pdf.exists() else 0
+    add("PDF <=10 trang", bool(pages) and pages <= cfg["report"]["max_pages"],
+        f"{pages} trang; cần báo cáo hoàn chỉnh có nhận định/gold/LLM")
     security = path(cfg, "reports", "security_check.json")
     audit = json.loads(security.read_text()) if security.exists() else {}
     add("Mẫu khóa/file nhạy cảm", bool(audit) and not any(audit.get(k) for k in ("forbidden_tracked_files", "secret_pattern_paths", "secret_pattern_in_history")), "python notebooks/tools/check_security.py; chỉ kiểm các mẫu được hỗ trợ")
