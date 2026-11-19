@@ -1,0 +1,9 @@
+method,true_label,positive,mixed,negative,missing_or_error
+llm,positive,89,4,0,0
+llm,mixed,5,1,0,0
+llm,negative,0,0,1,0
+llm,missing_or_error,0,0,0,0
+baseline,positive,93,0,0,0
+baseline,mixed,1,5,0,0
+baseline,negative,0,0,1,0
+baseline,missing_or_error,0,0,0,0

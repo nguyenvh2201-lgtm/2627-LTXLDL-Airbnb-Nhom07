@@ -1,5 +1,4 @@
 """Đối chứng từ khóa đa ngôn ngữ, không dùng nhãn tay để dự đoán."""
-import json
 import logging
 import re
 from pathlib import Path
@@ -8,7 +7,7 @@ import pandas as pd
 from langdetect import detect, DetectorFactory, LangDetectException
 if not __package__:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from src.download import path, read, save, csv_report, cli
+from src.download import save, cli
 
 
 def detect_language(text: str, cfg: dict) -> str:
@@ -67,7 +66,6 @@ def run(cfg: dict) -> None:
     save(cfg, frame, "baseline_results")
     coverage = frame.groupby("language").agg(n=("review_id", "size"), no_lexicon=("no_lexicon", "all")).reset_index()
     coverage["share"] = coverage.n / len(frame) if len(frame) else 0
-    csv_report(cfg, coverage, "baseline_language_coverage.csv")
     missing = coverage.loc[coverage.no_lexicon & coverage.share.ge(cfg["baseline"]["language_share_min"])]
     if len(missing):
         logging.warning("Ngôn ngữ >= ngưỡng chưa có từ điển: %s", missing.language.tolist())

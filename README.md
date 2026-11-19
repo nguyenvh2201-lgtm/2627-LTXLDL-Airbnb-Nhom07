@@ -41,6 +41,9 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+> [!IMPORTANT]
+> **Lưu ý trên Windows (PowerShell):** Nếu máy có cài sẵn Miniconda/Anaconda hoặc Python hệ thống, bạn **bắt buộc phải kích hoạt `.venv`** trước (`.\.venv\Scripts\Activate.ps1`) hoặc gọi trực tiếp `.\.venv\Scripts\python.exe` khi chạy các lệnh bên dưới để tránh lỗi thiếu thư viện (`pyarrow`, `pytest`, `pypdf`).
+
 ---
 
 ## 3. Cấu hình Khóa API (Dành cho phân tích LLM)
@@ -69,8 +72,11 @@ Theo yêu cầu của đề bài, toàn bộ quy trình xử lý dữ liệu t�
 python run_pipeline.py --config configs/city.yaml
 ```
 
-Luồng chạy tự động bao gồm 8 công đoạn tuần tự:
-$$\text{download (gồm filter)} \longrightarrow \text{qa} \longrightarrow \text{kpi} \longrightarrow \text{llm} \longrightarrow \text{baseline} \longrightarrow \text{evaluate} \longrightarrow \text{kpi} \longrightarrow \text{viz (gồm summary/report)}$$
+Luồng chạy tự động bao gồm 9 công đoạn tuần tự:
+$$\text{download (gồm filter)} \longrightarrow \text{qa} \longrightarrow \text{kpi} \longrightarrow \text{llm} \longrightarrow \text{baseline} \longrightarrow \text{evaluate} \longrightarrow \text{kpi} \longrightarrow \text{viz} \longrightarrow \text{report}$$
+
+> [!NOTE]
+> Bước `kpi` được gọi 2 lần có chủ đích: lần 1 (sau `qa`) tính trước các bảng `kpi_area.csv` và `kpi_time.csv` (K1–K6, K8) ngay cả khi chưa chạy LLM; lần 2 (sau `llm` và `evaluate`) cập nhật bổ sung bảng `kpi_llm.csv` (K7) từ kết quả dự đoán hợp lệ của LLM trước khi bước `viz` dựng biểu đồ và bước `report` xuất báo cáo PDF/Markdown.
 
 ### Các tùy chọn chạy linh hoạt:
 1. **Chạy kiểm thử nhanh toàn bộ (Offline / Không gọi API LLM):**
@@ -92,8 +98,11 @@ $$\text{download (gồm filter)} \longrightarrow \text{qa} \longrightarrow \text
    # Chỉ chạy tính toán 8 KPI:
    python run_pipeline.py --config configs/city.yaml --only kpi
 
-   # Chỉ sinh biểu đồ và báo cáo PDF:
+   # Chỉ sinh 11 biểu đồ trực quan vào figures/:
    python run_pipeline.py --config configs/city.yaml --only viz
+
+   # Chỉ tổng hợp số liệu và xuất báo cáo Markdown (reports/report.md):
+   python run_pipeline.py --config configs/city.yaml --only report
    ```
 
 ---
@@ -141,7 +150,8 @@ python notebooks/tools/check_submission.py
 │   ├── llm.py               # Gọi Gemini API, JSON schema, xử lý batch & cache
 │   ├── baseline.py          # Mô hình đối chứng từ điển đa ngôn ngữ (en/fr/es/pt)
 │   ├── evaluate.py          # Đánh giá Accuracy/F1, ma trận nhầm lẫn, phân tích lỗi
-│   └── viz.py               # Xuất biểu đồ trực quan và tạo báo cáo PDF/Markdown
+│   ├── viz.py               # Chỉ thực hiện vẽ và xuất 11 biểu đồ trực quan vào figures/
+│   └── report.py            # Tổng hợp số liệu, kể chuyện dữ liệu & xuất báo cáo Markdown (report.md)
 ├── figures/                 # Đủ 11 biểu đồ trực quan (Không gian, Thời gian, LLM)
 ├── reports/                 # Báo cáo PDF, Markdown, từ điển dữ liệu, checklist
 ├── AI_USAGE.md              # Báo cáo minh bạch sử dụng AI
@@ -152,7 +162,7 @@ python notebooks/tools/check_submission.py
 
 ## 7. Sản phẩm Đầu ra Chính
 
-- **Báo cáo hoàn chỉnh:** [`reports/report.pdf`](file:///reports/report.pdf) (dưới 10 trang theo quy định) và [`reports/report.md`](file:///reports/report.md).
+- **Báo cáo hoàn chỉnh:** [`reports/report.md`](file:///reports/report.md) (theo cấu trúc kể chuyện bằng dữ liệu và thẩm định 4 bước của Bài 14).
 - **Bộ biểu đồ phân tích:** [`figures/`](file:///figures) gồm 11 hình độ phân giải cao theo 3 góc độ:
   - *Không gian:* Bản đồ phân bố listing, giá theo vùng, tỷ lệ lấp đầy phòng.
   - *Thời gian:* Biến động công suất theo quý, xu hướng KPI, số lượng đánh giá theo thời gian.

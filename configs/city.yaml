@@ -12,6 +12,10 @@ samples_dir: data/samples
 figures_dir: figures
 reports_dir: reports
 qa:
+  # Trần giá do nhóm cấu hình, đơn vị CAD/đêm; không phải giá lớn nhất tính từ dữ liệu.
+  # qa.run() truyền giá trị này vào check_price(), ghi đè DEFAULT_QA_CONFIG.
+  # Giá > price_max HOẶC ngoài khoảng IQR theo room_type được gắn price_outlier.
+  # Đặt null để bỏ trần cố định và chỉ xét IQR; xóa khóa sẽ dùng mặc định 2000.0.
   price_max: 2000.0
   min_nights_cap: 365
   dedupe_keys:
@@ -22,11 +26,18 @@ qa:
   iqr_multiplier: 1.5
   rare_property_min: 10
   missing_rate_warning: 0.1
+  valid_areas:
+  - A01
+  - A02
+  - A03
+  - A04
+  - A05
+  - A06
+  - A07
+  - A08
   room_types:
   - Entire home/apt
   - Private room
-  - Shared room
-  - Hotel room
   room_aliases:
     entire home/apt: Entire home/apt
     private room: Private room
@@ -34,7 +45,7 @@ qa:
     hotel room: Hotel room
 kpi:
   area_col: neighbourhood_cleansed
-  stakeholder: Cơ quan quản lý du lịch thành phố (giả định, nhóm cần xác nhận)
+  stakeholder: Cơ quan quản lý du lịch thành phố Toronto (đã xác nhận bởi nhóm)
   long_stay_nights: 30
   high_availability_ratio: 0.75
   professional_min_reviews: 10
@@ -72,8 +83,8 @@ llm:
     amenities: tiện nghi
     noise: độ ồn
     safety: an toàn
-  price_source: https://aistudio.google.com/docs/pricing#gemini-2.5-flash
-  price_basis: Standard paid tier text, USD per million tokens; free tier quota differs
+  price_source: https://ai.google.dev/gemini-api/docs/pricing
+  price_basis: Standard paid tier text reference (tham chiếu khung giá Flash/Flash-Lite trên bảng giá Gemini API, USD per million tokens; free tier quota differs)
   deprecation_note: Official pricing announces automatic rerouting from 2026-12-01; recheck model and price before
     rerun
   assumed_output_tokens: 100

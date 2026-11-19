@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 import html
+import logging
 import shutil
-import yaml
 from itertools import combinations
 # Tính từ vị trí qa.py, không phụ thuộc thư mục đang mở terminal.
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -13,6 +13,13 @@ ROOT = Path(__file__).resolve().parent.parent
 # Mô tả quy tắc dùng để tổng hợp báo cáo QA.
 # Các điều kiện kiểm tra thực tế được viết trong các hàm check_*.
 TAG = r"<[a-zA-Z/][^>]*>"
+DEFAULT_QA_CONFIG = {
+    "price_max": 2000.0,
+    "min_nights_cap": 365,
+    "iqr_multiplier": 1.5,
+    "room_types": ["Entire home/apt", "Private room"],
+    "valid_areas": ["A01", "A02", "A03", "A04", "A05", "A06", "A07", "A08"],
+}
 
 RULES = {
     # Quy tắc dùng chung cho nhiều bảng
@@ -80,16 +87,23 @@ RULES = {
     "price_outlier": {
         "table": "listings",
         "condition": (
-            "Giá dương nằm ngoài [Q1 - 1.5*IQR, Q3 + 1.5*IQR]; "
-            "Q1 và Q3 tính trên các giá dương hợp lệ trong cùng mốc"
+            "Giá dương vượt trần cấu hình (qa.price_max) hoặc nằm ngoài "
+            "[Q1 - iqr_multiplier*IQR, Q3 + iqr_multiplier*IQR] tính riêng theo từng room_type "
+            "(fallback toàn mốc nếu thiếu room_type)"
         ),
-        "reason": "Giá khác biệt lớn, cần kiểm tra thêm",
+        "reason": "Giá khác biệt lớn so với cùng loại phòng hoặc vượt ngưỡng trần cấu hình, cần kiểm tra thêm",
         "action": "Gắn cờ, giữ dữ liệu gốc",
+    },
+    "missing_minimum_nights": {
+        "table": "listings",
+        "condition": "minimum_nights bị null hoặc không chuyển được sang số",
+        "reason": "Không đủ dữ liệu để kiểm tra quy định số đêm tối thiểu",
+        "action": "Gắn cờ riêng tách khỏi cờ ngoài miền, giữ dữ liệu gốc",
     },
     "invalid_minimum_nights": {
         "table": "listings",
-        "condition": "minimum_nights sau chuyển kiểu thành công <= 0",
-        "reason": "Số đêm tối thiểu không hợp lý",
+        "condition": "minimum_nights sau chuyển kiểu thành công <= 0 hoặc > qa.min_nights_cap",
+        "reason": "Số đêm tối thiểu ngoài miền hợp lý",
         "action": "Gắn cờ, giữ dữ liệu gốc",
     },
     "invalid_maximum_nights": {
@@ -116,18 +130,29 @@ RULES = {
     "category_mismatch": {
         "table": "listings",
         "condition": (
-            "room_type không thuộc Entire home/apt, Private room hoặc "
-            "analysis_area không thuộc A01 đến A08; bao gồm giá trị thiếu, "
-            "kiểm tra theo cách viết hiện tại của dữ liệu"
+            "room_type không thuộc danh sách qa.room_types hoặc "
+            "analysis_area không thuộc qa.valid_areas trong cấu hình; bao gồm giá trị thiếu"
         ),
         "reason": "Giá trị ngoài danh mục hoặc phạm vi phân tích đã quy định",
         "action": "Gắn cờ theo từng cột, giữ giá trị gốc",
     },
+    "missing_rating": {
+        "table": "listings",
+        "condition": "review_scores_rating bị thiếu (thường do chỗ ở chưa có đánh giá)",
+        "reason": "Tách riêng giá trị thiếu khỏi lỗi ngoài miền; không tự điền 0",
+        "action": "Gắn cờ, giữ NA",
+    },
     "invalid_rating": {
         "table": "listings",
-        "condition": "review_scores_rating bị thiếu hoặc không thuộc [1, 5]",
-        "reason": "Không có điểm đánh giá hợp lệ theo thang nhóm quy định",
-        "action": "Gắn cờ, giữ giá trị gốc; thiếu điểm chưa đủ để kết luận listing sai",
+        "condition": "review_scores_rating không thiếu nhưng nằm ngoài thang [0, 5]",
+        "reason": "Điểm đánh giá nằm ngoài miền giá trị cho phép [0, 5]",
+        "action": "Gắn cờ ngoài miền, giữ giá trị gốc để kiểm tra",
+    },
+    "rows_with_any_flag": {
+        "table": "listings,reviews,calendar",
+        "condition": "Bản ghi có ít nhất một cờ QA được bật (any(axis=1))",
+        "reason": "Phân biệt số hàng cần kiểm tra với tổng số lượt gắn cờ (một hàng có thể mang nhiều cờ)",
+        "action": "Ghi nhận tổng số hàng cần xem trong qa_report.csv",
     },
     "room_change": {
         "table": "listings",
@@ -246,6 +271,16 @@ RULES = {
 # 1. HÀM DÙNG CHUNG CHO NHIỀU BẢNG
 # ============================================================================
 
+def validate_schema(df, required_columns, table_name):
+    """Kiểm tra cấu trúc cột bắt buộc trước khi chạy QA (theo Bài 10 §4).
+
+    Thiếu cột bắt buộc thì dừng bằng ValueError; không bỏ qua phép kiểm rồi báo 0 lỗi.
+    """
+    missing = set(required_columns) - set(df.columns)
+    if missing:
+        raise ValueError(f"Bảng {table_name} thiếu cột bắt buộc: {sorted(missing)}")
+
+
 def missing_listing_id(df):
     """Gắn cờ mã listing bị null, rỗng hoặc chỉ có khoảng trắng."""
     listing_id = df["listing_id"].astype("string")
@@ -314,21 +349,23 @@ def check_listing_match(reviews_df, listings_df):
 # 2. LISTINGS: CHUẨN BỊ, KIỂM TRA, SO SÁNH VÀ XỬ LÝ
 # ============================================================================
 
-def prepare_listings(raw_listings, phan_cong,snapshot_date):
+def prepare_listings(raw_listings, phan_cong, snapshot_date):
     """Chuẩn bị listings của nhóm cho một mốc dữ liệu.
 
     Nhận listings gốc có cột id và bảng phân công có listing_id,
-    analysis_area. Lọc id theo phân công, ghép khu vực phân tích rồi
-    trả về DataFrame có thêm listing_id, analysis_area và snapshot_date.
+    analysis_area. Lọc id theo phân công, ghép khu vực phân tích có
+    validate='many_to_one' để chống nhân bản dòng, trả về DataFrame
+    có thêm listing_id, analysis_area và snapshot_date.
     """
-    mask = raw_listings['id'].isin(phan_cong["listing_id"])
+    bang_area = phan_cong[["listing_id", "analysis_area"]].dropna(subset=["listing_id"]).drop_duplicates("listing_id")
+    mask = raw_listings["id"].isin(bang_area["listing_id"])
     raw_listings = raw_listings[mask]
-    bang_area = phan_cong[["listing_id","analysis_area"]]
     bang_moi = raw_listings.merge(
-    bang_area,
-    left_on = "id",
-    right_on = "listing_id",
-    how = "left",
+        bang_area,
+        left_on="id",
+        right_on="listing_id",
+        how="left",
+        validate="many_to_one",
     )
     bang_moi["snapshot_date"] = snapshot_date
     return bang_moi
@@ -366,27 +403,49 @@ def clean_price(price):
     return pd.to_numeric(cleaned, errors = "coerce")
 
 
-def check_price(raw_price):
+def check_price(raw_price, qa_cfg=None, room_type=None):
     """
     Tạo giá numeric và các cờ QA từ Series raw_price của một mốc.
 
-    Trả về price_cad cùng các cờ thiếu giá (mising_price), lỗi chuyển
+    Trả về price_cad cùng các cờ thiếu giá (missing_price), lỗi chuyển
     kiểu, giá không dương, giá hợp lệ và ngoại lai, giữ nguyên index.
-    Giá hợp lệ là giá không thiếu và > 0; ngưỡng IQR tính trên nhóm này.
-    Logic hiện tại cũng gắn price_outlierg cho giá numeric bị thiếu.
+    Giá hợp lệ là giá không thiếu và > 0. Theo Bài 10 §2, khi có cột
+    room_type thì ngưỡng IQR được tính riêng cho từng loại chỗ ở (các
+    nhóm có < 4 giá hợp lệ hoặc thiếu room_type fallback về ngưỡng toàn mốc),
+    kết hợp với trần cấu hình qa.price_max.
     Hàm không xóa dòng hoặc thay đổi Series giá gốc.
     """
+    settings = {**DEFAULT_QA_CONFIG, **(qa_cfg or {})}
+    iqr_mult = float(settings["iqr_multiplier"])
+    price_max = settings.get("price_max")
     price = clean_price(raw_price)
     price_valid = price.notna() & (price > 0)
 
     valid_prices = price[price_valid]
-    q1 = valid_prices.quantile(0.25)
-    q3 = valid_prices.quantile(0.75)
-    iqr = q3 - q1
-    outlier = price_valid & (
-        (price < q1 - 1.5 * iqr)
-        | (price > q3 + 1.5 * iqr)
-    )
+    global_q1 = valid_prices.quantile(0.25)
+    global_q3 = valid_prices.quantile(0.75)
+    global_iqr = global_q3 - global_q1
+    global_low = global_q1 - iqr_mult * global_iqr
+    global_high = global_q3 + iqr_mult * global_iqr
+
+    if room_type is not None:
+        valid_df = pd.DataFrame({"price": price, "room_type": room_type}).loc[price_valid]
+        grouped = valid_df.groupby("room_type")["price"]
+        counts = grouped.count()
+        q1_map = grouped.quantile(0.25)
+        q3_map = grouped.quantile(0.75)
+        iqr_map = q3_map - q1_map
+        low_map = (q1_map - iqr_mult * iqr_map).where(counts >= 4, global_low)
+        high_map = (q3_map + iqr_mult * iqr_map).where(counts >= 4, global_high)
+        row_low = room_type.map(low_map).fillna(global_low)
+        row_high = room_type.map(high_map).fillna(global_high)
+        iqr_out = (price < row_low) | (price > row_high)
+    else:
+        iqr_out = (price < global_low) | (price > global_high)
+
+    if price_max is not None:
+        iqr_out = iqr_out | (price > float(price_max))
+    outlier = price_valid & iqr_out
 
     return pd.DataFrame({
         "price_cad": price,
@@ -398,28 +457,33 @@ def check_price(raw_price):
     })
 
 
-def check_numeric_rules(df):
+def check_numeric_rules(df, qa_cfg=None):
     """
     Kiểm tra ràng buộc số đêm và số ngày available trong listings.
 
     Chuyển minimum_nights, maximum_nights và availability_365 sang
-    numeric để so sánh, giữ nguyên dữ liệu đầu vào. Trả về bốn cột cờ
-    cùng index: số đêm tối thiểu/tối đa <= 0, tối thiểu > tối đa,
-    và availability_365 ngoài [0, 365]. True nghĩa là vi phạm.
-    Giá trị thiếu hoặc không chuyển được sang số không bị gắn các cờ
-    phạm vi này; việc kiểm tra thiếu và lỗi chuyển kiểu được tách riêng.
-    """ 
+    numeric để so sánh, giữ nguyên dữ liệu đầu vào. Theo Bài 10 §4,
+    tách riêng cờ thiếu minimum_nights (missing_minimum_nights) khỏi
+    cờ ngoài miền (invalid_minimum_nights: <= 0 hoặc > min_nights_cap).
+    """
+    settings = {**DEFAULT_QA_CONFIG, **(qa_cfg or {})}
+    min_cap = settings.get("min_nights_cap")
     minimum_nights = pd.to_numeric(df["minimum_nights"], errors="coerce")
     maximum_nights = pd.to_numeric(df["maximum_nights"], errors="coerce")
     availability_365 = pd.to_numeric(df["availability_365"], errors="coerce")
 
-    invalid_minimum_nights = (minimum_nights <= 0).fillna(False)
+    missing_minimum_nights = minimum_nights.isna()
+    invalid_min = minimum_nights <= 0
+    if min_cap is not None:
+        invalid_min = invalid_min | (minimum_nights > float(min_cap))
+    invalid_minimum_nights = invalid_min.fillna(False)
     invalid_maximum_nights = (maximum_nights <= 0).fillna(False)
     min_greater_max = (minimum_nights > maximum_nights).fillna(False)
     invalid_availability_365 = (
         (availability_365 < 0) | (availability_365 > 365)
     ).fillna(False)
     return pd.DataFrame({
+        "missing_minimum_nights": missing_minimum_nights,
         "invalid_minimum_nights": invalid_minimum_nights,
         "invalid_maximum_nights": invalid_maximum_nights,
         "min_greater_max": min_greater_max,
@@ -428,30 +492,37 @@ def check_numeric_rules(df):
 
 
 def check_rating(df):
-    """Xác định điểm đánh giá hợp lệ trong listings.
+    """Xác định điểm đánh giá hợp lệ trong listings theo Bài 10 §2.
 
-    Nhận df có cột numeric review_scores_rating. Trả về DataFrame
-    cùng index có rating_valid=True khi điểm không thiếu và thuộc
-    [1, 5]. Hàm không tự chuyển kiểu hoặc sửa điểm.
+    Tách rõ giá trị thiếu (missing_rating) khỏi giá trị nằm ngoài miền
+    [0, 5] (invalid_rating = notna & ~between(0, 5)). Không tự điền 0.
     """
-    rating_valid = df["review_scores_rating"].notna() & (df["review_scores_rating"] >= 1) & (df["review_scores_rating"] <= 5)
+    rating = pd.to_numeric(df["review_scores_rating"], errors="coerce")
+    missing_rating = rating.isna()
+    invalid_rating = rating.notna() & ~rating.between(0, 5)
+    rating_valid = rating.notna() & rating.between(0, 5)
     return pd.DataFrame({
-        "rating_valid" : rating_valid,
-        "invalid_rating": ~rating_valid,
+        "missing_rating": missing_rating,
+        "rating_valid": rating_valid,
+        "invalid_rating": invalid_rating,
     })
 
 
-def check_categories(df):
+def check_categories(df, qa_cfg=None):
     """
     Kiểm tra danh mục room_type và analysis_area trong listings.
 
-    Trả về hai cột boolean cùng index với df; True nghĩa là hợp lệ.
-    room_type chấp nhận Entire home/apt và Private room;
-    analysis_area chấp nhận A01 đến A08. Hàm chưa chuẩn hóa chữ
-    hoa/thường hoặc khoảng trắng; giá trị thiếu không được chấp nhận.
+    Trả về hai cột boolean cùng index với df; True nghĩa là hợp lệ
+    theo danh sách qa.room_types (kèm chuẩn hóa room_aliases nếu có)
+    và qa.valid_areas trong cấu hình.
     """
-    valid_area = ["A01","A02","A03","A04","A05","A06","A07","A08"]
-    room_type_valid = df["room_type"].notna() & df["room_type"].isin(["Entire home/apt","Private room"])
+    settings = {**DEFAULT_QA_CONFIG, **(qa_cfg or {})}
+    valid_area = list(settings.get("valid_areas") or DEFAULT_QA_CONFIG["valid_areas"])
+    allowed_rooms = list(settings.get("room_types") or DEFAULT_QA_CONFIG["room_types"])
+    aliases = settings.get("room_aliases") or {}
+    room_series = df["room_type"].astype("string").str.strip()
+    normalized_room = room_series.str.lower().map(aliases).fillna(room_series)
+    room_type_valid = normalized_room.notna() & normalized_room.isin(allowed_rooms)
     analysis_area_valid = df["analysis_area"].isin(valid_area)
     return pd.DataFrame({
         "room_type_valid": room_type_valid,
@@ -476,19 +547,24 @@ def diff_room_type(df1,df2):
     ]
 
 
-def run_qa_listings(df):
+def run_qa_listings(df, qa_cfg=None):
     """Tổng hợp các kiểm tra listings đã chuẩn bị của một mốc.
 
     Trả về dict gồm missing_summary và row_flags, tổng hợp kiểm tra
-    trùng, giá, ràng buộc numeric, danh mục và điểm đánh giá.
+    trùng, giá (IQR theo room_type), ràng buộc numeric, danh mục và điểm đánh giá.
     Các cột cờ giữ index của df; hàm không lọc dòng hoặc lưu file.
     """
+    validate_schema(
+        df,
+        ["listing_id", "price", "minimum_nights", "maximum_nights", "availability_365", "room_type", "analysis_area", "review_scores_rating"],
+        "listings",
+    )
     # 1. Gọi các hàm kiểm tra
     missing_summary = check_missing(df)
     duplicate_flags = check_duplicates(df)
-    price_flags = check_price(df["price"])  # Truyền cột giá, không phải cả df
-    numeric_flags = check_numeric_rules(df)
-    category_flags = check_categories(df)
+    price_flags = check_price(df["price"], qa_cfg=qa_cfg, room_type=df["room_type"])
+    numeric_flags = check_numeric_rules(df, qa_cfg=qa_cfg)
+    category_flags = check_categories(df, qa_cfg=qa_cfg)
     rating_flags = check_rating(df)
     missing_id_flags = missing_listing_id(df)
     duplicate_flags["duplicate_listing"] = (
@@ -497,19 +573,19 @@ def run_qa_listings(df):
     duplicate_flags["duplicate_listing_full_row"] = duplicate_flags["duplicate_full_row"]
     # 2. Ghép các bảng cờ theo chiều ngang
     row_flags = pd.concat(
-        [duplicate_flags , price_flags, numeric_flags, category_flags,rating_flags, missing_id_flags],
-        axis=1
+        [duplicate_flags, price_flags, numeric_flags, category_flags, rating_flags, missing_id_flags],
+        axis=1,
     )
     # 3. Gom kết quả thành report
     report = {
-        "missing_summary":  missing_summary ,
-        "row_flags": row_flags 
+        "missing_summary": missing_summary,
+        "row_flags": row_flags,
     }
 
     return report
 
 
-def process_listings(date, phan_cong, raw_dir, *, processed_dir=None, report_rows=None):
+def process_listings(date, phan_cong, raw_dir, *, processed_dir=None, report_rows=None, qa_cfg=None, long_stay_nights=30):
     """Đọc, chuẩn bị, chạy QA và lưu listings của một mốc.
 
     Trả về listings_clean để reviews và calendar đối chiếu trực tiếp.
@@ -518,6 +594,7 @@ def process_listings(date, phan_cong, raw_dir, *, processed_dir=None, report_row
         raw_dir / date / "listings.csv.gz",
         dtype={"id": "string"},
     )
+    validate_schema(df, ["id", "price", "room_type", "minimum_nights", "maximum_nights", "review_scores_rating"], f"listings ({date})")
     for column in ("neighbourhood_cleansed", "availability_365"):
         if column not in df:
             df[column] = pd.NA
@@ -527,7 +604,7 @@ def process_listings(date, phan_cong, raw_dir, *, processed_dir=None, report_row
             .set_index("listing_id")["analysis_area"]
         )
     prepare = prepare_listings(df,phan_cong,date)
-    report = run_qa_listings(prepare)
+    report = run_qa_listings(prepare, qa_cfg=qa_cfg)
     row_flags = report["row_flags"]
     all_data = pd.concat(
     [
@@ -564,7 +641,7 @@ def process_listings(date, phan_cong, raw_dir, *, processed_dir=None, report_row
             "rating_valid", "missing_price"
         }]
     ].copy()
-    report_table(report_rows, date, "listings", prepare, listings_clean, row_flags)
+    report_table(report_rows, date, "listings", prepare, listings_clean, row_flags, long_stay_nights=long_stay_nights)
     output_dir = (processed_dir if processed_dir is not None else DATA_DIR / "processed") / date
 
     output_dir.mkdir(
@@ -572,14 +649,11 @@ def process_listings(date, phan_cong, raw_dir, *, processed_dir=None, report_row
                 exist_ok=True
             )
 
-            # 7. Lưu file
+    # 7. Lưu file
     listings_clean.to_csv(
                 output_dir / "listings_clean.csv",
                 index = False)
-    print(date)
-    print("Shape:", listings_clean.shape)
-    print("Unique listing:", listings_clean["listing_id"].nunique())
-    print()
+    logging.info("QA listings %s: shape=%s, unique=%d", date, listings_clean.shape, listings_clean["listing_id"].nunique())
     return listings_clean
 
 
@@ -781,11 +855,12 @@ def process_reviews(date, phan_cong, listings_df, *, raw_dir=None,
 
     Dùng listings_df cùng mốc để kiểm tra liên kết, trả về reviews_clean.
     """
-    # 1. Đọc reviews raw
+    # 1. Đọc reviews raw và kiểm tra cấu trúc đầu vào
     raw_reviews = pd.read_csv(
         (raw_dir if raw_dir is not None else RAW_DIR) / date / "reviews.csv.gz",
         dtype={"id": "string", "listing_id": "string"},
     )
+    validate_schema(raw_reviews, ["id", "listing_id", "date", "comments"], f"reviews ({date})")
 
 
     # 3. Lọc reviews thuộc 1000 listings của nhóm
@@ -840,9 +915,6 @@ def process_reviews(date, phan_cong, listings_df, *, raw_dir=None,
     reviews_clean = reviews_clean.rename(
         columns={"date_parsed": "date"}
     )
-    print("Tổng số review:", len(reviews_clean))
-    print("Số listing có review:", reviews_clean["listing_id"].nunique())
-    print("Review ID bị trùng:", reviews_clean["review_id"].duplicated().sum())  
     # 7. Folder output
     report_table(report_rows, date, "reviews", prepared_reviews, reviews_clean, review_flags)
     output_dir = (processed_dir if processed_dir is not None else DATA_DIR / "processed") / date
@@ -855,15 +927,10 @@ def process_reviews(date, phan_cong, listings_df, *, raw_dir=None,
         output_dir / "reviews_clean.csv",
         index=False
     )
-    print("REVIEWS:", date)
-    print("Shape:", reviews_clean.shape)
-    print("Unique review_id:", reviews_clean["review_id"].nunique())
     unmatched = reviews_clean.loc[
         ~reviews_clean["listing_match"], "listing_id"
     ]
-    print("Số listing không match:", unmatched.nunique())
-    print(unmatched.value_counts().head(10))
-    print()
+    logging.info("QA reviews %s: shape=%s, unique=%d, unmatched_listings=%d", date, reviews_clean.shape, reviews_clean["review_id"].nunique(), unmatched.nunique())
     return reviews_clean
 
 
@@ -1145,32 +1212,8 @@ def process_calendar(date, phan_cong, listings_df, *, raw_dir=None,
     clean_calendar = clean_calendar.drop(columns=["available_clean"])
 
     # 9. Check nhanh
-    print("CALENDAR:", date)
-    print("Shape:", calendar_summary.shape)
-    print(
-        "Unique listing:",
-        calendar_summary["listing_id"].nunique()
-    )
-
-    print(
-        "Sai n_available:",
-        (
-            calendar_summary["n_available"]
-            > calendar_summary["n_available_valid"]
-        ).sum()
-    )
-
-    print(
-        "Sai n_available_valid:",
-        (
-            calendar_summary["n_available_valid"]
-            > calendar_summary["n_calendar_days"]
-        ).sum()
-    )
-
-    print()
+    logging.info("QA calendar %s: shape=%s, unique_listings=%d", date, calendar_summary.shape, calendar_summary["listing_id"].nunique())
     return clean_calendar
-
 
 
 # ============================================================================
@@ -1186,7 +1229,7 @@ def process_neighbourhoods(date, raw_dir, processed_dir):
     output_dir.mkdir(parents=True, exist_ok=True)
     output = output_dir / "neighbourhoods_cleansed.geojson"
     shutil.copyfile(source, output)
-    print(f"NEIGHBOURHOODS: {date} -> {output}")
+    logging.info("NEIGHBOURHOODS: %s -> %s", date, output)
     return output
 
 
@@ -1225,7 +1268,7 @@ def add_report_row(report_rows, snapshot, table, rule, checked, flagged, *,
     })
 
 
-def report_table(report_rows, snapshot, table, before, after, flags):
+def report_table(report_rows, snapshot, table, before, after, flags, *, long_stay_nights=30):
     """Tổng hợp cờ gốc, trước khi mất thông tin khi chuyển kiểu/làm sạch.
 
     before là dữ liệu đã lọc theo phân công, chưa chạy QA. after vẫn ở
@@ -1233,8 +1276,12 @@ def report_table(report_rows, snapshot, table, before, after, flags):
     """
     if report_rows is None:
         return
+    active_rule_cols = []
     for rule, definition in RULES.items():
+        if rule == "rows_with_any_flag":
+            continue
         if table in definition["table"].split(",") and rule in flags.columns:
+            active_rule_cols.append(rule)
             add_report_row(
                 report_rows, snapshot, table, rule,
                 checked=len(before), flagged=int(flags[rule].sum()),
@@ -1243,6 +1290,16 @@ def report_table(report_rows, snapshot, table, before, after, flags):
                 note=(f"{definition['condition']}. {definition['action']}. "
                       "Phạm vi: dữ liệu đã lọc theo phân công; giữ các dòng."),
             )
+    if active_rule_cols:
+        any_flag_count = int(flags[active_rule_cols].fillna(False).astype(bool).any(axis=1).sum())
+        add_report_row(
+            report_rows, snapshot, table, "rows_with_any_flag",
+            checked=len(before), flagged=any_flag_count,
+            rows_before=len(before), rows_after=len(after),
+            action="summary_only",
+            note=(f"Số hàng duy nhất có ít nhất 1 cờ QA trong {len(active_rule_cols)} quy tắc của bảng {table} "
+                  "(theo Bài 10 §4: phân biệt số hàng cần xem với tổng lượt gắn cờ)."),
+        )
 
     metrics = [("row_count", len(before), len(after), "Đơn vị: dòng.")]
     if table == "listings":
@@ -1260,9 +1317,9 @@ def report_table(report_rows, snapshot, table, before, after, flags):
         )
         metrics.append((
             "long_stay_share_pct",
-            float(min_before.dropna().ge(30).mean() * 100) if min_before.notna().any() else np.nan,
-            float(min_after.dropna().ge(30).mean() * 100) if min_after.notna().any() else np.nan,
-            "Đơn vị: %. Tỷ lệ listing yêu cầu tối thiểu từ 30 đêm trở lên trước và sau lọc cờ minimum_nights (KPI K4).",
+            float(min_before.dropna().ge(long_stay_nights).mean() * 100) if min_before.notna().any() else np.nan,
+            float(min_after.dropna().ge(long_stay_nights).mean() * 100) if min_after.notna().any() else np.nan,
+            f"Đơn vị: %. Tỷ lệ listing yêu cầu tối thiểu từ {long_stay_nights} đêm trở lên trước và sau lọc cờ minimum_nights (KPI K4).",
         ))
     elif table == "reviews":
         metrics.append((
@@ -1415,15 +1472,18 @@ def export_data_dictionary(listings_df, reviews_df, calendar_df, reports_dir):
         "price_cad": "Giá phòng mỗi đêm đã chuẩn hóa sang số thực",
         "price": "Giá gốc dạng chuỗi trong dữ liệu nguồn",
         "price_valid": "Cờ giá hợp lệ (không thiếu và > 0)",
-        "price_outlier": "Cờ giá ngoại lai theo quy tắc IQR trên giá dương hợp lệ",
+        "price_outlier": "Cờ giá ngoại lai theo quy tắc IQR tính riêng từng room_type kết hợp trần qa.price_max",
         "missing_price": "Cờ thiếu giá niêm yết gốc",
         "wrong_price_type": "Cờ lỗi định dạng giá không chuyển được sang số",
         "invalid_price": "Cờ giá <= 0",
+        "missing_minimum_nights": "Cờ thiếu minimum_nights tách riêng khỏi cờ ngoài miền",
         "minimum_nights": "Số đêm lưu trú tối thiểu",
         "maximum_nights": "Số đêm lưu trú tối đa",
         "availability_365": "Số ngày còn trống trong 365 ngày tới theo bảng listings",
         "number_of_reviews": "Tổng số lượng đánh giá tích lũy của listing",
-        "review_scores_rating": "Điểm đánh giá trung bình của listing [1, 5]",
+        "review_scores_rating": "Điểm đánh giá trung bình của listing [0, 5]",
+        "missing_rating": "Cờ thiếu điểm đánh giá (tách riêng khỏi điểm ngoài miền [0, 5])",
+        "invalid_rating": "Cờ điểm đánh giá không thiếu nhưng nằm ngoài [0, 5]",
         "latitude": "Vĩ độ địa lý của listing",
         "longitude": "Kinh độ địa lý của listing",
         "last_scraped": "Ngày thu thập bản ghi thực tế",
@@ -1461,7 +1521,7 @@ def export_qa_report(report_rows, reports_dir):
     output = reports_dir / "qa_report.csv"
     output.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(report_rows).to_csv(output, index=False, encoding="utf-8-sig")
-    print(f"QA REPORT: {len(report_rows)} dòng -> {output}")
+    logging.info("QA REPORT: %d dòng -> %s", len(report_rows), output)
     return output
 
 
@@ -1481,10 +1541,12 @@ def run(cfg):
     reports_dir = path(cfg, "reports")
     listings = pd.read_csv(cfg["_root"] / cfg["inputs"]["listing_ids"], dtype={"id": "string"})
     reviews = pd.read_csv(cfg["_root"] / cfg["inputs"]["review_ids"], dtype={"id": "string"})
-    phan_cong = pd.DataFrame({
-        "listing_id": listings["id"], "analysis_area": listings["analysis_area"],
-        "review_id": reviews["id"],
-    })
+    areas_path = cfg["_root"] / cfg["inputs"]["areas"]
+    valid_areas = pd.read_csv(areas_path, dtype=str)["area"].dropna().tolist() if areas_path.exists() else DEFAULT_QA_CONFIG["valid_areas"]
+    qa_cfg = {**DEFAULT_QA_CONFIG, **cfg.get("qa", {}), "valid_areas": cfg.get("qa", {}).get("valid_areas", valid_areas)}
+    long_stay_nights = cfg.get("kpi", {}).get("long_stay_nights", 30)
+    listings_assign = listings[["id", "analysis_area"]].rename(columns={"id": "listing_id"}).copy()
+    reviews_assign = reviews[["id"]].rename(columns={"id": "review_id"}).copy()
     snapshots = cfg["snapshots"]
     report_rows = []
     listings_by_snapshot = {}
@@ -1492,15 +1554,16 @@ def run(cfg):
     calendar_blocks = []
     for date in snapshots:
         listings_df = process_listings(
-            date, phan_cong, raw_dir, processed_dir=processed_dir, report_rows=report_rows,
+            date, listings_assign, raw_dir, processed_dir=processed_dir,
+            report_rows=report_rows, qa_cfg=qa_cfg, long_stay_nights=long_stay_nights,
         )
         listings_by_snapshot[date] = listings_df
         reviews_by_snapshot[date] = process_reviews(
-            date, phan_cong, listings_df, raw_dir=raw_dir,
+            date, reviews_assign, listings_df, raw_dir=raw_dir,
             processed_dir=processed_dir, report_rows=report_rows,
         )
         calendar_blocks.append(process_calendar(
-            date, phan_cong, listings_df, raw_dir=raw_dir,
+            date, listings_assign, listings_df, raw_dir=raw_dir,
             processed_dir=processed_dir, report_rows=report_rows,
             chunksize=cfg["io"]["chunksize"],
         ))
@@ -1511,7 +1574,6 @@ def run(cfg):
     report_listing_snapshots(report_rows, listings_by_snapshot)
     report_review_snapshots(report_rows, reviews_by_snapshot)
     export_qa_report(report_rows, reports_dir)
-    export_cross_snapshot_duplicates(listings_by_snapshot, reviews_by_snapshot, reports_dir)
     export_data_dictionary(
         listings_by_snapshot[snapshots[-1]],
         reviews_by_snapshot[snapshots[-1]],

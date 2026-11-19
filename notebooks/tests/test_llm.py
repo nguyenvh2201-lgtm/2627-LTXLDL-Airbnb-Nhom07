@@ -1,10 +1,8 @@
 import json
-import os
 from unittest.mock import Mock
 import pytest
-import pandas as pd
 from src import llm
-from src.download import read, path
+from src.download import read
 
 
 def result(review_id):

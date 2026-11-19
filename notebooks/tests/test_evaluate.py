@@ -2,7 +2,6 @@ import pandas as pd
 import pytest
 from src.evaluate import sentiment_metrics, validate_labels, bootstrap
 from src.baseline import predict
-import json
 
 
 def test_known_metric(cfg):

@@ -1,4 +1,3 @@
-import copy
 import yaml
 import pytest
 from src.download import load_config

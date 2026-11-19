@@ -1,6 +1,5 @@
 """Fixtures tổng hợp chỉ dùng trong kiểm thử, không ghi vào dữ liệu thực."""
 import copy
-import json
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))

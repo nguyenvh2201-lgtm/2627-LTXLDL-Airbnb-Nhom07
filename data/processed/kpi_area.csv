@@ -1297,7 +1297,7 @@ snapshot,area,kpi_id,value,unit,currency,n
 2026-09-16,Flemingdon Park,K4,0.0,%,,2
 2026-09-16,Flemingdon Park,K6,0.0,%,,2
 2026-09-16,Flemingdon Park,K8,0.0,%,,2
-2026-09-16,Forest Hill South,K1,308.8,CAD/đêm,CAD,1
+2026-09-16,Forest Hill South,K1,527.53,CAD/đêm,CAD,2
 2026-09-16,Forest Hill South,K4,0.0,%,,3
 2026-09-16,Forest Hill South,K6,33.33333333333333,%,,3
 2026-09-16,Forest Hill South,K8,0.0,%,,3
@@ -1381,7 +1381,7 @@ snapshot,area,kpi_id,value,unit,currency,n
 2026-09-16,Leaside-Bennington,K4,33.33333333333333,%,,3
 2026-09-16,Leaside-Bennington,K6,0.0,%,,3
 2026-09-16,Leaside-Bennington,K8,0.0,%,,3
-2026-09-16,Little Portugal,K1,173.425,CAD/đêm,CAD,24
+2026-09-16,Little Portugal,K1,168.85,CAD/đêm,CAD,23
 2026-09-16,Little Portugal,K4,24.0,%,,25
 2026-09-16,Little Portugal,K6,4.0,%,,25
 2026-09-16,Little Portugal,K8,32.0,%,,25
@@ -1505,7 +1505,7 @@ snapshot,area,kpi_id,value,unit,currency,n
 2026-09-16,South Parkdale,K4,9.090909090909092,%,,11
 2026-09-16,South Parkdale,K6,0.0,%,,11
 2026-09-16,South Parkdale,K8,18.181818181818183,%,,11
-2026-09-16,South Riverdale,K1,295.0,CAD/đêm,CAD,21
+2026-09-16,South Riverdale,K1,291.25,CAD/đêm,CAD,20
 2026-09-16,South Riverdale,K4,0.0,%,,25
 2026-09-16,South Riverdale,K6,0.0,%,,25
 2026-09-16,South Riverdale,K8,24.0,%,,25
@@ -1545,7 +1545,7 @@ snapshot,area,kpi_id,value,unit,currency,n
 2026-09-16,Trinity-Bellwoods,K4,0.0,%,,26
 2026-09-16,Trinity-Bellwoods,K6,3.8461538461538463,%,,26
 2026-09-16,Trinity-Bellwoods,K8,26.923076923076923,%,,26
-2026-09-16,University,K1,148.85,CAD/đêm,CAD,4
+2026-09-16,University,K1,208.82,CAD/đêm,CAD,5
 2026-09-16,University,K4,16.666666666666664,%,,6
 2026-09-16,University,K6,0.0,%,,6
 2026-09-16,University,K8,0.0,%,,6
@@ -1553,7 +1553,7 @@ snapshot,area,kpi_id,value,unit,currency,n
 2026-09-16,Victoria Village,K4,0.0,%,,3
 2026-09-16,Victoria Village,K6,0.0,%,,3
 2026-09-16,Victoria Village,K8,0.0,%,,3
-2026-09-16,Waterfront Communities-The Island,K1,280.33500000000004,CAD/đêm,CAD,162
+2026-09-16,Waterfront Communities-The Island,K1,279.17,CAD/đêm,CAD,161
 2026-09-16,Waterfront Communities-The Island,K4,13.541666666666666,%,,192
 2026-09-16,Waterfront Communities-The Island,K6,2.072538860103627,%,,193
 2026-09-16,Waterfront Communities-The Island,K8,22.279792746113987,%,,193
