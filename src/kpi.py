@@ -23,6 +23,11 @@ def compute(
     reviews: pd.DataFrame,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Tính K1–K6 và K8. Đầu vào là các bảng sạch sau QA."""
+    if "minimum_nights_valid" in listings:
+        listings = listings.copy()
+        listings["flag_outlier_minimum_nights"] = ~listings[
+            "minimum_nights_valid"
+        ].fillna(False).astype(bool)
     area_rows = []
     time_rows = []
     area_col = cfg["kpi"]["area_col"]
@@ -200,7 +205,8 @@ def definition_rows(cfg: dict) -> list[dict]:
         ("K4", "Tỷ lệ yêu cầu thuê dài hạn",
          "Theo dõi điều kiện tối thiểu",
          f"100*mean(minimum_nights>={cfg['kpi']['long_stay_nights']})", "%",
-         "minimum_nights có giá trị và không bị cờ bất hợp lý"),
+         "minimum_nights_valid=True: số nguyên dương hữu hạn, không min > max "
+         "và không vượt qa.min_nights_cap; mẫu số chỉ gồm các listing đủ điều kiện"),
         ("K5", "Tốc độ review trong mẫu",
          "Mô tả hoạt động mẫu, không suy rộng",
          "review duy nhất/quý / listing duy nhất trong mẫu",

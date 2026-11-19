@@ -85,6 +85,8 @@ def read(cfg: dict, name: str) -> pd.DataFrame:
             frame = frame.rename(columns={"listing_id": "id", "price_cad": "price",
                                           "price_outlier": "flag_outlier_price"})
             frame["price"] = pd.to_numeric(frame["price"], errors="coerce")
+            valid_price = frame["price_valid"].fillna(False).astype(bool) if "price_valid" in frame else frame["price"].gt(0)
+            frame["flag_outlier_price"] = frame["flag_outlier_price"].fillna(False).astype(bool) | ~valid_price
             # Dữ liệu mới có cờ tổng hợp cả thiếu/sai kiểu, ngưỡng và min > max.
             # Giữ khả năng đọc các đầu ra QA cũ chưa có cột này.
             frame["flag_outlier_minimum_nights"] = (

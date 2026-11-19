@@ -217,3 +217,22 @@ theo dõi chúng trước khi nộp, vẫn giữ tệp trên máy để chạy l
 
 Nguồn dữ liệu: Inside Airbnb, CC BY 4.0. URL, SHA256 và thời điểm xác thực
 nằm trong `reports/download_manifest.csv`; file có sẵn không bịa thời điểm tải.
+
+## Báo cáo tác động QA
+
+Bước QA xuất `reports/qa_impact.csv`, so sánh trung vị và trung bình giá
+khi giữ toàn bộ giá hợp lệ với khi loại giá bị cờ `price_outlier` khỏi phép tính.
+Hai phía chỉ dùng giá hữu hạn và > 0; giá thiếu/sai không thuộc mẫu tham chiếu.
+Bảng có kết quả theo mốc, khu vực `kpi.area_col` và loại phòng. Ngưỡng IQR
+vẫn lấy theo loại phòng trong từng mốc, không tính lại theo khu vực.
+
+`n_before`/`n_after` là cỡ mẫu tính giá, `n_excluded` là số giá ngoại lai bị
+loại khỏi phép tính, `n_invalid_or_missing` là số giá không đủ điều kiện ban đầu.
+`n_iqr_uncheckable` là số giá hợp lệ chưa đủ căn cứ xét IQR và vẫn được giữ.
+`delta = value_after - value_before`; `delta_pct = delta / value_before * 100`.
+Nhóm không có giá hợp lệ có kết quả trống; không thay bằng 0. Đây là phép so sánh
+tác động, không xóa dòng khỏi listings và không kết luận giá ngoại lai là sai.
+
+K4 theo vùng và toàn thành phố dùng `minimum_nights_valid` của QA làm điều kiện
+chọn mẫu: số nguyên dương hữu hạn, không min > max và không vượt
+`qa.min_nights_cap`. Listing không đủ điều kiện không thuộc mẫu số K4.

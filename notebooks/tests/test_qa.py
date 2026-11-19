@@ -81,7 +81,9 @@ def test_outlier_and_category_flags():
         allowed_areas=["A01"],
         min_nights_cap=365,
     )["row_flags"]
-    assert bool(flags.loc[3, "price_outlier"])
+    # UNKNOWN chỉ có một giá: chưa đủ căn cứ IQR theo loại phòng.
+    assert not bool(flags.loc[3, "price_iqr_checkable"])
+    assert not bool(flags.loc[3, "price_outlier"])
     assert bool(flags.loc[3, "invalid_minimum_nights"])
     assert bool(flags.loc[3, "category_mismatch"])
 

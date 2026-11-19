@@ -1,5 +1,12 @@
 # Nhật ký sử dụng AI
 
+## Cập nhật QA — 19/11/2026
+
+- Codex hỗ trợ tính IQR theo room_type trong từng mốc, kiểm tra giá hữu hạn,
+  thêm báo cáo qa_impact.csv và đồng bộ điều kiện minimum_nights_valid với K4.
+- Thêm kiểm thử cho ngoại lai theo nhóm, báo cáo tác động và mẫu số K4.
+  Nhóm cần hiểu, kiểm chứng và giải thích các quy tắc, ngưỡng khi vấn đáp.
+
 ## Bổ sung tải GeoJSON trên feature/nguyenvh-login — 12/11/2026
 
 - Theo yêu cầu người dùng sau khi cập nhật nhánh, Codex bổ sung tải

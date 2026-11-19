@@ -72,15 +72,17 @@ RULES = {
     },
     "invalid_price": {
         "table": "listings",
-        "condition": "Giá <= 0",
+        "condition": "Giá numeric không hữu hạn hoặc <= 0",
         "reason": "Giá phòng không hợp lý",
         "action": "Gắn cờ, giữ dữ liệu gốc",
     },
     "price_outlier": {
         "table": "listings",
         "condition": (
-            "Giá dương nằm ngoài [Q1 - 1.5*IQR, Q3 + 1.5*IQR]; "
-            "Q1 và Q3 tính trên các giá dương hợp lệ trong cùng mốc"
+            "Giá dương hữu hạn nằm ngoài [Q1 - 1.5*IQR, Q3 + 1.5*IQR]; "
+            "Q1 và Q3 tính riêng theo room_type trong cùng mốc. "
+            "Chỉ xét nhóm có ít nhất 4 giá hợp lệ và IQR > 0; "
+            "trường hợp không đủ căn cứ có price_iqr_checkable=False"
         ),
         "reason": "Giá khác biệt lớn, cần kiểm tra thêm",
         "action": "Gắn cờ, giữ dữ liệu gốc",
@@ -398,34 +400,44 @@ def clean_price(price):
     return pd.to_numeric(cleaned, errors = "coerce")
 
 
-def check_price(raw_price):
+def check_price(raw_price, room_type):
     """
     Tạo giá numeric và các cờ QA từ Series raw_price của một mốc.
 
-    Trả về price_cad cùng các cờ thiếu giá (mising_price), lỗi chuyển
-    kiểu, giá không dương, giá hợp lệ và ngoại lai, giữ nguyên index.
-    Giá hợp lệ là giá không thiếu và > 0; ngưỡng IQR tính trên nhóm này.
-    Logic hiện tại cũng gắn price_outlierg cho giá numeric bị thiếu.
+    room_type phải có cùng index với raw_price. Giá hợp lệ là giá hữu
+    hạn và > 0. Ngưỡng IQR tính riêng theo loại phòng trong mốc đầu vào.
+    Chọn tối thiểu 4 giá hợp lệ mỗi nhóm để có cơ sở tính tứ phân vị;
+    nhóm ít hơn 4 giá, IQR = 0 hoặc thiếu loại phòng chưa được xét.
+    price_iqr_checkable phân biệt chưa đủ căn cứ với đã xét ngoại lai.
     Hàm không xóa dòng hoặc thay đổi Series giá gốc.
     """
     price = clean_price(raw_price)
-    price_valid = price.notna() & (price > 0)
-
-    valid_prices = price[price_valid]
-    q1 = valid_prices.quantile(0.25)
-    q3 = valid_prices.quantile(0.75)
+    if not raw_price.index.equals(room_type.index):
+        raise ValueError("raw_price và room_type phải có cùng index")
+    price_valid = (price.notna() & np.isfinite(price) & price.gt(0)).fillna(False)
+    invalid_price = (
+        price.notna()
+        & (~np.isfinite(price) | price.le(0))
+    ).fillna(False)
+    groups = room_type.astype("string").str.strip().replace("", pd.NA)
+    grouped_prices = price.where(price_valid).groupby(groups)
+    count = grouped_prices.transform("count")
+    q1 = grouped_prices.transform("quantile", q=0.25)
+    q3 = grouped_prices.transform("quantile", q=0.75)
     iqr = q3 - q1
-    outlier = price_valid & (
+    checkable = (price_valid & count.ge(4) & iqr.gt(0)).fillna(False)
+    outlier = (checkable & (
         (price < q1 - 1.5 * iqr)
         | (price > q3 + 1.5 * iqr)
-    )
+    )).fillna(False)
 
     return pd.DataFrame({
         "price_cad": price,
         "missing_price": raw_price.isna(),
         "wrong_price_type": raw_price.notna() & price.isna(),
-        "invalid_price": price <= 0,
+        "invalid_price": invalid_price,
         "price_valid": price_valid,
+        "price_iqr_checkable": checkable,
         "price_outlier": outlier,
     })
 
@@ -542,7 +554,7 @@ def run_qa_listings(df, allowed_room_types, allowed_areas, min_nights_cap):
     # 1. Gọi các hàm kiểm tra
     missing_summary = check_missing(df)
     duplicate_flags = check_duplicates(df)
-    price_flags = check_price(df["price"])  # Truyền cột giá, không phải cả df
+    price_flags = check_price(df["price"], df["room_type"])
     numeric_flags = check_numeric_rules(df, min_nights_cap)
     category_flags = check_categories(df, allowed_room_types, allowed_areas)
     rating_flags = check_rating(df)
@@ -742,7 +754,10 @@ def check_review_date(reviews_df, listings_df):
         n_dates="nunique", scraped_date="min",
     )
     valid_dates = summary["scraped_date"].where(summary["n_dates"].eq(1))
-    scraped_date = reviews_df["listing_id"].map(valid_dates)
+    # Dict rỗng tránh lỗi map Series datetime rỗng trên pandas/Arrow.
+    scraped_date = pd.to_datetime(
+        reviews_df["listing_id"].map(valid_dates.to_dict()), errors="coerce"
+    )
     conflict = reviews_df["listing_id"].map(summary["n_dates"]).gt(1)
     checkable = review_date.notna() & scraped_date.notna()
     return pd.DataFrame({
@@ -1407,6 +1422,51 @@ def report_review_snapshots(report_rows, reviews_by_snapshot):
             )
 
 
+def price_impact_rows(listings, snapshot, area_col, currency):
+    """Đo tác động giả định loại ngoại lai; không xóa hay sửa dòng nguồn.
+
+    Hai phía dùng cùng giá dương hữu hạn. Chỉ phía sau bỏ price_outlier.
+    Giữ nguyên cờ IQR đã tính theo loại phòng trong cả mốc, không tính
+    lại ngưỡng theo vùng. Nhóm chưa đủ căn cứ xét IQR vẫn được giữ.
+    """
+    rows = []
+    scopes = [("snapshot", "all", listings)]
+    for column in dict.fromkeys([area_col, "room_type"]):
+        scopes.extend(
+            (column, value, group)
+            for value, group in listings.groupby(column, dropna=False)
+        )
+    for scope, value, group in scopes:
+        prices = pd.to_numeric(group["price_cad"], errors="coerce")
+        valid = (prices.notna() & np.isfinite(prices) & prices.gt(0)).fillna(False)
+        excluded = valid & group["price_outlier"].fillna(False).astype(bool)
+        before = prices.loc[valid]
+        after = prices.loc[valid & ~excluded]
+        checkable = valid & group["price_iqr_checkable"].fillna(False).astype(bool)
+        for metric in ("median", "mean"):
+            value_before = getattr(before, metric)() if len(before) else np.nan
+            value_after = getattr(after, metric)() if len(after) else np.nan
+            delta = value_after - value_before
+            rows.append({
+                "snapshot_date": snapshot, "scope": scope, "group": value,
+                "scenario": "exclude_price_outlier", "metric": metric,
+                "currency": currency, "rows_total": len(group),
+                "n_invalid_or_missing": int((~valid).sum()),
+                "n_before": len(before), "n_after": len(after),
+                "n_excluded": int(excluded.sum()),
+                "n_iqr_uncheckable": int((valid & ~checkable).sum()),
+                "value_before": value_before, "value_after": value_after,
+                "delta": delta,
+                "delta_pct": delta / value_before * 100
+                if pd.notna(value_before) and value_before != 0 else np.nan,
+                "note": "So sánh giữ/loại giá bị cờ IQR theo room_type trong cùng mốc; "
+                        "chỉ loại khỏi phép tính giá, không xóa dòng. "
+                        "Giá hợp lệ chưa đủ căn cứ xét IQR vẫn được giữ. "
+                        "Nhóm thiếu giá hợp lệ có metric trống, không thay bằng 0.",
+            })
+    return rows
+
+
 def export_qa_report(report_rows, reports_dir):
     """Xuất một lần sau khi hoàn tất tất cả các mốc và các cặp so sánh."""
     output = reports_dir / "qa_report.csv"
@@ -1438,6 +1498,7 @@ def run(cfg):
     review_assignment = reviews[["id"]].rename(columns={"id": "review_id"})
     snapshots = cfg["snapshots"]
     report_rows = []
+    impact_rows = []
     reviews_by_snapshot = {}
     for date in snapshots:
         listings_df = process_listings(
@@ -1445,6 +1506,9 @@ def run(cfg):
             allowed_room_types=allowed_room_types, allowed_areas=allowed_areas,
             min_nights_cap=cfg["qa"]["min_nights_cap"],
         )
+        impact_rows.extend(price_impact_rows(
+            listings_df, date, cfg["kpi"]["area_col"], cfg["currency"],
+        ))
         reviews_by_snapshot[date] = process_reviews(
             date, review_assignment, listings_df, raw_dir=raw_dir,
             processed_dir=processed_dir, report_rows=report_rows,
@@ -1457,6 +1521,9 @@ def run(cfg):
         process_neighbourhoods(date, raw_dir, processed_dir)
     report_review_snapshots(report_rows, reviews_by_snapshot)
     export_qa_report(report_rows, reports_dir)
+    impact_output = reports_dir / "qa_impact.csv"
+    pd.DataFrame(impact_rows).to_csv(impact_output, index=False, encoding="utf-8-sig")
+    print(f"QA IMPACT: {len(impact_rows)} dòng -> {impact_output}")
 
 
 def main():
