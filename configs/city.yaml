@@ -12,6 +12,10 @@ samples_dir: data/samples
 figures_dir: figures
 reports_dir: reports
 qa:
+  # Trần giá do nhóm cấu hình, đơn vị CAD/đêm; không phải giá lớn nhất tính từ dữ liệu.
+  # qa.run() truyền giá trị này vào check_price(), ghi đè DEFAULT_QA_CONFIG.
+  # Giá > price_max HOẶC ngoài khoảng IQR theo room_type được gắn price_outlier.
+  # Đặt null để bỏ trần cố định và chỉ xét IQR; xóa khóa sẽ dùng mặc định 2000.0.
   price_max: 2000.0
   min_nights_cap: 365
   dedupe_keys:
