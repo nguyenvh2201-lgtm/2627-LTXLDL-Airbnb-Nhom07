@@ -12,6 +12,7 @@ samples_dir: data/samples
 figures_dir: figures
 reports_dir: reports
 qa:
+  # Trần giá phân tích (CAD/đêm); đặt null để chỉ xét IQR theo loại phòng.
   price_max: 2000.0
   min_nights_cap: 365
   dedupe_keys:
@@ -20,6 +21,7 @@ qa:
   accommodates_max: 20
   beds_max: 30
   iqr_multiplier: 1.5
+  iqr_min_group_size: 4
   rare_property_min: 10
   missing_rate_warning: 0.1
   room_types:

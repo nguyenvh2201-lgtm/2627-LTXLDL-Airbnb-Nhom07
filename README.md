@@ -228,7 +228,9 @@ vẫn lấy theo loại phòng trong từng mốc, không tính lại theo khu v
 
 `n_before`/`n_after` là cỡ mẫu tính giá, `n_excluded` là số giá ngoại lai bị
 loại khỏi phép tính, `n_invalid_or_missing` là số giá không đủ điều kiện ban đầu.
-`n_iqr_uncheckable` là số giá hợp lệ chưa đủ căn cứ xét IQR và vẫn được giữ.
+`n_iqr_uncheckable` là số giá hợp lệ chưa đủ căn cứ xét IQR; giữ nếu không vượt trần.
+`n_excluded_iqr` và `n_excluded_cap` đếm riêng hai lý do; có thể chồng nhau,
+không cộng hai số để suy ra số dòng bị loại.
 `delta = value_after - value_before`; `delta_pct = delta / value_before * 100`.
 Nhóm không có giá hợp lệ có kết quả trống; không thay bằng 0. Đây là phép so sánh
 tác động, không xóa dòng khỏi listings và không kết luận giá ngoại lai là sai.
@@ -236,3 +238,21 @@ tác động, không xóa dòng khỏi listings và không kết luận giá ngo
 K4 theo vùng và toàn thành phố dùng `minimum_nights_valid` của QA làm điều kiện
 chọn mẫu: số nguyên dương hữu hạn, không min > max và không vượt
 `qa.min_nights_cap`. Listing không đủ điều kiện không thuộc mẫu số K4.
+
+## Quy tắc QA hợp nhất
+
+- IQR dùng `qa.iqr_multiplier` (1.5) và `qa.iqr_min_group_size` (4).
+  Nhóm ít giá hợp lệ, thiếu/sai loại phòng hoặc IQR=0 không dùng ngưỡng toàn mẫu
+  thay thế. Ngưỡng `price_iqr_low`/`price_iqr_high` được lưu để kiểm tra.
+- `price_outlier_iqr` tách với `price_above_cap`; `price_outlier` là hợp hai cờ.
+  `qa.price_max: null` tắt trần. Giá vượt trần chưa mặc định là dữ liệu sai.
+- Giữ `room_type` gốc, chuẩn hóa trong `room_type_normalized`; danh mục hợp lệ
+  gồm bốn loại phòng, độc lập với các loại thực sự xuất hiện trong mẫu nhóm.
+- Tách điểm thiếu (`missing_rating`) khỏi ngoài miền (`invalid_rating`), giữ
+  miền [0,5] của bản main. Đây là miền kiểm tra của nhóm, cần đối chiếu nguồn
+  khi quyết định cách dùng điểm trong phân tích.
+- Kiểm tra cột bắt buộc; phân công mâu thuẫn bị báo lỗi thay vì nhân bản dòng.
+  Báo cáo thêm số dòng có ít nhất một cờ, thay đổi loại phòng giữa mốc,
+  ID giao nhau giữa mốc và từ điển dữ liệu.
+- Calendar xuất tổng hợp theo listing và `calendar_clean.parquet` cho KPI,
+  tránh xuất thêm CSV chi tiết lớn. Các kiểm tra QA vẫn chạy trên dòng lịch gốc.

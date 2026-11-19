@@ -1,5 +1,31 @@
 # Nhật ký sử dụng AI
 
+## Hợp nhất QA từ main và nhánh QA — 19/11/2026
+
+- Theo yêu cầu của người dùng, Codex đối chiếu `main` tại `b166756` và nhánh
+  `qa/update-processed-data` tại `f4bf7ca`, triển khai bản kết hợp tại `src/qa.py`.
+- Giữ kiểm tra schema, chuẩn hóa loại phòng, tách điểm thiếu/ngoài miền [0,5],
+  báo cáo dòng có cờ, so sánh giữa mốc, từ điển dữ liệu và lưu calendar Parquet
+  từ main. Bổ sung kiểm tra numeric hữu hạn/nguyên, phân biệt thiếu/sai kiểu,
+  cờ số đêm hợp lệ cho K4 và báo cáo tác động giá của nhánh QA.
+- Codex chọn giữ IQR theo nhóm và không fallback ngưỡng toàn mốc khi nhóm nhỏ
+  hoặc IQR=0; hệ số/cỡ nhóm lấy từ config. Trần `price_max` được giữ như main,
+  có thể tắt bằng null, và được gắn cờ riêng với IQR. Nhóm cần xem xét và bảo vệ
+  các lựa chọn này, không coi chúng là kết luận rằng dữ liệu nguồn sai.
+- Kiểm thử phát hiện hai cờ review mới chưa có trong danh sách cột xuất của
+  main; Codex bổ sung vào CSV. Kỳ vọng test ngoại lai được sửa để phân biệt
+  trường hợp không đủ căn cứ IQR nhưng vẫn vượt trần giá.
+- Codex chạy 47 kiểm thử QA/KPI của hai phiên bản và các trường hợp hợp nhất:
+  tất cả đạt trên worktree QA. Đây là kiểm tra do AI chạy, không phải xác nhận
+  thành viên đã tự kiểm chứng.
+- Chạy QA và tính K1–K6/K8 trên bốn mốc dữ liệu thật trong thư mục đầu ra riêng.
+  Đối chiếu K1 theo khu vực với báo cáo tác động, cỡ mẫu và điều kiện hợp lệ K4:
+  khớp. Báo cáo ở `reports/qa_combined/`; dữ liệu kiểm tra ở
+  `tmp/qa-combined-output/processed/`. Không gọi LLM hoặc xác nhận lại toàn bộ
+  biểu đồ/PDF trong lượt này. Chưa push bản hợp nhất.
+
+
+
 ## Cập nhật QA — 19/11/2026
 
 - Codex hỗ trợ tính IQR theo room_type trong từng mốc, kiểm tra giá hữu hạn,
