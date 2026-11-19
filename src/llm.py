@@ -13,7 +13,7 @@ import pandas as pd
 import requests
 if not __package__:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from src.download import read, save, path, csv_report, cli
+from src.download import save, path, csv_report, cli
 
 RESULT_COLUMNS = ["review_id", "sentiment", "aspects_praise", "aspects_complaint", "language", "parse_error", "truncated", "model", "prompt_version"]
 
@@ -54,7 +54,7 @@ def select_sample(cfg: dict) -> pd.DataFrame:
     if limit:
         sample = sample.head(limit)
     save(cfg, sample, "llm_sample")
-    csv_report(cfg, [{"strategy": strategy, "n": len(sample), "seed": cfg["seed"], "source": "reviews_clean, unique id, nonempty comment"}], "llm_sampling.csv")
+    logging.info("Mẫu LLM: strategy=%s, n=%d, seed=%s", strategy, len(sample), cfg["seed"])
     return sample
 
 

@@ -1,8 +1,7 @@
-import json
 import pandas as pd
-from src import download, qa, kpi, llm, baseline, evaluate, viz
+from src import download, qa, kpi, llm, baseline, evaluate, viz, report
 from src.download import run_filter as filter_run
-from src.download import path, read
+from src.download import path
 from notebooks.tools.check_report_numbers import check
 from src.llm import make_label_template as label_template
 
@@ -32,6 +31,7 @@ def test_full_pipeline_with_mock_api(raw_fixture, monkeypatch):
     evaluate.run(cfg)
     kpi.run(cfg)
     viz.run(cfg)
+    report.run(cfg)
     assert check(cfg) > 0
     assert len(pd.read_csv(path(cfg, "reports", "eval_metrics.csv"))) > 20
     assert len(list(path(cfg, "figures").glob("*.png"))) == 11

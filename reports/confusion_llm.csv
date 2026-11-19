@@ -1,5 +1,0 @@
-true_label,positive,mixed,negative,missing_or_error
-positive,89,4,0,0
-mixed,5,1,0,0
-negative,0,0,1,0
-missing_or_error,0,0,0,0

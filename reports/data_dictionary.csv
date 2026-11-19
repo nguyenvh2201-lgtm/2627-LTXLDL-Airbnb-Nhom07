@@ -5,9 +5,9 @@ listings_clean,neighbourhood_cleansed,str,928,0,Tên khu vực hành chính đã
 listings_clean,room_type,str,928,0,"Loại phòng (Entire home/apt, Private room, ...)"
 listings_clean,price_cad,Float64,814,114,Giá phòng mỗi đêm đã chuẩn hóa sang số thực
 listings_clean,price_valid,boolean,928,0,Cờ giá hợp lệ (không thiếu và > 0)
-listings_clean,price_outlier,boolean,928,0,Cờ giá ngoại lai theo quy tắc IQR trên giá dương hợp lệ
+listings_clean,price_outlier,boolean,928,0,Cờ giá ngoại lai theo quy tắc IQR tính riêng từng room_type kết hợp trần qa.price_max
 listings_clean,room_type_valid,bool,928,0,Cột kiểm tra QA / cờ trạng thái (room_type_valid)
-listings_clean,review_scores_rating,float64,907,21,"Điểm đánh giá trung bình của listing [1, 5]"
+listings_clean,review_scores_rating,float64,907,21,"Điểm đánh giá trung bình của listing [0, 5]"
 listings_clean,rating_valid,bool,928,0,Cột kiểm tra QA / cờ trạng thái (rating_valid)
 listings_clean,latitude,float64,928,0,Vĩ độ địa lý của listing
 listings_clean,longitude,float64,928,0,Kinh độ địa lý của listing
@@ -25,13 +25,15 @@ listings_clean,duplicate_listing,bool[pyarrow],928,0,Cột kiểm tra QA / cờ 
 listings_clean,duplicate_listing_full_row,bool,928,0,Cột kiểm tra QA / cờ trạng thái (duplicate_listing_full_row)
 listings_clean,wrong_price_type,bool,928,0,Cờ lỗi định dạng giá không chuyển được sang số
 listings_clean,invalid_price,boolean,814,114,Cờ giá <= 0
+listings_clean,missing_minimum_nights,bool,928,0,Cờ thiếu minimum_nights tách riêng khỏi cờ ngoài miền
 listings_clean,invalid_minimum_nights,bool,928,0,Cột kiểm tra QA / cờ trạng thái (invalid_minimum_nights)
 listings_clean,invalid_maximum_nights,bool,928,0,Cột kiểm tra QA / cờ trạng thái (invalid_maximum_nights)
 listings_clean,min_greater_max,bool,928,0,Cột kiểm tra QA / cờ trạng thái (min_greater_max)
 listings_clean,invalid_availability_365,bool,928,0,Cột kiểm tra QA / cờ trạng thái (invalid_availability_365)
 listings_clean,analysis_area_valid,bool,928,0,Cột kiểm tra QA / cờ trạng thái (analysis_area_valid)
 listings_clean,category_mismatch,bool,928,0,Cột kiểm tra QA / cờ trạng thái (category_mismatch)
-listings_clean,invalid_rating,bool,928,0,Cột kiểm tra QA / cờ trạng thái (invalid_rating)
+listings_clean,missing_rating,bool,928,0,"Cờ thiếu điểm đánh giá (tách riêng khỏi điểm ngoài miền [0, 5])"
+listings_clean,invalid_rating,bool,928,0,"Cờ điểm đánh giá không thiếu nhưng nằm ngoài [0, 5]"
 listings_clean,missing_listing_id,bool[pyarrow],928,0,Cột kiểm tra QA / cờ trạng thái (missing_listing_id)
 reviews_clean,snapshot_date,str,4765,0,Ngày mốc chụp dữ liệu (YYYY-MM-DD)
 reviews_clean,review_id,string,4765,0,Mã định danh đánh giá (chuỗi ký tự)

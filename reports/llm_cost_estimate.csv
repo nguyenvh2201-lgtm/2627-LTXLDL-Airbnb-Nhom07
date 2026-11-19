@@ -1,2 +1,2 @@
 sample_n,mean_input_tokens,mean_output_tokens,token_basis,city_total_reviews,population_source,price_per_m_input,price_per_m_output,price_date,estimated_usd,status
-1000,90.168,81.492,API usage including thinking,729202,"full city reviews at latest snapshot (rows, not summed snapshots)",0.3,2.5,2026-11-11,168.28552924080003,estimated from usage
+1000,72.88325,39.577,chars/4 from cached results; thinking tokens unknown,729202,"full city reviews at latest snapshot (rows, not summed snapshots)",0.3,2.5,2026-11-11,88.09305238495,"scenario estimate, not actual spend"

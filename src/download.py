@@ -48,10 +48,10 @@ def path(cfg: dict, name: str, filename: str = "") -> Path:
 
 
 def setup_logging(cfg: dict) -> None:
-    """Ghi đồng thời console và run_log, không log biến môi trường."""
+    """Ghi log ra console, không log biến môi trường hay tạo run_log.txt phình dung lượng."""
     for name in cfg["paths"]:
         path(cfg, name).mkdir(parents=True, exist_ok=True)
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", handlers=[logging.StreamHandler(), logging.FileHandler(path(cfg, "reports", "run_log.txt"), encoding="utf-8")], force=True)
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", handlers=[logging.StreamHandler()], force=True)
 
 
 def save(cfg: dict, df: pd.DataFrame, name: str) -> None:

@@ -1,2 +1,0 @@
-strategy,n,seed,source
-teacher_flags,1000,42,"reviews_clean, unique id, nonempty comment"

@@ -5,14 +5,13 @@ import logging
 import sys
 from src.download import load_config, setup_logging, path
 
-STEPS = ["download", "qa", "kpi", "llm", "baseline", "evaluate", "kpi", "viz"]
-# Các bước phụ vẫn gọi được riêng dù đã gộp vào bảy mô-đun chính.
+STEPS = ["download", "qa", "kpi", "llm", "baseline", "evaluate", "kpi", "viz", "report"]
+# Các bước phụ vẫn gọi được riêng.
 EXTRA_STEPS = {
     "filter": ("download", "run_filter"),
     "labels": ("llm", "make_label_template"),
     "figures": ("viz", "run_figures"),
-    "summary": ("viz", "run_summary"),
-    "report": ("viz", "run_report"),
+    "summary": ("report", "run_summary"),
 }
 
 

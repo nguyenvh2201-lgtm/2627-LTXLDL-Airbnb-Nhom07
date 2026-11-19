@@ -9,8 +9,8 @@ ROOT = Path(__file__).resolve().parents[2]
 PATTERNS = [re.compile("AIza" + r"(?!1234567890)[A-Za-z0-9_-]{35}"), re.compile("sk-" + r"[A-Za-z0-9_-]{32,}")]
 
 
-def main() -> None:
-    """Kiểm cả working tree văn bản và patch lịch sử Git, chỉ báo đường dẫn."""
+def audit() -> dict:
+    """Kiểm cả working tree văn bản và patch lịch sử Git, trả về kết quả dict."""
     tracked = subprocess.check_output(["git", "ls-files"], cwd=ROOT, text=True).splitlines()
     forbidden = [p for p in tracked if p.startswith(("data/raw/", ".venv/")) or Path(p).name == ".env" or p.endswith(".key")]
     findings = []
@@ -22,10 +22,14 @@ def main() -> None:
     history = subprocess.check_output(["git", "log", "--all", "-p", "--format=commit %H"], cwd=ROOT)
     history_matches = any(pattern.search(history.decode("utf-8", errors="replace")) for pattern in PATTERNS)
     ignored = subprocess.run(["git", "check-ignore", ".env", "data/raw/placeholder", ".venv/placeholder"], cwd=ROOT, capture_output=True, text=True)
-    result = {"forbidden_tracked_files": forbidden, "secret_pattern_paths": findings, "secret_pattern_in_history": history_matches, "ignored_paths": ignored.stdout.splitlines(), "scope": "pattern audit only; not proof no other secret formats exist"}
-    (ROOT / "reports/security_check.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    return {"forbidden_tracked_files": forbidden, "secret_pattern_paths": findings, "secret_pattern_in_history": history_matches, "ignored_paths": ignored.stdout.splitlines(), "scope": "pattern audit only; not proof no other secret formats exist"}
+
+
+def main() -> None:
+    """In kết quả kiểm tra bảo mật ra console."""
+    result = audit()
     print(json.dumps(result, indent=2))
-    if forbidden or findings or history_matches:
+    if result["forbidden_tracked_files"] or result["secret_pattern_paths"] or result["secret_pattern_in_history"]:
         raise SystemExit(1)
 
 

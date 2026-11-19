@@ -5,6 +5,81 @@
     "rendered": "1,000"
   },
   {
+    "key": "listings.2026-09-16.after",
+    "value": 928.0,
+    "rendered": "928"
+  },
+  {
+    "key": "reviews.2025-09-11.after",
+    "value": 5000.0,
+    "rendered": "5,000"
+  },
+  {
+    "key": "kpi_time.K2.min",
+    "value": 41.17737364194615,
+    "rendered": "41.18"
+  },
+  {
+    "key": "kpi_time.K2.max",
+    "value": 43.62164383561644,
+    "rendered": "43.62"
+  },
+  {
+    "key": "kpi_time.K3.first_month_min",
+    "value": 57.64362220058423,
+    "rendered": "57.64"
+  },
+  {
+    "key": "kpi_time.K3.first_month_max",
+    "value": 71.34416543574594,
+    "rendered": "71.34"
+  },
+  {
+    "key": "latest.entire_home_pct",
+    "value": 86.74568965517241,
+    "rendered": "86.75"
+  },
+  {
+    "key": "latest.median_price",
+    "value": 201.07,
+    "rendered": "201.07"
+  },
+  {
+    "key": "latest.valid_price_count",
+    "value": 783.0,
+    "rendered": "783"
+  },
+  {
+    "key": "latest.mean_price_before",
+    "value": 289.0061670761671,
+    "rendered": "289.01"
+  },
+  {
+    "key": "latest.median_price_before",
+    "value": 211.095,
+    "rendered": "211.09"
+  },
+  {
+    "key": "latest.missing_price",
+    "value": 114.0,
+    "rendered": "114"
+  },
+  {
+    "key": "latest.entire_median_price",
+    "value": 232.88,
+    "rendered": "232.88"
+  },
+  {
+    "key": "latest.private_median_price",
+    "value": 90.5,
+    "rendered": "90.5"
+  },
+  {
+    "key": "listings.2025-09-11.after",
+    "value": 1000.0,
+    "rendered": "1,000"
+  },
+  {
     "key": "calendar.2025-09-11.after",
     "value": 365000.0,
     "rendered": "365,000"
@@ -60,18 +135,18 @@
     "rendered": "4,765"
   },
   {
-    "key": "latest.missing_price",
-    "value": 114.0,
-    "rendered": "114"
+    "key": "error.llm_wrong",
+    "value": 9.0,
+    "rendered": "9"
   },
   {
-    "key": "latest.median_price",
-    "value": 201.165,
-    "rendered": "201.16"
+    "key": "error.baseline_wrong",
+    "value": 1.0,
+    "rendered": "1"
   },
   {
     "key": "llm.estimated_cost",
-    "value": 168.28552924080003,
-    "rendered": "168.29"
+    "value": 88.09305238495,
+    "rendered": "88.09"
   }
 ]

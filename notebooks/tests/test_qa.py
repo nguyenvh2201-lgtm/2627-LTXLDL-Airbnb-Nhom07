@@ -1,5 +1,6 @@
 import pandas as pd
-from src.qa import check_available, check_comments, check_duplicate_review, run_qa_listings
+import pytest
+from src.qa import check_available, check_comments, check_duplicate_review, run_qa_listings, check_price, check_rating, validate_schema
 from src.download import read, path, money
 
 
@@ -53,3 +54,22 @@ def test_empty_review_and_duplicate_flags():
     assert bool(comments.loc[0, "comment_empty"])
     assert comments.loc[1, "comment_clean"] == "Good stay"
     assert duplicates.duplicate_id.tolist() == [False, True, True]
+
+
+def test_lecture10_rules_schema_rating_and_room_type_iqr():
+    # 1. Tách riêng giá trị thiếu (missing_rating) và ngoài miền [0, 5] (invalid_rating)
+    ratings = check_rating(pd.DataFrame({"review_scores_rating": [4.8, 6.0, None, -1.0, 0.0]}))
+    assert ratings["missing_rating"].tolist() == [False, False, True, False, False]
+    assert ratings["invalid_rating"].tolist() == [False, True, False, True, False]
+    assert ratings["rating_valid"].tolist() == [True, False, False, False, True]
+
+    # 2. IQR tính riêng theo room_type bắt được giá cao bất thường của Private room
+    prices = pd.Series(["$50", "$55", "$60", "$65", "$250", "$200", "$220", "$240", "$260", "$280"])
+    rooms = pd.Series(["Private room"] * 5 + ["Entire home/apt"] * 5)
+    p_flags = check_price(prices, room_type=rooms)
+    assert bool(p_flags.loc[4, "price_outlier"])
+    assert not bool(p_flags.loc[9, "price_outlier"])
+
+    # 3. Kiểm tra cấu trúc đầu vào báo ValueError khi thiếu cột bắt buộc
+    with pytest.raises(ValueError, match="thiếu cột bắt buộc"):
+        validate_schema(pd.DataFrame({"id": ["1"]}), ["id", "price"], "listings")

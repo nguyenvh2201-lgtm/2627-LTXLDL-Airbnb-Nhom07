@@ -24,7 +24,13 @@ reviews.2026-06-15.after,5000.0,rows,reviews_clean
 reviews.2026-09-16.before,4765.0,rows,reviews_raw_filtered
 reviews.2026-09-16.after,4765.0,rows,reviews_clean
 latest.missing_price,114.0,listings,listings_clean
-latest.median_price,201.165,CAD,listings_clean
+latest.valid_price_count,783.0,listings,listings_clean
+latest.mean_price_before,289.0061670761671,CAD,listings_clean
+latest.median_price_before,211.095,CAD,listings_clean
+latest.median_price,201.07,CAD,listings_clean
+latest.entire_home_pct,86.74568965517241,%,listings_clean
+latest.entire_median_price,232.88,CAD,listings_clean
+latest.private_median_price,90.5,CAD,listings_clean
 kpi_area.0.K4,0.0,%,kpi_area.csv
 kpi_area.1.K6,0.0,%,kpi_area.csv
 kpi_area.2.K8,0.0,%,kpi_area.csv
@@ -1323,7 +1329,7 @@ kpi_area.1294.K1,261.08,CAD/đêm,kpi_area.csv
 kpi_area.1295.K4,0.0,%,kpi_area.csv
 kpi_area.1296.K6,0.0,%,kpi_area.csv
 kpi_area.1297.K8,0.0,%,kpi_area.csv
-kpi_area.1298.K1,308.8,CAD/đêm,kpi_area.csv
+kpi_area.1298.K1,527.53,CAD/đêm,kpi_area.csv
 kpi_area.1299.K4,0.0,%,kpi_area.csv
 kpi_area.1300.K6,33.33333333333333,%,kpi_area.csv
 kpi_area.1301.K8,0.0,%,kpi_area.csv
@@ -1407,7 +1413,7 @@ kpi_area.1378.K1,445.33,CAD/đêm,kpi_area.csv
 kpi_area.1379.K4,33.33333333333333,%,kpi_area.csv
 kpi_area.1380.K6,0.0,%,kpi_area.csv
 kpi_area.1381.K8,0.0,%,kpi_area.csv
-kpi_area.1382.K1,173.425,CAD/đêm,kpi_area.csv
+kpi_area.1382.K1,168.85,CAD/đêm,kpi_area.csv
 kpi_area.1383.K4,24.0,%,kpi_area.csv
 kpi_area.1384.K6,4.0,%,kpi_area.csv
 kpi_area.1385.K8,32.0,%,kpi_area.csv
@@ -1531,7 +1537,7 @@ kpi_area.1502.K1,181.78,CAD/đêm,kpi_area.csv
 kpi_area.1503.K4,9.090909090909092,%,kpi_area.csv
 kpi_area.1504.K6,0.0,%,kpi_area.csv
 kpi_area.1505.K8,18.181818181818183,%,kpi_area.csv
-kpi_area.1506.K1,295.0,CAD/đêm,kpi_area.csv
+kpi_area.1506.K1,291.25,CAD/đêm,kpi_area.csv
 kpi_area.1507.K4,0.0,%,kpi_area.csv
 kpi_area.1508.K6,0.0,%,kpi_area.csv
 kpi_area.1509.K8,24.0,%,kpi_area.csv
@@ -1571,7 +1577,7 @@ kpi_area.1542.K1,225.0,CAD/đêm,kpi_area.csv
 kpi_area.1543.K4,0.0,%,kpi_area.csv
 kpi_area.1544.K6,3.8461538461538463,%,kpi_area.csv
 kpi_area.1545.K8,26.923076923076923,%,kpi_area.csv
-kpi_area.1546.K1,148.85,CAD/đêm,kpi_area.csv
+kpi_area.1546.K1,208.82,CAD/đêm,kpi_area.csv
 kpi_area.1547.K4,16.666666666666664,%,kpi_area.csv
 kpi_area.1548.K6,0.0,%,kpi_area.csv
 kpi_area.1549.K8,0.0,%,kpi_area.csv
@@ -1579,7 +1585,7 @@ kpi_area.1550.K1,322.5,CAD/đêm,kpi_area.csv
 kpi_area.1551.K4,0.0,%,kpi_area.csv
 kpi_area.1552.K6,0.0,%,kpi_area.csv
 kpi_area.1553.K8,0.0,%,kpi_area.csv
-kpi_area.1554.K1,280.33500000000004,CAD/đêm,kpi_area.csv
+kpi_area.1554.K1,279.17,CAD/đêm,kpi_area.csv
 kpi_area.1555.K4,13.541666666666666,%,kpi_area.csv
 kpi_area.1556.K6,2.072538860103627,%,kpi_area.csv
 kpi_area.1557.K8,22.279792746113987,%,kpi_area.csv
@@ -2267,6 +2273,10 @@ kpi_time.111.K6,2.5,%,kpi_time.csv
 kpi_time.112.K2,41.17737364194615,%,kpi_time.csv
 kpi_time.113.K4,10.140237324703344,%,kpi_time.csv
 kpi_time.114.K6,2.2629310344827585,%,kpi_time.csv
+kpi_time.K2.min,41.17737364194615,%,kpi_time.csv
+kpi_time.K2.max,43.62164383561644,%,kpi_time.csv
+kpi_time.K3.first_month_min,57.64362220058423,%,kpi_time.csv
+kpi_time.K3.first_month_max,71.34416543574594,%,kpi_time.csv
 kpi_llm.0.K7_negative,0.0,%,kpi_llm.csv
 kpi_llm.1.K7_aspect,0.9772727272727272,"[-1,1]",kpi_llm.csv
 kpi_llm.2.K7_aspect,0.96,"[-1,1]",kpi_llm.csv
@@ -2454,4 +2464,7 @@ eval.baseline.aspects_complaint.f1_noise,1.0,score,eval_metrics.csv
 eval.baseline.aspects_complaint.f1_safety,1.0,score,eval_metrics.csv
 eval.baseline.language.accuracy,1.0,score,eval_metrics.csv
 eval.llm_minus_baseline.paired_comparison.accuracy_difference,-0.08,score,eval_metrics.csv
-llm.estimated_cost,168.28552924080003,USD,llm_cost_estimate.csv
+llm.estimated_cost,88.09305238495,USD,llm_cost_estimate.csv
+error.total_rows,9.0,reviews,error_analysis.csv
+error.llm_wrong,9.0,reviews,error_analysis.csv
+error.baseline_wrong,1.0,reviews,error_analysis.csv
