@@ -105,3 +105,13 @@ Tệp `lecture_10.py` có phần đầu ghi rõ được xuất tự động t�
 Nhóm nhờ AI hỗ trợ đối chiếu các nguyên tắc trong tài liệu với phần QA của dự án: giữ giá trị gốc khi chuyển kiểu, phân biệt giá trị thiếu và ngoài miền, xét ngoại lai theo nhóm loại phòng, kiểm tra cột bắt buộc và bổ sung test bằng dữ liệu lỗi đã biết. Các nội dung áp dụng được thể hiện trong `src/qa.py` và `notebooks/tests/test_qa.py`. Khai báo này ghi nhận hỗ trợ khi vận dụng bài giảng; không quy nguồn nội dung notebook gốc cho Codex.
 
 Nhóm chịu trách nhiệm kiểm tra mã, cấu hình, nhãn đánh giá và kết quả nộp cuối cùng. Mức khoảng 40% là ước lượng chung về sự hỗ trợ của AI trong toàn bài, bao gồm các phần thuộc `notebooks/`; các nội dung trên mô tả cụ thể phạm vi hỗ trợ, không quy đổi thành tỷ lệ đóng góp riêng cho từng tệp.
+
+
+## Biên tập báo cáo chuyên nghiệp - 20/11/2026
+
+- Công cụ: Codex. Yêu cầu: viết báo cáo chuyên nghiệp dựa trên reports/report.md và các nguyên tắc Bài 12-14.
+- Sản phẩm: reports/report_professional.md; output/pdf/toronto_airbnb_report.pdf; bảy hình riêng trong reports/professional_assets/. Hai script trong notebooks/tools/prepare_professional_report.py và render_professional_report.py giúp dựng lại các hình và PDF. Bản report.md đầu vào được giữ nguyên.
+- AI đối chiếu K1 từ dữ liệu listing, tính lại accuracy/macro-F1 từ dự đoán và gold, kiểm tra độ phủ giá 114+31+783=928; chạy bộ test hiện có đạt 34 passed. Không tải lại raw, không gọi API trong lần biên tập này.
+- Những diễn giải đã chỉnh: tách tổng listing Waterfront (193) khỏi số có giá hợp lệ (161); không khẳng định nguyên nhân thiếu ID là ngừng niêm yết; không suy lịch không khả dụng thành booking. Bổ sung giới hạn gold thuộc 87 listing, độc lập holdout chưa được xác nhận và ngoại lệ mốc chụp trong cấu hình.
+- Lỗi AI thực gặp: mã boxplot ban đầu dùng tham số labels không được phiên bản Matplotlib tại môi trường này chấp nhận. Đã bỏ tham số đó, đặt nhãn bằng set_yticks và dùng orientation; sau đó dựng hình thành công.
+- Kiểm tra tài liệu bằng công cụ: render PDF thành PNG, rà bố cục và nhãn; xác nhận số trang trong giới hạn 10. Việc duyệt nội dung cuối cùng, xác nhận ngoại lệ với giảng viên, thông tin thành viên và commit/tag nộp vẫn thuộc nhóm.
