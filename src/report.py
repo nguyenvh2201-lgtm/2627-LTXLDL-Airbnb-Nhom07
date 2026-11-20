@@ -120,7 +120,10 @@ def run_report(cfg: dict) -> None:
     def add_chart(filename: str, caption: str) -> None:
         target = path(cfg, "figures", filename)
         if target.exists():
-            md.append(f"![{caption}](../figures/{filename})\n\n*Hình: {caption}.*")
+            pdf_name = Path(filename).with_suffix(".pdf").name
+            pdf_target = path(cfg, "figures", pdf_name)
+            pdf_link = f"\n\n[Bản PDF vector](../figures/{pdf_name})" if pdf_target.exists() else ""
+            md.append(f"![{caption}](../figures/{filename})\n\n*Hình: {caption}.*{pdf_link}")
 
     # Thu thập số liệu động từ summary_numbers.csv và các bảng sạch
     city = cfg["city"].title()

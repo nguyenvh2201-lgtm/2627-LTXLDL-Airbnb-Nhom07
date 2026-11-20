@@ -27,9 +27,13 @@ Ba mốc đầu giữ nguyên đủ **1,000** chỗ ở và **5,000** đánh gi�
 
 *Hình: Giá đêm trung vị (K1) tại 12 khu vực có cỡ mẫu lớn nhất, mốc 2026-09-16.*
 
+[Bản PDF vector](../figures/fig_space_02_area_price.pdf)
+
 ![Phân bố không gian theo trung vị giá (201.07 CAD/đêm) và 8 vùng phân tích A01–A08](../figures/fig_space_01_listings_map.png)
 
 *Hình: Phân bố không gian theo trung vị giá (201.07 CAD/đêm) và 8 vùng phân tích A01–A08.*
+
+[Bản PDF vector](../figures/fig_space_01_listings_map.pdf)
 
 ## 3. Tỷ lệ ngày không khả dụng ổn định quanh 41.18%–43.62% và luôn cao nhất ở tháng sát mốc chụp
 
@@ -41,9 +45,13 @@ Ba mốc đầu giữ nguyên đủ **1,000** chỗ ở và **5,000** đánh gi�
 
 *Hình: Tỷ lệ ngày không khả dụng theo tháng lịch (K3) qua 4 mốc chụp.*
 
+[Bản PDF vector](../figures/fig_time_01_occupancy_by_snapshot.pdf)
+
 ![Xu hướng các chỉ số K2, K4 và K6 qua 4 mốc chụp (tách khung chung trục thời gian)](../figures/fig_time_02_kpi_trend.png)
 
 *Hình: Xu hướng các chỉ số K2, K4 và K6 qua 4 mốc chụp (tách khung chung trục thời gian).*
+
+[Bản PDF vector](../figures/fig_time_02_kpi_trend.pdf)
 
 ## 4. Baseline từ điển vượt LLM về phân loại cảm xúc tổng thể, nhưng LLM vượt trội khi trích xuất khía cạnh khen
 
@@ -59,6 +67,8 @@ Trên toàn bộ **1,000/1,000** đánh giá hợp lệ trích xuất bằng `ge
 ![Đối chứng Accuracy và Macro-F1 cảm xúc giữa LLM và Baseline từ điển (bootstrap 95%)](../figures/fig_llm_03_model_vs_baseline.png)
 
 *Hình: Đối chứng Accuracy và Macro-F1 cảm xúc giữa LLM và Baseline từ điển (bootstrap 95%).*
+
+[Bản PDF vector](../figures/fig_llm_03_model_vs_baseline.pdf)
 
 - **So sánh định lượng trên 100 nhãn tay (`hand_labels.csv`):** Ở phân loại cảm xúc (`sentiment`), Baseline đạt Accuracy cao hơn LLM một cách có ý nghĩa thống kê (chênh lệch ghép cặp `llm_minus_baseline` = **-0.0800**, 95% CI `[-0.1400, -0.0300]`; LLM lệch **9** ca, Baseline lệch **1** ca). Toàn bộ **9** ca lệch của LLM đều rơi vào ranh giới `mixed_confusion` giữa `positive` và `mixed` khi khách khen tổng thể nhưng kèm một lưu ý nhẹ.
 - **Thế mạnh và giới hạn ở bài toán khía cạnh:** Ở trích xuất khía cạnh khen (`aspects_praise`), LLM đạt Micro-F1 = **0.8503**, cao hơn rõ rệt so với **0.6934** của Baseline. Ngược lại, ở khía cạnh bị chê (`aspects_complaint`), do tập nhãn tay chỉ có 7/100 review chứa lời chê và LLM hay gắn nhãn chê cho cả các lưu ý thông tin nhẹ, Micro-F1 của LLM đạt **0.3636** so với **0.5333** của Baseline.
@@ -108,4 +118,4 @@ Trên toàn bộ **1,000/1,000** đánh giá hợp lệ trích xuất bằng `ge
 ### Lệnh tái lập và trạng thái bàn giao
 - **Chạy toàn bộ pipeline 1 lệnh:** `python run_pipeline.py --config configs/Toronto.yaml` (dùng `--skip-download --skip-llm` khi kiểm thử ngoại tuyến).
 - **Kiểm tra tự động:** `pytest` (35 bài test), `check_config_swap.py`, `check_report_numbers.py` (đối chiếu tự động mọi con số trong `report.md` với `summary_numbers.csv`), `check_security.py`.
-- **Provenance:** `HEAD` tại lúc xuất báo cáo = `b166756d6d075c3acb9afe9933a99e188f8c159f` (`working_tree_dirty = True`, chưa phải mã commit của tag `final`). Pipeline giữ nguyên tắc không tự động `commit`, `tag` hay `push`.
+- **Provenance:** `HEAD` tại lúc xuất báo cáo = `a031947e09ca1957a9c2e211e88bc8eaa0befcee` (`working_tree_dirty = True`, chưa phải mã commit của tag `final`). Pipeline giữ nguyên tắc không tự động `commit`, `tag` hay `push`.

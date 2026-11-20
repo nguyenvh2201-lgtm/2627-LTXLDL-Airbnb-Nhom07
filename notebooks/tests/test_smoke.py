@@ -34,6 +34,7 @@ def test_full_pipeline_with_mock_api(raw_fixture, monkeypatch):
     report.run(cfg)
     assert check(cfg) > 0
     assert len(pd.read_csv(path(cfg, "reports", "eval_metrics.csv"))) > 20
+    assert len(list(path(cfg, "figures").glob("*.pdf"))) == 11
     assert len(list(path(cfg, "figures").glob("*.png"))) == 11
     for duplicate in ("baseline_results.csv", "llm_results.csv", "kpi_summary.csv"):
         assert not path(cfg, "processed", duplicate).exists()

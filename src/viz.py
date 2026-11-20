@@ -26,6 +26,10 @@ def run_figures(cfg: dict) -> None:
     4. Dạng và màu: thanh ngang cho tên quận dài, bảng màu XANH/CAM nhấn điểm cực đại, điểm nhỏ + alpha cho bản đồ.
     5. Nguồn và diễn giải: ghi nguồn, mốc chụp; không suy diễn quá dữ liệu.
     """
+    # Root logger của pipeline dùng INFO; hai logger thư viện này rất dài khi
+    # nhúng font PDF hoặc nhận chuỗi giống ngày/số nhưng không phải lỗi dữ liệu.
+    logging.getLogger("fontTools").setLevel(logging.WARNING)
+    logging.getLogger("matplotlib.category").setLevel(logging.WARNING)
     plt.rcParams.update({
         "font.family": "DejaVu Sans",
         "font.size": 10,
@@ -33,6 +37,8 @@ def run_figures(cfg: dict) -> None:
         "axes.spines.right": False,
         "axes.grid": True,
         "grid.alpha": 0.25,
+        # Nhúng font TrueType để chữ trong biểu đồ PDF vẫn là vector/searchable.
+        "pdf.fonttype": 42,
     })
     listings = read(cfg, "listings_clean")
     last_snap = cfg["snapshots"][-1]
@@ -44,6 +50,13 @@ def run_figures(cfg: dict) -> None:
     def figure(width=None, height=None):
         return plt.subplots(figsize=(width or cfg["viz"]["width"], height or cfg["viz"]["height"]))
 
+    def save_outputs(fig, filename):
+        """Xuất PDF vector chính và PNG xem trước tương thích Markdown/GitHub."""
+        png_target = path(cfg, "figures", filename).with_suffix(".png")
+        pdf_target = png_target.with_suffix(".pdf")
+        fig.savefig(pdf_target, format="pdf", bbox_inches="tight")
+        fig.savefig(png_target, dpi=cfg["viz"]["dpi"])
+
     def finish(fig, ax, filename, title, xlabel, ylabel, snapshots=None, grid=True, top_pad=1.0):
         ax.set_title(title, loc="left", fontweight="bold", fontsize=10.5, pad=10)
         ax.set_xlabel(xlabel)
@@ -52,7 +65,7 @@ def run_figures(cfg: dict) -> None:
         source = "Nguồn: Inside Airbnb (CC BY 4.0), mốc chụp " + (snapshots or ", ".join(cfg["snapshots"]))
         fig.text(0.98, 0.015, source, ha="right", fontsize=8, color="#555555")
         fig.tight_layout(rect=[0, 0.055, 1, top_pad])
-        fig.savefig(path(cfg, "figures", filename), dpi=cfg["viz"]["dpi"])
+        save_outputs(fig, filename)
         plt.close(fig)
         statuses.append({"figure": filename, "status": "created", "reason": ""})
 
@@ -197,7 +210,7 @@ def run_figures(cfg: dict) -> None:
     source = "Nguồn: Inside Airbnb (CC BY 4.0), mốc chụp " + ", ".join(cfg["snapshots"])
     fig.text(0.98, 0.015, source, ha="right", fontsize=8, color="#555555")
     fig.tight_layout(rect=[0, 0.055, 1, 1])
-    fig.savefig(path(cfg, "figures", "fig_time_02_kpi_trend.png"), dpi=cfg["viz"]["dpi"])
+    save_outputs(fig, "fig_time_02_kpi_trend.png")
     plt.close(fig)
     statuses.append({"figure": "fig_time_02_kpi_trend.png", "status": "created", "reason": ""})
 
@@ -352,8 +365,10 @@ def run_figures(cfg: dict) -> None:
         if row["status"] != "created":
             # Xóa riêng hình sinh tự động đã cũ, tránh đưa nhầm vào báo cáo lần sau.
             target = path(cfg, "figures", row["figure"])
-            if target.exists():
-                target.unlink()
+            for suffix in (".png", ".pdf"):
+                output = target.with_suffix(suffix)
+                if output.exists():
+                    output.unlink()
             logging.warning("Bỏ hình %s: %s", row["figure"], row["reason"])
 
 

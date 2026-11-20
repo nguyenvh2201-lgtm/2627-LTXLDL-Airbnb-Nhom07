@@ -38,8 +38,13 @@ def run(cfg: dict) -> None:
     metrics = pd.read_csv(path(cfg, "reports", "eval_metrics.csv"))
     add("Đánh giá LLM và baseline", bool(len(metrics)), f"{len(metrics)} dòng eval_metrics.csv")
     add("Chi phí có nguồn/giả định", path(cfg, "reports", "llm_cost_estimate.csv").exists(), "llm_cost_estimate.csv; scenario output token, chưa phải chi phí thật")
-    fig_files = list(path(cfg, "figures").glob("fig_*.png"))
-    add("Đủ hình cả ba góc độ", len(fig_files) >= 11, f"{len(fig_files)}/11 hình trong figures/")
+    fig_pdf_files = list(path(cfg, "figures").glob("fig_*.pdf"))
+    fig_png_files = list(path(cfg, "figures").glob("fig_*.png"))
+    add(
+        "Đủ hình PDF cả ba góc độ",
+        len(fig_pdf_files) >= 11,
+        f"{len(fig_pdf_files)}/11 PDF vector; {len(fig_png_files)}/11 PNG xem trước trong figures/",
+    )
     md_report = path(cfg, "reports", "report.md")
     add("Báo cáo Markdown hoàn chỉnh", md_report.exists() and md_report.stat().st_size > 1000, f"reports/report.md ({md_report.stat().st_size if md_report.exists() else 0:,} bytes)")
     pdf_report = path(cfg, "reports", "report.pdf")

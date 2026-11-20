@@ -278,17 +278,17 @@ AI hỗ trợ chọn nguồn dữ liệu, chuẩn bị bảng vẽ, thiết lậ
 
 | Tệp hình | Chi tiết công việc có AI hỗ trợ | Điểm cần nhóm kiểm tra khi đọc hình |
 | --- | --- | --- |
-| `fig_space_01_listings_map.png` | Vẽ vị trí listing và thể hiện thông tin giá theo dữ liệu hợp lệ, điều chỉnh nhãn vùng. | Tọa độ, đơn vị, tập listing và các nhãn có khớp bảng nguồn. |
-| `fig_space_02_area_price.png` | Tổng hợp/biểu diễn giá theo vùng, thống nhất điều kiện giá với KPI. | Không trộn giá ngoại lai đã loại khỏi chỉ số vào nhận xét giá điển hình. |
-| `fig_space_03_area_occupancy.png` | Biểu diễn tỷ lệ không khả dụng theo vùng. | Không diễn giải số ngày khóa lịch thành số đêm chắc chắn đã bán. |
-| `fig_time_01_occupancy_by_snapshot.png` | So sánh tỷ lệ không khả dụng giữa các mốc. | Mỗi mốc là lần quan sát khác nhau; cỡ mẫu cuối kỳ có thể giảm. |
-| `fig_time_02_kpi_trend.png` | Đặt các chỉ số theo thứ tự snapshot, giữ đúng thang đo. | Tỷ lệ, đơn vị tiền và đại lượng đếm phải được phân biệt. |
-| `fig_time_03_reviews_per_quarter.png` | Vẽ review theo quý sau khử trùng ID. | Dữ liệu phản ánh mẫu review được giao, không phải toàn bộ review thành phố. |
-| `fig_llm_01_sentiment_by_area.png` | Tổng hợp phân bố cảm xúc theo vùng từ dự đoán hợp lệ. | Tỷ lệ phải đọc cùng cỡ mẫu và nguồn nhãn dự đoán. |
-| `fig_llm_02_aspects.png` | Đếm hoặc tổng hợp khía cạnh khen/chê từ danh sách nhiều nhãn. | Một review có thể nhắc nhiều khía cạnh; tổng lượt đề cập có thể lớn hơn số review. |
-| `fig_llm_03_model_vs_baseline.png` | Đọc chỉ số đánh giá và thể hiện so sánh theo tác vụ. | Accuracy, macro-F1 và micro-F1 trả lời những câu hỏi khác nhau. |
-| `fig_llm_04_confusion_llm.png` | Dựng ma trận nhầm lẫn Gemini với thứ tự lớp nhất quán. | Đúng chiều nhãn thật/dự đoán và chú ý số mẫu lớp hiếm. |
-| `fig_llm_05_confusion_baseline.png` | Dựng ma trận nhầm lẫn baseline cùng quy ước. | So sánh trên cùng gold, không so hai tập review khác nhau. |
+| `fig_space_01_listings_map.pdf` | Vẽ vị trí listing và thể hiện thông tin giá theo dữ liệu hợp lệ, điều chỉnh nhãn vùng. | Tọa độ, đơn vị, tập listing và các nhãn có khớp bảng nguồn. |
+| `fig_space_02_area_price.pdf` | Tổng hợp/biểu diễn giá theo vùng, thống nhất điều kiện giá với KPI. | Không trộn giá ngoại lai đã loại khỏi chỉ số vào nhận xét giá điển hình. |
+| `fig_space_03_area_occupancy.pdf` | Biểu diễn tỷ lệ không khả dụng theo vùng. | Không diễn giải số ngày khóa lịch thành số đêm chắc chắn đã bán. |
+| `fig_time_01_occupancy_by_snapshot.pdf` | So sánh tỷ lệ không khả dụng giữa các mốc. | Mỗi mốc là lần quan sát khác nhau; cỡ mẫu cuối kỳ có thể giảm. |
+| `fig_time_02_kpi_trend.pdf` | Đặt các chỉ số theo thứ tự snapshot, giữ đúng thang đo. | Tỷ lệ, đơn vị tiền và đại lượng đếm phải được phân biệt. |
+| `fig_time_03_reviews_per_quarter.pdf` | Vẽ review theo quý sau khử trùng ID. | Dữ liệu phản ánh mẫu review được giao, không phải toàn bộ review thành phố. |
+| `fig_llm_01_sentiment_by_area.pdf` | Tổng hợp phân bố cảm xúc theo vùng từ dự đoán hợp lệ. | Tỷ lệ phải đọc cùng cỡ mẫu và nguồn nhãn dự đoán. |
+| `fig_llm_02_aspects.pdf` | Đếm hoặc tổng hợp khía cạnh khen/chê từ danh sách nhiều nhãn. | Một review có thể nhắc nhiều khía cạnh; tổng lượt đề cập có thể lớn hơn số review. |
+| `fig_llm_03_model_vs_baseline.pdf` | Đọc chỉ số đánh giá và thể hiện so sánh theo tác vụ. | Accuracy, macro-F1 và micro-F1 trả lời những câu hỏi khác nhau. |
+| `fig_llm_04_confusion_llm.pdf` | Dựng ma trận nhầm lẫn Gemini với thứ tự lớp nhất quán. | Đúng chiều nhãn thật/dự đoán và chú ý số mẫu lớp hiếm. |
+| `fig_llm_05_confusion_baseline.pdf` | Dựng ma trận nhầm lẫn baseline cùng quy ước. | So sánh trên cùng gold, không so hai tập review khác nhau. |
 
 Nhóm cần kiểm tra ảnh sau khi render: chữ có bị cắt hoặc chồng, chú giải có rõ, giá trị có khớp bảng và hình có hỗ trợ đúng nhận xét hay không. Việc chương trình tạo đủ 11 tệp không tự xác nhận toàn bộ hình đã đạt chất lượng trình bày.
 
