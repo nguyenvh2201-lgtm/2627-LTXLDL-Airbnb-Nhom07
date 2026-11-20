@@ -23,6 +23,6 @@ def check(cfg: dict) -> int:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", default="configs/city.yaml")
+    parser.add_argument("--config", default="configs/Toronto.yaml")
     args = parser.parse_args()
     print("PASS report numbers:", check(load_config(args.config)))

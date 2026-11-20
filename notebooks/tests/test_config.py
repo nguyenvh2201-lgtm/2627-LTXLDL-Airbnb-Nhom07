@@ -5,14 +5,19 @@ from conftest import PROJECT
 
 
 def test_config():
-    cfg = load_config(PROJECT / "configs/city.yaml")
+    cfg = load_config(PROJECT / "configs/Toronto.yaml")
     assert len(cfg["snapshots"]) == 4
     assert cfg["snapshots"] == sorted(cfg["snapshots"])
 
 
+def test_legacy_city_config_name_uses_toronto():
+    cfg = load_config(PROJECT / "configs/city.yaml")
+    assert cfg["_config_path"].name == "Toronto.yaml"
+
+
 @pytest.mark.parametrize("failure", ["missing", "duplicate", "absolute", "invalid_date"])
 def test_bad_config(tmp_path, failure):
-    cfg = yaml.safe_load((PROJECT / "configs/city.yaml").read_text(encoding="utf-8"))
+    cfg = yaml.safe_load((PROJECT / "configs/Toronto.yaml").read_text(encoding="utf-8"))
     if failure == "missing":
         del cfg["currency"]
     elif failure == "duplicate":

@@ -6,10 +6,10 @@ Phân tích thị trường Airbnb Toronto (CAD) qua 4 mốc chụp dữ liệu:
 
 ## 1. Môi trường và Phiên bản Python
 
-- **Phiên bản Python bắt buộc:** Tham chiếu tệp [`.python-version`](file:///.python-version) ghi nhận **Python 3.13.7**.
+- **Phiên bản Python bắt buộc:** Tham chiếu tệp [`.python-version`](.python-version) ghi nhận **Python 3.13.7**.
 - **Hệ điều hành hỗ trợ:** Windows (PowerShell), macOS/Linux (Bash).
 - **Yêu cầu tài nguyên tối thiểu:** RAM ≥ 4 GB, dung lượng đĩa trống ≥ 3 GB (xử lý dữ liệu bảng lịch lớn đọc theo chunk).
-- **Thư viện phụ thuộc:** Đã được khóa phiên bản chính xác tại [`requirements.txt`](file:///requirements.txt) (gồm `pandas`, `pyarrow`, `matplotlib`, `scikit-learn`, `requests`, `reportlab`, `pypdf`, `pytest`, `pyyaml`, `langdetect`).
+- **Thư viện phụ thuộc:** Đã được khóa phiên bản chính xác tại [`requirements.txt`](requirements.txt) (gồm `pandas`, `pyarrow`, `matplotlib`, `scikit-learn`, `requests`, `reportlab`, `pypdf`, `pytest`, `pyyaml`, `langdetect`).
 
 ---
 
@@ -66,43 +66,46 @@ Bước gọi LLM đọc khóa API trực tiếp từ biến môi trường củ
 
 ## 4. Cách Chạy và Quy trình Tái lập Toàn bộ (Quy trình 1 lệnh)
 
-Theo yêu cầu của đề bài, toàn bộ quy trình xử lý dữ liệu từ đầu đến cuối được khởi chạy chỉ bằng **một lệnh duy nhất**:
+Theo yêu cầu của đề bài, toàn bộ quy trình xử lý dữ liệu từ đầu đến cuối được khởi chạy chỉ bằng **một lệnh duy nhất**. `Toronto.yaml` là cấu hình mặc định:
 
 ```powershell
-python run_pipeline.py --config configs/city.yaml
+python run_pipeline.py
 ```
+
+Có thể truyền rõ đường dẫn tương đương bằng `python run_pipeline.py --config configs/Toronto.yaml`. Lệnh cũ dùng `configs/city.yaml` cũng được tự chuyển sang `Toronto.yaml` để tương thích, nhưng tên tệp chuẩn trong repo là `Toronto.yaml`.
 
 Luồng chạy tự động bao gồm 9 công đoạn tuần tự:
 $$\text{download (gồm filter)} \longrightarrow \text{qa} \longrightarrow \text{kpi} \longrightarrow \text{llm} \longrightarrow \text{baseline} \longrightarrow \text{evaluate} \longrightarrow \text{kpi} \longrightarrow \text{viz} \longrightarrow \text{report}$$
 
 > [!NOTE]
-> Bước `kpi` được gọi 2 lần có chủ đích: lần 1 (sau `qa`) tính trước các bảng `kpi_area.csv` và `kpi_time.csv` (K1–K6, K8) ngay cả khi chưa chạy LLM; lần 2 (sau `llm` và `evaluate`) cập nhật bổ sung bảng `kpi_llm.csv` (K7) từ kết quả dự đoán hợp lệ của LLM trước khi bước `viz` dựng biểu đồ và bước `report` xuất báo cáo PDF/Markdown.
+> Bước `kpi` được gọi 2 lần có chủ đích: lần 1 (sau `qa`) tính trước các bảng `kpi_area.csv` và `kpi_time.csv` (K1–K6, K8) ngay cả khi chưa chạy LLM; lần 2 (sau `llm` và `evaluate`) cập nhật bổ sung bảng `kpi_llm.csv` (K7) từ kết quả dự đoán hợp lệ của LLM trước khi bước `viz` dựng biểu đồ và bước `report` cập nhật báo cáo nguồn `reports/report.md`.
 
 ### Các tùy chọn chạy linh hoạt:
-1. **Chạy kiểm thử nhanh toàn bộ (Offline / Không gọi API LLM):**
+1. **Chạy toàn bộ nhưng không gọi API LLM** (vẫn tải dữ liệu thô nếu máy chưa có):
    ```powershell
-   python run_pipeline.py --config configs/city.yaml --skip-llm
+   python run_pipeline.py --config configs/Toronto.yaml --skip-llm
    ```
 2. **Bỏ qua tải lại dữ liệu thô khi đã có sẵn trên đĩa:**
    ```powershell
-   python run_pipeline.py --config configs/city.yaml --skip-download
+   python run_pipeline.py --config configs/Toronto.yaml --skip-download
    ```
+   Tùy chọn này chỉ dùng khi `data/raw/` đã có đủ tệp; trên máy sạch hãy bỏ `--skip-download` để script tải dữ liệu từ Inside Airbnb.
 3. **Chạy từng bước độc lập bằng cờ `--only`:**
    ```powershell
    # Khảo sát ID phân công:
-   python notebooks/tools/inspect_ids.py --config configs/city.yaml
+   python notebooks/tools/inspect_ids.py --config configs/Toronto.yaml
 
    # Chỉ chạy QA làm sạch dữ liệu:
-   python run_pipeline.py --config configs/city.yaml --only qa
+   python run_pipeline.py --config configs/Toronto.yaml --only qa
 
    # Chỉ chạy tính toán 8 KPI:
-   python run_pipeline.py --config configs/city.yaml --only kpi
+   python run_pipeline.py --config configs/Toronto.yaml --only kpi
 
    # Chỉ sinh 11 biểu đồ trực quan vào figures/:
-   python run_pipeline.py --config configs/city.yaml --only viz
+   python run_pipeline.py --config configs/Toronto.yaml --only viz
 
    # Chỉ tổng hợp số liệu và xuất báo cáo Markdown (reports/report.md):
-   python run_pipeline.py --config configs/city.yaml --only report
+   python run_pipeline.py --config configs/Toronto.yaml --only report
    ```
 
 ---
@@ -112,13 +115,13 @@ $$\text{download (gồm filter)} \longrightarrow \text{qa} \longrightarrow \text
 Giảng viên và người chấm có thể tái lập toàn bộ kết quả kiểm thử và đánh giá độc lập bằng bộ công cụ có sẵn trong repo:
 
 ```powershell
-# 1. Chạy toàn bộ bộ bài kiểm thử tự động (33 bài pytest bao gồm mock LLM và pipeline smoke)
-python -m pytest -c notebooks/pytest.ini -q --junitxml=reports/test_results.xml
+# 1. Chạy toàn bộ 35 bài kiểm thử tự động, gồm mock LLM và pipeline smoke
+python -m pytest -c notebooks/pytest.ini -q
 
 # 2. Kiểm tra tính độc lập cấu hình (không hardcode thành phố/mốc ngày trong src/)
 python notebooks/tools/check_config_swap.py
 
-# 3. Kiểm tra tính nhất quán số liệu giữa báo cáo PDF/Markdown và bảng số liệu gốc
+# 3. Kiểm tra tính nhất quán giữa số liệu trong report.md và các bảng nguồn
 python notebooks/tools/check_report_numbers.py
 
 # 4. Kiểm tra bảo mật (không lưu tệp nhạy cảm, không lộ secret key)
@@ -138,7 +141,7 @@ python notebooks/tools/check_submission.py
 ├── requirements.txt         # Danh mục thư viện cố định phiên bản
 ├── run_pipeline.py          # Điểm thực thi 1 lệnh chạy toàn bộ quy trình
 ├── configs/
-│   └── city.yaml            # Tệp cấu hình tham số thành phố, ngưỡng QA, KPI, LLM
+│   └── Toronto.yaml         # Tệp cấu hình tham số thành phố, ngưỡng QA, KPI, LLM
 ├── data/
 │   ├── raw/                 # Dữ liệu Inside Airbnb tải về (đã gitignore)
 │   ├── processed/           # Dữ liệu sạch Parquet, cache LLM (< 50 MB)
@@ -153,7 +156,7 @@ python notebooks/tools/check_submission.py
 │   ├── viz.py               # Chỉ thực hiện vẽ và xuất 11 biểu đồ trực quan vào figures/
 │   └── report.py            # Tổng hợp số liệu, kể chuyện dữ liệu & xuất báo cáo Markdown (report.md)
 ├── figures/                 # Đủ 11 biểu đồ trực quan (Không gian, Thời gian, LLM)
-├── reports/                 # Báo cáo PDF, Markdown, từ điển dữ liệu, checklist
+├── reports/                 # report.pdf bản nộp, report.md nguồn và các bảng kiểm chứng
 ├── AI_USAGE.md              # Báo cáo minh bạch sử dụng AI
 └── README.md
 ```
@@ -162,9 +165,9 @@ python notebooks/tools/check_submission.py
 
 ## 7. Sản phẩm Đầu ra Chính
 
-- **Báo cáo hoàn chỉnh:** [`reports/report.md`](file:///reports/report.md) (theo cấu trúc kể chuyện bằng dữ liệu và thẩm định 4 bước của Bài 14).
-- **Bộ biểu đồ phân tích:** [`figures/`](file:///figures) gồm 11 hình độ phân giải cao theo 3 góc độ:
-  - *Không gian:* Bản đồ phân bố listing, giá theo vùng, tỷ lệ lấp đầy phòng.
-  - *Thời gian:* Biến động công suất theo quý, xu hướng KPI, số lượng đánh giá theo thời gian.
+- **Báo cáo:** `reports/report.pdf` là bản nộp tối đa 10 trang do nhóm hoàn thiện; [`reports/report.md`](reports/report.md) là bản nguồn số liệu và nội dung được pipeline cập nhật.
+- **Bộ biểu đồ phân tích:** [`figures/`](figures/) gồm 11 hình độ phân giải cao theo 3 góc độ:
+  - *Không gian:* Bản đồ phân bố listing, giá theo vùng, tỷ lệ ngày không khả dụng.
+  - *Thời gian:* Biến động tỷ lệ ngày không khả dụng, xu hướng KPI, số lượng đánh giá theo thời gian.
   - *LLM & Đối chứng:* Tỷ lệ cảm xúc theo vùng, phân tích khía cạnh khen/chê, so sánh LLM vs Baseline, ma trận nhầm lẫn.
-- **Báo cáo chất lượng & dữ liệu:** [`reports/qa_report.csv`](file:///reports/qa_report.csv), [`reports/data_dictionary.csv`](file:///reports/data_dictionary.csv), [`reports/eval_metrics.csv`](file:///reports/eval_metrics.csv), [`reports/submission_checklist.csv`](file:///reports/submission_checklist.csv).
+- **Báo cáo chất lượng & dữ liệu:** [`reports/qa_report.csv`](reports/qa_report.csv), [`reports/data_dictionary.csv`](reports/data_dictionary.csv), [`reports/eval_metrics.csv`](reports/eval_metrics.csv), `reports/error_analysis.csv` và `reports/llm_cost_estimate.csv`.

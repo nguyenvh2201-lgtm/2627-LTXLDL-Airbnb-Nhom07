@@ -113,7 +113,7 @@ def inspect_and_export(config_path: Path) -> dict:
 def main() -> None:
     """Chạy khảo sát bằng cấu hình dự án."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", type=Path, default=ROOT / "configs/city.yaml")
+    parser.add_argument("--config", type=Path, default=ROOT / "configs/Toronto.yaml")
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     inspect_and_export(args.config)

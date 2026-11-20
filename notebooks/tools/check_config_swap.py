@@ -12,7 +12,8 @@ def main() -> int:
     issues = []
     for source in (ROOT / "src").glob("*.py"):
         text = source.read_text(encoding="utf-8")
-        if re.search(r"\b20\d{2}-\d{2}-\d{2}\b|\btoronto\b", text, flags=re.I):
+        # Tên tệp cấu hình mặc định không phải thành phố ghi cứng trong xử lý dữ liệu.
+        if re.search(r"\b20\d{2}-\d{2}-\d{2}\b|\btoronto\b(?!\.yaml\b)", text, flags=re.I):
             issues.append(str(source.relative_to(ROOT)))
     if issues:
         print("FAIL hardcoded city/date:", issues)

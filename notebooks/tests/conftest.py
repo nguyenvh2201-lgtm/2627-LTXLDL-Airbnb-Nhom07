@@ -12,7 +12,7 @@ PROJECT = Path(__file__).resolve().parents[2]
 
 @pytest.fixture
 def cfg(tmp_path):
-    config = copy.deepcopy(load_config(PROJECT / "configs/city.yaml"))
+    config = copy.deepcopy(load_config(PROJECT / "configs/Toronto.yaml"))
     config["_root"] = tmp_path
     config["_options"] = {"skip_llm": True, "skip_download": True}
     config["snapshots"] = ["2030-01-01", "2030-04-01", "2030-07-01", "2030-10-01"]

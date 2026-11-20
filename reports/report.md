@@ -106,6 +106,6 @@ Trên toàn bộ **1,000/1,000** đánh giá hợp lệ trích xuất bằng `ge
 | K8 | Listing khả dụng cao có nhiều review | % | mean(availability>=threshold and reviews>=threshold)*100 |
 
 ### Lệnh tái lập và trạng thái bàn giao
-- **Chạy toàn bộ pipeline 1 lệnh:** `python run_pipeline.py --config configs/city.yaml` (dùng `--skip-download --skip-llm` khi kiểm thử ngoại tuyến).
-- **Kiểm tra tự động:** `pytest` (34 bài test), `check_config_swap.py`, `check_report_numbers.py` (đối chiếu tự động mọi con số trong `report.md` với `summary_numbers.csv`), `check_security.py`.
-- **Provenance:** `HEAD` tại lúc xuất báo cáo = `33c0bdb21a5d0bd3ee4a8c2430ab75ce1986a2af` (`working_tree_dirty = True`, chưa phải mã commit của tag `final`). Pipeline giữ nguyên tắc không tự động `commit`, `tag` hay `push`.
+- **Chạy toàn bộ pipeline 1 lệnh:** `python run_pipeline.py --config configs/Toronto.yaml` (dùng `--skip-download --skip-llm` khi kiểm thử ngoại tuyến).
+- **Kiểm tra tự động:** `pytest` (35 bài test), `check_config_swap.py`, `check_report_numbers.py` (đối chiếu tự động mọi con số trong `report.md` với `summary_numbers.csv`), `check_security.py`.
+- **Provenance:** `HEAD` tại lúc xuất báo cáo = `b166756d6d075c3acb9afe9933a99e188f8c159f` (`working_tree_dirty = True`, chưa phải mã commit của tag `final`). Pipeline giữ nguyên tắc không tự động `commit`, `tag` hay `push`.

@@ -42,6 +42,22 @@ def run(cfg: dict) -> None:
     add("Đủ hình cả ba góc độ", len(fig_files) >= 11, f"{len(fig_files)}/11 hình trong figures/")
     md_report = path(cfg, "reports", "report.md")
     add("Báo cáo Markdown hoàn chỉnh", md_report.exists() and md_report.stat().st_size > 1000, f"reports/report.md ({md_report.stat().st_size if md_report.exists() else 0:,} bytes)")
+    pdf_report = path(cfg, "reports", "report.pdf")
+    pdf_pages = 0
+    pdf_error = ""
+    if pdf_report.exists():
+        try:
+            from pypdf import PdfReader
+            from pypdf.errors import PdfReadError
+            pdf_pages = len(PdfReader(str(pdf_report)).pages)
+        except (OSError, ValueError, PdfReadError) as exc:
+            pdf_error = type(exc).__name__
+    max_pages = int(cfg.get("report", {}).get("max_pages", 10))
+    pdf_ok = pdf_report.exists() and 0 < pdf_pages <= max_pages and not pdf_error
+    pdf_evidence = f"reports/report.pdf ({pdf_pages}/{max_pages} trang)" if pdf_report.exists() else "Thiếu reports/report.pdf"
+    if pdf_error:
+        pdf_evidence += f"; không đọc được PDF: {pdf_error}"
+    add("Báo cáo PDF hợp lệ và không quá giới hạn", pdf_ok, pdf_evidence)
     from notebooks.tools.check_security import audit as security_audit
     sec = security_audit()
     add("Mẫu khóa/file nhạy cảm", not any(sec.get(k) for k in ("forbidden_tracked_files", "secret_pattern_paths", "secret_pattern_in_history")), "python notebooks/tools/check_security.py; chỉ kiểm các mẫu được hỗ trợ")
@@ -53,4 +69,4 @@ def run(cfg: dict) -> None:
 
 
 if __name__ == "__main__":
-    run(load_config("configs/city.yaml"))
+    run(load_config("configs/Toronto.yaml"))

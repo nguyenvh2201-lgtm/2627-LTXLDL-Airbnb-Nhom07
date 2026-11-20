@@ -330,8 +330,8 @@ def run_report(cfg: dict) -> None:
     commit, dirty = _git_provenance(cfg["_root"])
     add(
         "### Lệnh tái lập và trạng thái bàn giao\n"
-        "- **Chạy toàn bộ pipeline 1 lệnh:** `python run_pipeline.py --config configs/city.yaml` (dùng `--skip-download --skip-llm` khi kiểm thử ngoại tuyến).\n"
-        "- **Kiểm tra tự động:** `pytest` (34 bài test), `check_config_swap.py`, `check_report_numbers.py` (đối chiếu tự động mọi con số trong `report.md` với `summary_numbers.csv`), `check_security.py`.\n"
+        "- **Chạy toàn bộ pipeline 1 lệnh:** `python run_pipeline.py --config configs/Toronto.yaml` (dùng `--skip-download --skip-llm` khi kiểm thử ngoại tuyến).\n"
+        "- **Kiểm tra tự động:** `pytest` (35 bài test), `check_config_swap.py`, `check_report_numbers.py` (đối chiếu tự động mọi con số trong `report.md` với `summary_numbers.csv`), `check_security.py`.\n"
         f"- **Provenance:** `HEAD` tại lúc xuất báo cáo = `{commit}` (`working_tree_dirty = {dirty}`, chưa phải mã commit của tag `final`). Pipeline giữ nguyên tắc không tự động `commit`, `tag` hay `push`."
     )
 

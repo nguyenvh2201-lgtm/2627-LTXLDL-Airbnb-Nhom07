@@ -227,6 +227,8 @@ data/raw/
 !.env.example
 *.key
 tmp/
+.pytest_tmp/
 reports/report-preview-*.png
 notebooks/.work/
 .vscode/
+/hdan.md

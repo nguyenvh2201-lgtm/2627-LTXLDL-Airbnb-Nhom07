@@ -2,6 +2,7 @@
 import argparse
 import importlib
 import logging
+from pathlib import Path
 import sys
 from src.download import load_config, setup_logging, path
 
@@ -18,7 +19,11 @@ EXTRA_STEPS = {
 def main() -> int:
     """Không che lỗi dữ liệu; thiếu LLM/gold được báo trong từng bước."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", required=True)
+    parser.add_argument(
+        "--config",
+        default=str(Path(__file__).resolve().parent / "configs/Toronto.yaml"),
+        help="Tệp cấu hình (mặc định: configs/Toronto.yaml)",
+    )
     parser.add_argument("--skip-download", action="store_true")
     parser.add_argument("--skip-llm", action="store_true")
     parser.add_argument("--only", help="Tên bước, phân tách dấu phẩy")

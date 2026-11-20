@@ -17,6 +17,11 @@ import yaml
 def load_config(path: str | Path) -> dict:
     """Đường dẫn dữ liệu tính từ thư mục cha của configs, không phụ thuộc cwd."""
     path = Path(path).resolve()
+    if not path.exists() and path.name.lower() == "city.yaml":
+        canonical = path.with_name("Toronto.yaml")
+        if canonical.exists():
+            logging.warning("Cấu hình city.yaml đã đổi tên; tự dùng %s", canonical)
+            path = canonical
     cfg = yaml.safe_load(path.read_text(encoding="utf-8"))
     for key in ("city", "currency", "data_root", "snapshots", "paths", "inputs", "qa", "kpi", "llm", "seed", "io", "download", "evaluation"):
         if key not in cfg:
@@ -117,7 +122,7 @@ def money(series: pd.Series) -> pd.Series:
 def cli(run) -> None:
     """Cho phép python -m src.<bước> --config ... hoặc python src/<bước>.py"""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", default=str(Path(__file__).resolve().parents[1] / "configs/city.yaml"))
+    parser.add_argument("--config", default=str(Path(__file__).resolve().parents[1] / "configs/Toronto.yaml"))
     parser.add_argument("--skip-llm", action="store_true")
     parser.add_argument("--skip-download", action="store_true")
     parser.add_argument("--limit", type=int)
@@ -197,7 +202,31 @@ def run_download(cfg: dict) -> None:
             now = datetime.now(timezone.utc).isoformat()
             records.append({"snapshot": snapshot, "table": table, "url": url, "bytes": source.stat().st_size, "sha256": digest, "downloaded_at_utc": now if downloaded else "", "verified_at_utc": now, "origin": "downloaded" if downloaded else "preexisting_download_time_unknown"})
             logging.info("Đã xác thực %s %s", snapshot, table)
+        download_geojson(cfg, snapshot)
     csv_report(cfg, records, "download_manifest.csv")
+
+
+def download_geojson(cfg: dict, snapshot: str) -> None:
+    """Tải ranh giới khu vực (visualisations/neighbourhoods.geojson) nếu chưa có.
+
+    Tệp này chỉ dùng tham khảo; thiếu tệp không làm dừng pipeline. Khi chạy
+    --skip-download thì không gọi mạng.
+    """
+    dest = path(cfg, "raw", f"{snapshot}/neighbourhoods.geojson")
+    if dest.exists() and dest.stat().st_size > 0:
+        return
+    if cfg.get("_options", {}).get("skip_download"):
+        logging.warning("Thiếu %s và đang --skip-download; bỏ qua ranh giới khu vực", dest)
+        return
+    url = f"{cfg['download']['base_url']}/{cfg['data_root']}/{snapshot}/visualisations/neighbourhoods.geojson"
+    try:
+        with requests.get(url, timeout=cfg["download"]["timeout"], allow_redirects=False) as response:
+            response.raise_for_status()
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_bytes(response.content)
+        logging.info("Đã tải %s", url)
+    except requests.RequestException as exc:
+        logging.warning("Không tải được %s (%s); tiếp tục không có ranh giới khu vực", url, type(exc).__name__)
 
 
 def load_ids(cfg: dict) -> tuple:
