@@ -1,2 +1,2 @@
-sample_n,mean_input_tokens,mean_output_tokens,token_basis,city_total_reviews,population_source,price_per_m_input,price_per_m_output,price_date,estimated_usd,status
-1000,72.88325,39.577,chars/4 from cached results; thinking tokens unknown,729202,"full city reviews at latest snapshot (rows, not summed snapshots)",0.3,2.5,2026-11-11,88.09305238495,"scenario estimate, not actual spend"
+sample_n,mean_input_tokens,mean_output_tokens,token_basis,city_total_reviews,population_source,billing_tier,actual_spend_usd,price_per_m_input,price_per_m_output,price_date,estimated_usd,status
+1000,72.88325,39.577,chars/4 from cached results; thinking tokens unknown,729202,"full city reviews at latest snapshot (rows, not summed snapshots)",Gemini API free tier,0,0.3,2.5,2026-11-11,88.09305238495,"scenario estimate, not actual spend"

@@ -75,6 +75,8 @@ llm:
   price_per_m_input: 0.3
   price_per_m_output: 2.5
   price_date: '2026-11-11'
+  actual_spend_usd: 0
+  billing_tier: Gemini API free tier
   aspect_labels:
     location: vị trí
     cleanliness: sạch sẽ

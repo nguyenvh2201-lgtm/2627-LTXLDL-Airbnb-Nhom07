@@ -2465,6 +2465,7 @@ eval.baseline.aspects_complaint.f1_safety,1.0,score,eval_metrics.csv
 eval.baseline.language.accuracy,1.0,score,eval_metrics.csv
 eval.llm_minus_baseline.paired_comparison.accuracy_difference,-0.08,score,eval_metrics.csv
 llm.estimated_cost,88.09305238495,USD,llm_cost_estimate.csv
+llm.actual_spend,0.0,USD,llm_cost_estimate.csv
 error.total_rows,9.0,reviews,error_analysis.csv
 error.llm_wrong,9.0,reviews,error_analysis.csv
 error.baseline_wrong,1.0,reviews,error_analysis.csv

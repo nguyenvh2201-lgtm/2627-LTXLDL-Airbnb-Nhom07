@@ -75,6 +75,8 @@ def run_summary(cfg: dict) -> None:
                 rows.append({"key": f"eval.{row.method}.{row.task}.{row.metric}", "value": row.value, "unit": "score", "source": filename})
         elif filename == "llm_cost_estimate.csv" and len(frame):
             rows.append({"key": "llm.estimated_cost", "value": frame.estimated_usd.iloc[0], "unit": "USD", "source": filename})
+            if "actual_spend_usd" in frame and pd.notna(frame.actual_spend_usd.iloc[0]):
+                rows.append({"key": "llm.actual_spend", "value": frame.actual_spend_usd.iloc[0], "unit": "USD", "source": filename})
         elif filename == "error_analysis.csv":
             rows.extend([
                 {"key": "error.total_rows", "value": len(frame), "unit": "reviews", "source": filename},
@@ -120,10 +122,7 @@ def run_report(cfg: dict) -> None:
     def add_chart(filename: str, caption: str) -> None:
         target = path(cfg, "figures", filename)
         if target.exists():
-            pdf_name = Path(filename).with_suffix(".pdf").name
-            pdf_target = path(cfg, "figures", pdf_name)
-            pdf_link = f"\n\n[Bản PDF vector](../figures/{pdf_name})" if pdf_target.exists() else ""
-            md.append(f"![{caption}](../figures/{filename})\n\n*Hình: {caption}.*{pdf_link}")
+            md.append(f"**Hình:** [{caption} — mở bản PDF vector](../figures/{filename})")
 
     # Thu thập số liệu động từ summary_numbers.csv và các bảng sạch
     city = cfg["city"].title()
@@ -201,8 +200,8 @@ def run_report(cfg: dict) -> None:
         f"- **Chênh lệch theo cơ cấu loại phòng:** Tại mốc cuối, giá trung vị của chỗ ở nguyên căn đạt **{entire_med} {currency}/đêm**, cao gấp **{room_ratio:.1f} lần** phòng riêng (**{private_med} {currency}/đêm**). Do cơ cấu loại phòng khác nhau giữa các quận, chênh lệch giá trung vị giữa các khu vực chịu tác động đồng thời của cả vị trí và tỷ trọng nguyên căn, không nên diễn giải đơn thuần là hiệu ứng nhân quả của riêng vị trí.\n"
         f"- **Giới hạn về cỡ mẫu và đơn vị không gian:** Dự án dùng hai cấp độ không gian tách biệt: (1) các KPI từ bảng listing/lịch (K1, K2, K4, K6, K8) nhóm theo khu vực hành chính `{cfg['kpi']['area_col']}` — có **{n_areas_k1}** khu có giá ở mốc cuối nhưng tới **{small_areas_k1}** khu có n < 5, chưa đủ cỡ mẫu đại diện nên biểu đồ chỉ xếp hạng 12 khu đông nhất; (2) bản đồ phân bố và K7 (LLM) nhóm theo 8 ô phân tích (`analysis_area` A01–A08, mỗi vùng 110–130 listing) để đảm bảo đủ cỡ mẫu văn bản."
     )
-    add_chart("fig_space_02_area_price.png", f"Giá đêm trung vị (K1) tại 12 khu vực có cỡ mẫu lớn nhất, mốc {last_snap}")
-    add_chart("fig_space_01_listings_map.png", f"Phân bố không gian theo trung vị giá ({med_price} {currency}/đêm) và 8 vùng phân tích A01–A08")
+    add_chart("fig_space_02_area_price.pdf", f"Giá đêm trung vị (K1) tại 12 khu vực có cỡ mẫu lớn nhất, mốc {last_snap}")
+    add_chart("fig_space_01_listings_map.pdf", f"Phân bố không gian theo trung vị giá ({med_price} {currency}/đêm) và 8 vùng phân tích A01–A08")
 
     # =========================================================================
     # MỤC 3: KẾT LUẬN THỜI GIAN & GIỚI HẠN MỐC CHỤP (Bài 14 §2–§3)
@@ -213,8 +212,8 @@ def run_report(cfg: dict) -> None:
         "- **Hoạt động đánh giá theo quý (K5):** Tốc độ đánh giá trong mẫu tăng rõ rệt sau năm 2022 và dao động theo chu kỳ mùa vụ hàng năm.\n"
         "- **Giới hạn diễn giải bắt buộc:** (1) Ngày `available = f` gộp chung cả ngày đã được khách đặt lẫn ngày chủ nhà chủ động khóa lịch, do đó **không được đồng nhất với công suất thuê phòng thực tế hay doanh thu**; (2) Số đánh giá (K5) không phải tổng lượt khách thuê, chỉ tính trên mẫu review được giao, đồng thời tháng biên/quý cuối chưa trọn vẹn số ngày và thiếu đánh giá từ các chỗ ở đã ngừng niêm yết."
     )
-    add_chart("fig_time_01_occupancy_by_snapshot.png", "Tỷ lệ ngày không khả dụng theo tháng lịch (K3) qua 4 mốc chụp")
-    add_chart("fig_time_02_kpi_trend.png", "Xu hướng các chỉ số K2, K4 và K6 qua 4 mốc chụp (tách khung chung trục thời gian)")
+    add_chart("fig_time_01_occupancy_by_snapshot.pdf", "Tỷ lệ ngày không khả dụng theo tháng lịch (K3) qua 4 mốc chụp")
+    add_chart("fig_time_02_kpi_trend.pdf", "Xu hướng các chỉ số K2, K4 và K6 qua 4 mốc chụp (tách khung chung trục thời gian)")
 
     # =========================================================================
     # MỤC 4: PHÂN TÍCH ĐÁNH GIÁ BẰNG LLM & ĐỐI CHỨNG BASELINE (Bài 14 §2–§3)
@@ -239,7 +238,7 @@ def run_report(cfg: dict) -> None:
             [[r.method.upper(), r.metric, f"{r.value:.4f}", f"[{r.ci_low:.4f}, {r.ci_high:.4f}]", int(r.n)] for r in selected.itertuples()],
             ["---", "---", "---:", "---:", "---:"],
         )
-        add_chart("fig_llm_03_model_vs_baseline.png", "Đối chứng Accuracy và Macro-F1 cảm xúc giữa LLM và Baseline từ điển (bootstrap 95%)")
+        add_chart("fig_llm_03_model_vs_baseline.pdf", "Đối chứng Accuracy và Macro-F1 cảm xúc giữa LLM và Baseline từ điển (bootstrap 95%)")
         err_llm = number("error.llm_wrong")
         err_base = number("error.baseline_wrong")
         acc_diff = metrics.loc[metrics.method.eq("llm_minus_baseline") & metrics.metric.eq("accuracy_difference")].iloc[0]
@@ -253,9 +252,7 @@ def run_report(cfg: dict) -> None:
             "- **Giới hạn cỡ mẫu nhãn tay:** Tập đối chứng 100 review lệch lớp mạnh (93 `positive`, 6 `mixed`, 1 `negative`), khiến khoảng tin cậy 95% của Macro-F1 rất rộng (`[0.3139, 0.8070]` với LLM); cần bổ sung thêm mẫu `negative`/`mixed` trước khi đưa ra kết luận khái quát hơn."
         )
     add(
-        f"- **Kịch bản chi phí mở rộng toàn thành phố ({int(cost.city_total_reviews):,} đánh giá tại mốc {last_snap}):** Ước lượng **{number('llm.estimated_cost')} USD** "
-        f"(không phải chi phí đã chi cho mẫu 1.000 review; dựa trên mức đầu ra trung bình {cost.mean_output_tokens} token/review theo `{cost.token_basis}`, "
-        f"đơn giá tham khảo Standard paid tier {cost.price_per_m_input} USD/1M token vào và {cost.price_per_m_output} USD/1M token ra, tra ngày {cost.price_date} tại {cfg['llm'].get('price_source', '')})."
+        f"- **Chi phí API thực tế của dự án: {number('llm.actual_spend')} USD.** Theo xác nhận của nhóm, đúng {len(sample):,} review trong mẫu LLM được xử lý bằng `{cost.billing_tier}` nên không phát sinh thanh toán."
     )
 
     # =========================================================================

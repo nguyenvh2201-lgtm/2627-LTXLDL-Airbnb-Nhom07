@@ -50,12 +50,10 @@ def run_figures(cfg: dict) -> None:
     def figure(width=None, height=None):
         return plt.subplots(figsize=(width or cfg["viz"]["width"], height or cfg["viz"]["height"]))
 
-    def save_outputs(fig, filename):
-        """Xuất PDF vector chính và PNG xem trước tương thích Markdown/GitHub."""
-        png_target = path(cfg, "figures", filename).with_suffix(".png")
-        pdf_target = png_target.with_suffix(".pdf")
+    def save_pdf(fig, filename):
+        """Chỉ xuất biểu đồ ở định dạng PDF vector."""
+        pdf_target = path(cfg, "figures", filename).with_suffix(".pdf")
         fig.savefig(pdf_target, format="pdf", bbox_inches="tight")
-        fig.savefig(png_target, dpi=cfg["viz"]["dpi"])
 
     def finish(fig, ax, filename, title, xlabel, ylabel, snapshots=None, grid=True, top_pad=1.0):
         ax.set_title(title, loc="left", fontweight="bold", fontsize=10.5, pad=10)
@@ -65,7 +63,7 @@ def run_figures(cfg: dict) -> None:
         source = "Nguồn: Inside Airbnb (CC BY 4.0), mốc chụp " + (snapshots or ", ".join(cfg["snapshots"]))
         fig.text(0.98, 0.015, source, ha="right", fontsize=8, color="#555555")
         fig.tight_layout(rect=[0, 0.055, 1, top_pad])
-        save_outputs(fig, filename)
+        save_pdf(fig, filename)
         plt.close(fig)
         statuses.append({"figure": filename, "status": "created", "reason": ""})
 
@@ -114,15 +112,15 @@ def run_figures(cfg: dict) -> None:
     )
     top_areas_str = ", ".join(f"{a} ({v:.0f}%)" for a, v in area_hi.head(2).items()) if len(area_hi) else "trung tâm"
     finish(
-        fig, ax, "fig_space_01_listings_map.png",
+        fig, ax, "fig_space_01_listings_map.pdf",
         f"Chỗ ở trên trung vị ({median_p:,.2f} {cfg['currency']}/đêm, cam) tập trung cao nhất tại {top_areas_str} (n = {len(latest):,})",
         "Kinh độ", "Vĩ độ", last_snap,
     )
 
     # 2 & 3. Thanh ngang xếp hạng K1 và K2 theo khu vực (Bài 12 §3 & Bài 13 §3: barh cho tên quận dài, tô CAM thanh cao nhất, ghi giá trị + cỡ mẫu n)
     for kid, filename, unit in (
-        ("K1", "fig_space_02_area_price.png", f"Giá trung vị ({cfg['currency']}/đêm)"),
-        ("K2", "fig_space_03_area_occupancy.png", "Tỷ lệ ngày không khả dụng (%)"),
+        ("K1", "fig_space_02_area_price.pdf", f"Giá trung vị ({cfg['currency']}/đêm)"),
+        ("K2", "fig_space_03_area_occupancy.pdf", "Tỷ lệ ngày không khả dụng (%)"),
     ):
         data = area.loc[area.kpi_id.eq(kid) & area.snapshot.eq(last_snap)].dropna(subset=["value"])
         data = data.nlargest(12, "n").sort_values("value")
@@ -169,7 +167,7 @@ def run_figures(cfg: dict) -> None:
     ax.set_ylim(0, min(105, float(k3_data.value.max()) * 1.2 if len(k3_data) else 100))
     ax.legend(title="Mốc chụp (Snapshot)", fontsize=8)
     finish(
-        fig, ax, "fig_time_01_occupancy_by_snapshot.png",
+        fig, ax, "fig_time_01_occupancy_by_snapshot.pdf",
         f"Tỷ lệ ngày không khả dụng cao nhất ở tháng ngay sát mốc chụp ({k3_min_s}–{k3_max_s}) rồi giảm dần",
         "Tháng của ngày lịch (tháng biên có thể chưa trọn ngày)",
         "% ngày không khả dụng",
@@ -210,9 +208,9 @@ def run_figures(cfg: dict) -> None:
     source = "Nguồn: Inside Airbnb (CC BY 4.0), mốc chụp " + ", ".join(cfg["snapshots"])
     fig.text(0.98, 0.015, source, ha="right", fontsize=8, color="#555555")
     fig.tight_layout(rect=[0, 0.055, 1, 1])
-    save_outputs(fig, "fig_time_02_kpi_trend.png")
+    save_pdf(fig, "fig_time_02_kpi_trend.pdf")
     plt.close(fig)
-    statuses.append({"figure": "fig_time_02_kpi_trend.png", "status": "created", "reason": ""})
+    statuses.append({"figure": "fig_time_02_kpi_trend.pdf", "status": "created", "reason": ""})
 
     # 6. K5 review theo quý (Bài 12 §2: biểu đồ đường + annotate đỉnh + trục y từ 0)
     fig, ax = figure()
@@ -239,7 +237,7 @@ def run_figures(cfg: dict) -> None:
     peak_q = data.loc[data.value.idxmax(), "period"] if len(data) else ""
     peak_v = float(data.value.max()) if len(data) else 0.0
     finish(
-        fig, ax, "fig_time_03_reviews_per_quarter.png",
+        fig, ax, "fig_time_03_reviews_per_quarter.pdf",
         f"Tốc độ đánh giá mẫu đạt đỉnh vào {peak_q} ({peak_v:.2f} review/listing/quý, n = {n_unique_rev:,} review)",
         f"Quý ({first_q}–{peak_q}; tổng n = {n_unique_rev:,} review duy nhất trên {n_listings_k5:,} listing; quý cuối tính đến 10/09/2025)",
         "Review mẫu / listing / quý",
@@ -277,7 +275,7 @@ def run_figures(cfg: dict) -> None:
         ax.legend(loc="center left", fontsize=8.5, frameon=True)
         pos_min, pos_max = float(grouped["positive"].min()), float(grouped["positive"].max())
         finish(
-            fig, ax, "fig_llm_01_sentiment_by_area.png",
+            fig, ax, "fig_llm_01_sentiment_by_area.pdf",
             f"Cảm xúc tích cực chiếm áp đảo ({pos_min:.1f}%–{pos_max:.1f}%) ở cả {len(grouped)} vùng phân tích (n = {len(valid):,} review)",
             "Tỷ lệ % đánh giá trong từng vùng", "Vùng phân tích (cỡ mẫu n)",
         )
@@ -300,12 +298,12 @@ def run_figures(cfg: dict) -> None:
         ax.legend(loc="lower right", fontsize=8.5)
         top3_praise = ", ".join(f"{idx.split(' (')[0]} ({int(val):,})" for idx, val in counts["Khen (praise)"].iloc[::-1].head(3).items())
         finish(
-            fig, ax, "fig_llm_02_aspects.png",
+            fig, ax, "fig_llm_02_aspects.pdf",
             f"Ba khía cạnh được khen nhiều nhất: {top3_praise} (n = {len(valid):,} review)",
             f"Số lượng đánh giá đề cập khía cạnh (trên n = {len(valid):,} review hợp lệ)", "",
         )
     else:
-        for filename in ("fig_llm_01_sentiment_by_area.png", "fig_llm_02_aspects.png"):
+        for filename in ("fig_llm_01_sentiment_by_area.pdf", "fig_llm_02_aspects.pdf"):
             statuses.append({"figure": filename, "status": "missing", "reason": "Chưa có kết quả LLM thật"})
 
     # 9, 10, 11. So sánh LLM vs Baseline và Ma trận nhầm lẫn (Bài 12 & 13: màu XANH cho LLM, CAM cho Baseline, heatmap Blues tuần tự cho số đếm)
@@ -329,7 +327,7 @@ def run_figures(cfg: dict) -> None:
         base_acc_v = float(selected.loc[selected.method.eq("baseline") & selected.metric.eq("accuracy"), "value"].iloc[0])
         cmp_word = "cao hơn" if base_acc_v >= llm_acc_v else "thấp hơn"
         finish(
-            fig, ax, "fig_llm_03_model_vs_baseline.png",
+            fig, ax, "fig_llm_03_model_vs_baseline.pdf",
             f"Baseline đạt Accuracy cảm xúc ({base_acc_v:.2f}) {cmp_word} LLM ({llm_acc_v:.2f}) trên mẫu nhãn tay (n = {n_gold})",
             f"Phương pháp / Thước đo (khoảng tin cậy bootstrap 95% trên n = {n_gold} review nhãn tay)",
             "Điểm số [0, 1]",
@@ -354,21 +352,19 @@ def run_figures(cfg: dict) -> None:
                     )
             fig.colorbar(image, ax=ax, label="Số lượng đánh giá")
             finish(
-                fig, ax, f"fig_llm_{number_str}_confusion_{method}.png",
+                fig, ax, f"fig_llm_{number_str}_confusion_{method}.pdf",
                 f"Ma trận nhầm lẫn {method.upper()}: khớp {correct_m}/{total_m} nhãn tay (n = {total_m})",
                 "Nhãn dự đoán", "Nhãn tay chuẩn (Gold)", grid=False,
             )
     else:
-        for filename in ("fig_llm_03_model_vs_baseline.png", "fig_llm_04_confusion_llm.png", "fig_llm_05_confusion_baseline.png"):
+        for filename in ("fig_llm_03_model_vs_baseline.pdf", "fig_llm_04_confusion_llm.pdf", "fig_llm_05_confusion_baseline.pdf"):
             statuses.append({"figure": filename, "status": "missing", "reason": "Chưa có nhãn tay để đánh giá"})
     for row in statuses:
         if row["status"] != "created":
             # Xóa riêng hình sinh tự động đã cũ, tránh đưa nhầm vào báo cáo lần sau.
             target = path(cfg, "figures", row["figure"])
-            for suffix in (".png", ".pdf"):
-                output = target.with_suffix(suffix)
-                if output.exists():
-                    output.unlink()
+            if target.exists():
+                target.unlink()
             logging.warning("Bỏ hình %s: %s", row["figure"], row["reason"])
 
 

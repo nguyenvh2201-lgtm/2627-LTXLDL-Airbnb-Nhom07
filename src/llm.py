@@ -224,7 +224,7 @@ def estimate_cost(cfg: dict, sample: pd.DataFrame, results: pd.DataFrame, usage:
     price_in, price_out = settings.get("price_per_m_input"), settings.get("price_per_m_output")
     cost = total * (token_in * price_in + token_out * price_out) / 1e6 if all(v is not None for v in (token_out, price_in, price_out)) else None
     basis = "API usage including thinking" if measured_n else ("chars/4 from cached results; thinking tokens unknown" if len(good) else "input chars/4; output scenario assumption from config, NOT measured; thinking/quota may change cost")
-    csv_report(cfg, [{"sample_n": len(sample), "mean_input_tokens": token_in, "mean_output_tokens": token_out, "token_basis": basis, "city_total_reviews": total, "population_source": source, "price_per_m_input": price_in, "price_per_m_output": price_out, "price_date": settings.get("price_date"), "estimated_usd": cost, "status": ("estimated from usage" if measured_n else "scenario estimate, not actual spend") if cost is not None else "cần điền giá và/hoặc chờ kết quả LLM"}], "llm_cost_estimate.csv")
+    csv_report(cfg, [{"sample_n": len(sample), "mean_input_tokens": token_in, "mean_output_tokens": token_out, "token_basis": basis, "city_total_reviews": total, "population_source": source, "billing_tier": settings.get("billing_tier"), "actual_spend_usd": settings.get("actual_spend_usd"), "price_per_m_input": price_in, "price_per_m_output": price_out, "price_date": settings.get("price_date"), "estimated_usd": cost, "status": ("estimated from usage" if measured_n else "scenario estimate, not actual spend") if cost is not None else "cần điền giá và/hoặc chờ kết quả LLM"}], "llm_cost_estimate.csv")
 
 
 def run(cfg: dict) -> None:

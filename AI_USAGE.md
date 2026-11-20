@@ -373,7 +373,7 @@ Khi ghi vào bảng kết quả, chương trình bổ sung các trường theo d
 
 AI hỗ trợ viết phần ước lượng token và chi phí trong `estimate_cost()`. Khi có usage từ API, chương trình dùng thông tin đó; khi không có và đang dùng kết quả cache, chương trình có nhánh ước lượng dựa trên độ dài ký tự. Hai nguồn này cần được khai báo khác nhau.
 
-Tệp `reports/llm_cost_estimate.csv` hiện ghi cơ sở `chars/4 from cached results; thinking tokens unknown` và trạng thái `scenario estimate, not actual spend`. Vì vậy, số tiền trong tệp là **ước lượng theo kịch bản**, không phải hóa đơn hay xác nhận số tiền tài khoản đã thanh toán. Các giá tham chiếu và ngày tham chiếu được lưu trong cấu hình; cần kiểm tra lại trước một lần chạy có tính phí mới.
+Theo xác nhận của nhóm, dự án dùng **Gemini API free tier** nên chi phí API thực tế cho mẫu 1.000 review là **0 USD**. Tệp `reports/llm_cost_estimate.csv` lưu riêng `billing_tier`, `actual_spend_usd` và kịch bản paid-tier. Giá trị 88,09 USD trong cột `estimated_usd` chỉ là ước lượng giả định nếu mở rộng lên 729.202 review bằng Standard paid tier; đây không phải hóa đơn hay số tiền tài khoản đã thanh toán. Các giá tham chiếu và ngày tham chiếu được lưu trong cấu hình; cần kiểm tra lại trước một lần chạy có tính phí mới.
 
 Tỷ lệ AI hỗ trợ 50% cũng không được suy ra từ tiền API hoặc số token: đây là các đại lượng đo những khía cạnh khác nhau của công việc.
 

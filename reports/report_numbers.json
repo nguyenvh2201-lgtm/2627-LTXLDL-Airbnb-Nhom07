@@ -145,8 +145,8 @@
     "rendered": "1"
   },
   {
-    "key": "llm.estimated_cost",
-    "value": 88.09305238495,
-    "rendered": "88.09"
+    "key": "llm.actual_spend",
+    "value": 0.0,
+    "rendered": "0"
   }
 ]

@@ -23,17 +23,9 @@ Ba mốc đầu giữ nguyên đủ **1,000** chỗ ở và **5,000** đánh gi�
 - **Chênh lệch theo cơ cấu loại phòng:** Tại mốc cuối, giá trung vị của chỗ ở nguyên căn đạt **232.88 CAD/đêm**, cao gấp **2.6 lần** phòng riêng (**90.5 CAD/đêm**). Do cơ cấu loại phòng khác nhau giữa các quận, chênh lệch giá trung vị giữa các khu vực chịu tác động đồng thời của cả vị trí và tỷ trọng nguyên căn, không nên diễn giải đơn thuần là hiệu ứng nhân quả của riêng vị trí.
 - **Giới hạn về cỡ mẫu và đơn vị không gian:** Dự án dùng hai cấp độ không gian tách biệt: (1) các KPI từ bảng listing/lịch (K1, K2, K4, K6, K8) nhóm theo khu vực hành chính `neighbourhood_cleansed` — có **118** khu có giá ở mốc cuối nhưng tới **76** khu có n < 5, chưa đủ cỡ mẫu đại diện nên biểu đồ chỉ xếp hạng 12 khu đông nhất; (2) bản đồ phân bố và K7 (LLM) nhóm theo 8 ô phân tích (`analysis_area` A01–A08, mỗi vùng 110–130 listing) để đảm bảo đủ cỡ mẫu văn bản.
 
-![Giá đêm trung vị (K1) tại 12 khu vực có cỡ mẫu lớn nhất, mốc 2026-09-16](../figures/fig_space_02_area_price.png)
+**Hình:** [Giá đêm trung vị (K1) tại 12 khu vực có cỡ mẫu lớn nhất, mốc 2026-09-16 — mở bản PDF vector](../figures/fig_space_02_area_price.pdf)
 
-*Hình: Giá đêm trung vị (K1) tại 12 khu vực có cỡ mẫu lớn nhất, mốc 2026-09-16.*
-
-[Bản PDF vector](../figures/fig_space_02_area_price.pdf)
-
-![Phân bố không gian theo trung vị giá (201.07 CAD/đêm) và 8 vùng phân tích A01–A08](../figures/fig_space_01_listings_map.png)
-
-*Hình: Phân bố không gian theo trung vị giá (201.07 CAD/đêm) và 8 vùng phân tích A01–A08.*
-
-[Bản PDF vector](../figures/fig_space_01_listings_map.pdf)
+**Hình:** [Phân bố không gian theo trung vị giá (201.07 CAD/đêm) và 8 vùng phân tích A01–A08 — mở bản PDF vector](../figures/fig_space_01_listings_map.pdf)
 
 ## 3. Tỷ lệ ngày không khả dụng ổn định quanh 41.18%–43.62% và luôn cao nhất ở tháng sát mốc chụp
 
@@ -41,17 +33,9 @@ Ba mốc đầu giữ nguyên đủ **1,000** chỗ ở và **5,000** đánh gi�
 - **Hoạt động đánh giá theo quý (K5):** Tốc độ đánh giá trong mẫu tăng rõ rệt sau năm 2022 và dao động theo chu kỳ mùa vụ hàng năm.
 - **Giới hạn diễn giải bắt buộc:** (1) Ngày `available = f` gộp chung cả ngày đã được khách đặt lẫn ngày chủ nhà chủ động khóa lịch, do đó **không được đồng nhất với công suất thuê phòng thực tế hay doanh thu**; (2) Số đánh giá (K5) không phải tổng lượt khách thuê, chỉ tính trên mẫu review được giao, đồng thời tháng biên/quý cuối chưa trọn vẹn số ngày và thiếu đánh giá từ các chỗ ở đã ngừng niêm yết.
 
-![Tỷ lệ ngày không khả dụng theo tháng lịch (K3) qua 4 mốc chụp](../figures/fig_time_01_occupancy_by_snapshot.png)
+**Hình:** [Tỷ lệ ngày không khả dụng theo tháng lịch (K3) qua 4 mốc chụp — mở bản PDF vector](../figures/fig_time_01_occupancy_by_snapshot.pdf)
 
-*Hình: Tỷ lệ ngày không khả dụng theo tháng lịch (K3) qua 4 mốc chụp.*
-
-[Bản PDF vector](../figures/fig_time_01_occupancy_by_snapshot.pdf)
-
-![Xu hướng các chỉ số K2, K4 và K6 qua 4 mốc chụp (tách khung chung trục thời gian)](../figures/fig_time_02_kpi_trend.png)
-
-*Hình: Xu hướng các chỉ số K2, K4 và K6 qua 4 mốc chụp (tách khung chung trục thời gian).*
-
-[Bản PDF vector](../figures/fig_time_02_kpi_trend.pdf)
+**Hình:** [Xu hướng các chỉ số K2, K4 và K6 qua 4 mốc chụp (tách khung chung trục thời gian) — mở bản PDF vector](../figures/fig_time_02_kpi_trend.pdf)
 
 ## 4. Baseline từ điển vượt LLM về phân loại cảm xúc tổng thể, nhưng LLM vượt trội khi trích xuất khía cạnh khen
 
@@ -64,17 +48,13 @@ Trên toàn bộ **1,000/1,000** đánh giá hợp lệ trích xuất bằng `ge
 | BASELINE | accuracy | 0.9900 | [0.9700, 1.0000] | 100 |
 | BASELINE | macro_f1 | 0.9679 | [0.5799, 1.0000] | 100 |
 
-![Đối chứng Accuracy và Macro-F1 cảm xúc giữa LLM và Baseline từ điển (bootstrap 95%)](../figures/fig_llm_03_model_vs_baseline.png)
-
-*Hình: Đối chứng Accuracy và Macro-F1 cảm xúc giữa LLM và Baseline từ điển (bootstrap 95%).*
-
-[Bản PDF vector](../figures/fig_llm_03_model_vs_baseline.pdf)
+**Hình:** [Đối chứng Accuracy và Macro-F1 cảm xúc giữa LLM và Baseline từ điển (bootstrap 95%) — mở bản PDF vector](../figures/fig_llm_03_model_vs_baseline.pdf)
 
 - **So sánh định lượng trên 100 nhãn tay (`hand_labels.csv`):** Ở phân loại cảm xúc (`sentiment`), Baseline đạt Accuracy cao hơn LLM một cách có ý nghĩa thống kê (chênh lệch ghép cặp `llm_minus_baseline` = **-0.0800**, 95% CI `[-0.1400, -0.0300]`; LLM lệch **9** ca, Baseline lệch **1** ca). Toàn bộ **9** ca lệch của LLM đều rơi vào ranh giới `mixed_confusion` giữa `positive` và `mixed` khi khách khen tổng thể nhưng kèm một lưu ý nhẹ.
 - **Thế mạnh và giới hạn ở bài toán khía cạnh:** Ở trích xuất khía cạnh khen (`aspects_praise`), LLM đạt Micro-F1 = **0.8503**, cao hơn rõ rệt so với **0.6934** của Baseline. Ngược lại, ở khía cạnh bị chê (`aspects_complaint`), do tập nhãn tay chỉ có 7/100 review chứa lời chê và LLM hay gắn nhãn chê cho cả các lưu ý thông tin nhẹ, Micro-F1 của LLM đạt **0.3636** so với **0.5333** của Baseline.
 - **Giới hạn cỡ mẫu nhãn tay:** Tập đối chứng 100 review lệch lớp mạnh (93 `positive`, 6 `mixed`, 1 `negative`), khiến khoảng tin cậy 95% của Macro-F1 rất rộng (`[0.3139, 0.8070]` với LLM); cần bổ sung thêm mẫu `negative`/`mixed` trước khi đưa ra kết luận khái quát hơn.
 
-- **Kịch bản chi phí mở rộng toàn thành phố (729,202 đánh giá tại mốc 2026-09-16):** Ước lượng **88.09 USD** (không phải chi phí đã chi cho mẫu 1.000 review; dựa trên mức đầu ra trung bình 39.577 token/review theo `chars/4 from cached results; thinking tokens unknown`, đơn giá tham khảo Standard paid tier 0.3 USD/1M token vào và 2.5 USD/1M token ra, tra ngày 2026-11-11 tại https://ai.google.dev/gemini-api/docs/pricing).
+- **Chi phí API thực tế của dự án: 0 USD.** Theo xác nhận của nhóm, đúng 1,000 review trong mẫu LLM được xử lý bằng `Gemini API free tier` nên không phát sinh thanh toán.
 
 ## 5. Thẩm định (Audit) nhận định phân tích theo quy trình 4 bước (Bài 14)
 
@@ -118,4 +98,4 @@ Trên toàn bộ **1,000/1,000** đánh giá hợp lệ trích xuất bằng `ge
 ### Lệnh tái lập và trạng thái bàn giao
 - **Chạy toàn bộ pipeline 1 lệnh:** `python run_pipeline.py --config configs/Toronto.yaml` (dùng `--skip-download --skip-llm` khi kiểm thử ngoại tuyến).
 - **Kiểm tra tự động:** `pytest` (35 bài test), `check_config_swap.py`, `check_report_numbers.py` (đối chiếu tự động mọi con số trong `report.md` với `summary_numbers.csv`), `check_security.py`.
-- **Provenance:** `HEAD` tại lúc xuất báo cáo = `a031947e09ca1957a9c2e211e88bc8eaa0befcee` (`working_tree_dirty = True`, chưa phải mã commit của tag `final`). Pipeline giữ nguyên tắc không tự động `commit`, `tag` hay `push`.
+- **Provenance:** `HEAD` tại lúc xuất báo cáo = `2215a69df40f3c83b09197ce8e8ff26d21681209` (`working_tree_dirty = True`, chưa phải mã commit của tag `final`). Pipeline giữ nguyên tắc không tự động `commit`, `tag` hay `push`.

@@ -153,9 +153,9 @@ python notebooks/tools/check_submission.py
 │   ├── llm.py               # Gọi Gemini API, JSON schema, xử lý batch & cache
 │   ├── baseline.py          # Mô hình đối chứng từ điển đa ngôn ngữ (en/fr/es/pt)
 │   ├── evaluate.py          # Đánh giá Accuracy/F1, ma trận nhầm lẫn, phân tích lỗi
-│   ├── viz.py               # Xuất 11 biểu đồ PDF vector, kèm PNG xem trước vào figures/
+│   ├── viz.py               # Chỉ xuất 11 biểu đồ PDF vector vào figures/
 │   └── report.py            # Tổng hợp số liệu, kể chuyện dữ liệu & xuất báo cáo Markdown (report.md)
-├── figures/                 # Đủ 11 biểu đồ trực quan (Không gian, Thời gian, LLM)
+├── figures/                 # Đủ 11 biểu đồ PDF (Không gian, Thời gian, LLM)
 ├── reports/                 # report.pdf bản nộp, report.md nguồn và các bảng kiểm chứng
 ├── AI_USAGE.md              # Báo cáo minh bạch sử dụng AI
 └── README.md
@@ -166,7 +166,7 @@ python notebooks/tools/check_submission.py
 ## 7. Sản phẩm Đầu ra Chính
 
 - **Báo cáo:** `reports/report.pdf` là bản nộp tối đa 10 trang do nhóm hoàn thiện; [`reports/report.md`](reports/report.md) là bản nguồn số liệu và nội dung được pipeline cập nhật.
-- **Bộ biểu đồ phân tích:** [`figures/`](figures/) gồm 11 biểu đồ **PDF vector** để đưa vào báo cáo, kèm PNG xem trước tương thích Markdown/GitHub, theo 3 góc độ:
+- **Bộ biểu đồ phân tích:** [`figures/`](figures/) gồm 11 biểu đồ **PDF vector** để đưa vào báo cáo, theo 3 góc độ:
   - *Không gian:* Bản đồ phân bố listing, giá theo vùng, tỷ lệ ngày không khả dụng.
   - *Thời gian:* Biến động tỷ lệ ngày không khả dụng, xu hướng KPI, số lượng đánh giá theo thời gian.
   - *LLM & Đối chứng:* Tỷ lệ cảm xúc theo vùng, phân tích khía cạnh khen/chê, so sánh LLM vs Baseline, ma trận nhầm lẫn.
