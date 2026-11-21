@@ -21,7 +21,7 @@ Ba mốc đầu giữ nguyên đủ **1,000** chỗ ở và **5,000** đánh gi�
 
 - **Chênh lệch giá theo khu vực (K1):** Trong 12 khu vực có cỡ mẫu giá hợp lệ lớn nhất tại mốc 2026-09-16, **Niagara** có giá trung vị cao nhất (**336.12 CAD/đêm**, n = 32), gấp **2.6 lần** Dovercourt-Wallace Emerson-Junction (128.61 CAD/đêm, n = 24). Ba khu vực có số lượng chỗ ở có giá hợp lệ lớn nhất là **Waterfront Communities-The Island** (n = 161), **Niagara** (n = 32) và **Annex** (n = 30); đây là số lượng trong mẫu, không phải mật độ theo diện tích.
 - **Chênh lệch theo cơ cấu loại phòng:** Tại mốc cuối, giá trung vị của chỗ ở nguyên căn đạt **232.88 CAD/đêm**, cao gấp **2.6 lần** phòng riêng (**90.5 CAD/đêm**). Do cơ cấu loại phòng khác nhau giữa các khu vực, chênh lệch giá trung vị chịu tác động đồng thời của vị trí và tỷ trọng nguyên căn, không nên diễn giải thành hiệu ứng nhân quả của riêng vị trí.
-- **Giới hạn về cỡ mẫu và đơn vị không gian:** Các KPI K1, K2, K4, K6 và K8 nhóm theo `neighbourhood_cleansed`; có **123** khu vực có giá hợp lệ ở mốc cuối nhưng **81** khu vực có n < 5, nên biểu đồ chỉ xếp hạng 12 khu vực có cỡ mẫu lớn nhất. Bản đồ và K7 dùng 8 vùng `analysis_area` A01–A08.
+- **Giới hạn về cỡ mẫu và đơn vị không gian:** Các KPI K1, K2, K4, K6 và K8 nhóm theo `neighbourhood_cleansed`; có **118** khu vực có giá hợp lệ sau khi loại giá ngoại lai ở mốc cuối, trong đó **76** khu vực có n < 5, nên biểu đồ chỉ xếp hạng 12 khu vực có cỡ mẫu lớn nhất. Bản đồ và K7 dùng 8 vùng `analysis_area` A01–A08.
 
 **Hình:** [Giá đêm trung vị (K1) tại 12 khu vực có cỡ mẫu lớn nhất, mốc 2026-09-16 — mở bản PDF vector](../figures/fig_space_02_area_price.pdf)
 
@@ -64,7 +64,7 @@ Bản nháp gồm năm nhận định được Codex tạo trong phiên ngày 21
 | 1. 86.75% chỗ ở là nguyên căn, chứng tỏ tiềm năng dòng tiền đầu tư lớn. | Đúng | Đúng | Sai: suy diễn doanh thu/dòng tiền từ số lượng listing. | **Sửa:** Mốc 2026-09-16 có 928 chỗ ở trong mẫu, trong đó 86.75% là nguyên căn (không có dữ liệu doanh thu). |
 | 2. Giá trung bình (289.01 CAD) cao hơn trung vị (201.07 CAD) chứng minh thị trường siêu sang. | Đúng | Lệch: trung bình bị kéo bởi vài ngoại lai cực đoan. | Quá mức: dùng từ 'chứng minh'. | **Sửa:** Phân phối giá lệch phải; báo cáo dùng trung vị sau lọc IQR (**201.07 CAD/đêm**, n = 783) để phản ánh mức giá điển hình. |
 | 3. Tỷ lệ không khả dụng 41.18%–43.62% cho thấy công suất lấp đầy khách luôn vượt 41%. | Đúng | Sai: gộp ngày chủ nhà khóa lịch với ngày đã đặt. | Sai: đồng nhất `available=f` với lượt đặt phòng. | **Chưa đủ căn cứ** kết luận công suất thuê; chỉ ghi nhận tỷ lệ ngày không khả dụng trên lịch. |
-| 4. Dovercourt-Wallace Emerson-Junction rẻ hơn Niagara là do kém hấp dẫn về vị trí. | Đúng | Thiếu: chưa kiểm soát cơ cấu loại phòng; 81/123 khu có n < 5. | Sai: suy diễn nhân quả đơn biến. | **Sửa:** Trong 12 khu có cỡ mẫu lớn nhất, trung vị giá dao động từ 128.61 đến 336.12 CAD/đêm và chịu ảnh hưởng của tỷ trọng nguyên căn. |
+| 4. Dovercourt-Wallace Emerson-Junction rẻ hơn Niagara là do kém hấp dẫn về vị trí. | Đúng | Thiếu: chưa kiểm soát cơ cấu loại phòng; 76/118 khu có n < 5. | Sai: suy diễn nhân quả đơn biến. | **Sửa:** Trong 12 khu có cỡ mẫu lớn nhất, trung vị giá dao động từ 128.61 đến 336.12 CAD/đêm và chịu ảnh hưởng của tỷ trọng nguyên căn. |
 | 5. LLM vượt trội hoàn toàn mô hình từ điển ở mọi tác vụ phân tích đánh giá. | Sai ở `sentiment` | Đúng với bootstrap ghép cặp cho Accuracy | Sai: bỏ qua độ lệch lớp và kết quả thấp hơn trên cảm xúc. | **Sửa:** Mô hình từ điển đạt Accuracy cao hơn có ý nghĩa thống kê (0.99 so với 0.91); LLM đạt Micro-F1 khía cạnh khen cao hơn trên tập nhãn tay nhưng chưa kiểm định ý nghĩa chênh lệch này. |
 
 ## 6. Phụ lục phương pháp: Kiểm soát chất lượng (QA), định nghĩa KPI và tái lập
@@ -94,7 +94,7 @@ Bản nháp gồm năm nhận định được Codex tạo trong phiên ngày 21
 | K5 | Mật độ đánh giá trong mẫu | đánh giá mẫu/chỗ ở/quý | đánh giá duy nhất trong quý / chỗ ở duy nhất trong mẫu |
 | K6 | Listing chưa có review | % | 100*mean(number_of_reviews==0) |
 | K7 | Cảm xúc tiêu cực và điểm khía cạnh | % hoặc [-1,1] | negative/valid; (praise-complaint)/(praise+complaint) |
-| K8 | Listing khả dụng cao có nhiều review | % | mean(availability>=threshold and reviews>=threshold)*100 |
+| K8 | Listing khả dụng cao có nhiều review | % | 100*mean(tỷ lệ ngày `calendar.available` hợp lệ >= ngưỡng và `number_of_reviews` >= ngưỡng) |
 
 ### Lệnh tái lập và trạng thái bàn giao
 - **Chạy toàn bộ pipeline bằng một lệnh:** `python run_pipeline.py`; cấu hình mặc định là `configs/Toronto.yaml`.

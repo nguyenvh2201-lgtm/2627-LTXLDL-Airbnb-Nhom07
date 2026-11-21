@@ -229,6 +229,7 @@ data/raw/
 tmp/
 .pytest_tmp/
 reports/report-preview-*.png
+reports/report.tex
 notebooks/.work/
 .vscode/
 /hdan.md
