@@ -232,3 +232,6 @@ reports/report-preview-*.png
 notebooks/.work/
 .vscode/
 /hdan.md
+
+# Generated neighbourhood geometry copied into processed snapshots
+data/processed/*/neighbourhoods_cleansed.geojson
