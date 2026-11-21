@@ -96,9 +96,27 @@ RULES = {
     },
     "missing_minimum_nights": {
         "table": "listings",
-        "condition": "minimum_nights bị null hoặc không chuyển được sang số",
+        "condition": "minimum_nights bị null, rỗng hoặc chỉ chứa khoảng trắng",
         "reason": "Không đủ dữ liệu để kiểm tra quy định số đêm tối thiểu",
         "action": "Gắn cờ riêng tách khỏi cờ ngoài miền, giữ dữ liệu gốc",
+    },
+    "wrong_minimum_nights_type": {
+        "table": "listings",
+        "condition": "minimum_nights không thiếu nhưng không chuyển được sang số",
+        "reason": "Không thể dùng giá trị sai kiểu để kiểm tra hoặc tính KPI",
+        "action": "Giữ giá trị gốc, tạo bản numeric và gắn cờ lỗi chuyển đổi",
+    },
+    "missing_maximum_nights": {
+        "table": "listings",
+        "condition": "maximum_nights bị null, rỗng hoặc chỉ chứa khoảng trắng",
+        "reason": "Không đủ dữ liệu để kiểm tra quan hệ minimum_nights <= maximum_nights",
+        "action": "Gắn cờ riêng, giữ dữ liệu gốc và không tự điền",
+    },
+    "wrong_maximum_nights_type": {
+        "table": "listings",
+        "condition": "maximum_nights không thiếu nhưng không chuyển được sang số",
+        "reason": "Không thể kiểm tra miền và quan hệ số đêm với giá trị sai kiểu",
+        "action": "Giữ giá trị gốc, tạo bản numeric và gắn cờ lỗi chuyển đổi",
     },
     "invalid_minimum_nights": {
         "table": "listings",
@@ -127,6 +145,18 @@ RULES = {
         "reason": "Số ngày còn trống vượt phạm vi 365 ngày hoặc bị âm",
         "action": "Gắn cờ, giữ dữ liệu gốc",
     },
+    "missing_availability_365": {
+        "table": "listings",
+        "condition": "availability_365 bị null, rỗng hoặc chỉ chứa khoảng trắng",
+        "reason": "Không đủ dữ liệu để kiểm tra số ngày còn trống",
+        "action": "Gắn cờ riêng, giữ dữ liệu gốc và không tự điền",
+    },
+    "wrong_availability_365_type": {
+        "table": "listings",
+        "condition": "availability_365 không thiếu nhưng không chuyển được sang số",
+        "reason": "Không thể kiểm tra miền [0, 365] với giá trị sai kiểu",
+        "action": "Giữ giá trị gốc, tạo bản numeric và gắn cờ lỗi chuyển đổi",
+    },
     "category_mismatch": {
         "table": "listings",
         "condition": (
@@ -142,10 +172,16 @@ RULES = {
         "reason": "Tách riêng giá trị thiếu khỏi lỗi ngoài miền; không tự điền 0",
         "action": "Gắn cờ, giữ NA",
     },
+    "wrong_rating_type": {
+        "table": "listings",
+        "condition": "review_scores_rating không thiếu nhưng không chuyển được sang số",
+        "reason": "Điểm sai kiểu khác với điểm bị thiếu và không dùng được để tính toán",
+        "action": "Giữ giá trị gốc, tạo bản numeric và gắn cờ lỗi chuyển đổi",
+    },
     "invalid_rating": {
         "table": "listings",
-        "condition": "review_scores_rating không thiếu nhưng nằm ngoài thang [0, 5]",
-        "reason": "Điểm đánh giá nằm ngoài miền giá trị cho phép [0, 5]",
+        "condition": "review_scores_rating không thiếu nhưng nằm ngoài thang [1, 5]",
+        "reason": "Điểm đánh giá nằm ngoài miền giá trị cho phép [1, 5]",
         "action": "Gắn cờ ngoài miền, giữ giá trị gốc để kiểm tra",
     },
     "rows_with_any_flag": {
@@ -187,6 +223,15 @@ RULES = {
         ),
         "reason": "Review có ngày sau thời điểm thu thập dữ liệu của listing",
         "action": "Gắn cờ, giữ dòng để kiểm tra; không tự sửa ngày",
+    },
+    "review_date_uncheckable": {
+        "table": "reviews",
+        "condition": (
+            "Không có đủ ngày review hợp lệ và last_scraped hợp lệ từ một listing_id "
+            "không thiếu, duy nhất trong cùng mốc"
+        ),
+        "reason": "Không đủ căn cứ kết luận ngày review có sau thời điểm thu thập hay không",
+        "action": "Gắn cờ chưa thể kiểm tra; không coi là không vi phạm và không tự sửa ngày",
     },
     "comment_markup": {
         "table": "reviews",
@@ -281,6 +326,20 @@ def validate_schema(df, required_columns, table_name):
         raise ValueError(f"Bảng {table_name} thiếu cột bắt buộc: {sorted(missing)}")
 
 
+def parse_numeric(raw):
+    """Chuyển một cột sang số và tách thiếu nguồn khỏi lỗi chuyển kiểu.
+
+    Bài 10 yêu cầu không dùng ``errors='coerce'`` để che lỗi. Hàm giữ
+    ba kết quả riêng: giá trị numeric, cờ thiếu từ nguồn và cờ giá trị
+    không thiếu nhưng không chuyển được sang số.
+    """
+    text = raw.astype("string").str.strip()
+    missing = text.isna() | text.eq("").fillna(False)
+    numeric = pd.to_numeric(text, errors="coerce")
+    conversion_error = ~missing & numeric.isna()
+    return numeric, missing, conversion_error
+
+
 def missing_listing_id(df):
     """Gắn cờ mã listing bị null, rỗng hoặc chỉ có khoảng trắng."""
     listing_id = df["listing_id"].astype("string")
@@ -357,7 +416,14 @@ def prepare_listings(raw_listings, phan_cong, snapshot_date):
     validate='many_to_one' để chống nhân bản dòng, trả về DataFrame
     có thêm listing_id, analysis_area và snapshot_date.
     """
-    bang_area = phan_cong[["listing_id", "analysis_area"]].dropna(subset=["listing_id"]).drop_duplicates("listing_id")
+    bang_area = phan_cong[["listing_id", "analysis_area"]].dropna(subset=["listing_id"])
+    conflicting_area = bang_area.groupby("listing_id", dropna=False)["analysis_area"].nunique(dropna=False).gt(1)
+    if conflicting_area.any():
+        ids = conflicting_area.index[conflicting_area].astype(str).tolist()
+        raise ValueError(f"Bảng phân công có listing_id gắn nhiều analysis_area: {ids[:10]}")
+    # Bản ghi lặp hoàn toàn có thể thu gọn; không âm thầm chọn giữa các
+    # analysis_area mâu thuẫn.
+    bang_area = bang_area.drop_duplicates()
     mask = raw_listings["id"].isin(bang_area["listing_id"])
     raw_listings = raw_listings[mask]
     bang_moi = raw_listings.merge(
@@ -418,7 +484,10 @@ def check_price(raw_price, qa_cfg=None, room_type=None):
     settings = {**DEFAULT_QA_CONFIG, **(qa_cfg or {})}
     iqr_mult = float(settings["iqr_multiplier"])
     price_max = settings.get("price_max")
+    raw_text = raw_price.astype("string").str.strip()
+    missing_price = raw_text.isna() | raw_text.eq("").fillna(False)
     price = clean_price(raw_price)
+    conversion_error = ~missing_price & price.isna()
     price_valid = price.notna() & (price > 0)
 
     valid_prices = price[price_valid]
@@ -449,9 +518,9 @@ def check_price(raw_price, qa_cfg=None, room_type=None):
 
     return pd.DataFrame({
         "price_cad": price,
-        "missing_price": raw_price.isna(),
-        "wrong_price_type": raw_price.notna() & price.isna(),
-        "invalid_price": price <= 0,
+        "missing_price": missing_price,
+        "wrong_price_type": conversion_error,
+        "invalid_price": (price <= 0).fillna(False),
         "price_valid": price_valid,
         "price_outlier": outlier,
     })
@@ -468,11 +537,10 @@ def check_numeric_rules(df, qa_cfg=None):
     """
     settings = {**DEFAULT_QA_CONFIG, **(qa_cfg or {})}
     min_cap = settings.get("min_nights_cap")
-    minimum_nights = pd.to_numeric(df["minimum_nights"], errors="coerce")
-    maximum_nights = pd.to_numeric(df["maximum_nights"], errors="coerce")
-    availability_365 = pd.to_numeric(df["availability_365"], errors="coerce")
+    minimum_nights, missing_minimum_nights, wrong_minimum_nights_type = parse_numeric(df["minimum_nights"])
+    maximum_nights, missing_maximum_nights, wrong_maximum_nights_type = parse_numeric(df["maximum_nights"])
+    availability_365, missing_availability_365, wrong_availability_365_type = parse_numeric(df["availability_365"])
 
-    missing_minimum_nights = minimum_nights.isna()
     invalid_min = minimum_nights <= 0
     if min_cap is not None:
         invalid_min = invalid_min | (minimum_nights > float(min_cap))
@@ -484,6 +552,11 @@ def check_numeric_rules(df, qa_cfg=None):
     ).fillna(False)
     return pd.DataFrame({
         "missing_minimum_nights": missing_minimum_nights,
+        "wrong_minimum_nights_type": wrong_minimum_nights_type,
+        "missing_maximum_nights": missing_maximum_nights,
+        "wrong_maximum_nights_type": wrong_maximum_nights_type,
+        "missing_availability_365": missing_availability_365,
+        "wrong_availability_365_type": wrong_availability_365_type,
         "invalid_minimum_nights": invalid_minimum_nights,
         "invalid_maximum_nights": invalid_maximum_nights,
         "min_greater_max": min_greater_max,
@@ -495,14 +568,14 @@ def check_rating(df):
     """Xác định điểm đánh giá hợp lệ trong listings theo Bài 10 §2.
 
     Tách rõ giá trị thiếu (missing_rating) khỏi giá trị nằm ngoài miền
-    [0, 5] (invalid_rating = notna & ~between(0, 5)). Không tự điền 0.
+    [1, 5] (invalid_rating = notna & ~between(1, 5)). Không tự điền 0 hoặc 1.
     """
-    rating = pd.to_numeric(df["review_scores_rating"], errors="coerce")
-    missing_rating = rating.isna()
-    invalid_rating = rating.notna() & ~rating.between(0, 5)
-    rating_valid = rating.notna() & rating.between(0, 5)
+    rating, missing_rating, wrong_rating_type = parse_numeric(df["review_scores_rating"])
+    invalid_rating = rating.notna() & ~rating.between(1, 5)
+    rating_valid = ~missing_rating & ~wrong_rating_type & rating.between(1, 5)
     return pd.DataFrame({
         "missing_rating": missing_rating,
+        "wrong_rating_type": wrong_rating_type,
         "rating_valid": rating_valid,
         "invalid_rating": invalid_rating,
     })
@@ -740,21 +813,29 @@ def check_comments(reviews_df):
 def check_review_date(reviews_df,listings_df):
     """Gắn cờ ngày review sau last_scraped của listing cùng mốc.
 
-    listings_df cần có listing_id duy nhất. Chỉ so sánh phần ngày khi
-    cả hai ngày đọc được; giữ index của reviews. Thiếu ngày thu thập
-    hoặc không khớp listing thì chưa kết luận bằng cờ này.
+    Chỉ đối chiếu listing_id không thiếu và duy nhất. Chỉ so sánh phần
+    ngày khi cả hai ngày đọc được; giữ index của reviews. Khóa trùng,
+    thiếu ngày thu thập hoặc không khớp listing được gắn cờ riêng là
+    chưa đủ căn cứ, thay vì bị hiểu nhầm thành không vi phạm.
     """
     review_date = check_date(reviews_df)["date_parsed"]
-    scraped_lookup = listings_df.set_index("listing_id")["last_scraped"]
+    unique_listings = listings_df.loc[
+        ~missing_listing_id(listings_df)["missing_listing_id"]
+        & ~listings_df["listing_id"].duplicated(keep=False)
+    ]
+    scraped_lookup = unique_listings.set_index("listing_id")["last_scraped"]
     scraped_date = pd.to_datetime(
         reviews_df["listing_id"].map(scraped_lookup), errors="coerce"
     )
+    review_date_uncheckable = review_date.isna() | scraped_date.isna()
     review_after_scrape = (
-        review_date.notna()
-        & scraped_date.notna()
+        ~review_date_uncheckable
         & (review_date.dt.normalize() > scraped_date.dt.normalize())
     )
-    return pd.DataFrame({"review_after_scrape": review_after_scrape})
+    return pd.DataFrame({
+        "review_after_scrape": review_after_scrape,
+        "review_date_uncheckable": review_date_uncheckable,
+    })
 
 
 def check_common_reviews(df1, df2):
@@ -905,6 +986,7 @@ def process_reviews(date, phan_cong, listings_df, *, raw_dir=None,
             "wrong_date_type",
             "date_valid",
             "review_after_scrape",
+            "review_date_uncheckable",
             "listing_not_found",
             "text_valid",
             "listing_match"
@@ -1079,24 +1161,30 @@ def calendar_listing_summary(calendar_qa_df):
     """Tổng hợp lịch phòng đã QA thành một dòng cho mỗi listing.
 
     Đầu vào thuộc một mốc, có listing_id, date_parsed, available_valid
-    và available_true. Gom theo listing/ngày; ngày hợp lệ khi có ít
-    nhất một trạng thái hợp lệ và các trạng thái hợp lệ không mâu thuẫn.
-    Các dòng trạng thái không hợp lệ không tham gia quyết định này.
+    và available_true. Chuẩn hóa phần ngày rồi gom theo listing/ngày;
+    chỉ dùng ngày có đúng một dòng và trạng thái hợp lệ. Ngày trùng bị
+    giữ trong bảng chi tiết với cờ QA nhưng không tham gia thống kê.
 
     Trả về khoảng ngày, số ngày quan sát, số ngày trạng thái hợp lệ,
     số ngày available, availability_share (available/ngày hợp lệ) và
     coverage_share (ngày hợp lệ/365). Không có ngày hợp lệ thì
     availability_share bị thiếu; khóa nhóm bị thiếu được bỏ mặc định.
     """
+    calendar_qa_df = calendar_qa_df.loc[
+        ~missing_listing_id(calendar_qa_df)["missing_listing_id"]
+    ].copy()
+    calendar_qa_df["date_parsed"] = calendar_qa_df["date_parsed"].dt.normalize()
     daily = calendar_qa_df.groupby(
     ["listing_id", "date_parsed"],
     as_index=False
         ).agg(
+            n_rows=("available_valid", "size"),
             n_valid_rows=("available_valid", "sum"),
             n_true_rows=("available_true", "sum")
         )
     daily["available_valid_day"] = (
-            (daily["n_valid_rows"] > 0)
+            daily["n_rows"].eq(1)
+            & (daily["n_valid_rows"] > 0)
             & (
                 (daily["n_true_rows"] == 0)
                 | (daily["n_true_rows"] == daily["n_valid_rows"])
@@ -1202,7 +1290,11 @@ def process_calendar(date, phan_cong, listings_df, *, raw_dir=None,
     )
 
     clean_calendar = calendar_qa_df.loc[
-        ~calendar_qa_df["duplicate_calendar"].fillna(False).astype(bool)
+        calendar_qa_df["date_valid"].fillna(False).astype(bool)
+        & calendar_qa_df["available_valid"].fillna(False).astype(bool)
+        & calendar_qa_df["listing_match"].fillna(False).astype(bool)
+        & ~calendar_qa_df["missing_listing_id"].fillna(False).astype(bool)
+        & ~calendar_qa_df["duplicate_calendar"].fillna(False).astype(bool)
         & ~calendar_qa_df["calendar_available_conflict"].fillna(False).astype(bool),
         ["snapshot_date", "listing_id", "date_parsed", "available_clean"],
     ].rename(columns={"snapshot_date": "snapshot", "date_parsed": "date"})
@@ -1303,23 +1395,38 @@ def report_table(report_rows, snapshot, table, before, after, flags, *, long_sta
 
     metrics = [("row_count", len(before), len(after), "Đơn vị: dòng.")]
     if table == "listings":
-        valid_after = after.loc[after["price_valid"] & ~after["price_outlier"], "price_cad"]
+        unique_listing = (
+            ~missing_listing_id(after)["missing_listing_id"]
+            & ~after["listing_id"].duplicated(keep=False)
+        )
+        valid_after = after.loc[
+            unique_listing & after["price_valid"] & ~after["price_outlier"],
+            "price_cad",
+        ]
         metrics.append((
             "median_price", clean_price(before["price"]).median(),
             valid_after.median(),
             "Đơn vị: tiền tệ trong config. Trước QA: trung vị giá numeric bỏ giá thiếu; "
-            "sau QA: trung vị giá hợp lệ (price_valid và không bị cờ price_outlier, khớp với KPI K1).",
+            "sau QA: trung vị giá hợp lệ trên listing có khóa duy nhất "
+            "(price_valid và không bị cờ price_outlier, khớp với KPI K1).",
         ))
         min_before = pd.to_numeric(before["minimum_nights"], errors="coerce")
         min_after = pd.to_numeric(
-            after.loc[~after["invalid_minimum_nights"] & ~after["min_greater_max"], "minimum_nights"],
+            after.loc[
+                unique_listing
+                & ~after["missing_minimum_nights"]
+                & ~after["wrong_minimum_nights_type"]
+                & ~after["invalid_minimum_nights"]
+                & ~after["min_greater_max"],
+                "minimum_nights",
+            ],
             errors="coerce",
         )
         metrics.append((
             "long_stay_share_pct",
             float(min_before.dropna().ge(long_stay_nights).mean() * 100) if min_before.notna().any() else np.nan,
             float(min_after.dropna().ge(long_stay_nights).mean() * 100) if min_after.notna().any() else np.nan,
-            f"Đơn vị: %. Tỷ lệ listing yêu cầu tối thiểu từ {long_stay_nights} đêm trở lên trước và sau lọc cờ minimum_nights (KPI K4).",
+            f"Đơn vị: %. Tỷ lệ listing yêu cầu tối thiểu từ {long_stay_nights} đêm trở lên trước và sau lọc khóa thiếu/trùng và cờ minimum_nights (KPI K4).",
         ))
     elif table == "reviews":
         metrics.append((
@@ -1335,6 +1442,9 @@ def report_table(report_rows, snapshot, table, before, after, flags, *, long_sta
         )
         valid_cal = (
             after["available_valid"].fillna(False).astype(bool)
+            & after["date_valid"].fillna(False).astype(bool)
+            & after["listing_match"].fillna(False).astype(bool)
+            & ~after["missing_listing_id"].fillna(False).astype(bool)
             & ~after["duplicate_calendar"].fillna(False).astype(bool)
             & ~after["calendar_available_conflict"].fillna(False).astype(bool)
         )
@@ -1343,7 +1453,8 @@ def report_table(report_rows, snapshot, table, before, after, flags, *, long_sta
             "unavailable_rate_pct",
             float((1.0 - avail_before.dropna().mean()) * 100) if avail_before.notna().any() else np.nan,
             float((1.0 - avail_after.mean()) * 100) if len(avail_after) else np.nan,
-            "Đơn vị: %. Tỷ lệ ngày không khả dụng trước và sau khi loại dòng trùng/mâu thuẫn trạng thái (KPI K2).",
+            "Đơn vị: %. Tỷ lệ ngày không khả dụng trước và sau khi loại ngày/trạng thái không hợp lệ, "
+            "listing không khớp và dòng trùng/mâu thuẫn trạng thái.",
         ))
     for name, value_before, value_after, note in metrics:
         if pd.isna(value_before) or pd.isna(value_after):
@@ -1477,13 +1588,19 @@ def export_data_dictionary(listings_df, reviews_df, calendar_df, reports_dir):
         "wrong_price_type": "Cờ lỗi định dạng giá không chuyển được sang số",
         "invalid_price": "Cờ giá <= 0",
         "missing_minimum_nights": "Cờ thiếu minimum_nights tách riêng khỏi cờ ngoài miền",
+        "wrong_minimum_nights_type": "Cờ minimum_nights không thiếu nhưng không chuyển được sang số",
+        "missing_maximum_nights": "Cờ thiếu maximum_nights",
+        "wrong_maximum_nights_type": "Cờ maximum_nights không thiếu nhưng không chuyển được sang số",
+        "missing_availability_365": "Cờ thiếu availability_365",
+        "wrong_availability_365_type": "Cờ availability_365 không thiếu nhưng không chuyển được sang số",
         "minimum_nights": "Số đêm lưu trú tối thiểu",
         "maximum_nights": "Số đêm lưu trú tối đa",
         "availability_365": "Số ngày còn trống trong 365 ngày tới theo bảng listings",
         "number_of_reviews": "Tổng số lượng đánh giá tích lũy của listing",
-        "review_scores_rating": "Điểm đánh giá trung bình của listing [0, 5]",
-        "missing_rating": "Cờ thiếu điểm đánh giá (tách riêng khỏi điểm ngoài miền [0, 5])",
-        "invalid_rating": "Cờ điểm đánh giá không thiếu nhưng nằm ngoài [0, 5]",
+        "review_scores_rating": "Điểm đánh giá trung bình của listing [1, 5]",
+        "missing_rating": "Cờ thiếu điểm đánh giá (tách riêng khỏi điểm ngoài miền [1, 5])",
+        "wrong_rating_type": "Cờ điểm đánh giá không thiếu nhưng không chuyển được sang số",
+        "invalid_rating": "Cờ điểm đánh giá không thiếu nhưng nằm ngoài [1, 5]",
         "latitude": "Vĩ độ địa lý của listing",
         "longitude": "Kinh độ địa lý của listing",
         "last_scraped": "Ngày thu thập bản ghi thực tế",
@@ -1493,6 +1610,7 @@ def export_data_dictionary(listings_df, reviews_df, calendar_df, reports_dir):
         "comment_markup": "Cờ đánh giá gốc có chứa thẻ HTML",
         "comment_empty": "Cờ đánh giá rỗng sau khi làm sạch",
         "text_valid": "Cờ đánh giá có nội dung hợp lệ để phân tích",
+        "review_date_uncheckable": "Cờ không đủ căn cứ đối chiếu ngày review với last_scraped",
         "available": "Trạng thái phòng trống quy đổi số (1.0 = trống, 0.0 = không trống)",
     }
     rows = []
