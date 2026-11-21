@@ -248,11 +248,26 @@ def load_ids(cfg: dict) -> tuple:
 
 def filtered_chunks(source, ids: set, key: str, chunksize: int, usecols=None) -> tuple:
     """Lọc ngay trong mỗi khối; không giữ toàn bộ dữ liệu thành phố."""
-    blocks, total = [], 0
-    for chunk in pd.read_csv(source, dtype={"id": "string", "listing_id": "string", "reviewer_id": "string", "host_id": "string"}, usecols=usecols, chunksize=chunksize, low_memory=False):
-        total += len(chunk)
-        blocks.append(chunk.loc[chunk[key].isin(ids)].copy())
-    return pd.concat(blocks, ignore_index=True), total
+    # Tạo danh sách tra cứu một lần, giữ nguyên chuỗi ID lớn và số 0 đầu.
+    targets = pd.Index(list(ids), dtype="string")
+    blocks, total, matched = [], 0, 0
+    started = last_logged = time.monotonic()
+    logging.info("Bắt đầu lọc %s (%s ID)", source, f"{len(targets):,}")
+    with pd.read_csv(source, dtype={"id": "string", "listing_id": "string", "reviewer_id": "string", "host_id": "string"}, usecols=usecols, chunksize=chunksize, low_memory=False) as reader:
+        for chunk in reader:
+            total += len(chunk)
+            selected = chunk.loc[chunk[key].isin(targets)].copy()
+            matched += len(selected)
+            blocks.append(selected)
+            now = time.monotonic()
+            if now - last_logged >= 5:
+                logging.info("Đang lọc %s: đã đọc %s dòng, giữ %s dòng (%.1f giây)",
+                             source, f"{total:,}", f"{matched:,}", now - started)
+                last_logged = now
+    result = pd.concat(blocks, ignore_index=True)
+    logging.info("Đã lọc %s: đọc %s dòng, giữ %s dòng (%.1f giây)",
+                 source, f"{total:,}", f"{matched:,}", time.monotonic() - started)
+    return result, total
 
 
 def validate_snapshot(cfg: dict, snapshot: str, listings: pd.DataFrame, calendar: pd.DataFrame, reviews: pd.DataFrame, ids: tuple) -> list:

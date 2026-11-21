@@ -2,47 +2,11 @@
 
 **Dự án:** Phân tích dữ liệu Inside Airbnb Toronto — UET.DSE2049 4, Nhóm 07.
 
-**Tỷ lệ đóng góp ước tính:** **AI hỗ trợ thực hiện khoảng 50% tổng khối lượng công việc; nhóm trực tiếp thực hiện khoảng 50% còn lại.**
-
 **Phạm vi khai báo:** Mã nguồn, cấu hình, xử lý dữ liệu, tính KPI, phân tích review, kiểm thử, trực quan hóa và tài liệu của dự án.
 
-Trong bài tập lớn này, nhóm sử dụng **Codex** để hỗ trợ phân tích yêu cầu kỹ thuật, đề xuất cách tổ chức chương trình, viết và chỉnh sửa các phần mã, tìm nguyên nhân lỗi, xây dựng kiểm thử, đối chiếu đầu ra và soạn bản nháp tài liệu. Sự tham gia của AI có cả công việc trực tiếp tạo ra sản phẩm, như viết hàm xử lý, chỉnh prompt và viết kiểm thử, chứ không chỉ dừng ở hỏi đáp hoặc sửa câu chữ. Nhóm khai báo tỷ lệ **khoảng 50%** để phản ánh phạm vi hỗ trợ đó.
-
-Đây là **mức tự ước tính về khối lượng công việc**, theo phạm vi và mức độ can thiệp vào sản phẩm. Nhóm chưa đo tỷ lệ này bằng nhật ký thời gian, số dòng mã, số token hay thống kê tác giả của từng commit. Vì vậy, 50% không phải kết quả kiểm toán định lượng; cũng không có nghĩa mọi tệp đều có đúng một nửa nội dung do AI viết. Một đoạn mã có thể bắt đầu từ bản nháp AI rồi được nhóm sửa, hoặc bắt đầu từ mã nhóm viết rồi được AI hỗ trợ sửa lỗi. Không thể tách chính xác quyền tác giả của từng dòng chỉ từ trạng thái tệp cuối cùng.
+Trong bài tập lớn này, nhóm sử dụng **Codex** để hỗ trợ phân tích yêu cầu kỹ thuật, đề xuất cách tổ chức chương trình, viết và chỉnh sửa các phần mã, tìm nguyên nhân lỗi, xây dựng kiểm thử, đối chiếu đầu ra và soạn bản nháp tài liệu. Sự tham gia của AI có cả công việc trực tiếp tạo ra sản phẩm, như viết hàm xử lý, chỉnh prompt và viết kiểm thử, chứ không chỉ dừng ở hỏi đáp hoặc sửa câu chữ.
 
 Phần do nhóm trực tiếp thực hiện và chịu trách nhiệm gồm xác định yêu cầu bài làm, lựa chọn và xác nhận cấu hình phân tích, quản lý dữ liệu được phân công, đọc hiểu các thay đổi, gán hoặc xác nhận nhãn đánh giá, kiểm tra kết quả, lựa chọn nhận xét và hoàn thiện sản phẩm nộp. **Trách nhiệm về toàn bộ bài làm vẫn thuộc về nhóm**, kể cả đối với phần có AI hỗ trợ.
-
-### Cách hiểu tỷ lệ 50% và phạm vi của hai công cụ AI
-
-| Nội dung | Cách khai báo trong dự án |
-| --- | --- |
-| AI hỗ trợ thực hiện bài | Codex hỗ trợ tạo và sửa mã, kiểm thử, tài liệu, cách xử lý lỗi và bản nháp phân tích; được tính vào ước lượng 50% công việc. |
-| AI được tích hợp vào chương trình | Gemini nhận review và trả về nhãn cảm xúc, khía cạnh khen/chê, ngôn ngữ. Đây là một bước nghiệp vụ của pipeline. |
-| Baseline từ điển | Là thuật toán đối chứng theo quy tắc; có Codex hỗ trợ lập trình nhưng không gọi mô hình sinh để đưa ra từng dự đoán. |
-| Nhãn tay dùng làm gold | Là dữ liệu đánh giá do người gán/xác nhận theo quy trình của nhóm. Nhãn AI gợi ý chưa xác nhận phải được tách riêng. |
-| Dữ liệu kiểm thử | Gồm fixture tổng hợp và phản hồi API mock; dùng để kiểm tra chương trình, không bổ sung vào dữ liệu phân tích thật. |
-| Ý nghĩa của 50% | Tỷ lệ công việc được AI hỗ trợ, không phải tỷ lệ review gửi Gemini, tỷ lệ nhãn tay, độ chính xác mô hình hoặc tỷ lệ dữ liệu do AI tạo. |
-
-Không thể suy ra tỷ lệ đóng góp từ việc Gemini phân loại toàn bộ mẫu LLM: xử lý 1.000 review bằng API là một chức năng của hệ thống, trong khi đóng góp 50% là ước lượng cho toàn bộ quá trình xây dựng và hoàn thiện bài. Tương tự, việc một tệp có nhiều hàm do AI hỗ trợ không tự chứng minh AI thực hiện toàn bộ công việc phân tích liên quan đến tệp đó.
-
-### Khung giải trình khối lượng công việc
-
-Bảng sau dùng **100 đơn vị công việc quy ước** để giải thích cách phân bổ mức ước tính 50%. Các trọng số và phần đóng góp là khung tự đánh giá, không phải số giờ đã chấm công hoặc kết quả đo từ Git. Mỗi hàng phân bổ phần việc của một hạng mục vào hai cột; tổng toàn bài là 50 đơn vị AI và 50 đơn vị nhóm.
-
-| Hạng mục | Tổng đơn vị quy ước | Phần AI hỗ trợ | Phần nhóm trực tiếp thực hiện | Cơ sở mô tả phạm vi |
-| --- | ---: | ---: | ---: | --- |
-| Hiểu yêu cầu, xác định đối tượng sử dụng, phạm vi dữ liệu | 5 | 1 | 4 | AI hỗ trợ diễn giải kỹ thuật; nhóm quyết định phạm vi và yêu cầu cuối. |
-| Thiết kế cấu trúc dự án, cấu hình và thứ tự pipeline | 10 | 5 | 5 | AI hỗ trợ khung chương trình, tham số và liên kết các bước; nhóm rà soát cách vận hành. |
-| Khảo sát ID, tải, xác thực và lọc dữ liệu | 10 | 6 | 4 | AI hỗ trợ đọc theo chunk, giữ ID, kiểm tra tệp và báo thiếu; nhóm xác nhận đúng mẫu được giao. |
-| QA và chuẩn hóa dữ liệu | 15 | 8 | 7 | AI hỗ trợ hiện thực quy tắc, cờ lỗi và sửa bất nhất; nhóm rà soát ngưỡng và ý nghĩa xử lý. |
-| Xây dựng và đối chiếu K1–K8 | 15 | 7 | 8 | AI hỗ trợ phép ghép, tổng hợp và định dạng đầu ra; nhóm xác nhận công thức và diễn giải. |
-| Tích hợp Gemini và baseline | 15 | 9 | 6 | AI hỗ trợ prompt, schema, API client, cache và quy tắc đối chứng; nhóm xác nhận yêu cầu nhãn. |
-| Chuẩn bị nhãn, đánh giá và phân tích lỗi | 10 | 5 | 5 | AI hỗ trợ định dạng nhãn và mã đánh giá; nhóm chịu trách nhiệm nhãn gold và kết luận. |
-| Trực quan hóa và báo cáo | 10 | 4 | 6 | AI hỗ trợ mã vẽ, bố cục, bản nháp; nhóm đối chiếu số liệu và hoàn thiện nội dung. |
-| Kiểm thử, tái lập và tài liệu bàn giao | 10 | 5 | 5 | AI hỗ trợ test, script kiểm tra và hướng dẫn; nhóm xem bằng chứng và chuẩn bị bản nộp. |
-| **Tổng** | **100** | **50** | **50** | **AI khoảng 50%, nhóm khoảng 50%.** |
-
-Các phần dưới trình bày chi tiết theo mô-đun, nhiệm vụ, đầu ra và cách kiểm tra. Những mô tả về cách triển khai có thể đối chiếu với mã hiện tại; những nhận xét về lịch sử hỗ trợ được kế thừa từ bản khai báo của nhóm. Các prompt then chốt là bản ghi lại gần nguyên ý từ các yêu cầu trong quá trình làm bài; nhóm không còn toàn bộ nhật ký hội thoại nguyên văn nên không trình bày chúng như bản chép lời tuyệt đối.
 
 ## Công cụ đã dùng (vào việc gì)
 
@@ -98,7 +62,7 @@ Về dữ liệu nhãn, Codex có hỗ trợ chuẩn hóa các khía cạnh do n
 
 **Phân biệt thiếu dữ liệu thật với lỗi tải hoặc lỗi lọc.** Nhóm nhờ AI hỗ trợ kiểm tra từng snapshot và xuất danh sách ID không tìm thấy. Ở mốc cuối, nhật ký ghi nhận thiếu 72 listing so với danh sách ban đầu; phần xử lý giữ nguyên mốc dữ liệu đã chọn và báo thiếu, không bổ sung dòng giả. Với `--skip-download`, tệp có sẵn vẫn được xác thực; nếu tệp thiếu/hỏng thì báo lỗi thay vì coi bước tải đã hoàn tất.
 
-**Chạy lại các bước mà vẫn giữ đúng quan hệ phụ thuộc.** Trong `run_pipeline.py`, nhóm nhờ AI hỗ trợ kết nối thứ tự download → QA → KPI → LLM → baseline → evaluate → KPI → viz, cùng các tùy chọn chạy từng phần hoặc bỏ qua gọi API. AI cũng hỗ trợ kiểm thử tích hợp để kiểm tra các bước có đọc được đầu ra của nhau và đi đến bước tạo báo cáo. Một lỗi từng gặp là pytest thu thập cả bản kiểm thử trong thư mục sao chép tạm, gây xung đột import; cấu hình phạm vi thu thập đã được điều chỉnh để tránh lặp lại.
+**Chạy lại các bước mà vẫn giữ đúng quan hệ phụ thuộc.** Trong `run_pipeline.py`, nhóm nhờ AI hỗ trợ kết nối thứ tự download → QA → KPI → LLM → baseline → evaluate → KPI → viz, cùng các tùy chọn chạy từng phần hoặc bỏ qua gọi API. AI cũng hỗ trợ kiểm thử tích hợp để kiểm tra các bước có đọc được đầu ra của nhau và tạo đủ các bảng cùng biểu đồ phân tích. Một lỗi từng gặp là pytest thu thập cả bản kiểm thử trong thư mục sao chép tạm, gây xung đột import; cấu hình phạm vi thu thập đã được điều chỉnh để tránh lặp lại.
 
 ### 6. Notebooks — Kiểm thử, công cụ kiểm tra và tham khảo bài giảng
 
@@ -123,7 +87,7 @@ Về dữ liệu nhãn, Codex có hỗ trợ chuẩn hóa các khía cạnh do n
 | `notebooks/tests/test_kpi.py` | Xây dựng ví dụ nhỏ có kết quả tính tay để đối chiếu K1, K2, K4, K5; kiểm tra đơn vị, tiền tệ và cột cỡ mẫu của bảng KPI. |
 | `notebooks/tests/test_llm.py` | Dùng mock để kiểm tra schema/ID/nhãn, retry HTTP 429 và dừng khi hết lượt thử, thông báo HTTP 400 có che khóa, khóa API bị lỗi khi sao chép, đọc khóa từ biến môi trường, cache và thay đổi phiên bản prompt. Kiểm tra thêm chế độ bỏ qua LLM, thiếu khóa và phản hồi không phải JSON. |
 | `notebooks/tests/test_evaluate.py` | Đối chiếu Accuracy và macro-F1 với kết quả biết trước, kiểm tra khả năng lặp lại của bootstrap, xác thực nhãn gold và loại nhãn `AI_draft`; kiểm tra phủ định, cảm xúc hỗn hợp và trường hợp baseline không có từ điển ngôn ngữ. |
-| `notebooks/tests/test_smoke.py` | Kết nối download/filter → QA → KPI → LLM mock → baseline → evaluate → KPI → viz → report trên dữ liệu tạm. Kiểm tra mẫu nhãn ban đầu còn trống, đầu ra đánh giá, đủ 11 hình, đối chiếu số trong `report.md` và không sinh một số tệp CSV trùng dữ liệu. |
+| `notebooks/tests/test_smoke.py` | Kết nối download/filter → QA → KPI → LLM mock → baseline → evaluate → KPI → viz trên dữ liệu tạm. Kiểm tra mẫu nhãn ban đầu còn trống, đầu ra đánh giá, đủ 11 hình và không sinh một số tệp CSV trùng dữ liệu. |
 
 **Phân biệt dữ liệu kiểm thử với dữ liệu đánh giá thật.** Phản hồi Gemini giả lập, khóa giả và gold tổng hợp trong các test được tạo để kiểm tra hành vi chương trình; chúng không phải kết quả gọi API hoặc nhãn tay thực tế. Các fixture đặt gốc dữ liệu trong thư mục tạm pytest, không dùng các nhãn giả lập để bổ sung vào gold của dự án. Việc test dùng mock chạy thành công chỉ xác nhận những tình huống đã mô phỏng, không chứng minh API thật luôn hoạt động hay kết quả phân tích đúng trong mọi trường hợp.
 
@@ -133,7 +97,6 @@ Về dữ liệu nhãn, Codex có hỗ trợ chuẩn hóa các khía cạnh do n
 | --- | --- |
 | `notebooks/tools/inspect_ids.py` | Đọc bảng phân công theo vị trí cột để xử lý tên cột trùng; lọc đúng lớp/nhóm, giữ ID dạng chuỗi, kiểm tra số lượng, tính duy nhất, quan hệ listing–review–khu vực và tập con nhãn tay/LLM; xuất danh sách ID và báo cáo khảo sát. Công cụ không tự gán nhãn tay. |
 | `notebooks/tools/check_config_swap.py` | Rà soát chuỗi thành phố/ngày ghi cứng trong `src/`, rồi chạy các test cấu hình, KPI và smoke với mốc dữ liệu giả lập khác dữ liệu thật. Phép rà soát chỉ bao phủ mẫu chuỗi và các test được chọn. |
-| `notebooks/tools/check_report_numbers.py` | Đối chiếu `report_numbers.json` với `summary_numbers.csv` và kiểm tra chuỗi số đã định dạng có xuất hiện trong `report.md`. Công cụ không thay thế việc đọc nhận xét hoặc kiểm tra bố cục bản PDF do nhóm hoàn thiện. |
 | `notebooks/tools/check_security.py` | Kiểm tra các loại tệp không nên được Git theo dõi, một số mẫu khóa trong mã/lịch sử Git và quy tắc ignore; kết quả JSON được in ra console, không tạo `security_check.json`. Phạm vi này không loại trừ mọi dạng bí mật. |
 | `notebooks/tools/check_submission.py` | In checklist ra console từ kiểm tra lọc, dung lượng, nhãn tay, dự đoán LLM, chỉ số đánh giá, 11 hình, báo cáo Markdown và PDF tối đa 10 trang. Công cụ không tạo `submission_checklist.csv` và không tự commit, tag, push hoặc kiểm tra quyền riêng tư trên GitHub. |
 | `notebooks/tools/clean_reproduce.py` | Chuẩn bị bản clone cục bộ cô lập, chép mã đang làm việc, tạo môi trường ảo riêng và dùng hardlink tới dữ liệu thô có sẵn; so sánh sáu bảng QA/KPI/tổng hợp giữa hai bản chạy. Phạm vi này không tương đương tải lại dữ liệu qua mạng hoặc tái lập từ commit cuối trên remote; bước LLM thật không được kiểm chứng bằng phép so sánh đó. |
@@ -392,7 +355,7 @@ Nhóm lưu lại 10 prompt then chốt dưới dạng gần nguyên ý. Bảng n
 | 7 | Retry, cache và bảo vệ khóa API | `src/llm.py`, `notebooks/tests/test_llm.py` |
 | 8 | Baseline đối chứng đa ngôn ngữ | `src/baseline.py`, `configs/Toronto.yaml`, `notebooks/tests/test_evaluate.py` |
 | 9 | Đánh giá và phân tích lỗi | `src/evaluate.py`, `reports/eval_metrics.csv`, `reports/error_analysis.csv` |
-| 10 | Biểu đồ, báo cáo nguồn và hồ sơ bàn giao | `src/viz.py`, `src/report.py`, `README.md`, `AI_USAGE.md` |
+| 10 | Biểu đồ và hồ sơ bàn giao | `src/viz.py`, `README.md`, `AI_USAGE.md` |
 
 ### Prompt 1 — Hỗ trợ xây dựng luồng chạy
 
@@ -570,9 +533,6 @@ Các lệnh dưới đây dùng để người đọc tái kiểm tra theo từn
 # Kiểm tra khả năng thay cấu hình theo phạm vi công cụ hỗ trợ
 .\.venv\Scripts\python.exe notebooks/tools/check_config_swap.py
 
-# Đối chiếu số liệu báo cáo với các bảng số đã xuất
-.\.venv\Scripts\python.exe notebooks/tools/check_report_numbers.py
-
 # Kiểm tra các mẫu tệp/khóa nhạy cảm mà công cụ hỗ trợ
 .\.venv\Scripts\python.exe notebooks/tools/check_security.py
 
@@ -586,7 +546,7 @@ Các lệnh dưới đây dùng để người đọc tái kiểm tra theo từn
 .\.venv\Scripts\python.exe run_pipeline.py --config configs/Toronto.yaml --skip-download --skip-llm
 ```
 
-`--skip-download` vẫn yêu cầu dữ liệu thô hợp lệ; `--skip-llm` không tạo dự đoán mới cho review thiếu cache. Lệnh pipeline có thể ghi lại các bảng/hình/báo cáo đầu ra, nên kết quả cần được đọc theo cấu hình, cache và dữ liệu có trong lần chạy đó.
+`--skip-download` vẫn yêu cầu dữ liệu thô hợp lệ; `--skip-llm` không tạo dự đoán mới cho review thiếu cache. Lệnh pipeline có thể ghi lại các bảng và hình đầu ra, nên kết quả cần được đọc theo cấu hình, cache và dữ liệu có trong lần chạy đó.
 
 #### Bằng chứng nào xác nhận được điều gì
 

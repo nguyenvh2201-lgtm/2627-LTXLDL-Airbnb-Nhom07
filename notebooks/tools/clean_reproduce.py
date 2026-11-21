@@ -32,7 +32,7 @@ def prepare() -> None:
 
 def compare() -> None:
     """So sánh nội dung số liệu, không so timestamp PDF/log."""
-    names = ["data/processed/kpi_area.csv", "data/processed/kpi_time.csv", "data/processed/kpi_llm.csv", "reports/qa_report.csv", "reports/filter_checks.csv", "reports/summary_numbers.csv"]
+    names = ["data/processed/kpi_area.csv", "data/processed/kpi_time.csv", "data/processed/kpi_llm.csv", "reports/qa_report.csv", "reports/filter_checks.csv"]
     for name in names:
         expected, actual = pd.read_csv(ROOT / name), pd.read_csv(DEST / name)
         pd.testing.assert_frame_equal(expected, actual)

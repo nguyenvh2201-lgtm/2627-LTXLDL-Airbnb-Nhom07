@@ -5,13 +5,25 @@ from src.download import verify_file, build_url
 from src.download import path, read
 
 
-def test_chunk_equivalence(raw_fixture):
+@pytest.mark.parametrize("ids", [{"1", "2"}, {"2"}, {"missing"}, set()])
+def test_chunk_equivalence(raw_fixture, ids):
     cfg = raw_fixture
     source = path(cfg, "raw", cfg["snapshots"][0] + "/calendar.csv.gz")
-    chunked, total = filtered_chunks(source, {"1", "2"}, "listing_id", 2, ["listing_id", "date", "available"])
+    chunked, total = filtered_chunks(source, ids, "listing_id", 2, ["listing_id", "date", "available"])
     full = pd.read_csv(source, dtype={"listing_id": "string"}, usecols=["listing_id", "date", "available"])
-    pd.testing.assert_frame_equal(chunked, full.loc[full.listing_id.isin(["1", "2"])].reset_index(drop=True))
+    pd.testing.assert_frame_equal(chunked, full.loc[full.listing_id.isin(ids)].reset_index(drop=True))
     assert total == 9
+
+
+def test_chunk_filter_preserves_exact_ids(tmp_path):
+    source = tmp_path / "calendar.csv.gz"
+    values = ["9007199254740992", "9007199254740993", "001", "1", None,
+              "1000000000000000001", "9007199254740993"]
+    pd.DataFrame({"listing_id": values}).to_csv(source, index=False)
+    ids = {"9007199254740993", "001", "1000000000000000001"}
+    chunked, total = filtered_chunks(source, ids, "listing_id", 2)
+    assert chunked.listing_id.tolist() == [values[i] for i in (1, 2, 5, 6)]
+    assert total == len(values)
 
 
 def test_filter_and_big_id(raw_fixture):

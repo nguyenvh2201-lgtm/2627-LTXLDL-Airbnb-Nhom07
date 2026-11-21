@@ -6,13 +6,12 @@ from pathlib import Path
 import sys
 from src.download import load_config, setup_logging, path
 
-STEPS = ["download", "qa", "kpi", "llm", "baseline", "evaluate", "kpi", "viz", "report"]
+STEPS = ["download", "qa", "kpi", "llm", "baseline", "evaluate", "kpi", "viz"]
 # Các bước phụ vẫn gọi được riêng.
 EXTRA_STEPS = {
     "filter": ("download", "run_filter"),
     "labels": ("llm", "make_label_template"),
     "figures": ("viz", "run_figures"),
-    "summary": ("report", "run_summary"),
 }
 
 

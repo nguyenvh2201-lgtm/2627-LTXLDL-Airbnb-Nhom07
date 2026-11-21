@@ -98,4 +98,4 @@ Trên toàn bộ **1,000/1,000** đánh giá hợp lệ trích xuất bằng `ge
 ### Lệnh tái lập và trạng thái bàn giao
 - **Chạy toàn bộ pipeline 1 lệnh:** `python run_pipeline.py --config configs/Toronto.yaml` (dùng `--skip-download --skip-llm` khi kiểm thử ngoại tuyến).
 - **Kiểm tra tự động:** `pytest` (35 bài test), `check_config_swap.py`, `check_report_numbers.py` (đối chiếu tự động mọi con số trong `report.md` với `summary_numbers.csv`), `check_security.py`.
-- **Provenance:** `HEAD` tại lúc xuất báo cáo = `2215a69df40f3c83b09197ce8e8ff26d21681209` (`working_tree_dirty = True`, chưa phải mã commit của tag `final`). Pipeline giữ nguyên tắc không tự động `commit`, `tag` hay `push`.
+- **Provenance:** `HEAD` tại lúc xuất báo cáo = `be217c6ca3848bdf96d3f8163e3d10fda7177648` (`working_tree_dirty = True`, chưa phải mã commit của tag `final`). Pipeline giữ nguyên tắc không tự động `commit`, `tag` hay `push`.

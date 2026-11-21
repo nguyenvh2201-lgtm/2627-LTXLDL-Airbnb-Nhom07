@@ -72,13 +72,13 @@ Theo yêu cầu của đề bài, toàn bộ quy trình xử lý dữ liệu t�
 python run_pipeline.py
 ```
 
-Có thể truyền rõ đường dẫn tương đương bằng `python run_pipeline.py --config configs/Toronto.yaml`. Lệnh cũ dùng `configs/city.yaml` cũng được tự chuyển sang `Toronto.yaml` để tương thích, nhưng tên tệp chuẩn trong repo là `Toronto.yaml`.
+Có thể truyền rõ đường dẫn tương đương bằng `python run_pipeline.py --config configs/Toronto.yaml`.
 
-Luồng chạy tự động bao gồm 9 công đoạn tuần tự:
-$$\text{download (gồm filter)} \longrightarrow \text{qa} \longrightarrow \text{kpi} \longrightarrow \text{llm} \longrightarrow \text{baseline} \longrightarrow \text{evaluate} \longrightarrow \text{kpi} \longrightarrow \text{viz} \longrightarrow \text{report}$$
+Luồng chạy tự động bao gồm 8 công đoạn tuần tự:
+$$\text{download (gồm filter)} \longrightarrow \text{qa} \longrightarrow \text{kpi} \longrightarrow \text{llm} \longrightarrow \text{baseline} \longrightarrow \text{evaluate} \longrightarrow \text{kpi} \longrightarrow \text{viz}$$
 
 > [!NOTE]
-> Bước `kpi` được gọi 2 lần có chủ đích: lần 1 (sau `qa`) tính trước các bảng `kpi_area.csv` và `kpi_time.csv` (K1–K6, K8) ngay cả khi chưa chạy LLM; lần 2 (sau `llm` và `evaluate`) cập nhật bổ sung bảng `kpi_llm.csv` (K7) từ kết quả dự đoán hợp lệ của LLM trước khi bước `viz` dựng biểu đồ và bước `report` cập nhật báo cáo nguồn `reports/report.md`.
+> Bước `kpi` được gọi 2 lần có chủ đích: lần 1 (sau `qa`) tính trước các bảng `kpi_area.csv` và `kpi_time.csv` (K1–K6, K8) ngay cả khi chưa chạy LLM; lần 2 (sau `llm` và `evaluate`) cập nhật bổ sung bảng `kpi_llm.csv` (K7) từ kết quả dự đoán hợp lệ của LLM trước khi bước `viz` dựng biểu đồ.
 
 ### Các tùy chọn chạy linh hoạt:
 1. **Chạy toàn bộ nhưng không gọi API LLM** (vẫn tải dữ liệu thô nếu máy chưa có):
@@ -104,8 +104,6 @@ $$\text{download (gồm filter)} \longrightarrow \text{qa} \longrightarrow \text
    # Chỉ sinh 11 biểu đồ trực quan vào figures/:
    python run_pipeline.py --config configs/Toronto.yaml --only viz
 
-   # Chỉ tổng hợp số liệu và xuất báo cáo Markdown (reports/report.md):
-   python run_pipeline.py --config configs/Toronto.yaml --only report
    ```
 
 ---
@@ -121,13 +119,10 @@ python -m pytest -c notebooks/pytest.ini -q
 # 2. Kiểm tra tính độc lập cấu hình (không hardcode thành phố/mốc ngày trong src/)
 python notebooks/tools/check_config_swap.py
 
-# 3. Kiểm tra tính nhất quán giữa số liệu trong report.md và các bảng nguồn
-python notebooks/tools/check_report_numbers.py
-
-# 4. Kiểm tra bảo mật (không lưu tệp nhạy cảm, không lộ secret key)
+# 3. Kiểm tra bảo mật (không lưu tệp nhạy cảm, không lộ secret key)
 python notebooks/tools/check_security.py
 
-# 5. Xuất bảng thẩm định tiêu chuẩn nộp bài hoàn chỉnh
+# 4. Xuất bảng thẩm định tiêu chuẩn nộp bài hoàn chỉnh
 python notebooks/tools/check_submission.py
 ```
 
@@ -153,8 +148,7 @@ python notebooks/tools/check_submission.py
 │   ├── llm.py               # Gọi Gemini API, JSON schema, xử lý batch & cache
 │   ├── baseline.py          # Mô hình đối chứng từ điển đa ngôn ngữ (en/fr/es/pt)
 │   ├── evaluate.py          # Đánh giá Accuracy/F1, ma trận nhầm lẫn, phân tích lỗi
-│   ├── viz.py               # Chỉ xuất 11 biểu đồ PDF vector vào figures/
-│   └── report.py            # Tổng hợp số liệu, kể chuyện dữ liệu & xuất báo cáo Markdown (report.md)
+│   └── viz.py               # Chỉ xuất 11 biểu đồ PDF vector vào figures/
 ├── figures/                 # Đủ 11 biểu đồ PDF (Không gian, Thời gian, LLM)
 ├── reports/                 # report.pdf bản nộp, report.md nguồn và các bảng kiểm chứng
 ├── AI_USAGE.md              # Báo cáo minh bạch sử dụng AI
@@ -165,7 +159,7 @@ python notebooks/tools/check_submission.py
 
 ## 7. Sản phẩm Đầu ra Chính
 
-- **Báo cáo:** `reports/report.pdf` là bản nộp tối đa 10 trang do nhóm hoàn thiện; [`reports/report.md`](reports/report.md) là bản nguồn số liệu và nội dung được pipeline cập nhật.
+- **Báo cáo:** `reports/report.pdf` là bản nộp tối đa 10 trang do nhóm hoàn thiện; [`reports/report.md`](reports/report.md) là bản nguồn được nhóm quản lý độc lập với pipeline.
 - **Bộ biểu đồ phân tích:** [`figures/`](figures/) gồm 11 biểu đồ **PDF vector** để đưa vào báo cáo, theo 3 góc độ:
   - *Không gian:* Bản đồ phân bố listing, giá theo vùng, tỷ lệ ngày không khả dụng.
   - *Thời gian:* Biến động tỷ lệ ngày không khả dụng, xu hướng KPI, số lượng đánh giá theo thời gian.
