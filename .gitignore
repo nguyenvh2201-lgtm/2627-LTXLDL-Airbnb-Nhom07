@@ -239,3 +239,7 @@ data/processed/*/neighbourhoods_cleansed.geojson
 
 # macOS Finder metadata
 .DS_Store
+
+# Local editable report package (PDF and Markdown remain tracked)
+/reports/latex/
+/reports/report-latex-source.zip

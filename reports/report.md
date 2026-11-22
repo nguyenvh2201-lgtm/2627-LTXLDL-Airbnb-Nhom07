@@ -6,6 +6,8 @@
 
 **Giới hạn cần lưu ý ngay từ đầu:** Dữ liệu lấy từ Inside Airbnb (CC BY 4.0, không thu thập trực tiếp từ airbnb.com) trên mẫu được giảng viên phân công qua 4 mốc chụp (2025-09-11, 2026-03-19, 2026-06-15, 2026-09-16), không đại diện toàn bộ thị trường thành phố. Ở mốc cuối không còn quan sát thấy **72** chỗ ở và **235** đánh giá có mặt ở các mốc trước (chi tiết tại `missing_ids.csv`); dữ liệu không đủ để kết luận nguyên nhân các ID vắng mặt.
 
+**Khai báo về mốc chụp.** Mốc chụp 2025-12-12 không được sử dụng vì tệp `listings` của mốc này có 21.602 dòng nhưng cột giá (`price`) rỗng ở toàn bộ các dòng, nên không tính được chỉ số K1 và các chỉ số phụ thuộc giá. Nhóm chọn mốc 2026-09-16 thay thế vì ba lý do: đây là mốc mới nhất trong bộ dữ liệu, có 814 chỗ ở có giá trước lọc ngoại lai (783 chỗ ở có giá hợp lệ sau QA) để tính K1 và so sánh 12 khu vực có cỡ mẫu lớn nhất, và 955 trong 1.000 đánh giá của mẫu LLM còn xuất hiện ở mốc này nên không cần tạo lại mẫu.
+
 ## 1. Quy mô mẫu dữ liệu qua 4 mốc chụp
 
 | Mốc chụp (Snapshot) | Listing sau QA | Calendar sau QA | Review sau QA |
@@ -102,7 +104,6 @@ Bản nháp gồm năm nhận định được Codex tạo trong phiên ngày 21
 - **Điều kiện tính toán:** K2 toàn mẫu và K3 giữ ngày lịch hợp lệ kể cả khi thiếu neighbourhood; tổng hợp theo vùng yêu cầu vùng xác định. Dự đoán `parse_error` không nhận điểm cho cảm xúc, khía cạnh hoặc ngôn ngữ. Ngày trên hình và thống kê lỗi lấy từ dữ liệu lần chạy.
 - **Tái lập ngày 22/11/2026:** Chạy đầy đủ pipeline bằng cache trong thư mục tạm, tải mới 12 CSV gzip và 4 GeoJSON; SHA256 của 12 CSV khớp manifest. Pipeline kết thúc không cảnh báo/lỗi; 34 bảng đối chiếu khớp trong sai số 1e-10 (không so timestamp manifest), đủ 1,000 dự đoán LLM hợp lệ, không gọi API mới.
 - **Làm tròn:** Annex hiển thị 321.66 CAD/đêm theo cùng định dạng hai chữ số của pipeline, từ giá trị KPI 321.66499999999996.
-- **Ngoại lệ snapshot:** Nhóm chọn 2026-09-16 thay cho 2025-11-11; cần giảng viên chấp thuận nếu áp dụng ngoại lệ đề bài.
-- **Provenance:** Trước khi nộp, chạy `git rev-parse HEAD` và `git status --short` để ghi đúng commit và bảo đảm cây làm việc sạch. Pipeline không tự động `commit`, `tag` hoặc `push`.
+- **Provenance — commit mã nguồn phân tích:** Phiên bản mã nguồn và cấu hình tham chiếu cho kết quả: `31cc2469a0d325e2ebb8669d2b4fb9446eb296ed`. Đây là commit của phiên bản phân tích; commit lưu bản PDF cập nhật có thể có hash khác. Commit chỉ sửa tài liệu không làm thay đổi mã phân tích được dẫn chiếu. Pipeline không tự động `commit`, `tag` hoặc `push`.
 
-LaTeX nguồn: `reports/latex/main.tex`, `content.tex`, `cover.tex`; biên dịch từ `reports/latex` bằng `pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-error -jobname=report main.tex` hai lần. Pipeline sinh số liệu và hình, không tự biên dịch báo cáo.
+LaTeX nguồn được giữ cục bộ, không theo dõi trong Git: `reports/latex/main.tex`, `content.tex`, `cover.tex`; biên dịch từ `reports/latex` bằng `pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-error -jobname=report main.tex` hai lần. Pipeline sinh số liệu và hình, không tự biên dịch báo cáo.

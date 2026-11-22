@@ -186,7 +186,7 @@ Test/tool là phần nhóm triển khai, không phải bộ test giảng viên c
 
 ## Biên dịch báo cáo LaTeX
 
-Nguồn chỉnh sửa nằm trong `reports/latex/` (`main.tex`, `content.tex`, `cover.tex`, `image/`). Nguồn dùng trực tiếp các PDF ở `figures/`, tránh giữ bản hình cũ trong template. Cần TeX Live/MacTeX có font T5/Latin Modern.
+Nguồn chỉnh sửa chỉ được giữ cục bộ trong `reports/latex/` (`main.tex`, `content.tex`, `cover.tex`, `image/`); thư mục này và `reports/report-latex-source.zip` không được theo dõi trong Git theo quyết định của nhóm. Bản clone từ GitHub chỉ có PDF/Markdown đã xuất; cần bản nguồn cục bộ để dùng các lệnh biên dịch dưới đây. Nguồn dùng trực tiếp các PDF ở `figures/`, tránh giữ bản hình cũ trong template. Cần TeX Live/MacTeX có font T5/Latin Modern.
 
 ```bash
 cd reports/latex

@@ -635,3 +635,25 @@ Fetch origin/main và xác nhận chỉ có commit 9e874e3 thay PDF. Fast-forwar
 ### 2026-11-22 — Rà soát tài liệu sau khi push 485366c
 
 Đã đối chiếu lại danh sách test/tool thật với README và AI_USAGE. Sửa các bảng/lệnh hiện hành từng còn nhắc tool đã xóa, các test HTTP 400/copy-key/chunk-equivalence đã bỏ, basetemp cũ, lọc neighbourhood và cache model cũ. Bổ sung snapshot hiện hành 27 test/4 tool/36 giá trị/6 mục checklist; tách nhật ký lịch sử để không bị hiểu là tính năng hiện còn. README được bổ sung bảng phân bổ test và xác nhận test/tool do dự án triển khai. Commit 485366c đã được push main; các ghi chép “chưa push” phía trên là trạng thái lịch sử trước commit đó.
+
+
+### 2026-11-22 — Thêm provenance vào báo cáo, chỉ sửa local
+
+Theo yêu cầu người dùng, ghi commit mã nguồn/cấu hình tham chiếu `31cc2469a0d325e2ebb8669d2b4fb9446eb296ed` trong content.tex và report.md, biên dịch lại PDF và đồng bộ ZIP nguồn. Phân biệt hash phiên bản phân tích với hash của commit lưu PDF sau này. Không thay đổi mã phân tích; không commit, tag hoặc push trong phiên này.
+
+
+### 2026-11-22 — Bổ sung giải trình thay mốc theo xác nhận của nhóm
+
+Người dùng cung cấp nội dung: nhóm ban đầu dùng 2025-12-12, tệp listings không có giá niêm yết trên 21.602 dòng; đã báo giảng viên và đổi sang 2026-09-16 theo yêu cầu giảng viên. Thêm nguyên ý vào phần giới hạn dữ liệu của LaTeX/Markdown và bỏ nhận xét cũ rằng còn cần xin chấp thuận. Đây là thông tin do nhóm cung cấp; phiên này không tải lại hay kiểm đếm raw của mốc 2025-12-12. Giữ nguyên bốn mốc phân tích đang dùng, provenance và kết quả; chỉ biên dịch PDF và đồng bộ ZIP cục bộ, không commit/tag/push. Bỏ phần chat/reaction đi kèm khỏi văn bản báo cáo.
+
+
+### 2026-11-22 — Sửa lý do chọn snapshot và bỏ theo dõi nguồn LaTeX
+
+Theo văn bản mới do người dùng cung cấp, thay lý do cũ bằng việc price rỗng ở toàn bộ 21.602 dòng của listings 2025-12-12 và ba lý do chọn 2026-09-16: mốc mới nhất trong bộ đang dùng, có giá để phân tích và giữ được 955/1.000 review LLM. Đối chiếu dữ liệu dự án xác nhận 814 listing có giá trước lọc, 783 giá hợp lệ sau QA; báo cáo làm rõ sự khác nhau này. Phần số liệu 2025-12-12 do nhóm cung cấp, chưa kiểm lại raw trong phiên này.
+
+Theo yêu cầu không đưa latex folder/ZIP lên GitHub, giữ nguồn tại máy nhưng thêm ignore và stage xóa khỏi Git index cho reports/latex và reports/report-latex-source.zip. PDF/Markdown vẫn được theo dõi. README nêu rõ clone từ GitHub không chứa nguồn LaTeX. Không commit, tag hoặc push trong phiên này.
+
+
+### 2026-11-22 — Hoàn thiện mục commit tham chiếu trong PDF
+
+Theo yêu cầu người dùng, tách provenance thành mục riêng, ghi đầy đủ commit mã nguồn phân tích `31cc2469a0d325e2ebb8669d2b4fb9446eb296ed` và liên kết tới commit GitHub. Kiểm git diff HEAD xác nhận src/config/input/processed/run_pipeline/requirements không đổi so với commit được dẫn chiếu. PDF/Markdown và ZIP nguồn cục bộ đồng bộ; giữ phân biệt hash phân tích với hash commit lưu PDF. Không commit/tag/push.
