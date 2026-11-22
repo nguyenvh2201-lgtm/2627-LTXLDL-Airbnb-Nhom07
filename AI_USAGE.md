@@ -1,4 +1,4 @@
-﻿# Khai báo chi tiết việc sử dụng AI trong bài tập lớn
+# Khai báo chi tiết việc sử dụng AI trong bài tập lớn
 
 **Dự án:** Phân tích dữ liệu Inside Airbnb Toronto — UET.DSE2049 4, Nhóm 07.
 
@@ -7,6 +7,16 @@
 Trong bài tập lớn này, nhóm sử dụng **Codex** để hỗ trợ phân tích yêu cầu kỹ thuật, đề xuất cách tổ chức chương trình, viết và chỉnh sửa các phần mã, tìm nguyên nhân lỗi, xây dựng kiểm thử, đối chiếu đầu ra và soạn bản nháp tài liệu. Sự tham gia của AI có cả công việc trực tiếp tạo ra sản phẩm, như viết hàm xử lý, chỉnh prompt và viết kiểm thử, chứ không chỉ dừng ở hỏi đáp hoặc sửa câu chữ.
 
 Phần do nhóm trực tiếp thực hiện và chịu trách nhiệm gồm xác định yêu cầu bài làm, lựa chọn và xác nhận cấu hình phân tích, quản lý dữ liệu được phân công, đọc hiểu các thay đổi, gán hoặc xác nhận nhãn đánh giá, kiểm tra kết quả, lựa chọn nhận xét và hoàn thiện sản phẩm nộp. **Trách nhiệm về toàn bộ bài làm vẫn thuộc về nhóm**, kể cả đối với phần có AI hỗ trợ.
+
+## Trạng thái hiện hành sau khi thu gọn mã
+
+Phần mô tả mô-đun, bảng test/công cụ và lệnh dưới đây đã được đối chiếu với mã nguồn sau commit `485366c`. Các mục có ngày ở cuối tài liệu là **nhật ký lịch sử**: số test/check và các hạn chế trong từng mục chỉ đúng ở thời điểm ghi, không phải danh sách tính năng hiện còn.
+
+- **27 test đang tồn tại:** config 2, download 2, filter 4, QA 5, KPI 2, LLM 7, evaluate 4, smoke 1. Một test có thể chứa nhiều tình huống/assert; không đồng nghĩa 27 phép kiểm riêng lẻ.
+- **4 công cụ còn lại:** `inspect_ids.py`, `check_report_numbers.py`, `check_security.py`, `check_submission.py` trong `notebooks/tools/`.
+- **36 giá trị báo cáo duy nhất**, đối chiếu từ dữ liệu/dự đoán hiện tại với Markdown và PDF; **6 mục checklist** bàn giao. Checklist gọi hai checker, không chạy lại pytest.
+- **Đã bỏ:** hai tool `check_config_swap.py`, `clean_reproduce.py`; test riêng về alias config cũ, copy khóa lỗi, chẩn đoán HTTP 400 và helper báo cáo; một số test lọc/QA đã gộp vào test khác. Guard tương ứng trong mã pipeline không bị xóa chỉ vì bỏ test riêng.
+- `src/report.py` và bước report đã bị upstream xóa từ commit `2c44266`; pipeline kết thúc ở `viz`. `report.md` được quản lý trực tiếp; PDF được biên dịch riêng từ `reports/latex/main.tex`, `content.tex`, `cover.tex`.
 
 ## Công cụ đã dùng (vào việc gì)
 
@@ -24,7 +34,7 @@ Một lỗi thực tế là số giá trung vị trong báo cáo QA chưa khớp
 
 **Ghép calendar với listings mà không làm tăng số dòng ngoài ý muốn.** Nhóm nhờ AI hỗ trợ phần ghép khu vực vào từng dòng lịch trong `compute()` của `src/kpi.py`. Khóa ghép gồm `listing_id` và `snapshot`, vì cùng một listing xuất hiện ở nhiều mốc dữ liệu. Đoạn ghép sử dụng kiểm tra quan hệ `many_to_one` để phát hiện trường hợp phía listings có khóa trùng, có thể làm nhân số ngày lịch và sai kết quả tổng hợp.
 
-Sau khi ghép, phép tính chỉ nhận các ngày có trạng thái lịch, ngày và khu vực hợp lệ. Với K2/K3, mã tính `(1 - mean(available)) * 100` trên các dòng hợp lệ theo khu vực hoặc tháng. Nhóm nhờ AI hỗ trợ kết nối điều kiện này với dữ liệu sau QA. Khi diễn giải, đây là tỷ lệ ngày không khả dụng trong lịch, cần thận trọng nếu dùng để nhận định về công suất thực tế.
+Sau khi ghép đúng listing/snapshot, phép tính chỉ nhận ngày và trạng thái lịch hợp lệ. K2 toàn mẫu và K3 giữ cả listing thiếu khu vực; riêng tổng hợp K2 theo vùng yêu cầu vùng xác định. Công thức là `(1 - mean(available)) * 100`. Nhóm nhờ AI hỗ trợ kết nối điều kiện này với dữ liệu sau QA. Khi diễn giải, đây là tỷ lệ ngày không khả dụng trong lịch, cần thận trọng nếu dùng để nhận định về công suất thực tế.
 
 **Tránh đếm lặp review khi tổng hợp nhiều snapshot.** Một review có thể xuất hiện trong nhiều lần chụp dữ liệu. Nhóm nhờ AI hỗ trợ đoạn sắp xếp theo snapshot, giữ một bản ghi cho mỗi review ID rồi mới tổng hợp theo quý ở K5. Nếu cộng thẳng số review của từng snapshot thì cùng một review có thể được tính nhiều lần. Phần triển khai còn cần giữ rõ mẫu số là số listing duy nhất trong mẫu được phân công, để kết quả không bị hiểu thành thống kê cho toàn bộ thị trường.
 
@@ -72,7 +82,7 @@ Về dữ liệu nhãn, Codex có hỗ trợ chuẩn hóa các khía cạnh do n
 
 | Tệp | Nội dung có AI hỗ trợ |
 | --- | --- |
-| `notebooks/pytest.ini` | Thiết lập phạm vi thu thập test, loại trừ môi trường ảo và thư mục sao chép `.work`, tắt cache pytest và đặt thư mục tạm để tránh thu thập trùng test. |
+| `notebooks/pytest.ini` | Thiết lập `testpaths=tests`, loại trừ môi trường ảo/thư mục sao chép/tạm và tắt cache pytest. Cấu hình hiện tại không đặt `basetemp`; dùng thư mục tạm mặc định của pytest. |
 | `notebooks/tests/conftest.py` | Tạo fixture cấu hình và dữ liệu tổng hợp trong thư mục tạm: bốn snapshot khác mốc thật, hai listing được chọn, ba review và calendar ba ngày. Bổ sung ID review dài để kiểm tra việc giữ nguyên khóa; nối các fixture qua bước filter và QA. |
 | `notebooks/tests/fixtures/README.md` | Soạn mô tả nguồn dữ liệu giả lập, phạm vi sử dụng gold tổng hợp và phản hồi API mock; nêu rõ dữ liệu này chỉ phục vụ kiểm thử. |
 
@@ -80,14 +90,14 @@ Về dữ liệu nhãn, Codex có hỗ trợ chuẩn hóa các khía cạnh do n
 
 | Tệp | Nội dung có AI hỗ trợ |
 | --- | --- |
-| `notebooks/tests/test_config.py` | Kiểm tra bốn snapshot có thứ tự; kiểm tra từ chối cấu hình thiếu trường, trùng mốc, đường dẫn tuyệt đối và ngày không hợp lệ. |
-| `notebooks/tests/test_download.py` | Giả lập lỗi kết nối rồi tải lại thành công, kiểm tra nội dung tải và tệp tạm `.part`; kiểm tra từ chối nguồn tải ngoài miền được cho phép. |
-| `notebooks/tests/test_filter.py` | Đối chiếu lọc theo chunk với đọc toàn bảng; kiểm tra ID dài, số lượng sau lọc, kỳ vọng riêng từng snapshot, phân biệt lỗi và cảnh báo, phát hiện gzip bị cắt và tạo URL theo cấu hình. |
-| `notebooks/tests/test_qa.py` | Kiểm tra chuẩn hóa giá và trạng thái lịch, cấu trúc báo cáo QA, giá ngoại lai, loại phòng không hợp lệ, review trống và trùng ID. Bổ sung kiểm tra theo Bài 10: tách điểm đánh giá thiếu với ngoài miền, tính IQR theo loại phòng và báo lỗi khi thiếu cột bắt buộc. |
-| `notebooks/tests/test_kpi.py` | Xây dựng ví dụ nhỏ có kết quả tính tay để đối chiếu K1, K2, K4, K5; kiểm tra đơn vị, tiền tệ và cột cỡ mẫu của bảng KPI. |
-| `notebooks/tests/test_llm.py` | Dùng mock để kiểm tra schema/ID/nhãn, retry HTTP 429 và dừng khi hết lượt thử, thông báo HTTP 400 có che khóa, khóa API bị lỗi khi sao chép, đọc khóa từ biến môi trường, cache và thay đổi phiên bản prompt. Kiểm tra thêm chế độ bỏ qua LLM, thiếu khóa và phản hồi không phải JSON. |
-| `notebooks/tests/test_evaluate.py` | Đối chiếu Accuracy và macro-F1 với kết quả biết trước, kiểm tra khả năng lặp lại của bootstrap, xác thực nhãn gold và loại nhãn `AI_draft`; kiểm tra phủ định, cảm xúc hỗn hợp và trường hợp baseline không có từ điển ngôn ngữ. |
-| `notebooks/tests/test_smoke.py` | Kết nối download/filter → QA → KPI → LLM mock → baseline → evaluate → KPI → viz trên dữ liệu tạm. Kiểm tra mẫu nhãn ban đầu còn trống, đầu ra đánh giá, đủ 11 hình và không sinh một số tệp CSV trùng dữ liệu. |
+| `notebooks/tests/test_config.py` | **2 test:** từ chối cấu hình thiếu trường, trùng mốc, đường dẫn tuyệt đối, ngày không hợp lệ (gộp một test); kiểm điều kiện --limit để không chạy thử ghi đè artifact chuẩn hoặc đi vào evaluate/kpi/viz. |
+| `notebooks/tests/test_download.py` | **2 test:** giả lập lỗi kết nối rồi tải lại thành công, kiểm nội dung/tệp .part; từ chối nguồn tải ngoài miền cho phép. |
+| `notebooks/tests/test_filter.py` | **4 test:** giữ ID lớn và leading zero, no-match/empty; dừng khi kỳ vọng bắt buộc sai; kỳ vọng riêng theo snapshot và cảnh báo mốc mới; gzip bị cắt và URL từ cấu hình. Không còn test riêng so chunk với đọc toàn bảng. |
+| `notebooks/tests/test_qa.py` | **5 test:** chuẩn hóa giá/trạng thái lịch; cờ ngoại lai/danh mục; review trống, markup và trùng ID; tách missing/type/domain cho số đêm/availability/rating, IQR theo room_type và schema; calendar summary loại ngày trùng/khóa thiếu. Kiểm cấu trúc qa_report đã chuyển sang smoke test. |
+| `notebooks/tests/test_kpi.py` | **2 test:** đối chiếu K1/K2/K4/K5 bằng tính tay, đơn vị/tiền tệ/cỡ mẫu; xác nhận K2 toàn mẫu/K3 không bỏ ngày hợp lệ khi thiếu neighbourhood và không nhận calendar ngoài listing được chọn. |
+| `notebooks/tests/test_llm.py` | **7 test:** schema/ID/nhãn; retry thành công; HTTP 429/timeout dừng đúng giới hạn (gộp); env/cache hit và miss khi đổi prompt/model (gộp); limit ghi riêng; skip hoặc thiếu khóa không gọi mạng (gộp); JSON sai thành parse_error. Không còn test riêng chẩn đoán HTTP 400 hay khóa lỗi do copy. |
+| `notebooks/tests/test_evaluate.py` | **4 test:** Accuracy/macro-F1 và bootstrap lặp lại; xác thực gold và từ chối AI_draft; baseline phủ định/mixed/thiếu từ điển; parse_error không nhận điểm cho sentiment, aspects, language, đồng thời kiểm thống kê lỗi động. |
+| `notebooks/tests/test_smoke.py` | **1 test:** chạy download/filter → QA → KPI → LLM mock → baseline → evaluate → KPI → viz trên dữ liệu tạm; kiểm qa_report, clean data, template nhãn, metric, đủ 11 hình, không có CSV trùng và ngày trên hình lấy từ dữ liệu. |
 
 **Phân biệt dữ liệu kiểm thử với dữ liệu đánh giá thật.** Phản hồi Gemini giả lập, khóa giả và gold tổng hợp trong các test được tạo để kiểm tra hành vi chương trình; chúng không phải kết quả gọi API hoặc nhãn tay thực tế. Các fixture đặt gốc dữ liệu trong thư mục tạm pytest, không dùng các nhãn giả lập để bổ sung vào gold của dự án. Việc test dùng mock chạy thành công chỉ xác nhận những tình huống đã mô phỏng, không chứng minh API thật luôn hoạt động hay kết quả phân tích đúng trong mọi trường hợp.
 
@@ -95,11 +105,10 @@ Về dữ liệu nhãn, Codex có hỗ trợ chuẩn hóa các khía cạnh do n
 
 | Tệp | Nội dung có AI hỗ trợ |
 | --- | --- |
-| `notebooks/tools/inspect_ids.py` | Đọc bảng phân công theo vị trí cột để xử lý tên cột trùng; lọc đúng lớp/nhóm, giữ ID dạng chuỗi, kiểm tra số lượng, tính duy nhất, quan hệ listing–review–khu vực và tập con nhãn tay/LLM; xuất danh sách ID và báo cáo khảo sát. Công cụ không tự gán nhãn tay. |
-| `notebooks/tools/check_config_swap.py` | Rà soát chuỗi thành phố/ngày ghi cứng trong `src/`, rồi chạy các test cấu hình, KPI và smoke với mốc dữ liệu giả lập khác dữ liệu thật. Phép rà soát chỉ bao phủ mẫu chuỗi và các test được chọn. |
-| `notebooks/tools/check_security.py` | Kiểm tra các loại tệp không nên được Git theo dõi, một số mẫu khóa trong mã/lịch sử Git và quy tắc ignore; kết quả JSON được in ra console, không tạo `security_check.json`. Phạm vi này không loại trừ mọi dạng bí mật. |
-| `notebooks/tools/check_submission.py` | In checklist ra console từ kiểm tra lọc, dung lượng, nhãn tay, dự đoán LLM, chỉ số đánh giá, 11 hình, báo cáo Markdown và PDF tối đa 10 trang. Công cụ không tạo `submission_checklist.csv` và không tự commit, tag, push hoặc kiểm tra quyền riêng tư trên GitHub. |
-| `notebooks/tools/clean_reproduce.py` | Chuẩn bị bản clone cục bộ cô lập, chép mã đang làm việc, tạo môi trường ảo riêng và dùng hardlink tới dữ liệu thô có sẵn; so sánh sáu bảng QA/KPI/tổng hợp giữa hai bản chạy. Phạm vi này không tương đương tải lại dữ liệu qua mạng hoặc tái lập từ commit cuối trên remote; bước LLM thật không được kiểm chứng bằng phép so sánh đó. |
+| `notebooks/tools/inspect_ids.py` | Chuẩn bị input: đọc bảng phân công theo vị trí cột, lọc lớp/nhóm, giữ ID dạng chuỗi, kiểm số lượng/uniqueness/quan hệ/tập con; xuất danh sách ID và báo cáo khảo sát. Không gán nhãn tay. |
+| `notebooks/tools/check_report_numbers.py` | Tính lại **36 giá trị duy nhất** từ clean data và dự đoán; kiểm giá trị khai báo và chuỗi hiển thị trong report.md/report.pdf. Không đọc summary_numbers.csv làm nguồn chuẩn; không kiểm mọi số hoặc ngữ nghĩa cả câu. |
+| `notebooks/tools/check_security.py` | Audit riêng các file Git không nên theo dõi, mẫu khóa trong mã/lịch sử và quy tắc ignore; in JSON ra console. Không tạo security_check.json và không phát hiện mọi loại secret. |
+| `notebooks/tools/check_submission.py` | In **6 mục**: processed dưới 50 MB; đủ 11 hình; giới hạn trang PDF; gọi checker 36 giá trị báo cáo; gọi security audit; Git status. Không chạy lại pytest, không tạo checklist CSV, không tự commit/tag/push. Quyền repo, mời giảng viên, liên kết và tag được xác nhận thủ công. |
 
 Các bảng trên khai báo phần mã và cách kiểm tra có AI hỗ trợ, không xác nhận mọi công cụ đã được chạy thành công trong phiên cập nhật tài liệu này. Trạng thái chạy phải căn cứ vào log và các tệp bằng chứng tương ứng; việc có sẵn script không đồng nghĩa đã hoàn tất kiểm tra.
 
@@ -200,7 +209,7 @@ AI hỗ trợ chuyển công thức thành phép lọc, ghép và tổng hợp b
 
 **Kiểm tra phản hồi:** Chương trình kiểm tra mảng kết quả có đúng số review, từng đối tượng đúng tập trường, ID là chuỗi và khớp thứ tự, sentiment thuộc ba lớp, language có dạng hai chữ cái thường hoặc `und`, và danh sách khía cạnh đúng danh mục, không lặp. Kiểm tra này xác nhận hợp lệ cấu trúc; một kết quả đạt schema vẫn có thể phân loại sai nội dung.
 
-**Lưu cache và kết quả:** AI hỗ trợ khóa cache có xét review, văn bản, model, phiên bản prompt và định danh prompt/schema. Mã hiện tại còn có nhánh tìm kết quả trong cache của model đã lưu trước đó khi các điều kiện khóa tương ứng khớp; vì vậy chỉ đọc `llm.model` hiện tại là chưa đủ để kết luận mọi dòng cache đã được gọi bằng model đó. Khi thẩm định nguồn dự đoán, cần đối chiếu metadata cache và lịch sử chạy.
+**Lưu cache và kết quả:** AI hỗ trợ khóa cache có xét review, văn bản, model, phiên bản prompt và định danh prompt/schema. Cache chỉ được tái dùng khi model, prompt_version và khóa gồm ID/văn bản/prompt/schema/max_chars khớp cấu hình hiện tại. File cache có thể giữ cả dòng từ model cũ, nhưng những dòng khác model không được dùng cho lần chạy mới. Khi thẩm định nguồn dự đoán, cần đối chiếu metadata cache và lịch sử chạy.
 
 **Phần nhóm chịu trách nhiệm:** Chấp nhận quy ước phân loại, kiểm tra review khó, quản lý API key, xem các dòng `parse_error`/`truncated`, và quyết định nhận xét nào có đủ bằng chứng. `temperature = 0` làm giảm tính ngẫu nhiên theo cấu hình, nhưng không bảo đảm nhãn đúng hoặc kết quả API bất biến giữa các lần gọi.
 
@@ -448,8 +457,8 @@ Các ví dụ dưới đây là lỗi thực tế trong bản mã hoặc nội d
 | Phép ghép ban đầu chỉ chú ý `listing_id`, chưa buộc cả `snapshot`. | Calendar có thể bị nhân dòng khi một listing xuất hiện ở bốn mốc. | Ghép bằng `listing_id + snapshot` và dùng `validate="many_to_one"`. | Theo dõi số dòng trước/sau ghép và test KPI. |
 | Cách tổng hợp review ban đầu có nguy cơ cộng lại cùng review ở nhiều snapshot. | K5 phóng đại số review theo quý. | Sắp xếp theo snapshot và khử lặp `review_id` trước tổng hợp. | Kiểm tra số ID duy nhất và test tính tay K5. |
 | Khóa cache ban đầu chưa bao gồm đầy đủ văn bản, prompt và schema. | Có thể tái dùng nhãn cũ sau khi thay yêu cầu phân loại. | Đưa ID, văn bản, model, phiên bản và định danh prompt/schema vào khóa SHA256. | Test thay prompt version và kiểm tra cache miss/hit. |
-| AI từng mô tả công cụ kiểm tra như thể chúng sinh PDF, `security_check.json` và checklist CSV. | `AI_USAGE.md`/README hứa đầu ra không tồn tại. | Sửa tài liệu theo đúng hành vi: kiểm số trong Markdown, in JSON/checklist ra console. | Đối chiếu trực tiếp mã trong `notebooks/tools/` và danh sách `reports/`. |
-| Pytest từng dùng thư mục tạm gây xung đột thu thập hoặc lỗi quyền. | Test có thể lỗi dù logic dự án đúng. | Giới hạn `testpaths`, loại thư mục sao chép và chuyển `basetemp` sang `.pytest_tmp`. | Chạy đủ 35 test từ lệnh trong README. |
+| AI từng mô tả công cụ kiểm tra như thể chúng sinh PDF, `security_check.json` và checklist CSV. | `AI_USAGE.md`/README hứa đầu ra không tồn tại. | Sửa tài liệu theo hành vi hiện tại: checker kiểm 36 giá trị khai báo trong cả Markdown/PDF; JSON/checklist chỉ in ra console. | Đối chiếu trực tiếp mã trong `notebooks/tools/` và danh sách `reports/`. |
+| Pytest từng dùng thư mục tạm gây xung đột thu thập hoặc lỗi quyền. | Test có thể lỗi dù logic dự án đúng. | Giới hạn `testpaths`, loại thư mục sao chép/tạm; bản hiện tại không cấu hình `basetemp`. | Bộ hiện hành có 27 test; số lượng cũ không mô tả bộ test đang nộp. |
 | Nhãn bản đồ do AI bố trí từng chồng lên điểm và khó đọc. | Hình tồn tại nhưng không dùng được trong báo cáo. | Điều chỉnh vị trí nhãn và nền hiển thị. | Xem trực tiếp ảnh PNG ở kích thước đưa vào báo cáo. |
 
 AI có vai trò đề xuất và hiện thực cách sửa; việc lựa chọn quy tắc nào phù hợp bài làm vẫn thuộc nhóm. Ví dụ, có thể sửa chương trình để không báo lỗi bằng cách bỏ kiểm tra số lượng, nhưng làm như vậy không giải thích được các ID thiếu. Phương án cần giữ bằng chứng về chênh lệch và ghi rõ quyết định sử dụng dữ liệu.
@@ -527,16 +536,10 @@ Tài liệu bài giảng, thư viện và nhà cung cấp API là các nguồn r
 Các lệnh dưới đây dùng để người đọc tái kiểm tra theo từng mục đích. Chúng không phải tuyên bố đã chạy lại toàn bộ trong lần cập nhật khai báo này. Trên Windows, có thể dùng trực tiếp Python trong `.venv` để chọn đúng môi trường:
 
 ```powershell
-# Kiểm thử đơn vị và tích hợp bằng dữ liệu fixture/API mock
-.\.venv\Scripts\python.exe -m pytest -c notebooks/pytest.ini -q --junitxml=reports/test_results.xml
+# 27 test hiện có, dùng fixture/API mock
+.\.venv\Scripts\python.exe -m pytest -c notebooks/pytest.ini -q
 
-# Kiểm tra khả năng thay cấu hình theo phạm vi công cụ hỗ trợ
-.\.venv\Scripts\python.exe notebooks/tools/check_config_swap.py
-
-# Kiểm tra các mẫu tệp/khóa nhạy cảm mà công cụ hỗ trợ
-.\.venv\Scripts\python.exe notebooks/tools/check_security.py
-
-# Tổng hợp bằng chứng phục vụ kiểm tra bản nộp
+# 6 mục bàn giao, gồm checker báo cáo và security; không chạy lại pytest
 .\.venv\Scripts\python.exe notebooks/tools/check_submission.py
 ```
 
@@ -580,6 +583,10 @@ Nhóm khai báo **AI hỗ trợ thực hiện khoảng 50% tổng khối lượn
 
 Tỷ lệ này là ước lượng tổng thể, không phải tỷ lệ cố định trong từng tệp, số giờ đo được hoặc tỷ lệ dữ liệu AI sinh. Tài liệu mô tả cả phần AI tham gia trực tiếp và các bước nhóm cần kiểm chứng, đồng thời phân biệt kết quả đã lưu, ví dụ minh họa, gợi ý chưa xác nhận và dữ liệu kiểm thử. Các công cụ kiểm tra chỉ được coi là đã hoàn thành khi có bằng chứng chạy tương ứng.
 
+
+## Nhật ký các phiên trước — lịch sử triển khai
+
+Các mục theo thời gian dưới đây giữ nguyên kết quả đã ghi ở từng phiên. Những câu như “hiện rỗng”, “chưa push”, số 50/44 test hoặc 38/39 khai báo mô tả thời điểm đó. Trạng thái hiện hành là bảng ở đầu tài liệu và các mục 6.2/6.3, không phải cộng tất cả tính năng từng được thử.
 
 ### 2026-11-22 — Sửa lỗi và đối chiếu toàn dự án (Codex)
 
@@ -632,3 +639,8 @@ Loại 3 khai báo lặp theo key trong report_numbers.json: 39 entry xuống 36
 Chạy lại 27 test: đạt trong 17.00 giây. Submission checker: processed 19.97/50 MB, 11/11 hình, PDF 10/10 trang, 36 khai báo dữ liệu/Markdown/PDF khớp, security pattern audit đạt; Git status còn thay đổi chưa commit. Build LaTeX từ thư mục tạm sạch khớp text cả 10 trang, không overflow/tham chiếu lỗi; ZIP nguồn và figures trong ZIP khớp working files. git diff --check đạt.
 
 Fetch origin/main và xác nhận chỉ có commit 9e874e3 thay PDF. Fast-forward main lên 9e874e3, giữ PDF dựng lại byte-for-byte từ bản sao tạm, không mất thay đổi local. Thêm .DS_Store vào .gitignore để bỏ metadata Finder khỏi file chuẩn bị commit. Chưa stage, commit, tag hoặc push; các nguồn LaTeX mới cần được đưa vào commit. Ngoại lệ snapshot và hash/tag bản nộp vẫn do nhóm xác nhận trước nộp cuối.
+
+
+### 2026-11-22 — Rà soát tài liệu sau khi push 485366c
+
+Đã đối chiếu lại danh sách test/tool thật với README và AI_USAGE. Sửa các bảng/lệnh hiện hành từng còn nhắc tool đã xóa, các test HTTP 400/copy-key/chunk-equivalence đã bỏ, basetemp cũ, lọc neighbourhood và cache model cũ. Bổ sung snapshot hiện hành 27 test/4 tool/36 giá trị/6 mục checklist; tách nhật ký lịch sử để không bị hiểu là tính năng hiện còn. README được bổ sung bảng phân bổ test và xác nhận test/tool do dự án triển khai. Commit 485366c đã được push main; các ghi chép “chưa push” phía trên là trạng thái lịch sử trước commit đó.

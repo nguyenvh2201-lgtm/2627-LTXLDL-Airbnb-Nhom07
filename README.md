@@ -129,6 +129,21 @@ python -m pytest -c notebooks/pytest.ini -q
 python notebooks/tools/check_submission.py
 ```
 
+Bộ test hiện hành có **27 test riêng** (một test có thể chứa nhiều tình huống):
+
+| Tệp trong notebooks/tests/ | Số test |
+| --- | ---: |
+| test_config.py | 2 |
+| test_download.py | 2 |
+| test_filter.py | 4 |
+| test_qa.py | 5 |
+| test_kpi.py | 2 |
+| test_llm.py | 7 |
+| test_evaluate.py | 4 |
+| test_smoke.py | 1 |
+
+Test/tool là phần nhóm triển khai, không phải bộ test giảng viên cung cấp. Những test chẩn đoán HTTP 400, copy-key và helper báo cáo đã bỏ không thuộc bộ hiện hành. Cấu hình pytest không đặt basetemp. Lịch sử thử nghiệm trong AI_USAGE.md được đánh dấu riêng.
+
 ---
 
 ## 6. Cấu trúc Dự án
