@@ -1,0 +1,40 @@
+\documentclass[11pt,a4paper,oneside]{article}
+\usepackage[top=1.8cm,bottom=2cm,left=2cm,right=2cm,headheight=14pt]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage{lmodern}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{amsmath,amssymb,graphicx,tikz,booktabs,array,tabularx,enumitem,fancyhdr,titlesec,caption,placeins}
+\usepackage[protrusion=false]{microtype}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage{xurl}
+\usetikzlibrary{calc}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\tabcolsep}{4pt}
+\setlist[itemize]{leftmargin=1.3em,itemsep=3pt,topsep=4pt}
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+\titlespacing*{\subsection}{0pt}{8pt}{4pt}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0pt}{}
+\renewcommand{\contentsname}{Mục lục}
+\renewcommand{\figurename}{Hình}
+\renewcommand{\tablename}{Bảng}
+\captionsetup{font=small,skip=4pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\scriptsize\bfseries LẬP TRÌNH XỬ LÝ DỮ LIỆU | NHÓM 07}
+\fancyhead[R]{\scriptsize\bfseries TORONTO AIRBNB}
+\fancyfoot[L]{\scriptsize Báo cáo phân tích mẫu dữ liệu phân công}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\newcommand{\reportfigure}[3][0.95\textwidth]{%
+\begin{figure}[htbp]\centering
+\includegraphics[width=#1]{../../figures/#2.pdf}
+\caption{#3}\end{figure}}
+\begin{document}
+\input{cover}
+\clearpage\pagenumbering{roman}\tableofcontents
+\clearpage\pagenumbering{arabic}
+\input{content}
+\end{document}

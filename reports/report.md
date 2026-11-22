@@ -19,7 +19,7 @@ Ba mốc đầu giữ nguyên đủ **1,000** chỗ ở và **5,000** đánh gi�
 
 ## 2. Giá trung vị giữa 12 khu vực lớn nhất chênh 2.6 lần
 
-- **Chênh lệch giá theo khu vực (K1):** Trong 12 khu vực có cỡ mẫu giá hợp lệ lớn nhất tại mốc 2026-09-16, **Niagara** có giá trung vị cao nhất (**336.12 CAD/đêm**, n = 32), gấp **2.6 lần** Dovercourt-Wallace Emerson-Junction (128.61 CAD/đêm, n = 24). Ba khu vực có số lượng chỗ ở có giá hợp lệ lớn nhất là **Waterfront Communities-The Island** (n = 161), **Niagara** (n = 32) và **Annex** (n = 30); đây là số lượng trong mẫu, không phải mật độ theo diện tích.
+- **Chênh lệch giá theo khu vực (K1):** Trong 12 khu vực có cỡ mẫu giá hợp lệ lớn nhất tại mốc 2026-09-16, **Niagara** có giá trung vị cao nhất (**336.12 CAD/đêm**, n = 32), gấp **2.6 lần** Dovercourt-Wallace Emerson-Junction (128.61 CAD/đêm, n = 24). Ba khu vực có số lượng chỗ ở có giá hợp lệ lớn nhất là **Waterfront Communities-The Island** (n = 161), **Niagara** (n = 32) và **Annex** (n = 30, trung vị 321.66 CAD/đêm); đây là số lượng trong mẫu, không phải mật độ theo diện tích.
 - **Chênh lệch theo cơ cấu loại phòng:** Tại mốc cuối, giá trung vị của chỗ ở nguyên căn đạt **232.88 CAD/đêm**, cao gấp **2.6 lần** phòng riêng (**90.5 CAD/đêm**). Do cơ cấu loại phòng khác nhau giữa các khu vực, chênh lệch giá trung vị chịu tác động đồng thời của vị trí và tỷ trọng nguyên căn, không nên diễn giải thành hiệu ứng nhân quả của riêng vị trí.
 - **Giới hạn về cỡ mẫu và đơn vị không gian:** Các KPI K1, K2, K4, K6 và K8 nhóm theo `neighbourhood_cleansed`; có **118** khu vực có giá hợp lệ sau khi loại giá ngoại lai ở mốc cuối, trong đó **76** khu vực có n < 5, nên biểu đồ chỉ xếp hạng 12 khu vực có cỡ mẫu lớn nhất. Bản đồ và K7 dùng 8 vùng `analysis_area` A01–A08.
 
@@ -29,7 +29,7 @@ Ba mốc đầu giữ nguyên đủ **1,000** chỗ ở và **5,000** đánh gi�
 
 ## 3. Tỷ lệ không khả dụng ổn định nhưng cao nhất sát mốc chụp
 
-- **Xu hướng khả dụng (K2, K3):** Tỷ lệ ngày không khả dụng toàn mẫu nằm trong khoảng **41.18%–43.62%** qua 4 mốc chụp. Trong cửa sổ lịch 365 ngày, tỷ lệ này cao nhất ở tháng sát ngày thu thập (**57.64%–71.34%**), giảm ở phần giữa rồi tăng trở lại về cuối cửa sổ. Mẫu hình chưa đủ để kết luận về mùa cao điểm.
+- **Xu hướng khả dụng (K2, K3):** Tỷ lệ ngày không khả dụng toàn mẫu nằm trong khoảng **41.18%–43.62%** qua 4 mốc chụp. Trong cửa sổ lịch 365 ngày, tỷ lệ này cao nhất ở tháng sát ngày thu thập (**57.64%–71.34%**), giảm ở phần giữa rồi tăng trở lại về cuối cửa sổ. Mẫu hình chưa đủ để kết luận về mùa cao điểm. K4 nằm trong khoảng **9.6%–10.4%**; K6 giảm từ **5.0%** xuống **2.3%**.
 - **Giới hạn diễn giải bắt buộc:** (1) Ngày `available = f` gộp chung cả ngày đã được khách đặt lẫn ngày chủ nhà chủ động khóa lịch, do đó **không được đồng nhất với công suất thuê phòng thực tế hay doanh thu**; (2) Số đánh giá không phải tổng lượt khách thuê, chỉ tính trên mẫu được giao, và mốc cuối không còn quan sát thấy một số ID có mặt ở các mốc trước.
 
 **Hình:** [Tỷ lệ ngày không khả dụng theo tháng lịch (K3) qua 4 mốc chụp — mở bản PDF vector](../figures/fig_time_01_occupancy_by_snapshot.pdf)
@@ -53,7 +53,7 @@ Mẫu LLM gồm **1,000/1,000** đánh giá hợp lệ: 955 đánh giá ở mố
 - **Thế mạnh và giới hạn ở bài toán khía cạnh:** Ở trích xuất khía cạnh khen (`aspects_praise`), LLM đạt Micro-F1 = **0.8503**, cao hơn **0.6934** của mô hình từ điển trên tập nhãn tay; chưa thực hiện kiểm định ghép cặp cho chênh lệch này. Ở khía cạnh bị chê, Micro-F1 của LLM đạt **0.3636**, thấp hơn mức **0.5333** của mô hình từ điển.
 - **Giới hạn cỡ mẫu nhãn tay:** Tập đối chứng 100 review lệch lớp mạnh (93 `positive`, 6 `mixed`, 1 `negative`), khiến khoảng tin cậy 95% của Macro-F1 rất rộng (`[0.3139, 0.8070]` với LLM); cần bổ sung thêm mẫu `negative`/`mixed` trước khi đưa ra kết luận khái quát hơn.
 
-- **Chi phí API thực tế của dự án: 0 USD.** Theo xác nhận của nhóm, đúng 1,000 review trong mẫu LLM được xử lý bằng `Gemini API free tier` nên không phát sinh thanh toán.
+- **Chi phí thực tế và kịch bản mở rộng:** Theo xác nhận của nhóm, 1,000 review được xử lý bằng `Gemini API free tier`, chi phí thực tế **0 USD**. **88.09 USD** là ước tính trả phí cho **729,202** review của Toronto tại mốc 2026-09-16: trung bình **72.88** token vào và **39.58** token ra/review (chars/4 từ cache, chưa tính thinking tokens), đơn giá tham khảo **0.30 USD/1M** token vào và **2.50 USD/1M** token ra, tra ngày **2026-11-11** tại https://ai.google.dev/gemini-api/docs/pricing.
 
 ## 5. Không nhận định AI nào được giữ nguyên sau thẩm định
 
@@ -93,10 +93,16 @@ Bản nháp gồm năm nhận định được Codex tạo trong phiên ngày 21
 | K4 | Tỷ lệ yêu cầu thuê dài hạn | % | 100*mean(minimum_nights>=30) |
 | K5 | Mật độ đánh giá trong mẫu | đánh giá mẫu/chỗ ở/quý | đánh giá duy nhất trong quý / chỗ ở duy nhất trong mẫu |
 | K6 | Listing chưa có review | % | 100*mean(number_of_reviews==0) |
-| K7 | Cảm xúc tiêu cực và điểm khía cạnh | % hoặc [-1,1] | negative/valid; (praise-complaint)/(praise+complaint) |
-| K8 | Listing khả dụng cao có nhiều review | % | 100*mean(tỷ lệ ngày `calendar.available` hợp lệ >= ngưỡng và `number_of_reviews` >= ngưỡng) |
+| K7 | Cảm xúc tiêu cực và điểm khía cạnh | % hoặc [-1,1] | 100*negative/valid; (praise-complaint)/(praise+complaint) |
+| K8 | Listing khả dụng cao có nhiều review | % | 100*mean(r >= 0.75 và number_of_reviews >= 10); r là tỷ lệ available trên ngày lịch hợp lệ của từng listing |
 
 ### Lệnh tái lập và trạng thái bàn giao
-- **Chạy toàn bộ pipeline bằng một lệnh:** `python run_pipeline.py`; cấu hình mặc định là `configs/Toronto.yaml`.
-- **Kiểm tra tự động:** `python -m pytest -c notebooks/pytest.ini -q` (43 bài test), `check_config_swap.py`, `check_report_numbers.py` và `check_security.py`. `check_report_numbers.py` chỉ kiểm 30 số khai báo trong `report_numbers.json`, không kiểm mọi số trong tài liệu.
+- **Chạy toàn bộ pipeline bằng một lệnh:** `python run_pipeline.py --skip-llm` để đọc cache không gọi API; khi raw đã có đủ dùng thêm `--skip-download`; cấu hình mặc định là `configs/Toronto.yaml`.
+- **Kiểm tra tự động:** `python -m pytest -c notebooks/pytest.ini -q` (27 test), `check_report_numbers.py` và `check_security.py`. `check_report_numbers.py` tính lại 36 số khai báo trong `report_numbers.json` từ dữ liệu sạch và dự đoán hiện tại, rồi kiểm chuỗi hiển thị trong cả `report.md` và `report.pdf`; không kiểm mọi số hay ý nghĩa của câu nhận xét.
+- **Điều kiện tính toán:** K2 toàn mẫu và K3 giữ ngày lịch hợp lệ kể cả khi thiếu neighbourhood; tổng hợp theo vùng yêu cầu vùng xác định. Dự đoán `parse_error` không nhận điểm cho cảm xúc, khía cạnh hoặc ngôn ngữ. Ngày trên hình và thống kê lỗi lấy từ dữ liệu lần chạy.
+- **Tái lập ngày 22/11/2026:** Chạy đầy đủ pipeline bằng cache trong thư mục tạm, tải mới 12 CSV gzip và 4 GeoJSON; SHA256 của 12 CSV khớp manifest. Pipeline kết thúc không cảnh báo/lỗi; 34 bảng đối chiếu khớp trong sai số 1e-10 (không so timestamp manifest), đủ 1,000 dự đoán LLM hợp lệ, không gọi API mới.
+- **Làm tròn:** Annex hiển thị 321.66 CAD/đêm theo cùng định dạng hai chữ số của pipeline, từ giá trị KPI 321.66499999999996.
+- **Ngoại lệ snapshot:** Nhóm chọn 2026-09-16 thay cho 2025-11-11; cần giảng viên chấp thuận nếu áp dụng ngoại lệ đề bài.
 - **Provenance:** Trước khi nộp, chạy `git rev-parse HEAD` và `git status --short` để ghi đúng commit và bảo đảm cây làm việc sạch. Pipeline không tự động `commit`, `tag` hoặc `push`.
+
+LaTeX nguồn: `reports/latex/main.tex`, `content.tex`, `cover.tex`; biên dịch từ `reports/latex` bằng `pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-error -jobname=report main.tex` hai lần. Pipeline sinh số liệu và hình, không tự biên dịch báo cáo.

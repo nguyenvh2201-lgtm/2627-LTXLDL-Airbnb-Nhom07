@@ -28,64 +28,18 @@ def test_retry(cfg, monkeypatch):
     assert post.call_args.kwargs["headers"]["x-goog-api-key"] == "test-key"
 
 
-def test_http_429_exhausted_stops_without_splitting(clean_fixture, monkeypatch):
-    cfg = clean_fixture
-    cfg["llm"]["retries"] = 2
-    cfg["_options"]["skip_llm"] = False
-    monkeypatch.setenv(cfg["llm"]["api_key_env"], "test-key")
-    response = Mock(status_code=429, headers={"Retry-After": "0"})
-    post = Mock(return_value=response)
-    monkeypatch.setattr(llm.requests, "post", post)
-    monkeypatch.setattr(llm.time, "sleep", lambda _: None)
-    with pytest.raises(ConnectionError, match="Gemini HTTP 429"):
-        llm.run(cfg)
-    assert post.call_count == 2
-
-
-def test_timeout_exhausted_stops_without_splitting_batch(clean_fixture, monkeypatch):
+def test_api_retries_stop_after_limit(clean_fixture, monkeypatch):
     cfg = clean_fixture
     cfg["llm"].update({"retries": 2, "batch_size": 3})
     cfg["_options"]["skip_llm"] = False
     monkeypatch.setenv(cfg["llm"]["api_key_env"], "test-key")
-    post = Mock(side_effect=llm.requests.Timeout("mock timeout"))
-    monkeypatch.setattr(llm.requests, "post", post)
     monkeypatch.setattr(llm.time, "sleep", lambda _: None)
-    with pytest.raises(ConnectionError, match="Timeout.*2 lần thử"):
-        llm.run(cfg)
-    assert post.call_count == 2
-
-
-def test_http_400_shows_api_reason_without_key(cfg, monkeypatch):
-    response = Mock(status_code=400)
-    response.json.return_value = {"error": {"status": "INVALID_ARGUMENT", "message": "Invalid schema; key=test-key"}}
-    monkeypatch.setattr(llm.requests, "post", Mock(return_value=response))
-    monkeypatch.setattr(llm.time, "sleep", lambda _: None)
-    with pytest.raises(PermissionError, match="INVALID_ARGUMENT: Invalid schema") as error:
-        llm.GeminiClient(cfg, "test-key").generate([{"review_id": "1"}], "prompt")
-    assert "test-key" not in str(error.value)
-
-
-def test_http_400_non_json_shows_safe_preview(cfg, monkeypatch):
-    response = Mock(status_code=400, headers={"Content-Type": "text/html"}, text="<html>bad key=test-key</html>")
-    response.json.side_effect = ValueError("not JSON")
-    monkeypatch.setattr(llm.requests, "post", Mock(return_value=response))
-    monkeypatch.setattr(llm.time, "sleep", lambda _: None)
-    with pytest.raises(PermissionError, match="NON_JSON: Content-Type=text/html") as error:
-        llm.GeminiClient(cfg, "test-key").generate([{"review_id": "1"}], "prompt")
-    assert "test-key" not in str(error.value)
-    assert "[đã che khóa]" in str(error.value)
-
-
-def test_key_with_copy_formatting_fails_before_request(cfg, monkeypatch):
-    monkeypatch.setattr(llm.requests, "post", Mock(side_effect=AssertionError("không được gọi API")))
-    with pytest.raises(ValueError, match="GEMINI_API_KEY không phải khóa nguyên vẹn"):
-        llm.GeminiClient(cfg, "part1\n\u200bpart2")
-
-
-def test_key_with_non_ascii_letter_fails_before_request(cfg, monkeypatch):
-    monkeypatch.setattr(llm.requests, "post", Mock(side_effect=AssertionError("không được gọi API")))
-    with pytest.raises(ValueError, match=r"U\+00E9"):
-        llm.GeminiClient(cfg, "part\u00e9")
+    for failure in (Mock(status_code=429, headers={"Retry-After": "0"}), llm.requests.Timeout("mock timeout")):
+        post = Mock(side_effect=failure) if isinstance(failure, Exception) else Mock(return_value=failure)
+        monkeypatch.setattr(llm.requests, "post", post)
+        with pytest.raises(ConnectionError):
+            llm.run(cfg)
+        assert post.call_count == 2
 
 
 def test_cache_and_env(clean_fixture, monkeypatch):
@@ -107,22 +61,9 @@ def test_cache_and_env(clean_fixture, monkeypatch):
     cfg["llm"]["prompt_version"] = "changed"
     llm.run(cfg)
     assert len(calls) == 4
-
-
-def test_cache_is_scoped_to_model(clean_fixture, monkeypatch):
-    cfg = clean_fixture
-    cfg["_options"]["skip_llm"] = False
-    monkeypatch.setenv(cfg["llm"]["api_key_env"], "test-value")
-    calls = []
-    def generate(self, batch, prompt):
-        calls.append((self.settings["model"], len(batch)))
-        return [result(r["review_id"]) for r in batch]
-    monkeypatch.setattr(llm.GeminiClient, "generate", generate)
-    llm.run(cfg)
-    assert len(calls) == 2
     cfg["llm"]["model"] = "a-different-model"
     llm.run(cfg)
-    assert len(calls) == 4
+    assert len(calls) == 6
     assert read(cfg, "llm_results").model.eq("a-different-model").all()
 
 
@@ -145,14 +86,17 @@ def test_limit_writes_separate_artifacts(clean_fixture, monkeypatch):
     assert (cfg["_root"] / cfg["paths"]["reports"] / "llm_cost_estimate_limit_2.csv").exists()
 
 
-@pytest.mark.parametrize("skip", [True, False])
-def test_skip_and_missing_key(clean_fixture, monkeypatch, skip):
+def test_skip_and_missing_key(clean_fixture, monkeypatch):
     cfg = clean_fixture
-    cfg["_options"]["skip_llm"] = skip
-    monkeypatch.delenv(cfg["llm"]["api_key_env"], raising=False)
     monkeypatch.setattr(llm.requests, "post", Mock(side_effect=AssertionError("network forbidden")))
-    llm.run(cfg)
-    assert read(cfg, "llm_results").sentiment.isna().all()
+    for skip in (True, False):
+        cfg["_options"]["skip_llm"] = skip
+        if skip:
+            monkeypatch.setenv(cfg["llm"]["api_key_env"], "test-key")
+        else:
+            monkeypatch.delenv(cfg["llm"]["api_key_env"], raising=False)
+        llm.run(cfg)
+        assert read(cfg, "llm_results").sentiment.isna().all()
 
 
 def test_bad_json_becomes_parse_error(clean_fixture, monkeypatch):

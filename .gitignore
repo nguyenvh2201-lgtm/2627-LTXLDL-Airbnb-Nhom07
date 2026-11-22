@@ -236,3 +236,6 @@ notebooks/.work/
 
 # Generated neighbourhood geometry copied into processed snapshots
 data/processed/*/neighbourhoods_cleansed.geojson
+
+# macOS Finder metadata
+.DS_Store

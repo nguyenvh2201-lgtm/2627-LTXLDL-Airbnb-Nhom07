@@ -168,7 +168,7 @@ def run_figures(cfg: dict) -> None:
     ax.legend(title="Mốc chụp (Snapshot)", fontsize=8)
     finish(
         fig, ax, "fig_time_01_occupancy_by_snapshot.pdf",
-        f"Tỷ lệ ngày không khả dụng cao nhất ở tháng ngay sát mốc chụp ({k3_min_s}–{k3_max_s}) rồi giảm dần",
+        f"Tỷ lệ ngày không khả dụng ở tháng đầu mỗi cửa sổ lịch: {k3_min_s}–{k3_max_s}",
         "Tháng của ngày lịch (tháng biên có thể chưa trọn ngày)",
         "% ngày không khả dụng",
     )
@@ -197,9 +197,8 @@ def run_figures(cfg: dict) -> None:
     k6_vals = k246.loc[k246.kpi_id.eq("K6")].sort_values("snapshot")["value"]
     k2_rng = f"{k2_vals.min():.1f}%–{k2_vals.max():.1f}%" if len(k2_vals) else ""
     k4_rng = f"{k4_vals.min():.1f}%–{k4_vals.max():.1f}%" if len(k4_vals) else ""
-    k6_chg = f"{k6_vals.iloc[0]:.1f}% xuống {k6_vals.iloc[-1]:.1f}%" if len(k6_vals) else ""
     axes[0].set_title(
-        f"K2 ({k2_rng}) và K4 ({k4_rng}) ổn định; K6 giảm từ {k6_chg}",
+        f"K2: {k2_rng}; K4: {k4_rng}; K6: {k6_vals.iloc[0]:.1f}% → {k6_vals.iloc[-1]:.1f}%" if len(k6_vals) else f"K2: {k2_rng}; K4: {k4_rng}",
         loc="left", fontweight="bold", fontsize=10.5,
     )
     n_first = int(listings.loc[listings.snapshot.eq(cfg["snapshots"][0]), "id"].nunique())
@@ -234,12 +233,15 @@ def run_figures(cfg: dict) -> None:
     n_unique_rev = int(data.review_count.sum()) if "review_count" in data else 0
     n_listings_k5 = int(data.n.iloc[0]) if len(data) else 0
     first_q = data.period.iloc[0] if len(data) else ""
+    last_q = data.period.iloc[-1] if len(data) else ""
+    review_dates = read(cfg, "reviews_clean").date.dropna()
+    cutoff = review_dates.max().strftime("%d/%m/%Y") if len(review_dates) else "không có ngày hợp lệ"
     peak_q = data.loc[data.value.idxmax(), "period"] if len(data) else ""
     peak_v = float(data.value.max()) if len(data) else 0.0
     finish(
         fig, ax, "fig_time_03_reviews_per_quarter.pdf",
         f"Tốc độ đánh giá mẫu đạt đỉnh vào {peak_q} ({peak_v:.2f} review/listing/quý, n = {n_unique_rev:,} review)",
-        f"Quý ({first_q}–{peak_q}; tổng n = {n_unique_rev:,} review duy nhất trên {n_listings_k5:,} listing; quý cuối tính đến 10/09/2025)",
+        f"Quý ({first_q}–{last_q}; tổng n = {n_unique_rev:,} review duy nhất trên {n_listings_k5:,} listing; review mới nhất: {cutoff})",
         "Review mẫu / listing / quý",
     )
 

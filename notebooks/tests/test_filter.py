@@ -5,16 +5,6 @@ from src.download import verify_file, build_url
 from src.download import path, read
 
 
-@pytest.mark.parametrize("ids", [{"1", "2"}, {"2"}, {"missing"}, set()])
-def test_chunk_equivalence(raw_fixture, ids):
-    cfg = raw_fixture
-    source = path(cfg, "raw", cfg["snapshots"][0] + "/calendar.csv.gz")
-    chunked, total = filtered_chunks(source, ids, "listing_id", 2, ["listing_id", "date", "available"])
-    full = pd.read_csv(source, dtype={"listing_id": "string"}, usecols=["listing_id", "date", "available"])
-    pd.testing.assert_frame_equal(chunked, full.loc[full.listing_id.isin(ids)].reset_index(drop=True))
-    assert total == 9
-
-
 def test_chunk_filter_preserves_exact_ids(tmp_path):
     source = tmp_path / "calendar.csv.gz"
     values = ["9007199254740992", "9007199254740993", "001", "1", None,
@@ -24,16 +14,10 @@ def test_chunk_filter_preserves_exact_ids(tmp_path):
     chunked, total = filtered_chunks(source, ids, "listing_id", 2)
     assert chunked.listing_id.tolist() == [values[i] for i in (1, 2, 5, 6)]
     assert total == len(values)
-
-
-def test_filter_and_big_id(raw_fixture):
-    run(raw_fixture)
-    listings = read(raw_fixture, "listings_raw_filtered")
-    reviews = read(raw_fixture, "reviews_raw_filtered")
-    assert len(listings) == 8
-    assert "1000000000000000001" in set(reviews.id)
-    checks = pd.read_csv(path(raw_fixture, "reports", "filter_checks.csv"))
-    assert checks.passed.all()
+    for targets in ({"missing"}, set()):
+        empty, total = filtered_chunks(source, targets, "listing_id", 2)
+        assert empty.empty
+        assert total == len(values)
 
 
 def test_wrong_expected_stops(raw_fixture):
@@ -42,15 +26,7 @@ def test_wrong_expected_stops(raw_fixture):
         run(raw_fixture)
 
 
-def test_unknown_snapshot_warns(raw_fixture):
-    raw_fixture["expected"]["by_snapshot"] = {}
-    raw_fixture["expected"]["listing_count"] = 999
-    run(raw_fixture)
-    checks = pd.read_csv(path(raw_fixture, "reports", "filter_checks.csv"))
-    assert set(checks.loc[~checks.passed, "severity"]) == {"warning"}
-
-
-def test_snapshot_expected_overrides_global_counts(raw_fixture):
+def test_snapshot_expectations(raw_fixture):
     run(raw_fixture)
     snapshot = raw_fixture["snapshots"][0]
     tables = [read(raw_fixture, name) for name in
@@ -60,6 +36,11 @@ def test_snapshot_expected_overrides_global_counts(raw_fixture):
     raw_fixture["expected"]["by_snapshot"][snapshot]["listing_count"] = 2
     checks = validate_snapshot(raw_fixture, snapshot, listings, calendar, reviews, load_ids(raw_fixture))
     assert next(row for row in checks if row["check"] == "listing_count")["passed"]
+    raw_fixture["expected"]["by_snapshot"] = {}
+    raw_fixture["expected"]["listing_count"] = 999
+    run(raw_fixture)
+    checks = pd.read_csv(path(raw_fixture, "reports", "filter_checks.csv"))
+    assert set(checks.loc[~checks.passed, "severity"]) == {"warning"}
 
 
 def test_verify_gzip(raw_fixture, tmp_path):

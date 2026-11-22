@@ -579,3 +579,56 @@ Trong phạm vi mã hiện tại, khóa Gemini được đọc từ biến môi 
 Nhóm khai báo **AI hỗ trợ thực hiện khoảng 50% tổng khối lượng bài tập lớn**, gồm hỗ trợ thiết kế kỹ thuật, tạo và sửa mã, tích hợp Gemini, xây dựng baseline, kiểm thử, đối chiếu số liệu, trực quan hóa và soạn thảo tài liệu. Phần còn lại do nhóm trực tiếp thực hiện theo khung tự đánh giá; nhóm chịu trách nhiệm đầy đủ về dữ liệu, nhãn đánh giá, công thức, kết quả, nhận xét và bản nộp.
 
 Tỷ lệ này là ước lượng tổng thể, không phải tỷ lệ cố định trong từng tệp, số giờ đo được hoặc tỷ lệ dữ liệu AI sinh. Tài liệu mô tả cả phần AI tham gia trực tiếp và các bước nhóm cần kiểm chứng, đồng thời phân biệt kết quả đã lưu, ví dụ minh họa, gợi ý chưa xác nhận và dữ liệu kiểm thử. Các công cụ kiểm tra chỉ được coi là đã hoàn thành khi có bằng chứng chạy tương ứng.
+
+
+### 2026-11-22 — Sửa lỗi và đối chiếu toàn dự án (Codex)
+
+- Yêu cầu: sửa lỗi 3, 4, 5, 7 từ phiên review; kiểm lại tính nhất quán của mã, dữ liệu, tài liệu và báo cáo.
+- Thay đổi: giữ lịch hợp lệ khi thiếu neighbourhood cho KPI toàn mẫu; loại mọi trường dự đoán LLM có parse_error khỏi đánh giá; sinh nhận xét/ngày giới hạn từ dữ liệu; tính lại 38 số khai báo từ dữ liệu sạch và dự đoán, kiểm chuỗi trong Markdown và PDF thay vì tin bảng summary lưu sẵn.
+- Kiểm chứng: 50 test đạt, gồm hồi quy neighbourhood thiếu, parse_error, report cũ và ngày biểu đồ; kiểm cấu hình đạt; security pattern audit đạt. Replay llm/baseline/evaluate/kpi/viz bằng cache trong thư mục tạm tái tạo cùng ba bảng KPI và eval_metrics. Đã cập nhật ba hình thời gian và error_summary từ lượt replay.
+- Giới hạn: data/raw hiện rỗng nên chưa chạy lại toàn bộ từ raw; không gọi API. Report PDF giữ nguyên, đoạn phương pháp trong PDF vẫn mô tả checker cũ (30 số, chỉ Markdown) và 43 test; README/report.md đã cập nhật. Các lựa chọn snapshot và trang bìa/phụ lục không bị đổi.
+
+
+### 2026-11-22 — Thu gọn bộ test theo yêu cầu
+
+- Bỏ 6 test riêng: test_config, test_legacy_city_config_name_uses_toronto, test_filter_and_big_id, test_key_with_copy_formatting_fails_before_request, test_key_with_non_ascii_letter_fails_before_request, test_report_check_recalculates_and_checks_pdf.
+- Lý do: happy path cấu hình/lọc đã được smoke test và test ID chính xác bao phủ; alias cấu hình cũ, hai tình huống copy khóa và helper báo cáo nằm ngoài bộ test pipeline cốt lõi mà người dùng yêu cầu giữ. Không xóa logic kiểm tra trong pipeline hoặc script checker báo cáo.
+- Giữ test dữ liệu/QA/KPI, lỗi API và retry, cache, nhãn tay/metrics, giới hạn artifact thử và pipeline end-to-end. Test neighbourhood thiếu và parse_error bảo vệ kết quả runtime nên vẫn giữ.
+- Kiểm chứng: bộ còn lại 44 test đạt (17.87 giây).
+
+
+### 2026-11-22 — Thu gọn test lần hai
+
+Theo yêu cầu tiếp tục loại test dư thừa, giảm 44 xuống 27 test riêng. Gộp các case cấu hình, retry transport, cache model/prompt và skip/missing-key; bỏ setup lọc/QA trùng với smoke test, giữ kiểm ID chính xác và no-match. Loại các test định dạng chẩn đoán HTTP 400, duplicate-listing scrape-date và conflicting-assignment area riêng; guard trong mã nguồn vẫn giữ. Kiểm rating trùng được bỏ, IQR/schema được giữ trong test numeric. Mô tả chi tiết tại notebooks/tests/fixtures/README.md. Bộ 27 test đạt trong 14.98 giây; không thay đổi mã pipeline hay dữ liệu.
+
+
+### 2026-11-22 — Chạy lại toàn pipeline từ raw tải mới
+
+- Chạy mã working tree trong /tmp/airbnb-full-rerun bằng `python run_pipeline.py --skip-llm`; exit 0, không có WARNING/ERROR. Tải mới 12 CSV gzip và 4 GeoJSON; SHA256 của 12 CSV khớp download_manifest hiện có. Raw đã chuyển về data/raw của dự án để dùng lại ngoại tuyến. Không gọi Gemini.
+- 27 test đạt (15.43 giây). Đối chiếu 34 bảng CSV/Parquet với đầu ra dự án: khớp trong sai số 1e-10; manifest bỏ qua trường thời gian/provenance. Checker 38 số trên dữ liệu sinh lại + Markdown/PDF đạt.
+- 10/11 biểu đồ có cùng văn bản. Một khác biệt trình bày: biểu đồ giá khu vực tái tạo Annex = 321.66 CAD, hình/PDF hiện có = 321.67 CAD. Cả hai bảng KPI có cùng giá trị 321.66499999999996 (hai giá giữa: 314.83 và 328.50); đây là vấn đề làm tròn/đồng bộ hình đã lưu, không phải dữ liệu hay KPI thay đổi. Annex chưa nằm trong 38 số khai báo của checker. Chưa sửa PDF/hình hiện có trong lượt chạy kiểm tra này.
+
+
+### 2026-11-22 — Đồng bộ LaTeX với PDF mới và pipeline
+
+Dùng main.tex/content.tex/cover.tex và logo từ template trong Downloads làm tài liệu nguồn, đối chiếu PDF mười trang ở origin/main 9e874e3. Lưu nguồn mới tại reports/latex, không sửa thư mục Downloads. Giữ cấu trúc sáu phần, bìa và năm hình chính; sửa nhận định cũ về ID vắng mặt/mùa vụ/khía cạnh LLM, thang rating [1,5], QA record_only và công thức K8. Dùng trực tiếp figures của dự án; thống nhất Annex 321.66 CAD.
+
+Cập nhật phương pháp: 27 test, 39 số khai báo (thêm Annex), bỏ điểm cho parse_error trên mọi tác vụ, giữ lịch hợp lệ khi thiếu neighbourhood cho KPI toàn mẫu, mô tả cache và lần chạy từ raw. Không khai báo hash cũ của template là hash bản nộp. Checker đọc PDF theo layout để hỗ trợ bảng. README/report.md và manifest số đã đồng bộ.
+
+Kiểm chứng: 27 test đạt (14.37 giây); checker 39 giá trị đạt trên dữ liệu hiện tại + Markdown + PDF. PDF biên dịch bằng pdfLaTeX, 10 trang gồm bìa và mục lục; đã render kiểm bố cục, không có overfull box hay tham chiếu chưa giải quyết. ZIP nguồn độc lập đã biên dịch hai lần và khớp text trên cả 10 trang.
+
+
+### 2026-11-22 — Đồng bộ Markdown và giảm checker dư thừa
+
+So report.md với PDF đã dựng: số liệu chính khớp, nhưng Markdown thiếu mô tả chi phí mở rộng, bằng chứng chạy raw, điều kiện parse_error/neighbourhood và hệ số 100 trong công thức K7. Đã bổ sung, ghi rõ ngưỡng K8 và cách hiển thị Annex theo pipeline. LaTeX/PDF và ZIP nguồn đã đồng bộ.
+
+Bỏ check_config_swap.py (quét regex yếu và chạy lại một phần pytest đã có) và clean_reproduce.py (helper cũ không copy cache). Giữ inspect_ids.py để chuẩn bị input; check_report_numbers.py cho kiểm dữ liệu/Markdown/PDF; check_security.py cho audit riêng; check_submission.py tái dùng hai checker và chỉ kiểm 6 mục bàn giao. Bỏ các hàng lặp filter/gold/LLM/metric/cost/Markdown-size, tiêu chí ép chi phí bằng 0, và trạng thái manual luôn fail. README hướng dẫn chỉ chạy pytest rồi check_submission thay vì gọi trùng từng checker.
+
+Loại 3 khai báo lặp theo key trong report_numbers.json: 39 entry xuống 36 giá trị duy nhất, không mất độ phủ của các key. PDF biên dịch lại vẫn 10 trang, trang phương pháp đã render kiểm. Chạy checklist mới: 5 mục đạt (processed 19.97/50 MB, 11 hình, 10 trang PDF, 36 giá trị khớp, security pattern audit); Git status chưa sạch do thay đổi chưa commit. Bộ pytest không đổi, vẫn 27 test của lượt chạy gần nhất.
+
+
+### 2026-11-22 — Kiểm cuối trước push
+
+Chạy lại 27 test: đạt trong 17.00 giây. Submission checker: processed 19.97/50 MB, 11/11 hình, PDF 10/10 trang, 36 khai báo dữ liệu/Markdown/PDF khớp, security pattern audit đạt; Git status còn thay đổi chưa commit. Build LaTeX từ thư mục tạm sạch khớp text cả 10 trang, không overflow/tham chiếu lỗi; ZIP nguồn và figures trong ZIP khớp working files. git diff --check đạt.
+
+Fetch origin/main và xác nhận chỉ có commit 9e874e3 thay PDF. Fast-forward main lên 9e874e3, giữ PDF dựng lại byte-for-byte từ bản sao tạm, không mất thay đổi local. Thêm .DS_Store vào .gitignore để bỏ metadata Finder khỏi file chuẩn bị commit. Chưa stage, commit, tag hoặc push; các nguồn LaTeX mới cần được đưa vào commit. Ngoại lệ snapshot và hash/tag bản nộp vẫn do nhóm xác nhận trước nộp cuối.

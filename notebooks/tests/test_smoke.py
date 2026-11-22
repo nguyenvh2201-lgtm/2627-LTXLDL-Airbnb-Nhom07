@@ -16,6 +16,13 @@ def test_full_pipeline_with_mock_api(raw_fixture, monkeypatch):
         module.run_download(cfg)
     filter_run(cfg)
     qa.run(cfg)
+    report = pd.read_csv(path(cfg, "reports", "qa_report.csv"))
+    assert {"rule", "condition", "reason", "action", "action_detail",
+            "rows_checked", "rows_flagged", "metric_before", "metric_after"} <= set(report)
+    assert report.loc[report.rule.eq("missing_price"), "reason"].notna().all()
+    assert report.rule.eq("review_id_repeated").any()
+    assert len(download.read(cfg, "listings_clean")) == 8
+    assert not download.read(cfg, "calendar_clean").available.isna().any()
     kpi.run(cfg)
     llm.run(cfg)
     baseline.run(cfg)
@@ -35,3 +42,9 @@ def test_full_pipeline_with_mock_api(raw_fixture, monkeypatch):
     assert not list(path(cfg, "figures").glob("*.png"))
     for duplicate in ("baseline_results.csv", "llm_results.csv", "kpi_summary.csv"):
         assert not path(cfg, "processed", duplicate).exists()
+
+    from pypdf import PdfReader
+    review_figure = path(cfg, "figures", "fig_time_03_reviews_per_quarter.pdf")
+    figure_text = PdfReader(review_figure).pages[0].extract_text()
+    assert "01/09/2029" in figure_text
+    assert "10/09/2025" not in figure_text

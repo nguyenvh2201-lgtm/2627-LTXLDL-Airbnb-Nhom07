@@ -87,7 +87,13 @@ def run(cfg: dict) -> None:
     sample = read(cfg, "llm_sample")
     gold = validate_labels(labels, sample, cfg)
     frames = {method: read(cfg, method + "_results") for method in ("llm", "baseline")}
-    valid_llm = frames["llm"].sentiment.notna() & ~frames["llm"].parse_error
+    # Discard every field of an invalid response, including aspects/language.
+    frame = frames["llm"].copy()
+    invalid = frame.parse_error.fillna(True) | ~frame.sentiment.isin(cfg["evaluation"]["labels"])
+    for column in ("sentiment", "aspects_praise", "aspects_complaint", "language"):
+        frame.loc[invalid, column] = None
+    frames["llm"] = frame
+    valid_llm = ~invalid
     if not valid_llm.any():
         logging.warning("Chưa có dự đoán Gemini hợp lệ: chưa thể đánh giá LLM so với baseline")
         csv_report(cfg, [], "eval_metrics.csv", METRIC_COLUMNS)
@@ -159,6 +165,11 @@ def run(cfg: dict) -> None:
     llm_comp_f1 = get_metric("llm", "aspects_complaint", "f1_micro")
     base_comp_f1 = get_metric("baseline", "aspects_complaint", "f1_micro")
     counts_str = errors.error_type_hint.value_counts().to_string() if len(errors) else "Không có dòng lệch nhãn"
+    label_counts = gold.sentiment.value_counts().reindex(cfg["evaluation"]["labels"], fill_value=0)
+    distribution = ", ".join(f"{n} `{label}`" for label, n in label_counts.items())
+    transitions = errors.loc[errors.llm.ne(errors.hand_label)].groupby(["hand_label", "llm"]).size()
+    transition_text = "; ".join(f"{actual} -> {predicted}: {n}" for (actual, predicted), n in transitions.items()) or "Không có"
+    complaint_n = sum(bool(v) for v in gold.get("aspects_complaint", []) if isinstance(v, list))
     text = (
         "# Tổng hợp và phân tích lỗi (Error Analysis)\n\n"
         "## Thống kê nhóm lỗi gợi ý\n\n```\n"
@@ -166,9 +177,11 @@ def run(cfg: dict) -> None:
         + "\n```\n\n"
         "## Nhận định nguyên nhân lỗi trên mẫu đối chứng\n"
         f"- **Thống kê lệch nhãn trên {len(gold)} mẫu nhãn tay:** Tổng số dòng có ít nhất một phương pháp lệch nhãn tay là **{len(errors)}** dòng (trong đó LLM lệch **{llm_err}** dòng, Baseline từ điển lệch **{base_err}** dòng).\n"
-        f"- **So sánh hiệu năng cảm xúc (`sentiment`):** Baseline từ điển đạt Accuracy = **{base_acc:.4f}** (Macro-F1 = **{base_f1:.4f}**), cao hơn LLM với Accuracy = **{llm_acc:.4f}** (Macro-F1 = **{llm_f1:.4f}**), chênh lệch ghép cặp `llm_minus_baseline` = **{differences.mean():+.4f}** (95% CI: [{low:+.4f}, {high:+.4f}]). Nguyên nhân là mẫu 100 review nhãn tay mất cân bằng mạnh (93 `positive`, 6 `mixed`, 1 `negative`) và quy ước gán nhãn tay ưu tiên kết luận tổng thể tích cực khi chỉ có lưu ý nhỏ.\n"
-        "- **Cơ chế gây lỗi của LLM (`mixed_confusion`):** Khi khách hàng đánh giá tổng thể rất tốt (ví dụ *Overall a great stay*, *10/10 would recommend*) nhưng kèm theo lưu ý phụ (tiếng bước chân tầng trên, phí đỗ xe thành phố, hoặc cần bảo trì nhẹ), LLM nhạy cảm với mệnh đề nhượng bộ nên gán `mixed` (4 ca `positive -> mixed`), hoặc ngược lại gán `positive` khi lời khen áp đảo (5 ca `mixed -> positive`).\n"
-        f"- **So sánh trích xuất khía cạnh (`aspects`):** Ở tác vụ trích xuất khía cạnh được khen (`aspects_praise`), LLM đạt Micro-F1 = **{llm_praise_f1:.4f}**, vượt rõ rệt so với Baseline từ điển (**{base_praise_f1:.4f}**) nhờ hiểu ngữ cảnh đồng nghĩa. Tuy nhiên, ở khía cạnh bị chê (`aspects_complaint`), do số mẫu phàn nàn thực sự trong tập nhãn tay rất ít (chỉ 7/100 review có nhãn chê) và LLM hay trích xuất cả các lưu ý nhẹ thành lời chê (precision thấp), Micro-F1 của LLM đạt **{llm_comp_f1:.4f}** so với **{base_comp_f1:.4f}** của Baseline.\n"
+        f"- **Cảm xúc (`sentiment`):** LLM Accuracy = **{llm_acc:.4f}**, Macro-F1 = **{llm_f1:.4f}**; Baseline Accuracy = **{base_acc:.4f}**, Macro-F1 = **{base_f1:.4f}**. Chênh lệch ghép cặp `llm_minus_baseline` = **{differences.mean():+.4f}**, 95% CI [{low:+.4f}, {high:+.4f}].\n"
+        f"- **Phân bố {len(gold)} nhãn tay:** {distribution}.\n"
+        f"- **Các hướng lệch nhãn LLM (nhãn tay -> dự đoán):** {transition_text}. Nhóm lỗi ở trên chỉ là gợi ý; nguyên nhân cần đọc lại từng review.\n"
+        f"- **Khía cạnh khen:** Micro-F1 LLM = **{llm_praise_f1:.4f}**, Baseline = **{base_praise_f1:.4f}**.\n"
+        f"- **Khía cạnh chê:** Micro-F1 LLM = **{llm_comp_f1:.4f}**, Baseline = **{base_comp_f1:.4f}**; {complaint_n}/{len(gold)} review có nhãn chê. Chưa kiểm định ý nghĩa thống kê cho chênh lệch khía cạnh.\n"
     )
     path(cfg, "reports", "error_summary.md").write_text(text, encoding="utf-8")
 

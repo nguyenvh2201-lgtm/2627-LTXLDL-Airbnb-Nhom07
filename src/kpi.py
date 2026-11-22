@@ -31,16 +31,16 @@ def compute(
     time_rows = []
     area_col = cfg["kpi"]["area_col"]
 
-    # Chỉ dùng ngày lịch có trạng thái hợp lệ, ngày hợp lệ và khu vực xác định.
+    # Citywide/time KPIs keep valid days even when neighbourhood is missing.
     listing_areas = listings[["id", "snapshot", area_col]].rename(
         columns={"id": "listing_id", area_col: "area"}
     )
     days = calendar.merge(
         listing_areas, on=["listing_id", "snapshot"],
-        how="left", validate="many_to_one",
+        how="inner", validate="many_to_one",
     )
     days = days.loc[
-        days.available.notna() & days.date.notna() & days.area.notna()
+        days.available.notna() & days.date.notna()
     ].copy()
     days["period"] = days.date.dt.to_period("M").astype(str)
     availability_by_listing = days.groupby(

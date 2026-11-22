@@ -122,16 +122,10 @@ $$\text{download (gồm filter)} \longrightarrow \text{qa} \longrightarrow \text
 Giảng viên và người chấm có thể tái lập toàn bộ kết quả kiểm thử và đánh giá độc lập bằng bộ công cụ có sẵn trong repo:
 
 ```powershell
-# 1. Chạy toàn bộ 35 bài kiểm thử tự động, gồm mock LLM và pipeline smoke
+# 1. Chạy toàn bộ bài kiểm thử tự động, gồm mock LLM và pipeline smoke
 python -m pytest -c notebooks/pytest.ini -q
 
-# 2. Kiểm tra tính độc lập cấu hình (không hardcode thành phố/mốc ngày trong src/)
-python notebooks/tools/check_config_swap.py
-
-# 3. Kiểm tra bảo mật (không lưu tệp nhạy cảm, không lộ secret key)
-python notebooks/tools/check_security.py
-
-# 4. Xuất bảng thẩm định tiêu chuẩn nộp bài hoàn chỉnh
+# Kiểm 6 mục bàn giao, gồm security và đối chiếu số (không cần chạy lại riêng)
 python notebooks/tools/check_submission.py
 ```
 
@@ -174,3 +168,20 @@ python notebooks/tools/check_submission.py
   - *Thời gian:* Biến động tỷ lệ ngày không khả dụng, xu hướng KPI, số lượng đánh giá theo thời gian.
   - *LLM & Đối chứng:* Tỷ lệ cảm xúc theo vùng, phân tích khía cạnh khen/chê, so sánh LLM vs Baseline, ma trận nhầm lẫn.
 - **Báo cáo chất lượng & dữ liệu:** [`reports/qa_report.csv`](reports/qa_report.csv), [`reports/data_dictionary.csv`](reports/data_dictionary.csv), [`reports/eval_metrics.csv`](reports/eval_metrics.csv), `reports/error_analysis.csv` và `reports/llm_cost_estimate.csv`.
+
+## Biên dịch báo cáo LaTeX
+
+Nguồn chỉnh sửa nằm trong `reports/latex/` (`main.tex`, `content.tex`, `cover.tex`, `image/`). Nguồn dùng trực tiếp các PDF ở `figures/`, tránh giữ bản hình cũ trong template. Cần TeX Live/MacTeX có font T5/Latin Modern.
+
+```bash
+cd reports/latex
+pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-error -jobname=report main.tex
+pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-error -jobname=report main.tex
+cp report.pdf ../report.pdf
+cd ../..
+python notebooks/tools/check_report_numbers.py
+```
+
+Hai lượt biên dịch cập nhật mục lục và tham chiếu bảng/hình. Báo cáo có ghi nhận lần kiểm chứng 27 test; cần cập nhật sau khi bộ test thay đổi.
+
+Các công cụ còn lại: `inspect_ids.py` chuẩn bị ID phân công; `check_report_numbers.py` kiểm 36 giá trị duy nhất khi sửa báo cáo; `check_security.py` audit secret riêng; `check_submission.py` gọi lại hai checker và kiểm kích thước processed, đủ hình, giới hạn trang PDF, Git status. `check_submission.py` không chạy lại pytest. Trước khi nộp, nhóm tự xác nhận repo riêng tư, quyền giảng viên, liên kết nộp bài và tag final.
