@@ -8,15 +8,6 @@ Trong bài tập lớn này, nhóm sử dụng **Codex** để hỗ trợ phân 
 
 Phần do nhóm trực tiếp thực hiện và chịu trách nhiệm gồm xác định yêu cầu bài làm, lựa chọn và xác nhận cấu hình phân tích, quản lý dữ liệu được phân công, đọc hiểu các thay đổi, gán hoặc xác nhận nhãn đánh giá, kiểm tra kết quả, lựa chọn nhận xét và hoàn thiện sản phẩm nộp. **Trách nhiệm về toàn bộ bài làm vẫn thuộc về nhóm**, kể cả đối với phần có AI hỗ trợ.
 
-## Trạng thái hiện hành sau khi thu gọn mã
-
-Phần mô tả mô-đun, bảng test/công cụ và lệnh dưới đây đã được đối chiếu với mã nguồn sau commit `485366c`. Các mục có ngày ở cuối tài liệu là **nhật ký lịch sử**: số test/check và các hạn chế trong từng mục chỉ đúng ở thời điểm ghi, không phải danh sách tính năng hiện còn.
-
-- **27 test đang tồn tại:** config 2, download 2, filter 4, QA 5, KPI 2, LLM 7, evaluate 4, smoke 1. Một test có thể chứa nhiều tình huống/assert; không đồng nghĩa 27 phép kiểm riêng lẻ.
-- **4 công cụ còn lại:** `inspect_ids.py`, `check_report_numbers.py`, `check_security.py`, `check_submission.py` trong `notebooks/tools/`.
-- **36 giá trị báo cáo duy nhất**, đối chiếu từ dữ liệu/dự đoán hiện tại với Markdown và PDF; **6 mục checklist** bàn giao. Checklist gọi hai checker, không chạy lại pytest.
-- **Đã bỏ:** hai tool `check_config_swap.py`, `clean_reproduce.py`; test riêng về alias config cũ, copy khóa lỗi, chẩn đoán HTTP 400 và helper báo cáo; một số test lọc/QA đã gộp vào test khác. Guard tương ứng trong mã pipeline không bị xóa chỉ vì bỏ test riêng.
-- `src/report.py` và bước report đã bị upstream xóa từ commit `2c44266`; pipeline kết thúc ở `viz`. `report.md` được quản lý trực tiếp; PDF được biên dịch riêng từ `reports/latex/main.tex`, `content.tex`, `cover.tex`.
 
 ## Công cụ đã dùng (vào việc gì)
 
