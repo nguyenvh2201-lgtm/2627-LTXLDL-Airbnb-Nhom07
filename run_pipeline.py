@@ -13,6 +13,20 @@ EXTRA_STEPS = {
     "labels": ("llm", "make_label_template"),
     "figures": ("viz", "run_figures"),
 }
+LIMITED_STEPS = {"llm", "baseline"}
+
+
+def validate_limited_run(steps: list[str], explicit_only: bool, limit: int | None) -> None:
+    """Không để lượt chạy thử ghi đè artifact chuẩn hoặc đi tiếp sang evaluate."""
+    if limit is None:
+        return
+    if limit <= 0:
+        raise ValueError("--limit phải là số nguyên dương")
+    if not explicit_only or any(step not in LIMITED_STEPS for step in steps):
+        raise ValueError(
+            "--limit chỉ dùng cùng --only llm,baseline (hoặc một trong hai); "
+            "artifact thử được ghi tên *_limit_N và không chạy evaluate/kpi/viz"
+        )
 
 
 def main() -> int:
@@ -26,7 +40,11 @@ def main() -> int:
     parser.add_argument("--skip-download", action="store_true")
     parser.add_argument("--skip-llm", action="store_true")
     parser.add_argument("--only", help="Tên bước, phân tách dấu phẩy")
-    parser.add_argument("--limit", type=int, help="Giới hạn mẫu LLM/baseline cho chạy thử")
+    parser.add_argument(
+        "--limit",
+        type=int,
+        help="Giới hạn mẫu cho lượt thử --only llm/baseline; ghi artifact *_limit_N",
+    )
     args = parser.parse_args()
     try:
         cfg = load_config(args.config)
@@ -35,6 +53,7 @@ def main() -> int:
         steps = args.only.split(",") if args.only else STEPS
         if any(step not in STEPS and step not in EXTRA_STEPS for step in steps):
             raise ValueError("Bước không hợp lệ: " + str(steps))
+        validate_limited_run(steps, args.only is not None, args.limit)
         for step in steps:
             logging.info("=== %s ===", step)
             module, function = EXTRA_STEPS.get(step, (step, "run"))

@@ -42,6 +42,19 @@ def test_http_429_exhausted_stops_without_splitting(clean_fixture, monkeypatch):
     assert post.call_count == 2
 
 
+def test_timeout_exhausted_stops_without_splitting_batch(clean_fixture, monkeypatch):
+    cfg = clean_fixture
+    cfg["llm"].update({"retries": 2, "batch_size": 3})
+    cfg["_options"]["skip_llm"] = False
+    monkeypatch.setenv(cfg["llm"]["api_key_env"], "test-key")
+    post = Mock(side_effect=llm.requests.Timeout("mock timeout"))
+    monkeypatch.setattr(llm.requests, "post", post)
+    monkeypatch.setattr(llm.time, "sleep", lambda _: None)
+    with pytest.raises(ConnectionError, match="Timeout.*2 lần thử"):
+        llm.run(cfg)
+    assert post.call_count == 2
+
+
 def test_http_400_shows_api_reason_without_key(cfg, monkeypatch):
     response = Mock(status_code=400)
     response.json.return_value = {"error": {"status": "INVALID_ARGUMENT", "message": "Invalid schema; key=test-key"}}
@@ -94,6 +107,42 @@ def test_cache_and_env(clean_fixture, monkeypatch):
     cfg["llm"]["prompt_version"] = "changed"
     llm.run(cfg)
     assert len(calls) == 4
+
+
+def test_cache_is_scoped_to_model(clean_fixture, monkeypatch):
+    cfg = clean_fixture
+    cfg["_options"]["skip_llm"] = False
+    monkeypatch.setenv(cfg["llm"]["api_key_env"], "test-value")
+    calls = []
+    def generate(self, batch, prompt):
+        calls.append((self.settings["model"], len(batch)))
+        return [result(r["review_id"]) for r in batch]
+    monkeypatch.setattr(llm.GeminiClient, "generate", generate)
+    llm.run(cfg)
+    assert len(calls) == 2
+    cfg["llm"]["model"] = "a-different-model"
+    llm.run(cfg)
+    assert len(calls) == 4
+    assert read(cfg, "llm_results").model.eq("a-different-model").all()
+
+
+def test_limit_writes_separate_artifacts(clean_fixture, monkeypatch):
+    cfg = clean_fixture
+    cfg["_options"]["skip_llm"] = False
+    monkeypatch.setenv(cfg["llm"]["api_key_env"], "test-value")
+    monkeypatch.setattr(
+        llm.GeminiClient,
+        "generate",
+        lambda self, batch, prompt: [result(r["review_id"]) for r in batch],
+    )
+    llm.run(cfg)
+    canonical = read(cfg, "llm_results")
+    cfg["_options"]["limit"] = 2
+    llm.run(cfg)
+    assert len(read(cfg, "llm_results")) == len(canonical) == 3
+    assert len(read(cfg, "llm_results_limit_2")) == 2
+    assert len(read(cfg, "llm_sample_limit_2")) == 2
+    assert (cfg["_root"] / cfg["paths"]["reports"] / "llm_cost_estimate_limit_2.csv").exists()
 
 
 @pytest.mark.parametrize("skip", [True, False])

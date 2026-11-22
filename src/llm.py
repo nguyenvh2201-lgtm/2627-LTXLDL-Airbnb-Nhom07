@@ -18,6 +18,16 @@ from src.download import save, path, csv_report, cli
 RESULT_COLUMNS = ["review_id", "sentiment", "aspects_praise", "aspects_complaint", "language", "parse_error", "truncated", "model", "prompt_version"]
 
 
+class GeminiResponseValidationError(ValueError):
+    """Phản hồi đã nhận nhưng nội dung không khớp JSON/schema yêu cầu."""
+
+
+def artifact_name(cfg: dict, name: str) -> str:
+    """Tách artifact chạy thử để --limit không ghi đè kết quả đầy đủ."""
+    limit = cfg.get("_options", {}).get("limit")
+    return f"{name}_limit_{limit}" if limit is not None else name
+
+
 def select_sample(cfg: dict) -> pd.DataFrame:
     """Lấy review đã QA, bản mới nhất mỗi ID, và cờ mẫu của giảng viên."""
     blocks = []
@@ -51,9 +61,11 @@ def select_sample(cfg: dict) -> pd.DataFrame:
     if len(sample) != cfg["llm"]["sample_size"]:
         logging.warning("Mẫu LLM có %d/%d review không rỗng", len(sample), cfg["llm"]["sample_size"])
     limit = cfg.get("_options", {}).get("limit")
-    if limit:
+    if limit is not None:
+        if limit <= 0:
+            raise ValueError("--limit phải là số nguyên dương")
         sample = sample.head(limit)
-    save(cfg, sample, "llm_sample")
+    save(cfg, sample, artifact_name(cfg, "llm_sample"))
     logging.info("Mẫu LLM: strategy=%s, n=%d, seed=%s", strategy, len(sample), cfg["seed"])
     return sample
 
@@ -199,7 +211,11 @@ class GeminiClient:
                 if attempt + 1 == settings["retries"]:
                     if retryable_status:
                         raise ConnectionError(f"Gemini HTTP {retryable_status} sau {settings['retries']} lần thử; cache đã lưu vẫn còn") from None
-                    raise ValueError("Gemini không trả JSON hợp lệ sau retry") from None
+                    if isinstance(exc, requests.RequestException):
+                        raise ConnectionError(
+                            f"Gemini {type(exc).__name__} sau {settings['retries']} lần thử; cache đã lưu vẫn còn"
+                        ) from None
+                    raise GeminiResponseValidationError("Gemini không trả JSON hợp lệ sau retry") from None
                 sleep_secs = max(retry_after, 8 * (settings["backoff"] ** attempt) if retryable_status else settings["backoff"] ** attempt)
                 time.sleep(sleep_secs)
         raise ValueError("Không có phản hồi")
@@ -224,7 +240,7 @@ def estimate_cost(cfg: dict, sample: pd.DataFrame, results: pd.DataFrame, usage:
     price_in, price_out = settings.get("price_per_m_input"), settings.get("price_per_m_output")
     cost = total * (token_in * price_in + token_out * price_out) / 1e6 if all(v is not None for v in (token_out, price_in, price_out)) else None
     basis = "API usage including thinking" if measured_n else ("chars/4 from cached results; thinking tokens unknown" if len(good) else "input chars/4; output scenario assumption from config, NOT measured; thinking/quota may change cost")
-    csv_report(cfg, [{"sample_n": len(sample), "mean_input_tokens": token_in, "mean_output_tokens": token_out, "token_basis": basis, "city_total_reviews": total, "population_source": source, "billing_tier": settings.get("billing_tier"), "actual_spend_usd": settings.get("actual_spend_usd"), "price_per_m_input": price_in, "price_per_m_output": price_out, "price_date": settings.get("price_date"), "estimated_usd": cost, "status": ("estimated from usage" if measured_n else "scenario estimate, not actual spend") if cost is not None else "cần điền giá và/hoặc chờ kết quả LLM"}], "llm_cost_estimate.csv")
+    csv_report(cfg, [{"sample_n": len(sample), "mean_input_tokens": token_in, "mean_output_tokens": token_out, "token_basis": basis, "city_total_reviews": total, "population_source": source, "billing_tier": settings.get("billing_tier"), "actual_spend_usd": settings.get("actual_spend_usd"), "price_per_m_input": price_in, "price_per_m_output": price_out, "price_date": settings.get("price_date"), "estimated_usd": cost, "status": ("estimated from usage" if measured_n else "scenario estimate, not actual spend") if cost is not None else "cần điền giá và/hoặc chờ kết quả LLM"}], artifact_name(cfg, "llm_cost_estimate") + ".csv")
 
 
 def run(cfg: dict) -> None:
@@ -236,7 +252,7 @@ def run(cfg: dict) -> None:
     cache_path = cfg["_root"] / settings["cache"]
     cache_path.parent.mkdir(parents=True, exist_ok=True)
     cache_path.touch(exist_ok=True)
-    cache, cache_rows, cached_models, raw_lines = {}, {}, [settings["model"]], 0
+    cache, cache_rows, raw_lines = {}, {}, 0
     if cache_path.exists():
         for line in cache_path.read_text(encoding="utf-8").splitlines():
             if not line.strip():
@@ -245,10 +261,11 @@ def run(cfg: dict) -> None:
             try:
                 row = json.loads(line)
                 validate_results([row["result"]], [row["review_id"]], settings["aspects"])
-                cache[row["key"]] = row["result"]
-                cache_rows[row["review_id"]] = row
-                if row.get("model") and row["model"] not in cached_models:
-                    cached_models.append(row["model"])
+                if not isinstance(row.get("key"), str):
+                    raise ValueError("Cache thiếu key")
+                cache_rows[row["key"]] = row
+                if row.get("model") == settings["model"] and row.get("prompt_version") == settings["prompt_version"]:
+                    cache[row["key"]] = row["result"]
             except (ValueError, KeyError, TypeError):
                 logging.warning("Bỏ dòng cache hỏng/không khớp schema")
     key = os.environ.get(settings["api_key_env"])
@@ -256,12 +273,10 @@ def run(cfg: dict) -> None:
     pending, results = [], []
     for row in sample.itertuples():
         digest = cache_key(row.id, row.comments, settings["model"], settings["prompt_version"], identity)
-        hit = next((cache[k] for m in cached_models if (k := cache_key(row.id, row.comments, m, settings["prompt_version"], identity)) in cache), None)
+        hit = cache.get(digest)
         base = {"review_id": row.id, "sentiment": None, "aspects_praise": [], "aspects_complaint": [], "language": None, "parse_error": False, "truncated": len(row.comments) > settings["max_chars"], "model": settings["model"], "prompt_version": settings["prompt_version"]}
         if hit is not None:
             base.update(hit)
-            if row.id in cache_rows:
-                cache_rows[row.id] = {"key": digest, "review_id": row.id, "model": settings["model"], "prompt_version": settings["prompt_version"], "result": hit, "ts": cache_rows[row.id].get("ts", datetime.now(timezone.utc).isoformat())}
         else:
             pending.append((digest, row.comments[:settings["max_chars"]], base))
         results.append(base)
@@ -276,7 +291,7 @@ def run(cfg: dict) -> None:
                 payload = [{"review_id": base["review_id"], "comments": text} for _, text, base in batch]
                 try:
                     values = client.generate(payload, prompt)
-                except ValueError:
+                except GeminiResponseValidationError:
                     if len(batch) > 1:
                         for item in batch:
                             process([item])
@@ -294,7 +309,7 @@ def run(cfg: dict) -> None:
                 # Cache các lô thành công vẫn còn để lần chạy sau tiếp tục.
                 raise
     frame = pd.DataFrame(results, columns=RESULT_COLUMNS)
-    save(cfg, frame, "llm_results")
+    save(cfg, frame, artifact_name(cfg, "llm_results"))
     estimate_cost(cfg, sample, frame, client.usage if client else [], prompt)
     if client and not (frame.sentiment.notna() & ~frame.parse_error).any():
         raise ValueError("Gemini không trả dự đoán hợp lệ nào; xem cảnh báo API phía trên")

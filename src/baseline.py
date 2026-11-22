@@ -55,7 +55,7 @@ def predict(text: str, language: str, lexicon: dict | None, cfg: dict) -> dict:
 
 def run(cfg: dict) -> None:
     """Cùng sample LLM, báo độ phủ ngôn ngữ chưa có từ điển."""
-    from src.llm import select_sample
+    from src.llm import artifact_name, select_sample
     sample = select_sample(cfg)
     lexicons = cfg["baseline"]["lexicons"]
     results = []
@@ -63,7 +63,7 @@ def run(cfg: dict) -> None:
         language = detect_language(row.comments, cfg)
         results.append({"review_id": row.id, **predict(row.comments, language, lexicons.get(language), cfg), "method": "lexicon"})
     frame = pd.DataFrame(results, columns=["review_id", "sentiment", "aspects_praise", "aspects_complaint", "language", "no_lexicon", "method"])
-    save(cfg, frame, "baseline_results")
+    save(cfg, frame, artifact_name(cfg, "baseline_results"))
     coverage = frame.groupby("language").agg(n=("review_id", "size"), no_lexicon=("no_lexicon", "all")).reset_index()
     coverage["share"] = coverage.n / len(frame) if len(frame) else 0
     missing = coverage.loc[coverage.no_lexicon & coverage.share.ge(cfg["baseline"]["language_share_min"])]

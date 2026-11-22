@@ -106,6 +106,15 @@ $$\text{download (gồm filter)} \longrightarrow \text{qa} \longrightarrow \text
 
    ```
 
+4. **Chạy thử LLM/baseline trên mẫu nhỏ mà không ghi đè kết quả chuẩn:**
+   ```powershell
+   python run_pipeline.py --config configs/Toronto.yaml --only llm,baseline --limit 20
+   ```
+   Chế độ này ghi các artifact riêng như `llm_sample_limit_20.parquet`,
+   `llm_results_limit_20.parquet` và `baseline_results_limit_20.parquet`.
+   `--limit` bắt buộc đi cùng `--only` và không được ghép với `evaluate`, `kpi`
+   hoặc `viz`, nhờ đó lượt chạy thử không thể làm hỏng bộ kết quả 1.000 dòng.
+
 ---
 
 ## 5. Quy trình Chấm lại và Kiểm tra Tự động (Dành cho Giảng viên & Nhóm)
