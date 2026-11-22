@@ -123,7 +123,7 @@ Giảng viên và người chấm có thể tái lập toàn bộ kết quả ki
 
 ```powershell
 # 1. Chạy toàn bộ bài kiểm thử tự động, gồm mock LLM và pipeline smoke
-python -m pytest -c notebooks/pytest.ini -q
+python -X utf8 -m pytest -c notebooks/pytest.ini -q
 
 # Kiểm 6 mục bàn giao, gồm security và đối chiếu số (không cần chạy lại riêng)
 python notebooks/tools/check_submission.py
@@ -142,7 +142,7 @@ Bộ test hiện hành có **27 test riêng** (một test có thể chứa nhi�
 | test_evaluate.py | 4 |
 | test_smoke.py | 1 |
 
-Test/tool là phần nhóm triển khai, không phải bộ test giảng viên cung cấp. Những test chẩn đoán HTTP 400, copy-key và helper báo cáo đã bỏ không thuộc bộ hiện hành. Cấu hình pytest không đặt basetemp. Lịch sử thử nghiệm trong AI_USAGE.md được đánh dấu riêng.
+Test/tool là phần nhóm triển khai, không phải bộ test giảng viên cung cấp. Những test chẩn đoán HTTP 400, copy-key và helper báo cáo đã bỏ không thuộc bộ hiện hành. Cấu hình pytest không đặt basetemp. Trạng thái kiểm thử và giới hạn bằng chứng được nêu trong AI_USAGE.md.
 
 ---
 
@@ -158,7 +158,7 @@ Test/tool là phần nhóm triển khai, không phải bộ test giảng viên c
 ├── data/
 │   ├── raw/                 # Dữ liệu Inside Airbnb tải về (đã gitignore)
 │   ├── processed/           # Dữ liệu sạch Parquet, cache LLM (< 50 MB)
-│   └── samples/             # Bảng phân công, danh sách ID, 100 nhãn tay thật
+│   └── samples/             # Bảng phân công, danh sách ID, 100 nhãn tay đã được nhóm xác nhận
 ├── src/
 │   ├── download.py          # Tải, kiểm tra mã SHA256/CRC và lọc sơ bộ
 │   ├── qa.py                # Quy tắc QA, làm sạch, gắn cờ và xuất từ điển
@@ -199,4 +199,4 @@ python notebooks/tools/check_report_numbers.py
 
 Hai lượt biên dịch cập nhật mục lục và tham chiếu bảng/hình. Báo cáo có ghi nhận lần kiểm chứng 27 test; cần cập nhật sau khi bộ test thay đổi.
 
-Các công cụ còn lại: `inspect_ids.py` chuẩn bị ID phân công; `check_report_numbers.py` kiểm 36 giá trị duy nhất khi sửa báo cáo; `check_security.py` audit secret riêng; `check_submission.py` gọi lại hai checker và kiểm kích thước processed, đủ hình, giới hạn trang PDF, Git status. `check_submission.py` không chạy lại pytest. Trước khi nộp, nhóm tự xác nhận repo riêng tư, quyền giảng viên, liên kết nộp bài và tag final.
+Các công cụ còn lại: `inspect_ids.py` chuẩn bị ID phân công; `check_report_numbers.py` kiểm 36 giá trị duy nhất khi sửa báo cáo; `check_security.py` audit secret riêng; `check_submission.py` gọi lại hai checker và kiểm kích thước processed, đủ hình, giới hạn trang PDF, Git status. Công cụ trả mã thoát 1 nếu có mục chưa đạt, 0 khi cả sáu mục đạt; không chạy lại pytest. Trước khi nộp, nhóm tự xác nhận repo riêng tư, quyền giảng viên, liên kết nộp bài và tag final.

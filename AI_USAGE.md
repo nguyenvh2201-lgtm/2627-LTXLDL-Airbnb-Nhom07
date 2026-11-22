@@ -43,7 +43,7 @@ Sau khi ghép đúng listing/snapshot, phép tính chỉ nhận ngày và trạn
 
 **Ước lượng độ bất định của điểm đánh giá.** Ngoài Accuracy và macro-F1, nhóm nhờ AI hỗ trợ triển khai bootstrap: lấy mẫu review có hoàn lại nhiều lần, tính lại chỉ số rồi lấy các phân vị để tạo khoảng tin cậy. Danh sách ba lớp cảm xúc được giữ cố định vì một lần lấy mẫu có thể không có lớp hiếm. Phần so sánh chênh lệch Accuracy sử dụng kết quả đúng/sai của hai mô hình trên cùng review để giữ tính ghép cặp, thay vì lấy mẫu độc lập cho từng mô hình.
 
-Về dữ liệu nhãn, Codex có hỗ trợ chuẩn hóa các khía cạnh do người dùng điền sang JSON và tạo nhãn gợi ý cho 50 review bổ sung. Các nhãn gợi ý được đánh dấu `AI_draft`; chỉ các dòng được xác nhận là nhãn người gán mới được dùng làm gold. Theo nhật ký triển khai, dự án đã có 1.000 dự đoán Gemini hợp lệ và bộ 100 review do người dùng gán nhãn để đánh giá. Phần chuẩn hóa định dạng và phần tạo nhãn gợi ý được khai báo riêng để không nhầm với việc gán nhãn tay.
+**Làm rõ 100 nhãn tay và 50 gợi ý AI.** Nhóm xác nhận **toàn bộ 100 review trong `data/samples/hand_labels.csv` đều được nhóm gán nhãn tay**, đáp ứng yêu cầu ít nhất 100 nhãn tay của bài. Đây là bộ gold dùng để tính các chỉ số đánh giá LLM và baseline. Codex có hỗ trợ chuẩn hóa khía cạnh do người gán chọn sang JSON; hỗ trợ định dạng này không thay thế việc gán nhãn tay. Hoạt động tạo gợi ý cho **50 review bổ sung** được khai báo riêng là `AI_draft`; các nhãn AI gợi ý không được dùng làm đáp án gold thay cho 100 nhãn tay. `evaluate.py` chỉ dùng tệp gold 100 dòng, không tự cộng thêm 50 gợi ý vào mẫu đánh giá.
 
 ### 4. Viz — Biểu đồ và báo cáo
 
@@ -99,7 +99,7 @@ Về dữ liệu nhãn, Codex có hỗ trợ chuẩn hóa các khía cạnh do n
 | `notebooks/tools/inspect_ids.py` | Chuẩn bị input: đọc bảng phân công theo vị trí cột, lọc lớp/nhóm, giữ ID dạng chuỗi, kiểm số lượng/uniqueness/quan hệ/tập con; xuất danh sách ID và báo cáo khảo sát. Không gán nhãn tay. |
 | `notebooks/tools/check_report_numbers.py` | Tính lại **36 giá trị duy nhất** từ clean data và dự đoán; kiểm giá trị khai báo và chuỗi hiển thị trong report.md/report.pdf. Không đọc summary_numbers.csv làm nguồn chuẩn; không kiểm mọi số hoặc ngữ nghĩa cả câu. |
 | `notebooks/tools/check_security.py` | Audit riêng các file Git không nên theo dõi, mẫu khóa trong mã/lịch sử và quy tắc ignore; in JSON ra console. Không tạo security_check.json và không phát hiện mọi loại secret. |
-| `notebooks/tools/check_submission.py` | In **6 mục**: processed dưới 50 MB; đủ 11 hình; giới hạn trang PDF; gọi checker 36 giá trị báo cáo; gọi security audit; Git status. Không chạy lại pytest, không tạo checklist CSV, không tự commit/tag/push. Quyền repo, mời giảng viên, liên kết và tag được xác nhận thủ công. |
+| `notebooks/tools/check_submission.py` | In **6 mục**: processed dưới 50 MB; đủ 11 hình; giới hạn trang PDF; gọi checker 36 giá trị báo cáo; gọi security audit; Git status. Trả mã thoát 1 nếu có mục chưa đạt, 0 khi cả sáu mục đạt. Không chạy lại pytest, không tạo checklist CSV, không tự commit/tag/push. Quyền repo, mời giảng viên, liên kết và tag được xác nhận thủ công. |
 
 Các bảng trên khai báo phần mã và cách kiểm tra có AI hỗ trợ, không xác nhận mọi công cụ đã được chạy thành công trong phiên cập nhật tài liệu này. Trạng thái chạy phải căn cứ vào log và các tệp bằng chứng tương ứng; việc có sẵn script không đồng nghĩa đã hoàn tất kiểm tra.
 
@@ -202,7 +202,7 @@ AI hỗ trợ chuyển công thức thành phép lọc, ghép và tổng hợp b
 
 **Lưu cache và kết quả:** AI hỗ trợ khóa cache có xét review, văn bản, model, phiên bản prompt và định danh prompt/schema. Cache chỉ được tái dùng khi model, prompt_version và khóa gồm ID/văn bản/prompt/schema/max_chars khớp cấu hình hiện tại. File cache có thể giữ cả dòng từ model cũ, nhưng những dòng khác model không được dùng cho lần chạy mới. Khi thẩm định nguồn dự đoán, cần đối chiếu metadata cache và lịch sử chạy.
 
-**Phần nhóm chịu trách nhiệm:** Chấp nhận quy ước phân loại, kiểm tra review khó, quản lý API key, xem các dòng `parse_error`/`truncated`, và quyết định nhận xét nào có đủ bằng chứng. `temperature = 0` làm giảm tính ngẫu nhiên theo cấu hình, nhưng không bảo đảm nhãn đúng hoặc kết quả API bất biến giữa các lần gọi.
+**Phần nhóm chịu trách nhiệm:** Chấp nhận quy ước phân loại, kiểm tra review khó, quản lý API key, xem các dòng `parse_error`/`truncated`, và quyết định nhận xét nào có đủ bằng chứng. Payload hiện gửi `temperature = 0`, nhưng Gemini 3.5 Flash-Lite bỏ qua giá trị tùy chỉnh của tham số này; không dùng nó làm bằng chứng giảm tính ngẫu nhiên hay bảo đảm kết quả bất biến. Theo [tài liệu chính thức của Google](https://aistudio.google.com/docs/whats-new-gemini-3.6#sampling-parameter-deprecation), giá trị temperature tùy chỉnh bị bỏ qua. Kết quả tái lập trong dự án dựa vào cache đã lưu, không phải cam kết từ temperature.
 
 #### 7.6. Baseline: xây dựng phương pháp đối chứng có thể giải thích
 
@@ -224,6 +224,7 @@ AI hỗ trợ các công việc kỹ thuật sau:
 2. Kiểm tra ID thiếu/trùng, nhãn cảm xúc ngoài danh mục và ID không nằm trong mẫu LLM.
 3. Chuẩn hóa cột khía cạnh thành mảng JSON; phân biệt ô chưa có nhãn với mảng rỗng `[]` thể hiện không có khía cạnh.
 4. Khi có cột `label_source`, chỉ giữ nguồn `user_manual` cho gold; các nhãn `AI_draft` chưa xác nhận bị loại.
+   Khi không có nhãn tay hoặc không có dự đoán LLM hợp lệ, làm rỗng cả ba bảng `eval_metrics.csv`, `error_analysis.csv`, `confusion_matrices.csv` và cập nhật thông báo trong `error_summary.md` để không giữ kết quả của lần chạy trước.
 5. Ghép từng phương pháp với cùng gold bằng quan hệ `one_to_one`, kiểm tra dự đoán trùng khóa và giữ các dự đoán thiếu trong mẫu đánh giá.
 6. Tính Accuracy, macro-F1, precision/recall/F1 từng lớp, chỉ số nhiều nhãn cho khen/chê và độ chính xác ngôn ngữ khi có gold tương ứng.
 7. Bootstrap với seed cố định, tạo khoảng tin cậy cho chỉ số cảm xúc và so sánh chênh lệch Accuracy theo cặp review.
@@ -292,7 +293,7 @@ Các giá trị dưới đây được ghi theo `configs/Toronto.yaml` và mã `
 | Backoff | `2` | Cơ sở tăng thời gian chờ giữa các lần thử. |
 | Timeout | `180` giây | Thời gian chờ yêu cầu theo cấu hình. |
 | Giới hạn văn bản | `1500` ký tự/review | Nội dung dài hơn bị cắt khi tạo payload và được đánh dấu `truncated`. |
-| Temperature | `0` trong mã | Cấu hình quá trình sinh kết quả. |
+| Temperature | Payload gửi `0` trong mã | Gemini 3.5 Flash-Lite bỏ qua giá trị tùy chỉnh; không bảo đảm giảm ngẫu nhiên hay kết quả lặp lại. Xem nguồn Google ở mục 7.5. |
 | Đầu ra | JSON với response schema | Phục vụ kiểm tra và xử lý tự động. |
 | Biến môi trường khóa | `GEMINI_API_KEY` | Không yêu cầu ghi khóa trong mã hoặc YAML. |
 | Cache | `data/processed/llm_cache.jsonl` | Lưu kết quả có metadata để giảm gọi lại. |
@@ -450,7 +451,7 @@ Các ví dụ dưới đây là lỗi thực tế trong bản mã hoặc nội d
 | Khóa cache ban đầu chưa bao gồm đầy đủ văn bản, prompt và schema. | Có thể tái dùng nhãn cũ sau khi thay yêu cầu phân loại. | Đưa ID, văn bản, model, phiên bản và định danh prompt/schema vào khóa SHA256. | Test thay prompt version và kiểm tra cache miss/hit. |
 | AI từng mô tả công cụ kiểm tra như thể chúng sinh PDF, `security_check.json` và checklist CSV. | `AI_USAGE.md`/README hứa đầu ra không tồn tại. | Sửa tài liệu theo hành vi hiện tại: checker kiểm 36 giá trị khai báo trong cả Markdown/PDF; JSON/checklist chỉ in ra console. | Đối chiếu trực tiếp mã trong `notebooks/tools/` và danh sách `reports/`. |
 | Pytest từng dùng thư mục tạm gây xung đột thu thập hoặc lỗi quyền. | Test có thể lỗi dù logic dự án đúng. | Giới hạn `testpaths`, loại thư mục sao chép/tạm; bản hiện tại không cấu hình `basetemp`. | Bộ hiện hành có 27 test; số lượng cũ không mô tả bộ test đang nộp. |
-| Nhãn bản đồ do AI bố trí từng chồng lên điểm và khó đọc. | Hình tồn tại nhưng không dùng được trong báo cáo. | Điều chỉnh vị trí nhãn và nền hiển thị. | Xem trực tiếp ảnh PNG ở kích thước đưa vào báo cáo. |
+| Nhãn bản đồ do AI bố trí từng chồng lên điểm và khó đọc. | Hình tồn tại nhưng không dùng được trong báo cáo. | Điều chỉnh vị trí nhãn và nền hiển thị. | Xem trực tiếp hình PDF ở kích thước đưa vào báo cáo. |
 
 AI có vai trò đề xuất và hiện thực cách sửa; việc lựa chọn quy tắc nào phù hợp bài làm vẫn thuộc nhóm. Ví dụ, có thể sửa chương trình để không báo lỗi bằng cách bỏ kiểm tra số lượng, nhưng làm như vậy không giải thích được các ID thiếu. Phương án cần giữ bằng chứng về chênh lệch và ghi rõ quyết định sử dụng dữ liệu.
 
@@ -463,10 +464,10 @@ AI có vai trò đề xuất và hiện thực cách sửa; việc lựa chọn 
 | Loại | Nguồn và vai trò | Cách sử dụng trong đánh giá |
 | --- | --- | --- |
 | Dự đoán Gemini | Nhãn do mô hình trả về cho mẫu LLM, có thông tin lỗi và cấu hình liên quan. | Là đầu ra cần đánh giá, không dùng làm đáp án chuẩn cho chính Gemini. |
-| Nhãn tay được nhóm xác nhận | Bộ nhãn đánh giá do người gán/xác nhận theo khai báo của nhóm. | Là gold khi đáp ứng kiểm tra và quy trình xác nhận. |
+| Nhãn tay của nhóm | Nhóm xác nhận cả 100 review trong hand_labels.csv đều được gán nhãn tay. | Bộ gold 100 review dùng tính các chỉ số LLM và baseline, đáp ứng yêu cầu cỡ mẫu nhãn tay. |
 | Gợi ý AI và dữ liệu mock | Gợi ý `AI_draft`, fixture tổng hợp hoặc phản hồi API giả lập. | Dùng hỗ trợ gán nhãn/kiểm thử; không tự đưa vào gold thật. |
 
-Bản khai báo trước ghi nhận Codex hỗ trợ chuẩn hóa khía cạnh sang JSON và tạo gợi ý cho 50 review bổ sung. Việc này được khai báo riêng với bộ 100 review dùng đánh giá. Không được hiểu mọi dòng bổ sung đều đã được người đọc và xác nhận, hoặc tự cộng chúng vào cỡ mẫu gold.
+**Phạm vi đánh giá thực tế:** Bộ đánh giá gồm **100 review do nhóm gán nhãn tay và đã được nhóm xác nhận**. Các chỉ số đang báo cáo chỉ tính trên bộ gold này. **50 gợi ý `AI_draft` là hoạt động bổ sung**, không được dùng làm nhãn gold hoặc cộng vào cỡ mẫu đánh giá. Việc Codex chuẩn hóa định dạng JSON cho khía cạnh được tách rõ khỏi việc nhóm tự đọc review và quyết định nhãn. Xác nhận nguồn nhãn ở đây do nhóm cung cấp; mã kiểm tra số lượng, ID và định dạng, không tự xác minh quá trình gán nhãn của con người.
 
 #### Các số liệu đang có trong bảng đánh giá
 
@@ -495,7 +496,7 @@ Vai trò của Codex ở đây là hỗ trợ viết phép tính, sắp xếp b�
 
 #### Các trách nhiệm gắn với phần việc của nhóm
 
-Phần 50% do nhóm trực tiếp thực hiện được hiểu theo khung tự đánh giá ở đầu tài liệu. Những nhiệm vụ sau là phần việc và trách nhiệm mà nhóm phải đảm nhận khi sử dụng hỗ trợ AI:
+Phần 50% do nhóm trực tiếp thực hiện là ước lượng tổng thể theo mục **“Xác nhận phạm vi khai báo”** ở cuối tài liệu, không phải số đo tự động hay một bảng tự đánh giá ở đầu tài liệu. Những nhiệm vụ sau là phần việc và trách nhiệm mà nhóm phải đảm nhận khi sử dụng hỗ trợ AI:
 
 1. **Xác định phạm vi bài:** Chọn đúng lớp/nhóm, xác nhận dữ liệu được phân công, mục tiêu phân tích và đối tượng sử dụng báo cáo.
 2. **Xác nhận cấu hình:** Hiểu và chấp nhận các mốc dữ liệu, đồng tiền, ngưỡng QA, ngưỡng KPI, bộ nhãn và cách chọn mẫu.
@@ -528,11 +529,13 @@ Các lệnh dưới đây dùng để người đọc tái kiểm tra theo từn
 
 ```powershell
 # 27 test hiện có, dùng fixture/API mock
-.\.venv\Scripts\python.exe -m pytest -c notebooks/pytest.ini -q
+.\.venv\Scripts\python.exe -X utf8 -m pytest -c notebooks/pytest.ini -q
 
 # 6 mục bàn giao, gồm checker báo cáo và security; không chạy lại pytest
 .\.venv\Scripts\python.exe notebooks/tools/check_submission.py
 ```
+
+**Lưu ý UTF-8 trên Windows:** Test đọc báo cáo bằng `read_text(encoding="utf-8")`; lệnh pytest trên dùng thêm `-X utf8` để tránh phụ thuộc bảng mã hệ điều hành. Bộ test hiện có 27 test; đã kiểm tra đạt 27/27 trên macOS. Cần chạy lại trên Windows để xác nhận kết quả trên nền tảng này.
 
 Để kiểm tra luồng chạy từ dữ liệu thô có sẵn và ưu tiên dùng cache, có thể chạy:
 
@@ -570,90 +573,6 @@ Trong phạm vi mã hiện tại, khóa Gemini được đọc từ biến môi 
 
 ### Xác nhận phạm vi khai báo
 
-Nhóm khai báo **AI hỗ trợ thực hiện khoảng 50% tổng khối lượng bài tập lớn**, gồm hỗ trợ thiết kế kỹ thuật, tạo và sửa mã, tích hợp Gemini, xây dựng baseline, kiểm thử, đối chiếu số liệu, trực quan hóa và soạn thảo tài liệu. Phần còn lại do nhóm trực tiếp thực hiện theo khung tự đánh giá; nhóm chịu trách nhiệm đầy đủ về dữ liệu, nhãn đánh giá, công thức, kết quả, nhận xét và bản nộp.
+Nhóm khai báo **AI hỗ trợ thực hiện khoảng 50% tổng khối lượng bài tập lớn**, gồm hỗ trợ thiết kế kỹ thuật, tạo và sửa mã, tích hợp Gemini, xây dựng baseline, kiểm thử, đối chiếu số liệu, trực quan hóa và soạn thảo tài liệu. Phần còn lại do nhóm trực tiếp thực hiện theo ước lượng chung của nhóm; nhóm chịu trách nhiệm đầy đủ về dữ liệu, nhãn đánh giá, công thức, kết quả, nhận xét và bản nộp.
 
 Tỷ lệ này là ước lượng tổng thể, không phải tỷ lệ cố định trong từng tệp, số giờ đo được hoặc tỷ lệ dữ liệu AI sinh. Tài liệu mô tả cả phần AI tham gia trực tiếp và các bước nhóm cần kiểm chứng, đồng thời phân biệt kết quả đã lưu, ví dụ minh họa, gợi ý chưa xác nhận và dữ liệu kiểm thử. Các công cụ kiểm tra chỉ được coi là đã hoàn thành khi có bằng chứng chạy tương ứng.
-
-
-## Nhật ký các phiên trước — lịch sử triển khai
-
-Các mục theo thời gian dưới đây giữ nguyên kết quả đã ghi ở từng phiên. Những câu như “hiện rỗng”, “chưa push”, số 50/44 test hoặc 38/39 khai báo mô tả thời điểm đó. Trạng thái hiện hành là bảng ở đầu tài liệu và các mục 6.2/6.3, không phải cộng tất cả tính năng từng được thử.
-
-### 2026-11-22 — Sửa lỗi và đối chiếu toàn dự án (Codex)
-
-- Yêu cầu: sửa lỗi 3, 4, 5, 7 từ phiên review; kiểm lại tính nhất quán của mã, dữ liệu, tài liệu và báo cáo.
-- Thay đổi: giữ lịch hợp lệ khi thiếu neighbourhood cho KPI toàn mẫu; loại mọi trường dự đoán LLM có parse_error khỏi đánh giá; sinh nhận xét/ngày giới hạn từ dữ liệu; tính lại 38 số khai báo từ dữ liệu sạch và dự đoán, kiểm chuỗi trong Markdown và PDF thay vì tin bảng summary lưu sẵn.
-- Kiểm chứng: 50 test đạt, gồm hồi quy neighbourhood thiếu, parse_error, report cũ và ngày biểu đồ; kiểm cấu hình đạt; security pattern audit đạt. Replay llm/baseline/evaluate/kpi/viz bằng cache trong thư mục tạm tái tạo cùng ba bảng KPI và eval_metrics. Đã cập nhật ba hình thời gian và error_summary từ lượt replay.
-- Giới hạn: data/raw hiện rỗng nên chưa chạy lại toàn bộ từ raw; không gọi API. Report PDF giữ nguyên, đoạn phương pháp trong PDF vẫn mô tả checker cũ (30 số, chỉ Markdown) và 43 test; README/report.md đã cập nhật. Các lựa chọn snapshot và trang bìa/phụ lục không bị đổi.
-
-
-### 2026-11-22 — Thu gọn bộ test theo yêu cầu
-
-- Bỏ 6 test riêng: test_config, test_legacy_city_config_name_uses_toronto, test_filter_and_big_id, test_key_with_copy_formatting_fails_before_request, test_key_with_non_ascii_letter_fails_before_request, test_report_check_recalculates_and_checks_pdf.
-- Lý do: happy path cấu hình/lọc đã được smoke test và test ID chính xác bao phủ; alias cấu hình cũ, hai tình huống copy khóa và helper báo cáo nằm ngoài bộ test pipeline cốt lõi mà người dùng yêu cầu giữ. Không xóa logic kiểm tra trong pipeline hoặc script checker báo cáo.
-- Giữ test dữ liệu/QA/KPI, lỗi API và retry, cache, nhãn tay/metrics, giới hạn artifact thử và pipeline end-to-end. Test neighbourhood thiếu và parse_error bảo vệ kết quả runtime nên vẫn giữ.
-- Kiểm chứng: bộ còn lại 44 test đạt (17.87 giây).
-
-
-### 2026-11-22 — Thu gọn test lần hai
-
-Theo yêu cầu tiếp tục loại test dư thừa, giảm 44 xuống 27 test riêng. Gộp các case cấu hình, retry transport, cache model/prompt và skip/missing-key; bỏ setup lọc/QA trùng với smoke test, giữ kiểm ID chính xác và no-match. Loại các test định dạng chẩn đoán HTTP 400, duplicate-listing scrape-date và conflicting-assignment area riêng; guard trong mã nguồn vẫn giữ. Kiểm rating trùng được bỏ, IQR/schema được giữ trong test numeric. Mô tả chi tiết tại notebooks/tests/fixtures/README.md. Bộ 27 test đạt trong 14.98 giây; không thay đổi mã pipeline hay dữ liệu.
-
-
-### 2026-11-22 — Chạy lại toàn pipeline từ raw tải mới
-
-- Chạy mã working tree trong /tmp/airbnb-full-rerun bằng `python run_pipeline.py --skip-llm`; exit 0, không có WARNING/ERROR. Tải mới 12 CSV gzip và 4 GeoJSON; SHA256 của 12 CSV khớp download_manifest hiện có. Raw đã chuyển về data/raw của dự án để dùng lại ngoại tuyến. Không gọi Gemini.
-- 27 test đạt (15.43 giây). Đối chiếu 34 bảng CSV/Parquet với đầu ra dự án: khớp trong sai số 1e-10; manifest bỏ qua trường thời gian/provenance. Checker 38 số trên dữ liệu sinh lại + Markdown/PDF đạt.
-- 10/11 biểu đồ có cùng văn bản. Một khác biệt trình bày: biểu đồ giá khu vực tái tạo Annex = 321.66 CAD, hình/PDF hiện có = 321.67 CAD. Cả hai bảng KPI có cùng giá trị 321.66499999999996 (hai giá giữa: 314.83 và 328.50); đây là vấn đề làm tròn/đồng bộ hình đã lưu, không phải dữ liệu hay KPI thay đổi. Annex chưa nằm trong 38 số khai báo của checker. Chưa sửa PDF/hình hiện có trong lượt chạy kiểm tra này.
-
-
-### 2026-11-22 — Đồng bộ LaTeX với PDF mới và pipeline
-
-Dùng main.tex/content.tex/cover.tex và logo từ template trong Downloads làm tài liệu nguồn, đối chiếu PDF mười trang ở origin/main 9e874e3. Lưu nguồn mới tại reports/latex, không sửa thư mục Downloads. Giữ cấu trúc sáu phần, bìa và năm hình chính; sửa nhận định cũ về ID vắng mặt/mùa vụ/khía cạnh LLM, thang rating [1,5], QA record_only và công thức K8. Dùng trực tiếp figures của dự án; thống nhất Annex 321.66 CAD.
-
-Cập nhật phương pháp: 27 test, 39 số khai báo (thêm Annex), bỏ điểm cho parse_error trên mọi tác vụ, giữ lịch hợp lệ khi thiếu neighbourhood cho KPI toàn mẫu, mô tả cache và lần chạy từ raw. Không khai báo hash cũ của template là hash bản nộp. Checker đọc PDF theo layout để hỗ trợ bảng. README/report.md và manifest số đã đồng bộ.
-
-Kiểm chứng: 27 test đạt (14.37 giây); checker 39 giá trị đạt trên dữ liệu hiện tại + Markdown + PDF. PDF biên dịch bằng pdfLaTeX, 10 trang gồm bìa và mục lục; đã render kiểm bố cục, không có overfull box hay tham chiếu chưa giải quyết. ZIP nguồn độc lập đã biên dịch hai lần và khớp text trên cả 10 trang.
-
-
-### 2026-11-22 — Đồng bộ Markdown và giảm checker dư thừa
-
-So report.md với PDF đã dựng: số liệu chính khớp, nhưng Markdown thiếu mô tả chi phí mở rộng, bằng chứng chạy raw, điều kiện parse_error/neighbourhood và hệ số 100 trong công thức K7. Đã bổ sung, ghi rõ ngưỡng K8 và cách hiển thị Annex theo pipeline. LaTeX/PDF và ZIP nguồn đã đồng bộ.
-
-Bỏ check_config_swap.py (quét regex yếu và chạy lại một phần pytest đã có) và clean_reproduce.py (helper cũ không copy cache). Giữ inspect_ids.py để chuẩn bị input; check_report_numbers.py cho kiểm dữ liệu/Markdown/PDF; check_security.py cho audit riêng; check_submission.py tái dùng hai checker và chỉ kiểm 6 mục bàn giao. Bỏ các hàng lặp filter/gold/LLM/metric/cost/Markdown-size, tiêu chí ép chi phí bằng 0, và trạng thái manual luôn fail. README hướng dẫn chỉ chạy pytest rồi check_submission thay vì gọi trùng từng checker.
-
-Loại 3 khai báo lặp theo key trong report_numbers.json: 39 entry xuống 36 giá trị duy nhất, không mất độ phủ của các key. PDF biên dịch lại vẫn 10 trang, trang phương pháp đã render kiểm. Chạy checklist mới: 5 mục đạt (processed 19.97/50 MB, 11 hình, 10 trang PDF, 36 giá trị khớp, security pattern audit); Git status chưa sạch do thay đổi chưa commit. Bộ pytest không đổi, vẫn 27 test của lượt chạy gần nhất.
-
-
-### 2026-11-22 — Kiểm cuối trước push
-
-Chạy lại 27 test: đạt trong 17.00 giây. Submission checker: processed 19.97/50 MB, 11/11 hình, PDF 10/10 trang, 36 khai báo dữ liệu/Markdown/PDF khớp, security pattern audit đạt; Git status còn thay đổi chưa commit. Build LaTeX từ thư mục tạm sạch khớp text cả 10 trang, không overflow/tham chiếu lỗi; ZIP nguồn và figures trong ZIP khớp working files. git diff --check đạt.
-
-Fetch origin/main và xác nhận chỉ có commit 9e874e3 thay PDF. Fast-forward main lên 9e874e3, giữ PDF dựng lại byte-for-byte từ bản sao tạm, không mất thay đổi local. Thêm .DS_Store vào .gitignore để bỏ metadata Finder khỏi file chuẩn bị commit. Chưa stage, commit, tag hoặc push; các nguồn LaTeX mới cần được đưa vào commit. Ngoại lệ snapshot và hash/tag bản nộp vẫn do nhóm xác nhận trước nộp cuối.
-
-
-### 2026-11-22 — Rà soát tài liệu sau khi push 485366c
-
-Đã đối chiếu lại danh sách test/tool thật với README và AI_USAGE. Sửa các bảng/lệnh hiện hành từng còn nhắc tool đã xóa, các test HTTP 400/copy-key/chunk-equivalence đã bỏ, basetemp cũ, lọc neighbourhood và cache model cũ. Bổ sung snapshot hiện hành 27 test/4 tool/36 giá trị/6 mục checklist; tách nhật ký lịch sử để không bị hiểu là tính năng hiện còn. README được bổ sung bảng phân bổ test và xác nhận test/tool do dự án triển khai. Commit 485366c đã được push main; các ghi chép “chưa push” phía trên là trạng thái lịch sử trước commit đó.
-
-
-### 2026-11-22 — Thêm provenance vào báo cáo, chỉ sửa local
-
-Theo yêu cầu người dùng, ghi commit mã nguồn/cấu hình tham chiếu `31cc2469a0d325e2ebb8669d2b4fb9446eb296ed` trong content.tex và report.md, biên dịch lại PDF và đồng bộ ZIP nguồn. Phân biệt hash phiên bản phân tích với hash của commit lưu PDF sau này. Không thay đổi mã phân tích; không commit, tag hoặc push trong phiên này.
-
-
-### 2026-11-22 — Bổ sung giải trình thay mốc theo xác nhận của nhóm
-
-Người dùng cung cấp nội dung: nhóm ban đầu dùng 2025-12-12, tệp listings không có giá niêm yết trên 21.602 dòng; đã báo giảng viên và đổi sang 2026-09-16 theo yêu cầu giảng viên. Thêm nguyên ý vào phần giới hạn dữ liệu của LaTeX/Markdown và bỏ nhận xét cũ rằng còn cần xin chấp thuận. Đây là thông tin do nhóm cung cấp; phiên này không tải lại hay kiểm đếm raw của mốc 2025-12-12. Giữ nguyên bốn mốc phân tích đang dùng, provenance và kết quả; chỉ biên dịch PDF và đồng bộ ZIP cục bộ, không commit/tag/push. Bỏ phần chat/reaction đi kèm khỏi văn bản báo cáo.
-
-
-### 2026-11-22 — Sửa lý do chọn snapshot và bỏ theo dõi nguồn LaTeX
-
-Theo văn bản mới do người dùng cung cấp, thay lý do cũ bằng việc price rỗng ở toàn bộ 21.602 dòng của listings 2025-12-12 và ba lý do chọn 2026-09-16: mốc mới nhất trong bộ đang dùng, có giá để phân tích và giữ được 955/1.000 review LLM. Đối chiếu dữ liệu dự án xác nhận 814 listing có giá trước lọc, 783 giá hợp lệ sau QA; báo cáo làm rõ sự khác nhau này. Phần số liệu 2025-12-12 do nhóm cung cấp, chưa kiểm lại raw trong phiên này.
-
-Theo yêu cầu không đưa latex folder/ZIP lên GitHub, giữ nguồn tại máy nhưng thêm ignore và stage xóa khỏi Git index cho reports/latex và reports/report-latex-source.zip. PDF/Markdown vẫn được theo dõi. README nêu rõ clone từ GitHub không chứa nguồn LaTeX. Không commit, tag hoặc push trong phiên này.
-
-
-### 2026-11-22 — Hoàn thiện mục commit tham chiếu trong PDF
-
-Theo yêu cầu người dùng, tách provenance thành mục riêng, ghi đầy đủ commit mã nguồn phân tích `31cc2469a0d325e2ebb8669d2b4fb9446eb296ed` và liên kết tới commit GitHub. Kiểm git diff HEAD xác nhận src/config/input/processed/run_pipeline/requirements không đổi so với commit được dẫn chiếu. PDF/Markdown và ZIP nguồn cục bộ đồng bộ; giữ phân biệt hash phân tích với hash commit lưu PDF. Không commit/tag/push.

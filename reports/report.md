@@ -40,7 +40,7 @@ Ba mốc đầu giữ nguyên đủ **1,000** chỗ ở và **5,000** đánh gi�
 
 ## 4. Mô hình từ điển đạt Accuracy cảm xúc cao hơn LLM
 
-Mẫu LLM gồm **1,000/1,000** đánh giá hợp lệ: 955 đánh giá ở mốc 2026-09-16 và 45 đánh giá bổ sung từ mốc 2026-06-15. Mô hình gán nhãn `positive` cho 89,7%–95,3% đánh giá ở 8 vùng phân tích; **chủ nhà**, **vị trí** và **tiện nghi** là ba khía cạnh được khen nhiều nhất.
+Mẫu LLM gồm **1,000/1,000** đánh giá hợp lệ: 955 đánh giá ở mốc 2026-09-16 và 45 đánh giá bổ sung từ mốc 2026-06-15. Mô hình gán nhãn `positive` cho 89.7%–95.3% đánh giá ở 8 vùng phân tích; **chủ nhà**, **vị trí** và **tiện nghi** là ba khía cạnh được khen nhiều nhất.
 
 | Phương pháp | Thước đo | Giá trị | Khoảng tin cậy 95% | Cỡ mẫu (n) |
 | --- | --- | ---: | ---: | ---: |
@@ -104,6 +104,6 @@ Bản nháp gồm năm nhận định được Codex tạo trong phiên ngày 21
 - **Điều kiện tính toán:** K2 toàn mẫu và K3 giữ ngày lịch hợp lệ kể cả khi thiếu neighbourhood; tổng hợp theo vùng yêu cầu vùng xác định. Dự đoán `parse_error` không nhận điểm cho cảm xúc, khía cạnh hoặc ngôn ngữ. Ngày trên hình và thống kê lỗi lấy từ dữ liệu lần chạy.
 - **Tái lập ngày 22/11/2026:** Chạy đầy đủ pipeline bằng cache trong thư mục tạm, tải mới 12 CSV gzip và 4 GeoJSON; SHA256 của 12 CSV khớp manifest. Pipeline kết thúc không cảnh báo/lỗi; 34 bảng đối chiếu khớp trong sai số 1e-10 (không so timestamp manifest), đủ 1,000 dự đoán LLM hợp lệ, không gọi API mới.
 - **Làm tròn:** Annex hiển thị 321.66 CAD/đêm theo cùng định dạng hai chữ số của pipeline, từ giá trị KPI 321.66499999999996.
-- **Provenance — commit mã nguồn phân tích:** Phiên bản mã nguồn và cấu hình tham chiếu cho kết quả: `31cc2469a0d325e2ebb8669d2b4fb9446eb296ed`. Đây là commit của phiên bản phân tích; commit lưu bản PDF cập nhật có thể có hash khác. Commit chỉ sửa tài liệu không làm thay đổi mã phân tích được dẫn chiếu. Pipeline không tự động `commit`, `tag` hoặc `push`.
+- **Provenance — commit mã nguồn phân tích:** Phiên bản mã nguồn và cấu hình tham chiếu cho kết quả: `87b0b23413b33bef7882fe8fd438494e9ef3fbe0`. Đây là commit của phiên bản phân tích; commit lưu bản PDF cập nhật có thể có hash khác. Commit chỉ sửa tài liệu không làm thay đổi mã phân tích được dẫn chiếu. Pipeline không tự động `commit`, `tag` hoặc `push`.
 
 LaTeX nguồn được giữ cục bộ, không theo dõi trong Git: `reports/latex/main.tex`, `content.tex`, `cover.tex`; biên dịch từ `reports/latex` bằng `pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-error -jobname=report main.tex` hai lần. Pipeline sinh số liệu và hình, không tự biên dịch báo cáo.

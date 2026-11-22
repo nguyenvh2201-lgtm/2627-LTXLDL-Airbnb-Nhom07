@@ -18,7 +18,7 @@ FIGURES = [
 ]
 
 
-def run(cfg: dict) -> None:
+def run(cfg: dict) -> int:
     rows = []
     def add(item, passed, evidence):
         rows.append({"item": item, "status": "Đạt" if passed else "Chưa đạt", "evidence": evidence})
@@ -44,7 +44,8 @@ def run(cfg: dict) -> None:
     add("Git status sạch", not status.strip(), "Có thay đổi chưa commit/file chưa track" if status.strip() else "Sạch")
     print(pd.DataFrame(rows).to_string(index=False))
     print("Xác nhận thủ công trước nộp: quyền repo/giảng viên, liên kết nộp bài, commit báo cáo và tag final.")
+    return int(any(row["status"] == "Chưa đạt" for row in rows))
 
 
 if __name__ == "__main__":
-    run(load_config("configs/Toronto.yaml"))
+    raise SystemExit(run(load_config("configs/Toronto.yaml")))

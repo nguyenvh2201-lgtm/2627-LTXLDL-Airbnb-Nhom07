@@ -218,7 +218,7 @@ def definition_rows(cfg: dict) -> list[dict]:
          "listing sau QA; number_of_reviews bằng 0"),
         ("K7", "Cảm xúc tiêu cực và điểm khía cạnh",
          "Phát hiện vấn đề trải nghiệm",
-         "negative/valid; (praise-complaint)/(praise+complaint)",
+         "100*negative/valid; (praise-complaint)/(praise+complaint)",
          "% hoặc [-1,1]",
          "review trong mẫu có kết quả LLM hợp lệ; không dùng nhãn dự đoán thiếu/lỗi"),
         ("K8", "Listing khả dụng cao có nhiều review",

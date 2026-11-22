@@ -78,10 +78,17 @@ def read_hand_labels(cfg: dict) -> pd.DataFrame | None:
 def run(cfg: dict) -> None:
     """So sánh công bằng trên cùng gold; lỗi/thiếu LLM được tính là sai."""
     empty_error_columns = ["review_id", "text", "hand_label", "llm", "baseline", "error_type_hint"]
+    def clear_evaluation_tables():
+        csv_report(cfg, [], "eval_metrics.csv", METRIC_COLUMNS)
+        csv_report(cfg, [], "error_analysis.csv", empty_error_columns)
+        csv_report(cfg, [], "confusion_matrices.csv", [
+            "method", "true_label", *cfg["evaluation"]["labels"], "missing_or_error",
+        ])
+
     labels = read_hand_labels(cfg)
     if labels is None or labels.empty:
         logging.warning("Chưa có nhãn tay thật: không thể tính accuracy/F1")
-        csv_report(cfg, [], "eval_metrics.csv", METRIC_COLUMNS)
+        clear_evaluation_tables()
         path(cfg, "reports", "error_summary.md").write_text("# Chưa có nhãn tay\nKhông có số liệu đánh giá. Nhóm gán nhãn tay rồi chạy lại.\n", encoding="utf-8")
         return
     sample = read(cfg, "llm_sample")
@@ -96,7 +103,7 @@ def run(cfg: dict) -> None:
     valid_llm = ~invalid
     if not valid_llm.any():
         logging.warning("Chưa có dự đoán Gemini hợp lệ: chưa thể đánh giá LLM so với baseline")
-        csv_report(cfg, [], "eval_metrics.csv", METRIC_COLUMNS)
+        clear_evaluation_tables()
         path(cfg, "reports", "error_summary.md").write_text("# Chưa có kết quả Gemini\nĐã có nhãn tay, nhưng chưa có dự đoán Gemini hợp lệ để so sánh.\n", encoding="utf-8")
         return
     rows, predictions, confusion_blocks = [], {}, []
